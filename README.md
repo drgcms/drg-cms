@@ -1,8 +1,8 @@
 # DrgCms
 
-DRG CMS is content management system build on strong foundations of Ruby on Rails and Mongo DB. It uses single (cmsedit) controller for data entry and specialy crafted forms system for defining data entry fields. It has user friendly role based access system built-in and is highly extendable with help of Ruby on Rails plugin system.
+DRG CMS is content management system build on strong foundations of Ruby on Rails and Mongo DB. It uses single (cmsedit) controller together with specialy crafted forms system for data entry. It has built-in user friendly role based access system and it can be easly extended with help of Ruby on Rails plugin system.
 
-DRG CMS can be used for rapid building of complex, data-entry intensive web sites or building your private Intranet sites.
+DRG CMS can be used for rapid building of complex, data-entry intensive web sites as well as building your private Intranet applications.
 
 Project Tracking
 ----------------

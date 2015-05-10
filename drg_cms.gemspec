@@ -10,10 +10,9 @@ Gem::Specification.new do |s|
   s.authors     = ["Damjan Rems"]
   s.email       = ["damjan.rems@gmail.com"]
   s.homepage    = "http://www.drgcms.org"
-  s.summary     = "DRG CMS: CMS for Ruby, Rails and MongoDB"
-  s.description = "DRG CMS: Content management system for Ruby, Rails and MongoDB"
+  s.summary     = "DRG CMS: Content management system for Ruby, Rails and MongoDB"
+  s.description = "DRG CMS can be used for rapid building of complex, data-entry intensive web sites as well as building your private Intranet applications."
   s.license     = "MIT-LICENSE"
-
   s.files = Dir["{app,config,db,lib}/**/*"] + ["MIT-LICENSE", "Rakefile", "README.md", "drg_cms.gemspec"]
   s.test_files = Dir["test/**/*"]
 
