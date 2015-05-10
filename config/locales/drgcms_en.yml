@@ -1,0 +1,91 @@
+#--
+# Copyright (c) 2012-2013 Damjan Rems
+#
+# Permission is hereby granted, free of charge, to any person obtaining
+# a copy of this software and associated documentation files (the
+# "Software"), to deal in the Software without restriction, including
+# without limitation the rights to use, copy, modify, merge, publish,
+# distribute, sublicense, and/or sell copies of the Software, and to
+# permit persons to whom the Software is furnished to do so, subject to
+# the following conditions:
+#
+# The above copyright notice and this permission notice shall be
+# included in all copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+# EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+# MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+# NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+# LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+# OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+# WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+#++
+
+# English (en) localization for drgCMS
+en:
+  drgcms:
+    record_deleted: Document deleted!
+    confirm_delete: Confirm document deletion!
+    confirm_dup: Confirm document duplication!
+    not_authorized: User not authorized for this operation!
+    doc_disabled: Document disabled!
+    doc_enabled: Document enabled!
+    doc_saved: Document saved!
+    doc_info: Info  
+    doc_copy_clipboard: Display document data in new window
+    doc_paste_clipboard: Start update
+    doc_paste_title: Insert (update) documents from JSON data
+    doc_paste_update: Update existing document if document._id exists
+    edit_content: Edit content
+    edit_advanced: Advanced edit
+    edit_new_page: Create new page
+    edit_new_part: Create new part
+    edit_design: 'Edit: Design'
+    edit_site: 'Edit: Site'
+    edit_page: 'Edit: Page'
+    file_manager: File manager
+    edit_selected: Edit documents in selected collection
+    invalid_username: Invalid username or password!
+    system_menu: CMS system tables
+    menu_plus: Show alternative menu
+    not_email: is not valid e-mail address!
+    updated_by_other: Document was updated by other user. Please reenter your data.
+    not_id: Value entered is not ID!
+
+    edit: Edit
+    show: Prikaz
+    new: New
+    sort: Sort
+    filter: Filter 
+    back: Back
+    delete: Delete
+    enable: Enable
+    disable: Disable
+    disabled: 'Disabled '
+    save: Save
+    save&back: Save & back
+    save&close: Save & close
+    filter_on: Filter ON    
+    filter_off: Filter OFF   
+    maximize: Maximize
+    minimize: Minimize
+    reload: Reload
+    error: Error!
+    errors_no: 'No. of errors:' 
+
+    created_by: Created by
+    updated_by: Updated by
+    created_at: Created at
+    updated_at: Updated at
+    new_record: New record
+
+    choices4_filter_operators: 'Equal:eq,Like:like'
+
+    dc_journal:
+      zero_selected: No data selected!
+      restored: Data has been restored.      
+      restore: Restore      
+      
+    dc_captcha:
+      simple_message: Please write in the name of month no %{number} in a year.
+

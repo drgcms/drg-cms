@@ -1,0 +1,28 @@
+## YAML Template for drgcms_menu1s
+---
+title: drgCMS First Top Menu
+table: drgcms1menu
+new_part:
+  form:
+    actions: 
+      1: cancle
+      2: 
+        type: submit
+        text: Create
+
+    fields:
+      1:
+        name: part_type
+        type: select
+        choices: part,drgcms1menu
+        eval: Person.all.collect {|p| [ p.name, p.id ] }
+        
+      2:
+        name: part_embedded_in
+        type: select
+        choices: Design:design,PodjetnikPage:podjetnik_page
+        
+      3:
+        name: location_id
+        type: select
+        choices: site-top,ads-top,site-right,site-bottom,&get_all_locations

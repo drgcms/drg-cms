@@ -1,0 +1,112 @@
+## YAML Template for Polls
+---
+table: dc_poll
+
+index:
+  filter: name, title
+  actions: standard
+
+result_set:
+  actions: 
+    1: edit
+    2: 
+      type: duplicate
+      dup_fields: name
+
+    3: delete
+
+  columns:
+    1:  
+      name: name
+    2:  
+      name: title
+    3: 
+      name: valid_from
+    4: 
+      name: valid_to
+
+edit_title: description
+
+form:
+  actions: standard
+
+  tabs:
+    tab1:
+      10:
+        name: name
+        type: text_field
+        html:
+          size: 50
+
+      20:
+        name: title
+        type: text_field
+        html:
+          size: 50
+
+      30:
+        name: sub_text
+        type: html_field
+        options: 'height: 400'
+
+      35:
+        name: pre_display
+        type: text_field
+        html:
+          size: 50
+      40:
+        name: operation
+        type: select
+
+      50:
+        name: display
+        type: select
+
+      60:
+        name: parameters
+        type: text_field
+        html:
+          size: 50
+
+      70:
+        name: captcha_type
+        type: text_field
+        html:
+          size: 10
+
+      80:
+        name: valid_from
+        type: datetime_select
+        options:
+          include_blank: true
+
+      90:
+        name: valid_to
+        type: datetime_select
+        options:
+          include_blank: true
+
+      100:
+        name: css
+        type: text_area
+        html:
+          size: 100x20
+
+      110:
+        name: active
+        type: check_box
+    tab2:
+      10:
+        name: form
+        type: text_area
+        html:
+          size: 100x50
+          style: 'font-family:courier;' 
+
+    tab3:
+      20:
+        name: dc_poll_items
+        type: embedded
+        formname: dc_poll_item
+        html:
+          height: 800      

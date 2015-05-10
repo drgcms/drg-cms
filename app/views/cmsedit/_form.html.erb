@@ -1,0 +1,20 @@
+
+<%= dc_flash_messages %> 
+<%= dc_error_messages_for @record %> 
+
+<div class="dc-form-frame" width="99%">
+
+  <table class='dc-menu'>
+    <%= dc_actions_for_form %>
+  </table>
+  
+  <%= dc_fields_for_form %>
+  <%= dc_document_statistics %>
+
+  <table class='dc-menu'>
+    <%= dc_actions_for_form %>
+  </table>
+  
+</div>
+
+<%= javascript_tag @js if @js.to_s.size > 0 %>

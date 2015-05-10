@@ -1,0 +1,54 @@
+## YAML Template for Link
+---
+table: dc_link
+
+index:
+  actions: standard
+
+result_set:
+  actions: 
+    1: edit
+    2: 
+      type: duplicate
+      dup_fields: name
+    3: delete
+
+  columns:
+    1:  
+      name: name
+      style: "text-align: left;"
+    2: 
+      name: params
+      style: "text-align: left;"
+
+edit_title: name
+
+form:
+  actions: standard
+    
+  fields:
+    10:
+      name: name
+      type: text_field
+      html:
+        size: 30
+
+    20:
+      name: dc_site_id
+      type: select
+      eval: DcSite.choices4_site
+
+    30:
+      name: page_id
+      type: text_autocomplete
+      table: 
+        eval: '@parent.session[:site_page_table]'
+      search: subject
+      html:
+        size: 80
+     
+    40:
+      name: params
+      type: text_area
+      html:
+        size: 80x5

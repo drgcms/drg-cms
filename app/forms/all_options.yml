@@ -1,0 +1,168 @@
+## DRGCMS Form
+---
+extend: form_name
+table: table_name
+title: Some title
+controls: controls_file
+readonly: 1
+permissions:
+  can_view: role_name
+
+index:
+  filter: name, id as text_field
+  actions: standard
+  
+  actions:
+    1: new
+    2: filter
+    3: sort
+    
+  actions:
+    1: 
+      type: new
+      caption: Alternative caption
+
+    2: 
+      type: link
+      url: some_url
+      caption: Some caption
+      title: Text for mouse over
+
+    3: 
+      type: link
+      controller: controller_name
+      action: action_name
+      table: table_name
+      formname: form_name
+    4: 
+      type: menu
+      eval: ModulClassName.menu_for(self)
+      caption: Some caption
+
+result_set:
+  filter: filter_vpis
+  actions_width: 100
+  per_page: 10
+  
+  actions: standard
+
+  actions: 
+    1: edit
+    2: 
+      type: duplicate
+      dup_fields: name,another_field
+
+    3: 
+      type: delete
+      title: Delete it
+      icon: delete.png
+    4:
+      type: link
+      controller: controller_name
+      action: action_name
+      table: table_name
+      formname: form_name
+      target: target      
+      method: (get),put,post      
+
+  columns:
+    1:  
+      name: name
+      style: 'align: left; width: 100px'
+    2:  
+      name: title
+    3: 
+      name: valid_from
+      format: '%d.%m.%Y'
+    4: 
+      name: active
+      eval: dc_icon4_boolean
+
+form:
+  edit_title: description
+  height: 600
+  title:
+    edit: Title for edit
+    show: Title for show
+
+  actions: standard
+  actions: none
+
+  actions: 
+    5: 
+      type: ajax
+      controller: ppk
+      action: priprava_odlocbe
+      method: (get),put,post
+      caption: Priprava odločbe
+    6: 
+      type: script
+      caption: Cancle 
+      js: parent.reload();
+      
+  tabs:
+    tab1:
+      10:
+        name: name
+        type: text_field
+        type: hidden_field
+        type: readonly
+        html:
+          size: 50
+      40:
+        name: dc_site_id
+        type: select
+        eval: dc_choices4('model','description_field_name','_id')
+        eval: ModelName.choices4_site
+        html:
+          include_blank: true        
+
+      40:
+        name: operation
+        type: select
+
+      30:
+        name: sub_text
+        type: html_field
+        options: 'height: 400'
+
+      80:
+        name: valid_from
+        type: datetime_select
+        options:
+          include_blank: true
+
+      90:
+        name: valid_to
+        type: datetime_select
+        options:
+          include_blank: true
+
+      100:
+        name: css
+        type: text_area
+        html:
+          size: 100x20
+
+      110:
+        name: active
+        type: check_box
+        
+    tab2:
+      10:
+        name: form
+        type: text_area
+        html:
+          size: 100x50
+          style: 'font-family:courier;' 
+
+    tab3:
+      20:
+        name: dc_poll_items
+        type: embedded
+        formname: dc_poll_item
+        html:
+          height: 800      
+      20:
+        name: odhod
+        type: datetime_picker          

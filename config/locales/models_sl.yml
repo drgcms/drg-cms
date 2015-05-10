@@ -1,0 +1,826 @@
+#--
+# Copyright (c) 2012-2013 Damjan Rems
+#
+# Permission is hereby granted, free of charge, to any person obtaining
+# a copy of this software and associated documentation files (the
+# "Software"), to deal in the Software without restriction, including
+# without limitation the rights to use, copy, modify, merge, publish,
+# distribute, sublicense, and/or sell copies of the Software, and to
+# permit persons to whom the Software is furnished to do so, subject to
+# the following conditions:
+#
+# The above copyright notice and this permission notice shall be
+# included in all copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+# EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+# MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+# NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+# LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+# OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+# WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+#++
+
+# drgCMS slovenska (sl) lokalizacija podatkovnih modelov
+
+sl:
+  helpers:
+# labels komentarji na obrazcih #############################################
+    label:
+      dc_site:
+        tabletitle: Spletišča
+        1basic: Osnovno
+        2parameters: Parametri
+        3advanced: Napredno
+        4design: Dizajn
+        5permissions: Dostop
+
+        name: Spletišče
+        description: Opis
+        homepage_link: Povezava domov
+        error_link: Povezava napake
+        css: CSS
+        header: Glava strani
+        route_name: Privzeta povezava
+        page_title: Naslov
+        document_extension: Podaljšek
+        page_table: Tabela strani
+        page_class: Razred strani
+        menu_class: Razred menija        
+        files_directory: Mapa z datotekami
+        logo: Logotip
+        dc_policies: Politike za dostop
+        active: Aktivna
+        menu_name: Menu
+        ck_config: CK config
+        ck_css: CK css  
+        alias_for: Alias za
+        settings: Nastavitve
+        rails_view: Rails view
+        design: Standard dizajn
+        
+
+      dc_design:
+        tabletitle: Dizajni
+        tab1: Osnovno
+        tab2: Elementi
+
+        name: Ime
+        description: Opis
+        body: Vsebina
+        css: CSS
+        author: Avtor
+        updated_by: Spremenil
+        active: Aktiven
+        dc_parts: Elementi 
+        rails_view: Rails view datoteka
+
+      dc_user:
+        tabletitle: Uporabniki
+
+        id: Id
+        username: Uporabnik
+        title: Titula
+        first_name: Ime
+        last_name: Priimek
+        name: Naziv
+        address: Naslov
+        post: Pošta
+        country: Država 
+        phone: Telefon
+        email: e-Pošta
+        picture: Slika
+        birthdate: Datum rojstva
+        about: Več o
+        last_visit: Zadnji obisk
+        active: Aktiven
+        valid_from: Velja od         
+        valid_to: Velja do
+        updated_by: Spremenil
+        type: Vrsta
+        members: Člani
+        dc_user_roles: Uporabniške vloge 
+        password: Geslo
+        password_confirmation: Potrdi geslo
+        signature: podpis
+
+      dc_user_role:
+        tabletitle: Uporabnikove vloge
+
+        dc_policy_role_id: Vloga
+        has_cms_menu: CMS menu
+        valid_from: Velja od
+        valid_to: Velja do
+        updated_by: Spremenil
+        active: Aktivna
+
+      dc_poll:
+        tabletitle: Ankete
+        choices4_operation: 'Poženi program:poll_submit,Povezava:link'
+        choices4_display: 'Od zgoraj-navzdol:td,Od leve na desno:lr'
+        tab1: Podatki
+        tab2: Forma
+        tab3: Vrstice
+
+        name: Ime
+        title: Naslov
+        sub_text: Kratek opis
+        operation: Operacija
+        parameters: Parametri
+        display: Prikaz
+        css: CSS
+        valid_from: Velja od
+        valid_to: Velja do
+        dc_poll_items: Vrstice
+        captcha_type: Catpcha
+        active: Aktivna
+        form: Forma
+
+      dc_poll_item:
+        tabletitle: Vnosne vrstice
+        choices4_type: Podatek:text_field,Tekst:text_area,Izbirno:select,Izbirni gumb:check_box,Zaključek:submit_tag,Povezava:link_to,Geslo:password_field,Komentar:comment
+        choices4_separator: Presledek:&nbsp;,Prazna vrstica:<br />,Ravnilo:<hr>
+
+        name: Naziv
+        text: Napis
+        type: Vrsta
+        Size: Velikost
+        mandatory: Obvezen
+        separator: Ločilo
+        options: Opcije
+        order: Zaporedje
+        active: Active
+
+      dc_policy:
+        tabletitle: Politike za dostop
+
+        name: Naziv
+        description: Opis
+        is_default: Je privzeta
+        active: Aktivna
+        dc_policy_rules: Pravila
+        message: Sporočilo
+
+      dc_policy_rule:
+        tabletitle: Pravila politike za dostop
+        choices4_permission: BREZ DOSTOPA:0,LAHKO GLEDA:1,LAHKO DODAJA:2,LAHKO UREJA:4,LAHKO UREJA VSE:8,LAHKO BRIŠE:16,LAHKO BRIŠE VSE:32,ADMINISTRATOR:64,SUPERADMIN:128
+        choices4_site_permission: BREZ DOSTOPA:0,LAHKO GLEDA:1,LAHKO UREJA
+
+        dc_policy_role_id: Vloga za dostop
+        permission: Dovoljenja
+        active: Aktiven
+        updated_by: Spremenil
+
+      dc_policy_role:
+        tabletitle: Vloge za dostop
+
+        name: Naziv vloge 
+        system_name: Sistemska vloga
+        active: Aktiven        
+
+      dc_simple_menu:
+        tabletitle: Meniji enostavni
+        tab1: Osnovno
+        tab2: Točke menija
+        tab3: CSS
+
+        name: Ime
+        description: Opis
+        div_name: Div id
+        link_prepend: Predpona povezave
+        css: CSS
+        active: Aktiven
+        dc_simple_menu_items: Točke menija
+        dc_site_id: Spletišče
+
+        
+      dc_simple_menu_item:
+        tabletitle: Točke menujev
+
+        caption: Napis
+        picture: Slika
+        target: Ciljno okno
+        link: Povezava
+        link_prepend: Predpona povezave
+        order: Zaporedje
+        submenu: Podmenu
+        css: CSS  
+        active: Aktiven
+        policy_id: Politika za prikaz
+
+      dc_menu:
+        tabletitle: Meniji
+        tab1: Osnovno
+        tab2: Točke menija
+        tab3: CSS
+
+        name: Ime
+        description: Opis
+        link_prepend: Predpona povezave
+        div_name: Div id
+        css: CSS
+        active: Aktiven
+        dc_menu_items: Točke menija
+
+      dc_menu_item:
+        tabletitle: Točke menujev
+        tab1: Osnovno
+        tab2: Točke menija
+
+        caption: Napis
+        picture: Slika
+        target: Ciljno okno
+        link: Povezava
+        link_prepend: Predpona povezave
+        order: Zaporedje
+        css: CSS  
+        active: Aktiven
+        policy_id: Politika za prikaz
+        dc_menu_items: Podmeniji
+        page_id: Dokument 
+
+      dc_ad:
+        tabletitle: Oglasi
+        choices4_type: Sličica:1,Flash:2,Skripta:3      
+        choices4_link_target: Istem oknu:_self,Novem oknu:_blank
+
+        position: Področje
+        description: Kratek opis
+        type: Vrsta
+        script: Skripta
+        link: Povezava
+        file: Datoteka
+        height: Višina
+        width: Širina
+        valid_from: Velja od
+        valid_to: Velja do
+        displays: Prikazov
+        clicks: Klikov
+        priority: Prioriteta
+        displayed: Prikazano
+        clicked: Poklikano
+        active: Aktiven
+        updated_by: Urejal   
+        dc_site_id: Spletišče
+        link_target: Povezavo odpri
+
+      dc_page:
+        tabletitle: Strani
+        choices4_comments: 'Dovoljeno:1,Ni dovoljeno:0'
+        1base: Osnovno
+        2advanced: Napredno
+        3content: Vsebina
+        4parts: Elementi
+
+        subject: Naslov
+        subject_link: Povezava
+        sub_subject: Podnaslov
+        picture: Slika
+        gallery: Id galerije
+        alt_link: Alt povezava
+        css: CSS
+        script: Skript
+        params: Parametri
+        menu_id: Meni
+        author_id: Avtor
+        author_name: Avtor
+        body: Vsebina
+        dc_user_id: Naredil uporabnik
+        user_name: Naredil uporabnik
+        publish_date: Datum objave
+        valid_from: Velja od
+        valid_to: Velja do
+        comments: Komentarji
+        active: Aktiven
+        dc_parts: Elementi
+        dc_design_id: Dizajn
+        policy_id: Politika za dostop
+        dc_site_id: Spletišče
+        kats: Kategorije
+        gallery: Slikovna galerija
+        updated_at: Spremenjeno
+        picture: Slika
+        dc_poll_id: Anketa
+
+      dc_part:
+        tabletitle: Elementi strani
+        1base: Osnovno
+        2content: Vsebina
+        3advanced: Napredno
+
+        name: Naziv
+        description: Opis
+        link: Povezava
+        picture: Slika
+        thumbnail: Mala slika
+        body: Vsebina
+        css: CSS
+        script: Skripte
+        script_type: Vrsta skripte
+        piece_id: Sestavni element
+        div_id: Lokacija (div)
+        order: Zaporedje
+        params: Parametri
+        updated_by: Spremenil
+        updated_at: Spremenjeno
+        active: Aktiven
+        valid_from: Velja od
+        valid_to: Velja do
+        policy_id: Politika za dostop
+
+
+      dc_piece:
+        tabletitle: Sestavni elementi strani
+        tab1: Osnovno
+        tab2: Napredno
+        tab3: Vsebina
+
+        name: Naziv
+        description: Opis
+        link: Povezava
+        picture: Slika
+        thumbnail: Mala slika
+        body: Vsebina
+        css: CSS
+        script: Skripte
+        script_type: Vrsta skripte
+        site_id: Spletišče
+        div_id: Lokacija (div)
+        order: Zaporedje
+        params: Parametri
+        updated_by: Spremenil
+        updated_at: Spremenjeno
+        active: Aktiven
+        valid_from: Velja od
+        valid_to: Velja do
+
+      dc_permission:
+        tabletitle: Pravila za dostop do tabel s podatki
+
+        table_name: Ime tabele
+        is_default: Privzeto za vse
+        active: Je aktivno
+        dc_policy_rules: Vloge in pravila
+
+      dc_folder_permission:
+        tabletitle: Pravila za dostop do map s podatki
+
+        folder_name: Ime mape
+        is_default: Privzeto za vse
+        inherited: Podedovano
+        active: Je aktivno
+        dc_policy_rules: Vloge in pravila
+
+      dc_link:
+        tabletitle: Povezave in bližnjice
+
+        name: Ime povezave
+        params: Parametri
+        page_id: Stran za prikaz
+        dc_site_id: Spletišče
+        active: Aktiven
+
+      dc_category:
+        tabletitle: Kategorije
+        choices4_ctype: 'Revija:1,Predstavitev številke:2,Splet:3,Oglasi:4'        
+
+        name: Naziv
+        description: Opis
+        ctype: Vrsta
+        order: Zaporedje
+        parent: Nadrejeni
+        active: Aktiven
+        updated_at: Spremenjen
+
+      dc_mail:
+        tabletitle: Poštna sporočila
+        tab1: Sporočilo
+        tab2: Prejemniki
+        tab3: Ostalo
+        choices4_status: 'V pripravi:0,Pripravljeno:1,Pošilja:2,Napaka:3,Zaključeno:10' 
+
+        subject: Zadeva
+        body: Sporočilo
+        from: Pošilja
+        to_test: Naslov za test
+        to_list: Seznami naslovov
+        to_address: Posamezni naslovi
+        schedule: Pošlji ob
+        send_time: Poslano
+        status: Stanje
+        css: CSS
+
+      dc_mail_list:
+        tabletitle: Seznami e-poštnih naslovov
+
+        name: Naziv
+        description: Opis seznama
+        params: Parametri
+        active: Aktiven
+
+      dc_mail_address:
+        tabletitle: e-Poštni naslovi
+
+        email: e-Pošta
+        dc_user_id: Uporabnik
+        active: Je aktiven        
+        reason: Razlog
+        dc_mail_list_members: Seznami  
+
+      dc_mail_list_member:
+        tabletitle: Seznami naslovov
+
+        dc_mail_list_id: Seznam
+        active: Je aktiven       
+        reason: Razlog        
+
+      dc_big_table:
+        tabletitle: Velika tabela 
+
+        key: Ključ
+        description: Opis
+        active: Aktiven
+        site_id: Spletišče
+        dc_big_table_values: Vrednosti
+
+      dc_big_table_value:
+        tabletitle: Velika tabela - vrednosti
+
+        value: Vrednost
+        active: Aktiven
+        description: Opis
+        dc_big_table_locales: Prevodi
+
+      dc_big_table_locale:
+        tabletitle: Velika tabela - prevodi
+
+        locale: Šifra države
+        description: Opis vrednosti
+
+      dc_journal:
+        tabletitle: Dnevnik sprememb
+        1diff: Razlike
+        2ids: Identifikacija 
+
+        operation: Operacija
+        ip: IP naslov
+        time: Čas
+        site_id: Spletišče
+        user_id: Uporabnik
+        tables: Tabela
+        id: ID zapisa
+        ids: Nadrejeni id-ji
+        diff: Razlike
+
+      dc_ident:
+        tabletitle: Dodatne identifikacije
+
+        key: Ključ
+        value: Vrednost
+
+# help pomoč na obrazcih ####################################################
+
+    help:
+      dc_site:
+        name: Ime strani npr. www.mysite.com
+        description: Kratek opis strani
+        homepage_link: Povezava do strani, ki bo prikazana ob izbiri domov
+        error_link: Povezava do strani z napako 
+        header: Dodatne definicije, ki se uporabijo v glavi spletnega dokumenta
+        css: CSS veljaven za to stran
+        route_name: Privzeta predpona za povezavo do vsebine. Pri nas bi uporabili stran ali clanek. Privzeta vrednost je page.
+        page_title: Naslov, ki ga prikaže brskalnik v naslovni vrstici, ko le tega ni mogoče pridobiti iz dokumenta
+        document_extension: Privzeta končnica dokumentov npr. html
+        page_table: Ime tabele (mongo collection), ki vsebuje podatke o straneh
+        page_class: Ime Rails razreda modela, ki določa tabelo s podatki o straneh. Običajno DcPage.
+        menu_class: Ime Rails razreda modela, ki določa tabelo s podatki o meniju. Običajno DcMenu.
+        files_directory: Ime direktorija, kjer se nahajajo dokumenti, slike, priponke
+        logo: Slika logotip podjetja
+        dc_policies: Privzete politike za dostop do podatkov spletišča
+        active: Ali je stran aktivna
+        menu_name: Ime menija za to spletišče
+        ck_config: CK editor javascript configuracijska datoteka
+        ck_css: CK editor CSS configuracijska datoteka
+        alias_for: Alias (nadomestno), ki kaže na pravo spletno stran
+        settings: Nastavitve veljavne za to spletišče
+        rails_view: Rails view datoteka uporabljena za standard dizajn
+        design: Standard dizajn lahko definirate tudi pri spletišču
+
+      dc_design:
+        name: Unikatno ime za dizajn. Pomembno za iskanje
+        description: Kratek opis dizajna
+        body: Vsebina dizajna, ki se bo izvedla kot vsaka Rails view datoteka
+        css: CSS za dizajn
+        author: Ime avtorja
+        updated_by: Zadnji spreminjal
+        active: Ali je dizajn aktiven
+        dc_parts: Elementi, sestavni deli dizajna
+        rails_view: Ime Rails view datoteke, ki bo uporabljena za izris strani
+
+      dc_user:
+        username: Uporabniško ime
+        title: Titula (dr, mag)
+        first_name: Ime
+        middle_name: Dodatno ime
+        last_name: Priimek
+        name: Naziv
+        address: Naslov
+        post: Pošta in kraj
+        country: Država 
+        phone: Telefonska številka
+        email: e-Pošta
+        picture: Slika
+        birthdate: Datum rojstva
+        about: Krajši upis uporabnika
+        last_visit: Zadnji obisk
+        active: Aktiven
+        valid_from: Začetni datum veljavnosti         
+        valid_to: Končni datum veljavnosti
+        updated_by: Spremenil
+        type: Vrsta uporabniškega računa
+        members: Člani (če skupina uporabnikov)
+        dc_user_roles: Vloge, ki pripadajo temu uporabniku 
+        password: Geslo
+        password_confirmation: Še enkrat vpišite geslo
+        signature: Podpis, ki se doda k vsakemu sporočilu tega uporabnika
+
+
+      dc_user_role:
+        dc_policy_role_id: Uporabnikova vloga
+        has_cms_menu: Vloga dovoljuje prikaz opcije za CMS menu
+        valid_from: Začetni datum veljavnosti vloge
+        valid_to: Končni datum veljavnosti vloge
+        updated_by: Zadnji je vlogo spremenil
+        active: Vlogaje aktivna
+
+      dc_poll:
+        name: Unikatno ime za anketo
+        title: Naslov ankete
+        sub_text: Kratek opis ankete
+        operation: Operacija, ki se izvede ob kliku na izbiro
+        parameters: Dodatni parametri za operacijo
+        display: Kako so posamezni podatki postavljeni na obrazcu
+        css: CSS samo za to anketo
+        valid_from: Anketa je veljavna od
+        valid_to: Anketa je veljavna do
+        dc_poll_items: Posamezni podatki ankete
+        captcha_type: Vrsta Catpcha preverjanja, če je capctcha v uporabi
+        form: Posamezne podatke za vnos lahko vpišete tudi v obliki pravil drgCMS forme
+
+      dc_poll_item:
+        name: Naziv podatka na rezultatih
+        text: Napis pred podatkom
+        type: Vrsta vpisnega polja
+        size: Velikost vhodnega polja
+        mandatory: Vpis polja je obvezno
+        separator: Ločilo med posameznimi polji
+        options: Opcije, odvisne od vrste vpisnega polja
+        order: Zaporedje prikaza na anketi
+        active: Vrstica je aktivna
+
+      dc_policy:
+        name: Naziv politike
+        description: Opis politike
+        dc_policy_rules: Pravila določena s to politiko
+        is_default: To je privzeta politiko za to spletišče
+        active: Politika je aktivna
+        message: Sporočilo ki se izpiše ob blokadi prikaza
+
+      dc_policy_rule:
+        active: Pravilo aktivno
+        updated_by: Spremenil
+        dc_policy_role_id: Vloga za dostop, ki jo določa pravilo
+        permission: Dovoljenje za dostop
+        has_cms_menu: Ali imajo uporabniki dostop do CMS menija
+
+      dc_policy_role:
+        name: Naziv vloge
+        system_name: Naziv sistemske vloge, če jo zahteva sistem
+        active: Vloga je aktivna
+
+      dc_simple_menu:
+        name: Unikatno ime za meni
+        description: Kratek opis menija
+        div_name: Ime div, ki bo uporabljena kot podlaga za meni
+        css: CSS samo za ta meni
+        active: Je aktiven
+        dc_simple_menu_items: Seznam točk menija
+        link_prepend: Končna povezava se sestoji iz predpone in povezave do dokumenta
+        dc_site_id: Spletišče kateremu pripada meni       
+
+      dc_simple_menu_item:
+        caption: Napis točke menija
+        picture: Ime slike, če je na mestu menija uporabljena slika
+        target: Ciljno okno, kjer naj se odpre povezava. Pustite prazno za isto okno.
+        link: Povezava, ki se kliče ob izbiri menija
+        link_prepend: Končna povezava se sestoji iz predpone in povezave do dokumenta
+        order: Vrstni red. Manjša številka je prikazana prej
+        submenu: Posamezne točke podmenija v obliki (napis\povezava).
+        css: CSS samo za to točko menija  
+        active: Je aktiven        
+        policy_id: Politika za prikaz elementa menija.
+
+      dc_menu:
+        name: Unikatno ime za meni
+        description: Kratek opis menija
+        div_name: Ime div, ki bo uporabljena kot podlaga za meni
+        link_prepend: Končna povezava se sestoji iz predpone in povezave do dokumenta
+        css: CSS samo za ta meni
+        active: Je aktiven
+        dc_menu_items: Seznam točk menija
+        dc_site_id: Spletišče kateremu pripada meni       
+
+      dc_menu_item:
+        caption: Napis točke menija
+        picture: Ime slike, če je na mestu menija uporabljena slika
+        target: Ciljno okno, kjer naj se odpre povezava. Pustite prazno za isto okno.
+        link: Povezava, ki se kliče ob izbiri menija
+        link_prepend: Končna povezava se sestoji iz predpone in povezave do dokumenta
+        order: Vrstni red. Manjša številka je prikazana prej
+        css: CSS samo za to točko menija  
+        page_id: Dokument do katerega naj kaže točka menija
+        dc_menu_items: Seznam točk podmenija
+        active: Je aktiven        
+        policy_id: Politika za prikaz elementa menija.
+
+      dc_ad:
+        position: Območje (div id) kjer bo reklama prikazana
+        description: Kratek opis (po želji)
+        type: Vrsta reklame, ki je lahko flash, slika ali skript
+        script: JavaScriptkoda, ki se izvede, ko je vrsta oglasa "skript"
+        file: Ime datoteke ko je izbrana sličica ali flash
+        link: Povezava do strani (dokumenta) kamor kaže reklama
+        height: Wišina oglasa
+        width: Širina oglasa
+        valid_from: Oglas je veljavna od
+        valid_to: Oglas je veljavna do
+        displays: Maksimalno število prikazov oglasa. Ko je število doseženo, se oglas ne prikazuje več.
+        clicks: Maksimalno število zabeleženih klikov oglasa. Ko je število doseženo, se oglas ne prikazuje več.
+        priority: Prioriteta prikazovanja. Večja prioriteta pomeni večjo verjetnost prikaza. Prioriteta se računa samo med kandidati za prikaz.
+        displayed: Število prikazov oglasa.
+        clicked: Število zabeleženih klikov na ta oglas.
+        active: Oglas je aktiven 
+        updated_by: Oglas je zadnji urejal.
+        dc_site_id: Oglas je veljaven samo za določeno spletišče ali vsa
+        link_target: Odpri povezavo v novem oknu ali v istem oknu
+
+      dc_page:
+        subject: Naslov sestavka
+        subject_link: Povezava (link) do sestavka
+        sub_subject: Podnaslov, kratek opis vsebine
+        alt_link: Alternativna povezava do sestavka
+        picture: Slika v povezavi s stranjo
+        gallery: Id sestavnih elementov, ki sestavljajo slikovno galerijo te strani.
+        css: CSS
+        script: Skript
+        params: Dodatni parametri za prikaz strani.
+        body: Vsebina za prikaz
+        menu_id: Meni ki mu pripada sestavek
+        author_id: Avtor sestavka
+        author_name: Avtor sestavka
+        dc_user_id: Sestavek je naredil uporabnik
+        user_name: Sestavek je naredil uporabnik
+        publish_date: Datum objave sestavka
+        valid_from: Sestavek je veljave od
+        valid_to: Sestavek je veljave do
+        comments: Komentarji
+        active: Sestavek je aktiven
+        dc_parts: Delčki, ki sestavka
+        policy_id: Politika za dostop do strani
+        dc_design_id: Dizajn, mu pripada sestavek
+        dc_site_id: Spletišče. ki mu pripada stran
+        kats: Kategorije, ki jim pripada članek
+        gallery: Posamezne slike so definirane v elementih strani. Podatek določa ime elementov, ki pripadajo galeriji.
+        picture: Slika uporabljena za prikaz sestavka
+        dc_poll_id: Anketa, če sestavek vsebuje tudi anketo
+
+
+      dc_part:
+        name: Naziv elementa
+        description: Kratek opis elementa
+        link: Povezava, kadar povezava tudi kaj pove
+        picture: Slika za prikaz
+        thumbnail: Pomanjšana slika, če je ta na voljo
+        body: Vsebina za prikaz
+        css: CSS
+        script: Skripta, če element potrebuje tudi skripto
+        script_type: Vrsta skripte
+        piece_id: Sestavni element, če ga ta element uporablja
+        div_id: Lokacija ali ime DIV razdelka na strani, kjer bo element prikazan
+        order: Zaporedje prikaza posameznih elementov
+        updated_by: Zadnjič je element spremenil
+        updated_at: Čas, ko je bil element spremenjen
+        params: Dodatni parametri za prikaz elementa
+        active: Element je aktiven
+        valid_from: Veljavnost prikaza elementa od
+        valid_to: Veljavnost prikaza elementa do
+        policy_id: Politika za dostop do elementa
+
+      dc_piece:
+        name: Enoznačen naziv elementa
+        description: Kratek opis elementa
+        link: Povezava, kadar povezava tudi kaj pove
+        picture: Slika za prikaz
+        thumbnail: Pomanjšana slika, če je ta na voljo
+        body: Vsebina za prikaz
+        css: CSS
+        script: Skripta, če element potrebuje tudi skripto
+        script_type: Vrsta skripte
+        site_id: Spletišče, kateremu pripada element
+        div_id: Lokacija ali ime DIV razdelka na strani, kjer bo element prikazan
+        order: Zaporedje prikaza posameznih elementov
+        params: Dodatni parametri za prikaz elementa
+        updated_by: Zadnjič je element spremenil
+        updated_at: Čas, ko je bil element spremenjen
+        active: Element je aktiven
+        valid_from: Veljavnost prikaza elementa od
+        valid_to: Veljavnost prikaza elementa do
+
+      dc_permission:
+        table_name: Dostop velja za tabelo
+        is_default: To so privzeta pravila za vse tabele v bazi podatkov
+        active: Dostop je aktiven
+        dc_policy_rules: Pravila za dostop do posamezne tabele
+
+      dc_folder_permission:
+        folder_name: Ime mape z datotekami
+        is_default: To je privzeto pravilo
+        inherited: Deduje pravice od nadrejene mape
+        active: Pravilo je aktivno
+        dc_policy_rules: Pravice za dostop do mape
+
+      dc_link:
+        name: Ime povezave ali bližnjice npr. domov
+        params: Dodatni parametri za program
+        dc_site_id: Velja za spletno stran
+        page_id: Stran na katero se bo preusmerila povezava
+        active: Povezava je aktivna
+
+      dc_category:
+        name: Naziv kategorije
+        description: Dodaten opis
+        ctype: Vrsta kategorije. Pomembno za izbiro podatkov na sumarnih menijih. 
+        order: Zaporedje, ki se lahko uporabi pri grupiranju člankov.
+        parent: Nadrejena kategorija. Pustite prazno če je to najvišja kategorija.
+        active: Aktivna
+        updated_at: Podatki so bili zadnjič spremenjeni
+
+      dc_mail:
+        subject: Zadeva sporočila
+        body: Vsebina sporočila
+        from: Pošiljatelj sporočila
+        to_test: Naslov, kamor se bo poslalo sporočilo za test
+        to_list: Seznami naslovov, na katere se bo poslalo sporočilo
+        to_address: Posamezni naslovi, na katere se bo poslalo sporočilo
+        schedule: Pošiljanje sporočila se bo pričelo po tej uri
+        send_time: Čas zaključka pošiljanja
+        status: Stanje sporočila.
+        css: CSS za pravilen prikaz sporočila
+
+      dc_mail_list:
+        name: Seznam naslovov
+        description: Dodaten opis seznama naslovov
+        params: Dodatni parametri za seznam
+        active: Seznam je aktiven
+
+      dc_mail_address:
+        email: e-Poštni naslov
+        dc_user_id: Uporabnik, če je naslov povezan z bazo uporabnikov
+        active: Naslov je aktiven
+        reason: Opis razloga za deaktivacijo e-naslova
+        dc_mail_list_members: Seznami, kjer je udeležen e-poštni naslov
+
+      dc_mail_list_member:
+        dc_mail_list_id: Seznam naslovov v katerega se uvršča ta e-naslov
+        active: Vpis je aktiven       
+        reason: Razlog za deaktivacijo e-naslova na seznamu
+
+      dc_big_table:
+        key: Ključ za iskanje vrednosti v Veliki tabeli
+        active: Opis ključa
+        site_id: Spletišče. Vrednosti bodo veljale samo za to spletišče.
+        dc_big_table_values: Posamezne vrednosti, ki pripadajo temu ključu
+
+      dc_big_table_value:
+        value: Vrednost
+        description: Kratek opis vrednosti
+        dc_big_table_locales: Prevodi vrednosti za ciljne jezike
+
+      dc_big_table_locale:
+        locale: Šifra države za katero velja prevod vrednosti
+        description: Opis vrednosti v jeziku te države
+
+      dc_journal:
+        operation: Operacija
+        ip: IP naslov od koder je bila storjena operacija
+        time: Čas operacije
+        site_id: Spletišče
+        user_id: Uporabnik
+        tables: Tabela
+        id: ID zapisa
+        ids: Nadrejeni id-ji
+        diff: Razlike
+
+      dc_ident:
+        key: Ključ identifikacije (npr. DDV)
+        value: Vrednost (SI12345678)

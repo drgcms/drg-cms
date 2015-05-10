@@ -1,0 +1,41 @@
+## YAML Template for Polls
+---
+title: Big table locale value 
+table: dc_big_table_locale
+
+
+index:
+#  filter: name, site
+  actions: standard
+
+result_set:
+  actions: 
+    1: edit
+    2: 
+      type: duplicate
+      dup_fields: locale
+
+    3: delete
+
+  columns:
+    1:  
+      name: locale
+    2:  
+      name: description
+
+edit_title: locale
+
+form:
+  actions: standard
+
+  fields:
+    10:
+      name: locale
+      type: text_field
+      html:
+        size: 2
+    20:
+      name: description
+      type: text_field
+      html:
+        size: 50

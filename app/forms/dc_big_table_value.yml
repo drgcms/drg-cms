@@ -1,0 +1,47 @@
+## YAML Template for Polls
+---
+title: Big table values
+table: dc_big_table_value
+
+
+index:
+#filter: name, site  
+  actions: standard
+
+result_set:
+  actions: 
+    1: edit
+    2: 
+      type: duplicate
+      dup_fields: value
+
+    3: delete
+
+  columns:
+    1:  
+      name: value
+    2:  
+      name: description
+
+edit_title: value
+
+form:
+  actions: standard
+
+  fields:
+    10:
+      name: value
+      type: text_field
+      html:
+        size: 50
+    20:
+      name: description
+      type: text_field
+      html:
+        size: 50
+    30:
+      name: dc_big_table_locales
+      type: embedded
+      formname: dc_big_table_locale
+      html:
+        height: 300      

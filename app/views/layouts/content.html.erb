@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title><%= @page_title %></title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <%= stylesheet_link_tag "application", media: 'all' %>
+  <style type="text/css" media="all"><%= "#{@site.css}#{@design.css}\n#{@page.css}".html_safe %></style>
+  <%= @site.header.html_safe %>
+  <%= javascript_include_tag "application" %>
+  <%= csrf_meta_tags %>
+</head>
+
+<body>
+<%= yield %>
+</body>
+</html>

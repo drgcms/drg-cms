@@ -1,0 +1,55 @@
+## YAML Template for page
+---
+table: dc_category
+
+index:
+  filter: name, description, ctype, parent
+  actions: standard
+
+result_set:
+  actions: 
+    1: edit
+    2: delete
+
+  columns:
+    1:  
+      name: name
+    2: 
+      name: updated_at
+    3: 
+      name: active
+      eval: dc_icon4_boolean      
+
+edit_title: name
+
+form:
+  actions: 
+    standard: yes
+
+  fields:
+
+    0:
+      name: name
+      type: text_field
+      html:
+        size: 30
+    1:
+      name: description
+      type: text_field
+      html:
+        size: 100
+    2:
+      name: ctype
+      type: select
+
+    3:
+      name: order
+      type: text_field
+      html:
+        size: 5
+    4:
+      name: parent
+      type: select
+      eval: DcCategory.values_for_parent
+      html:
+        include_blank: true

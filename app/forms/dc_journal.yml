@@ -1,0 +1,85 @@
+## 
+---
+table: dc_journal
+
+index:
+  filter: tables, user_id, site_id
+  actions:
+    1: filter
+
+result_set:
+  actions: 
+    1: edit
+
+  columns:
+    10: 
+      name: operation
+    15: 
+      name: time
+    20: 
+      name: user_id
+      eval: dc_name4_id,dc_user,first_name
+    30: 
+      name: site_id
+      eval: dc_name4_id,dc_site,name
+    40: 
+      name: tables
+
+form:
+  actions:
+    10: back
+
+    20: 
+      type: ajax
+      caption: drgcms.dc_journal.restore
+      controller: dc_common
+      action: restore_from_journal 
+      request: post
+  tabs:
+    1diff:
+      10:
+        name: diff
+        type: journal_diff
+        html:
+          size: 100x25
+
+    2ids:
+      5:
+        name: operation
+        type: text_field
+        html:
+          size: 10
+      10:
+        name: time
+        type: datetime_select
+      20:
+        name: site_id
+        type: select
+        eval: DcSite.choices4_site
+      30:
+        name: user_id
+        type: text_autocomplete
+        search: dc_user.name
+        html:
+          size: 30 
+      40:
+        name: tables
+        type: text_field
+        html:
+          size: 50
+      50:
+        name: doc_id
+        type: text_field
+        html:
+          size: 25
+      60:
+        name: ids
+        type: text_field
+        html:
+          size: 70
+
+      70:
+        name: ip
+        type: text_field
+        html:
+          size: 15

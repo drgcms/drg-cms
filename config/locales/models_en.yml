@@ -1,0 +1,813 @@
+#--
+# Copyright (c) 2012-2013 Damjan Rems
+#
+# Permission is hereby granted, free of charge, to any person obtaining
+# a copy of this software and associated documentation files (the
+# "Software"), to deal in the Software without restriction, including
+# without limitation the rights to use, copy, modify, merge, publish,
+# distribute, sublicense, and/or sell copies of the Software, and to
+# permit persons to whom the Software is furnished to do so, subject to
+# the following conditions:
+#
+# The above copyright notice and this permission notice shall be
+# included in all copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+# EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+# MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+# NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+# LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+# OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+# WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+#++
+
+# English (en) localization for drgCMS common models
+
+en:
+  helpers:
+# labels for forms #####################################################
+    label:
+
+      dc_site:
+        tabletitle: Sites
+        1basic: Basic
+        2parameters: Parameters
+        3advanced: Advanced
+        4design: Design
+        5permissions: Permissions
+
+        name: Name
+        description: Description
+        homepage_link: HomePage link
+        error_link: Error link
+        css: CSS
+        header: Header
+        route_name: Route name
+        page_title: Page title
+        logo: Logo picture
+        document_extension: Document extension
+        page_table: Page table
+        page_class: Page class
+        menu_class: Menu class
+        files_directory: Files directory
+        active: Active
+        dc_policies: Access policies
+        settings: Settings
+        menu_name: Menu name
+        alias_for: Alias for
+        rails_view: Rails view
+        design: Standard design
+
+      dc_design:
+        tabletitle: Designs
+        tab1: Base
+        tab2: Parts        
+
+        name: Name
+        description: Description
+        body: Body
+        css: CSS
+        author: Author
+        updated_by: Updated by
+        active: Active
+        dc_parts: Parts
+        rails_view: Rails view filename
+
+      dc_user_role:
+        tabletitle: User roles
+
+        dc_policy_role_id: Role
+        valid_from: Valid from
+        valid_to: Valid to
+        updated_by: Updated by
+        active: Active
+
+      dc_user:
+        tabletitle: Users
+
+        id: Id
+        username: Username
+        title: Title
+        first_name: First name
+        middle_name: Middle name
+        last_name: Last name
+        name: Name
+        address: Address
+        post: Post
+        country: Country 
+        phone: Phone
+        email: e-Mail
+        picture: Picture
+        birthdate: Birthdate
+        about: About
+        last_visit: Last visit
+        active: Active
+        valid_from: Valid from   
+        valid_to: Valid to
+        updated_by: Updated by
+        type: Type
+        members: Members
+        dc_user_roles: Roles 
+        password: Password
+        password_confirmation: Confirm password
+
+      dc_poll:
+        tabletitle: Polls
+        choices4_operation: 'Submit poll:poll_submit,Link:link'
+        choices4_display: 'Top-Down:td,Left-Right:lr'
+        tab1: Base
+        tab2: Form
+        tab3: Items
+
+        name: Poll name
+
+        title: Title
+        sub_text: Short description
+        operation: Operation
+        parameters: Parameters
+        display: Display
+        css: CSS
+        valid_from: Valid from
+        valid_to: Valid to
+        dc_poll_items: Items
+        form: Form
+        captcha_type: Catpcha type
+
+      dc_poll_item:
+        tabletitle: Poll items
+        choices4_type: Text:text_field,Text area:text_area,Select:select,Check box:check_box,Submit:submit_tag,Link:link_to,Password:password_field
+        choices4_separator: Space:&nbsp;,Empty line:<br />,Horizontal line:<hr>
+
+        name: Name
+        text: Caption
+        type: Type
+        Size: Size
+        mandatory: Mandatory
+        separator: Separator
+        options: Options
+        order: Order
+        active: Active
+
+      dc_policy:
+        tabletitle: Access policy declarations
+
+        name: Policy name
+        description: Description
+        is_default: Is default
+        active: Active
+        dc_policy_rules: Policy rules
+        message: Error message
+
+      dc_policy_rule:
+        tabletitle: Access policy rules
+        choices4_permission: NO_ACCESS:0,CAN_VIEW:1,CAN_CREATE:2,CAN_EDIT:4,CAN_EDIT_ALL:8,CAN_DELETE:16,CAN_DELETE_ALL:32,CAN_ADMIN:64,SUPERADMIN:128
+        choices4_site_permission: NO_ACCESS:0,CAN_VIEW:1,CAN_EDIT:4
+
+        active: Active
+        updated_by: Updated by
+        dc_policy_role_id: User role
+        permission: Permission
+
+      dc_policy_role:
+        tabletitle: User roles
+
+        name: Name
+        system_name: System name
+        active: Active
+
+      dc_simple_menu:
+        tabletitle: Simple (my first) menus
+        tab1: Base
+        tab2: Items
+        tab3: CSS
+
+        name: Menu name
+        description: Description
+        div_name: Menu div
+        css: CSS
+        link_prepend: Link prepend
+        active: Active
+        dc_simple_menu_items: Menu items
+        dc_site_id: Site
+
+      dc_simple_menu_item:
+        tabletitle: drgCMS Simple menu items
+
+        caption: Caption
+        picture: Picture
+        link: Link
+        link_prepend: Link prepend
+        target: Target window
+        order: Order
+        submenu: Submenu
+        css: CSS  
+        active: Active
+        policy_id: Display policy
+
+      dc_menu:
+        tabletitle: Menus
+        tab1: Base
+        tab2: Menu items
+        tab3: CSS
+
+        name: Menu name
+        description: Description
+        div_name: Menu div
+        css: CSS
+        link_prepend: Link prepend
+        active: Active
+        dc_menu_items: Menu items
+
+      dc_menu_item:
+        tabletitle: Menu items
+        tab1: Base
+        tab2: Menu items
+
+        caption: Caption
+        picture: Picture
+        link: Link
+        link_prepend: Link prepend
+        target: Target window
+        order: Order
+        dc_menu_items: Submenus
+        page_id: Page
+        css: CSS  
+        active: Active
+        policy_id: Display policy
+
+      dc_page:
+        tabletitle: Pages
+        choices4_comments: 'Allowed:1,Not allowed:0'
+        1base: Base
+        2advanced: Advanced
+        3content: Content
+        4parts: Parts
+
+        subject: Subject
+        subject_link: Subject link
+        sub_subject: Sub subject
+        picture: Picture
+        gallery: Gallery id
+        alt_link: Alt link
+        css: CSS
+        script: Skript
+        params: Parameters
+        body: Body
+        menu_id: Menu
+        author_id: Author
+        author_name: Author
+        publish_date: Publish date
+        valid_from: Valid from
+        valid_to: Valid to
+        comments: Comments
+        active: Active
+        dc_parts: Parts
+        policy_id: Access policy
+        dc_design_id: Design
+        dc_poll_id: Poll
+        kats: Categories
+        gallery: Gallery name
+        updated_at: Updated
+
+      dc_part:
+        tabletitle: Parts of page
+        1base: Base
+        2content: Content
+        3advanced: Advanced
+
+        tab1: Base
+        tab2: Advanced
+        tab3: Content
+
+        name: Name
+        description: Description
+        link: Link
+        picture: Picture
+        thumbnail: Thumbnail
+        body: Body
+        css: CSS
+        script: Script
+        script_type: Script type
+        piece_id: Piece
+        div_id: Position (div)
+        order: Order
+        updated_by: Updated by
+        updated_at: Last updated at
+        active: Active
+        valid_from: Valid from
+        valid_to: Valid to
+        policy_id: Access policy
+
+      dc_piece:
+        tabletitle: Pieces of content
+        tab1: Base
+        tab2: Advanced
+        tab3: Content
+
+        name: Name
+        description: Description
+        link: Link
+        picture: Picture
+        thumbnail: Thumbnail
+        body: Body
+        css: CSS
+        script: Script
+        script_type: Script type
+        piece_id: Piece
+        site_id: Site
+        div_id: Position (div)
+        order: Order
+        updated_by: Updated by
+        updated_at: Last updated at
+        active: Active
+        valid_from: Valid from
+        valid_to: Valid to
+
+      dc_ad:
+        tabletitle: Ads
+        choices4_type: Picture:1,Flash:2,Script:3      
+        choices4_link_target: Same window:_self,New window:_blank
+
+        position: Position
+        description: Description
+        type: Type
+        script: Script
+        file: Filename
+        link: Link
+        height: Height
+        width: Width
+        valid_from: Valid from
+        valid_to: Valid to
+        displays: Displays
+        clicks: Clicks
+        priority: Priority
+        displayed: Displayed
+        clicked: Clicked
+        active: Active
+        updated_by: Updated by
+        dc_site_id: Site
+        link_target: Link open in
+
+      dc_permission:
+        tabletitle: Collection permissions
+
+        table_name: Collection name
+        is_default: Is default
+        active: Active
+        dc_policy_rules: Policy rules
+
+      dc_folder_permission:
+        tabletitle: Folders permissions
+
+        folder_name: Folder name
+        is_default: Is default
+        inherited: Inhrited
+        active: Active
+        dc_policy_rules: Policy rules
+
+      dc_link:
+        tabletitle: Alternative links
+
+        name: Link name
+        params: Parameters
+        dc_site_id: Valid for site
+        page_id: Link to page
+        active: Active
+
+      dc_category:
+        tabletitle: Categories
+        choices4_ctype: '1:1,2:2,3:3,4:4' 
+
+        name: Name
+        description: Description
+        ctype: Category type
+        order: Order
+        parent: Parent
+        active: Active
+        updated_at: Spremenjen
+
+      dc_mail:
+        tabletitle: Mails
+        tab1: Message
+        tab2: Recipients
+        tab3: Other
+        choices4_status: 'Preparing:0,Ready to send:1,Sending:2,Error:3,Completed:10' 
+
+        subject: Subject
+        body: Body
+        from: From
+        to_test: Test email
+        to_list: Mail lists
+        to_test: Mail addresses
+        schedule: Schedule send
+        send_time: Time send
+        status: Status
+        css: CSS
+
+      dc_mail_list:
+        tabletitle: Mail lists
+
+        name: Name
+        description: Description
+        params: Parameters
+        active: Active
+
+      dc_mail_address:
+        tabletitle: Mail addresses
+
+        email: e-Mail
+        dc_user_id: User
+        active: Active        
+        reason: Not active reason
+        dc_mail_list_members: Mail lists
+
+      dc_mail_list_member:
+        tabletitle: Mail lists
+
+        dc_mail_list_id: Mail list
+        active: Active       
+        reason: Not active reason
+
+      dc_big_table:
+        tabletitle: Big Table
+
+        key: Key
+        active: Description       
+        site_id: Site
+        dc_big_table_values: Values
+        active: Active       
+
+      dc_big_table_value:
+        tabletitle: Big Table - values
+
+        value: Value
+        description: Value description
+        dc_big_table_values: Locales
+        active: Active       
+
+      dc_big_table_locale:
+        tabletitle: Big Table - locales
+
+        locale: Locale
+        description: Value description
+
+      dc_journal:
+        tabletitle: Update journal
+        1diff: Difference
+        2ids: Identification 
+
+        operation: Operation
+        ip: IP address
+        time: Update time
+        site_id: Site
+        user_id: User
+        tables: Table name
+        id: Record id
+        ids: Parent ids
+        diff: Differences
+
+      dc_ident:
+        tabletitle: Additional identification
+
+        key: Id key
+        value: Value
+
+# help for forms #####################################################
+
+    help:
+      dc_site:
+        name: Name of the site eg. www.mysite.com
+        description: Short description of site
+        homepage_link: Shortcut link when just site name is in the url
+        error_link: Link to error page 
+        css: Site wide CSS
+        header: Additional data used in page html header
+        route_name: Route  name used when creating page link. Defaults to page.
+        page_title: Default page title displayed in browser's top menu when title can not be extracted from document
+        document_extension: Default document extension eg. html
+        page_table: Name of table holding data for pages
+        page_class: Rails model class name which defines table holding pages data usually DcPage
+        menu_class: Rails model class name which defines table holding menu data usually DcMenu
+        files_directory: Directory name where uploaded files are located
+        logo: Logotype picture for the site
+        dc_policies: Access policies defined for the site
+        active: Is the site active
+        settings: Various site settings
+        menu_name: Menu name for this site
+        ck_config: CK editor configuration javascript file
+        ck_css: CK editor configuration CSS file
+        alias_for: Is alias name for entered site name
+        rails_view: Rails view filename used as standard design
+        design: Standard design can also be defined at the site level
+        
+      dc_user:
+        username: Username
+        title: Title (dr, mag)
+        first_name: Users first name
+        last_name: Users last name
+        name: Name colected from firstname, title and lastname
+        address: Home address
+        post: Post and post city
+        country: Country  
+        phone: Phone number
+        email: e-Mail address
+        picture: Picture file name
+        birthdate: Date of birth
+        about: Short description of user
+        last_visit: Users last visit
+        active: Account is active
+        valid_from: Account is valid from    
+        valid_to: Account is valid until
+        updated_by: Account last updated by
+        type: Type of user account
+        members: Members (if type is group)
+        dc_user_roles: Roles for this user
+        password: Password
+        password_confirmation: Password confirmation
+
+      dc_user_role:
+        dc_policy_role_id: User role 
+        has_cms_menu: User is allowed to use CMS menu
+        valid_from: Role is valid from
+        valid_to: Role is valid to
+        updated_by: Role last updated b
+        active: Role is active
+
+      dc_design:
+        name: Unique design name
+        description: Short description of design
+        body: Body of design which will be rendered like any Rails view
+        css: CSS for design
+        author: Creater if design
+        updated_by: Last updated by
+        active: Is the design active
+        dc_parts: Parts of design
+        rails_view: Rails view (file) name which will be used to render design
+
+      dc_poll:
+        name: Unique poll name
+        title: Title for the poll
+        sub_text: Short description of the poll
+        operation: Operation performed on submit
+        parameters: Aditional parameters for operation
+        display: Select how fields are positioned on form
+        css: CSS specific to this poll
+        valid_from: Pole is valid from
+        valid_to: Pole is valid to
+        dc_poll_items: Items for this poll
+        captcha_type: Catpcha type name if captcha is used
+        form: You can specified input items by providing form acording to rules of drgCMS form.
+
+      dc_poll_item:
+        tabletitle: Poll items
+        choices4_type: Text:text_field,Text area:text_area,Select:select,Check box:check_box,Submit:submit_tag,Link:link_to,Password:password_field,Comment:comment
+        choices4_separator: Space:&nbsp;,Empty line:<br />,Horizontal line:<hr>
+
+        name: Name (alias) of returned field name
+        text: Caption of item
+        type: Input item type
+        Size: Input item size
+        mandatory: Item entry is mandatory
+        separator: Separator between items
+        options: Options for the item. Depends on item type.
+        order: Order of item on poll
+        active: Item is active        
+
+      dc_policy:
+        name: Unique policy name
+        description: Description for this policy
+        is_default: This is default policy for the site
+        active: Policy is active
+        dc_policy_rules: Policy rules 
+        message: Error message when blocked by this policy
+
+      dc_policy_rule:
+        active: Rule is active
+        updated_by: Last updated by
+        dc_policy_role_id: User role access defined by this rule
+        permission: Access permission
+        has_cms_menu: Users have access to CMS menu        
+
+      dc_policy_role:
+        name: Role name
+        system_name: System role name if required by application
+        active: Role is active
+
+      dc_simple_menu:
+        description: Short description of menu
+        css: CSS for this menu
+        div_name: Div id name around menu area
+        link_prepend: Link field usually holds direct link to document. Prepand field holds data, that has to be prepanded to the link.
+        active: Active
+        dc_simple_menu: Menu items
+        dc_site_id: Site this menu belongs to
+
+      dc_simple_menu_item:
+        caption: Caption of menu
+        picture: Picture for the menu
+        link: Link called when menu is chosen
+        link_prepend: Link field usually holds direct link to document. Prepand field holds data, that has to be prepanded to the link.
+        target: Target window for the link. Leave empty when same window.
+        order: Order on which menu item is shown. Lower number means prior position.
+        submenu: Submenu captions in form (caption\link).
+        css: CSS only for this menu item 
+        active: Is active
+        policy_id: Menu item will be diplayed according to this policy
+
+      dc_menu:
+        description: Short description of menu
+        css: CSS for this menu
+        div_name: Div id name around menu area
+        active: Active
+        link_prepend: Link field usually holds direct link to document. Prepand field holds data, that has to be prepanded to the link.
+        dc_menu_items: Menu items
+        dc_site_id: Site this menu belongs to
+
+      dc_menu_item:
+        caption: Caption of menu item
+        picture: Picture for the menu
+        link: Link called when menu is chosen
+        link_prepend: Link field usually holds direct link to document. Prepand field holds data, that has to be prepanded to the link.
+        target: Target window for the link. Leave empty when same window.
+        order: Order on which menu item is shown. Lower number means prior position.
+        dc_menu_items: Submenu items
+        page_id: Page link 
+        css: CSS only for this menu item 
+        active: Is active
+        policy_id: Menu item will be diplayed according to this policy
+
+      dc_page:
+        subject: Articles subject
+        subject_link: Friendly link defined
+        sub_subject: Sub subject, short description of text
+        picture: Picture used in conjunction with page
+        gallery: Picture gallery id used with page. Id defines id's of parts which consist gallery
+        alt_link: Alternative link, by which page could be found
+        css: CSS only for this menu page
+        script: Javascript only for this page
+        params: Special parameters which may come handy when displaying page
+        menu_id: Top menu under where this page is displayed
+        author_id: Author of the article
+        author_name: Author of the article
+        publish_date: Publish date
+        valid_from: Article is valid from date
+        valid_to: Article is valid to date
+        comments: Comments on this article are allowed
+        active: Page is active
+        dc_parts: Parts of the article
+        policy_id: Access policy for the page
+        dc_design_id: Design used for rendering page
+        dc_poll_id: Select poll, if poll is to be used with page
+        kats: Categories for this article
+        gallery: Gallery pictures are defined in parts of page. Value defines name of parts which hold data about pictures in gallary.
+        body: Content of this page
+
+      dc_part:
+        name: Parts can be searched by name or by id
+        description: Short description of part
+        link: Link when part can be accessed with pretty link
+        picture: Picture contents of part
+        thumbnail: Small version of picture if available
+        body: Content of this part
+        css: CSS
+        script: Script, if script is included in part
+        script_type: Script type 
+        piece_id: Piece name if part is connected to piece
+        div_id: Div id (position name) where this part is displayed as defined on design
+        order: Order between parts
+        updated_by: Last updated by
+        updated_at: Last updated at
+        active: Part is active
+        valid_from: Part is valid from
+        valid_to: Part is valid to
+        policy_id: Access policy for the part
+
+      dc_piece:
+        name: Unique name for piece
+        description: Short description of piece
+        picture: Picture contents of piece
+        link: Link when piece can be accessed with pretty link
+        thumbnail: Small version of picture if available
+        body: Content of this piece
+        css: CSS
+        script: Script, if script is included in piece
+        script_type: Script type 
+        site_id: Site name where this piece will belong to
+        div_id: Div (position name) id on design where this piece is rendered
+        order: Order to be used when pieces are positioned in the same div (location)
+        updated_by: Last updated by
+        updated_at: Last updated at
+        active: Piece is active
+        valid_from: Piece is valid from
+        valid_to: Piece is valid to
+
+      dc_ad:
+        position: Position (div id) where this ad will be displayed
+        description: Short description
+        type: Content type of add
+        script: JavaScript script, when script type
+        link: Link to page (site, dokument) when ad is clicked
+        file: Picture or flash filename
+        height: Height of ad
+        width: Width of ad
+        valid_from: Ad is valid from
+        valid_to: Ad is valid to
+        displays: Maximum number of time this add is displayed
+        clicks: Maximum number of clicks this ad will receive
+        priority: Priority. Higher priority means ad is shown more often. Priority is calculated only between candidats to be displayed. 
+        displayed: No. of times this add has been displayed
+        clicked: No. of times this ad has been clicked
+        active: Ad is active
+        updated_by: Record last updated by
+        dc_site_id: Ad is valid for the site
+        link_target: Define if link is open in new window or same
+
+      dc_permission:
+        table_name: Permission is valid for collection
+        is_default: This is default permission for all collections in database
+        active: Permission is active
+        dc_policy_rules: Defined policy rules
+
+      dc_folder_permission:
+        folder_name: Folder name
+        is_default: Is default
+        inherited: Inherit permissions from parent
+        active: Permission is valid
+        dc_policy_rules: Policy rules
+
+      dc_link:
+        name: Link name ex. homepage
+        params: Aditional parameters passed to document renderer
+        page_id: Page redirected to by this shortcut link
+        dc_site_id: Link is valid for site
+        active: Link is active
+
+      dc_category:
+        name: Category name
+        description: Additional description of category
+        ctype: Category type. Could be used for grouping categories. 
+        order: Additional order, which can be used for sorting.
+        parent: Parent category. Leave blank if this is top level category.
+        active: Category is active.
+        updated_at: Last update
+
+      dc_mail:
+        subject: Message subject
+        body: Message body
+        from: Message sender
+        to_test: Address where test message will be sent
+        to_list: Mail addresses lists where message will be sent
+        to_address: Mail addresses where message will be sent
+        schedule: Message will be sent after this hour
+        send_time: Time when message was sent
+        status: Status of message
+        css: CSS added to final message
+
+      dc_mail_list:
+        name: Mail list name
+        description: Aditional description of mailing list
+        params: Aditional parameters for list
+        active: Mailing list is active
+
+      dc_mail_address:
+        email: email address
+        dc_user_id: User if user is listed in users database
+        active: Address is active        
+        reason: Description of deactivation
+        dc_mail_list_members: email is a member of this mail lists
+
+      dc_mail_list_member:
+        dc_mail_list_id: Mail list
+        active: Address is active        
+        reason: Description of deactivation
+
+      dc_big_table:
+        key: Key (ident) used to retrieve key/values
+        site_id: Data will be used only for defined site. If empty, then it is default for all sites in database.
+        active: This key is active
+        dc_big_table_values: Values defined by this key
+
+      dc_big_table_value:
+        value: Value
+        description: Short description of the value
+        dc_big_table_locales: Locale translations for the value
+
+      dc_big_table_locale:
+        locale: Locale
+        description: Short description translated for target locale
+
+      dc_journal:
+        operation: Operation
+        ip: ip address from where operation was performed
+        time: Time of operation
+        site_id: Site
+        user_id: User
+        tables: Table name
+        id: Record id
+        ids: Parent ids
+        diff: Differences
+        
+      dc_ident:
+        key: Key which defines ident
+        value: Ident value
+        

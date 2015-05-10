@@ -1,0 +1,144 @@
+## YAML Template for page
+---
+table: dc_page
+
+index:
+  filter: subject, sub_subject as text_field, subject_link, author_name, body as text_field
+  actions: standard
+
+result_set:
+  actions: 
+    1: edit
+    2: 
+      type: duplicate
+      dup_fields: subject    
+    3: delete
+
+  columns:
+    1:  
+      name: subject
+    2: 
+      name: alt_link
+    3: 
+      name: publish_date
+    4: 
+      name: updated_at
+
+edit_title: subject
+form:
+  actions: standard
+  tabs:
+    1base:
+      10:
+        name: subject
+        type: text_field
+        html:
+          size: 50
+      20:
+        name: subject_link
+        type: text_field
+        html:
+          size: 50
+      30:
+        name: alt_link
+        type: text_field
+        html:
+          size: 50
+        text: Alternative link
+      40:
+        name: sub_subject
+        type: text_area
+        html:
+          size: 100x10
+      45:
+        name: author_name
+        type: text_field
+        html:
+          size: 30
+
+      50:
+        name: publish_date
+        type: datetime_select
+
+      60:
+        name: picture
+        type: file_select
+        html:
+          size: 50
+      65:
+        name: gallery
+        type: text_field
+        html:
+          size: 20
+      70:
+        name: valid_from
+        type: datetime_select
+        options:
+          include_blank: true
+      80:
+        name: valid_to
+        type: datetime_select
+        options:
+          include_blank: true
+      90:
+        name: kats
+        type: multitext_autocomplete
+        search: dc_category.name      
+        html:
+          size: 30
+
+    2advanced:
+      10:
+        name: dc_design_id
+        type: select
+        eval: DcDesign.choices4_design
+        html:
+          include_blank: true
+      20:
+        name: menu_id
+        type: select
+        eval: dc_choices4_menu      
+
+      30:
+        name: params
+        type: text_area
+        html:
+          size: 100x10
+      40:
+        name: dc_site_id
+        type: select
+        eval: DcSite.choices4_site
+        html:
+          include_blank: true
+      50:
+        name: dc_poll_id
+        type: select
+        eval: dc_choices4('dc_poll','name','_id')
+        html:
+          include_blank: true
+      60:
+        name: policy_id
+        type: select
+        eval: dc_choices4_site_policies
+        html:
+          include_blank: true      
+
+    3content:
+      10:
+        name: body
+        type: html_field
+        options: 'height: 500'
+
+      20:
+        name: css
+        type: text_area
+        html:
+          size: 100x20
+    4parts:
+      10:
+        name: dc_parts
+        type: embedded
+        formname: dc_part
+        html:
+          height: 1000
+    

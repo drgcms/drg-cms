@@ -1,0 +1,53 @@
+## YAML Template for drgcms_menu1s
+---
+table: dc_user_role
+
+index:
+  actions:
+    1: new
+
+result_set:
+  actions: 
+    1: edit
+    2: delete
+
+  columns:
+    1:  
+      name: dc_policy_role_id
+      eval: dc_name4_id,dc_policy_role,name
+
+    3: 
+      name: valid_from
+
+    4: 
+      name: valid_to
+
+edit_title: Policy rule
+
+form:
+  actions: standard
+
+  fields:
+
+    10:
+      name: dc_policy_role_id
+      type: select
+      eval: DcPolicyRole.choices4_roles
+
+    20:
+      name: valid_from
+      type: date_select
+      options:
+        include_blank: true
+
+    30:
+      name: valid_to
+      type: date_select
+      options:
+        include_blank: true
+
+    40:
+      name: active
+      type: check_box
+        
+      

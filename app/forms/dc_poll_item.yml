@@ -1,0 +1,76 @@
+## YAML Template for poll_items
+---
+#parent_name: description
+table: dc_poll_item
+
+index:
+  actions:
+    1: new
+
+result_set:
+  actions: 
+    1: edit
+    2: delete
+
+  columns:
+    1:  
+      name: name
+    2:  
+      name: text
+    3: 
+      name: type
+    5: 
+      name: order
+      style: "text-align: right;"
+
+edit_title: text
+
+form:
+  actions: standard
+
+  fields:
+    10:
+      name: name
+      type: text_field
+      html:
+        size: 15
+
+    20:
+      name: text
+      type: text_area
+      html:
+        size: 100x2
+
+    30:
+      name: type
+      type: select
+
+    40:
+      name: size
+      type: text_field
+      html:
+        size: 6
+
+    50:
+      name: mandatory
+      type: check_box
+
+    60:
+      name: separator
+      type: select
+
+    70:
+      name: options
+      type: text_area
+      html:
+        size: 100x5
+
+    80:
+      name: order
+      type: text_field
+      html:
+        size: 2
+
+    90:
+      name: active
+      type: check_box

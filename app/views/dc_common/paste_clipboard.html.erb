@@ -1,0 +1,17 @@
+
+<%= dc_table_title t('drgcms.doc_paste_title') %>
+
+<div class="dc-form-frame"><br>
+  <span class="dc-link dc-link-ajax dc-animate" data-request="post" title="<%= t('drgcms.doc_paste_clipboard') %>"
+        data-url="<%= url_for(controller: 'dc_common', action: 'paste_clipboard') %>"><%= t('drgcms.doc_paste_clipboard') %>
+  </span>
+  
+  <hr><br>
+  <div id="result"></div>
+  <%= form_tag do %>
+    <label><b><%= t('drgcms.doc_paste_update') %>:</b></label><%= check_box('', 'do_update') %><br><br>
+
+    <label><b>Data:</b></label><br>
+  <%= text_area('', 'data',{size: '150x40'}) %><br>
+  <% end %>
+</div>

@@ -1,0 +1,60 @@
+sl:
+  mongoid:
+    errors:
+      messages:
+        blank:
+          ne sme biti prazen
+        taken:
+          je že zaseden
+        callbacks:
+          "Klic %{method} v %{klass} je vrnil rezultat false."
+        document_not_found:
+          Dokument za razred %{klass} z id(ji) %{identifiers} ne obstaja.
+        eager_load:
+          "Eager loading :%{name} ni podprt ker je v many-to-many ali polymorphic belongs_to relaciji."
+        invalid_database:
+          "Podatkovna baza naj bi bila Mongo::DB in ne %{name}."
+        invalid_time:
+          "'%{value}' ni veljaven čas."
+        invalid_options:
+          "Napačna opcija:%{invalid} za relacijo :%{name}. Dovoljene opcije so: %{valid}."
+        invalid_type:
+          Podatek definiran kot %{klass}, je prejel %{other} vrednost %{value}.
+        unsupported_version:
+          MongoDB %{version} ni podprta. Prosimo nadgradite na verzijo %{mongo_version}.
+        validations:
+          Validacija ni uspela - %{errors}.
+        invalid_collection:
+          Access to the collection for %{klass} is not allowed since it
+          is an embedded document, please access a collection from
+          the root document.
+        invalid_field:
+          Defining a field named %{name} is not allowed. Do not define
+          fields that conflict with Mongoid internal attributes or method
+          names. Use Mongoid.destructive_fields to see what names this includes.
+        too_many_nested_attribute_records:
+          Accepting nested attributes for %{association} is limited
+          to %{limit} records.
+        embedded_in_must_have_inverse_of:
+          Options for embedded_in association must include inverse_of.
+        dependent_only_references_one_or_many:
+          The dependent => destroy|delete option that was supplied
+          is only valid on references_one or references_many associations.
+        association_cant_have_inverse_of:
+          Defining an inverse_of on this association is not allowed. Only
+          use this option on embedded_in or references_many as array.
+        calling_document_find_with_nil_is_invalid:
+          Calling Document#find with nil is invalid
+        unsaved_document:
+          "You cannot call create or create! through a relational association
+          relation (%{document}) who's parent (%{base}) is not already saved."
+        mixed_relations:
+          Referencing a(n) %{embedded} document from the %{root} document via a
+          relational association is not allowed since the %{embedded} is embedded.
+        no_environment:
+          "Mongoid attempted to find the appropriate environment but no Rails.env,
+          Sinatra::Base.environment, or RACK_ENV could be found."
+        scope_overwrite:
+          "Cannot create scope :%{scope_name}, because of existing method
+          %{model_name}.%{scope_name}."
+        blank_on_locale: "can't be blank in %{location}"

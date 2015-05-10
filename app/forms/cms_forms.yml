@@ -1,0 +1,93 @@
+#--
+# Copyright (c) 2012+ Damjan Rems
+#
+# Permission is hereby granted, free of charge, to any person obtaining
+# a copy of this software and associated documentation files (the
+# "Software"), to deal in the Software without restriction, including
+# without limitation the rights to use, copy, modify, merge, publish,
+# distribute, sublicense, and/or sell copies of the Software, and to
+# permit persons to whom the Software is furnished to do so, subject to
+# the following conditions:
+#
+# The above copyright notice and this permission notice shall be
+# included in all copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+# EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+# MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+# NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+# LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+# OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+# WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+#++
+
+forms:
+  10:
+    keyword: title
+    caption: Form's title
+    help: Title name written on the top of form. Might also be defined as helpers.label.model.tabletitle
+    type: text_field
+    html:
+      size: 50
+    html_options: standard_html_options
+    
+  20:
+    keyword: table
+    caption: Table name
+    help: Name of the table (collection, model) used by this form.
+    type: text_field
+    html:
+      size: 20
+   
+  30:
+    keyword: filter
+    caption: Filter
+    help: Table (collection) fields that appear in the filter selector of form.
+    type: text_field
+    html:
+      size: 100
+
+  40:
+    keyword: index
+    tree:
+      keyword: actions
+      caption: Actions
+      help: 'Form actions declared on the top of index rails action. Standard actions currently consists
+ only new, sort and filter.'
+      type: text_field
+      html:
+        size: 100
+      tree:
+        type: hash
+        10:
+          keyword: controller
+          caption: Controller name
+          help: Controller name that will process the action request.
+          type: text_field
+          html:
+            size: 20
+        20:
+          keyword: action
+          caption: Action name
+          help: Action method inside controller that will process the request.
+          type: text_field
+          html:
+            size: 20
+            
+        30:
+          keyword: caption
+          caption: Caption
+          help: Caption written on the action button.
+          type: text_field
+          html:
+            size: 20
+            
+          
+      caption: Filter
+      help: Table (collection) fields that appear in the filter selector of form
+      type: text_field
+      html:
+        size: 100
+    
+    
+      

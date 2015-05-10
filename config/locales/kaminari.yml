@@ -1,0 +1,26 @@
+en:
+  views:
+    pagination:
+      first: "&laquo; First"
+      last: "Last &raquo;"
+      previous: "&lsaquo; Prev"
+      next: "Next &rsaquo;"
+      truncate: "..."
+      
+sl:
+  views:
+    pagination:
+      first: "&laquo;"
+      last: "&raquo;"
+      previous: "&lsaquo;"
+      next: "&rsaquo;"
+      truncate: "..."      
+      
+sx:
+  views:
+    pagination:
+      first: "&laquo; Prva"
+      last: "Zadnja &raquo;"
+      previous: "&lsaquo; Nazaj"
+      next: "Naprej &rsaquo;"
+      truncate: "..."            

@@ -1,0 +1,56 @@
+## YAML Template for Policy
+---
+table: dc_policy
+
+index:
+  actions: standard
+
+result_set:
+  actions: 
+    1: edit
+    2: delete
+
+  columns:
+    1:  
+      name: name
+      style: "text-align: left;"
+    2: 
+      name: description
+      style: "text-align: left;"
+
+edit_title: name
+
+form:
+
+  fields:
+    10:
+      name: name
+      type: text_field
+      size: 50
+
+    20:
+      name: description
+      type: text_field
+      html:
+        size: 50
+    30:
+      name: is_default
+      type: check_box
+
+    40:
+      name: message
+      type: text_area
+      html:
+        size: 100x5
+
+    50:
+      name: active
+      type: check_box
+
+    60:
+      name: dc_policy_rules
+      type: embedded
+      formname: dc_policy_rule
+      html:
+        height: 400
+        

@@ -1,0 +1,49 @@
+## YAML Template for dc_permission_4folder
+---
+table: dc_folder_permission
+
+index:
+  filter: folder_name
+  actions:
+    1: new
+
+result_set:
+  actions: 
+    1: edit
+    2: 
+      type: duplicate
+      dup_fields: folder_name
+    3: delete
+
+  columns:
+    1:  
+      name: folder_name
+
+    2:  
+      name: active
+      eval: dc_icon4_boolean      
+
+edit_title: folder_name
+
+form:
+  actions: standard
+
+  fields:
+    10:
+      name: folder_name
+      type: text_with_select
+      eval: dc_choices4_folders_list      
+      html:
+        size: 30
+     
+    20:
+      name: inherited
+      type: check_box
+
+    30:
+      name: dc_policy_rules
+      type: embedded
+      table: dc_policy_rule
+      formname: dc_policy_rule_nocms
+      html:
+        height: 400

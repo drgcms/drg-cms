@@ -1,0 +1,153 @@
+## YAML Template for site
+---
+table: dc_site
+
+index:
+  filter: name, page_title, description, homepage_link
+  actions: standard
+
+result_set:
+  actions: 
+    1: edit
+    2: delete
+    10: 
+      type: duplicate
+      dup_fields: name
+    
+
+  columns:
+    1:  
+      name: name
+    2: 
+      name: description
+
+edit_title: name
+
+form:
+  actions: standard
+
+  tabs:
+    1basic:
+      10:
+        name: name
+        type: text_field
+        html:
+          size: 50
+
+      20:
+        name: description
+        type: text_field
+        html:
+          size: 50
+
+      30:
+        name: alias_for
+        type: text_field
+        html:
+          size: 50
+
+      40:
+        name: page_title
+        type: text_field
+        html:
+          size: 50
+
+      50:
+        name: homepage_link
+        type: text_field
+        html:
+          size: 50
+      60:
+        name: error_link
+        type: text_field
+        html:
+          size: 50
+      70:
+        name: files_directory
+        type: text_field
+        html:
+          size: 50
+      80:
+        name: logo
+        type: file_select
+        html:
+          size: 50
+      90:
+        name: active
+        type: check_box
+        html:
+          size: 50
+
+    2parameters:
+      10:
+        name: route_name
+        type: text_field
+        html:
+          size: 20
+      20:
+        name: document_extension
+        type: text_field
+        html:
+          size: 10
+      30:
+        name: page_table
+        type: text_field
+        html:
+          size: 20
+      40:
+        name: page_class
+        type: text_field
+        html:
+          size: 20
+      50:
+        name: menu_class
+        type: text_field
+        html:
+          size: 20
+      60:
+        name: menu_name
+        type: text_with_select
+        eval: dc_choices4('dc_simple_menu','name','name')
+        html:
+          size: 30
+      90:
+        name: settings
+        type: text_area
+        html:
+          size: 100x20
+
+    3advanced:        
+      10:
+        name: header
+        type: text_area
+        html:
+          size: 100x10
+
+      20:
+        name: css
+        type: text_area
+        html:
+          size: 100x40
+
+    4design:        
+      10:
+        name: rails_view
+        type: text_field
+        html:
+          size: 50
+
+      20:
+        name: design
+        type: text_area
+        html:
+          size: 150x40
+
+    5permissions:        
+
+      10:
+        name: dc_policies
+        type: embedded
+        formname: dc_policy
+        html:
+          height: 800
+

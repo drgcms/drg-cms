@@ -1,0 +1,104 @@
+## YAML Template for piece
+---
+table: dc_piece
+
+index:
+  filter: name, description, div_id
+  actions: standard
+
+result_set:
+  actions: 
+    1: edit
+    2: 
+      type: duplicate
+      dup_fields: name,description
+    3: delete
+
+  columns:
+    0:  
+      name: name
+    1:  
+      name: description
+    2: 
+      name: div_id
+    4: 
+      name: updated_at
+
+edit_title: subject
+
+form:
+  actions: standard
+
+  tabs:
+    tab1:
+      10:
+        name: name
+        type: text_field
+        html:
+          size: 20
+
+      20:
+        name: description
+        type: text_field
+        html:
+          size: 50
+
+      30:
+        name: picture
+        type: file_select
+        html:
+          size: 50
+
+      35:
+        name: thumbnail
+        type: file_select
+        html:
+          size: 50
+
+      40:
+        name: site_id
+        type: select
+        eval: DcSite.choices4_site
+        html:
+          include_blank: true
+
+      50:
+        name: div_id
+        type: text_field
+        html:
+          size: 50
+
+      60:
+        name: order
+        type: text_field
+        html:
+          size: 2
+      70:
+        name: params
+        type: text_area
+        html:
+          size: 80x10 
+
+    tab2:
+      10:
+        name: script_type
+        type: text_field
+
+      20:
+        name: script
+        type: text_area
+        html:
+          size: 100x25
+      30:
+        name: css
+        type: text_area
+        html:
+          size: 100x10 
+
+    tab3:
+      10:
+        name: body
+        type: html_field
+        options: 'height: 600'
+
+   

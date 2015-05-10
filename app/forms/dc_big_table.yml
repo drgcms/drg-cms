@@ -1,0 +1,59 @@
+## YAML Template for Polls
+---
+title: Big table
+table: dc_big_table
+
+index:
+  filter: key, site_id
+  actions: standard
+
+result_set:
+  actions: 
+    1: edit
+    2: 
+      type: duplicate
+      dup_fields: key
+
+    3: delete
+
+  columns:
+    1:  
+      name: key
+    2:  
+      name: site_id
+      eval: dc_name4_id,dc_site,name
+    3:  
+      name: active
+      eval: dc_icon4_boolean
+
+edit_title: name
+
+form:
+  actions: 
+    standard: yes
+
+  fields:
+    10:
+      name: key
+      type: text_field
+      html:
+        size: 30
+
+    20:
+      name: description
+      type: text_field
+      html:
+        size: 50
+
+    30:
+      name: site_id
+      type: select
+      eval: DcSite.choices4_site
+      html:
+        include_blank: true
+    40:
+      name: dc_big_table_values
+      type: embedded
+      formname: dc_big_table_value
+      html:
+        height: 600      

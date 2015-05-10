@@ -1,0 +1,142 @@
+## YAML Template for page
+---
+table: dc_user
+
+index:
+  sort: email
+  filter: username, first_name, last_name, last_visit, email
+  actions: standard
+
+result_set:
+  actions: 
+    1: edit
+    2: delete
+
+  columns:
+    1:  
+      name: username
+    2:  
+      name: first_name
+    3: 
+      name: last_name
+    4: 
+      name: last_visit
+
+edit_title: user
+
+form:
+  actions: standard
+
+  fields:
+
+    0:
+      name: username
+      type: text_field
+      html:
+        size: 10
+    10:
+      name: title
+      type: text_field
+      html:
+        size: 5
+    20:
+      name: first_name
+      type: text_field
+      html:
+        size: 20
+
+    30:
+      name: middle_name
+      type: text_field
+      html:
+        size: 20
+
+    40:
+      name: last_name
+      type: text_field
+      html:
+        size: 20
+
+    45:
+      name: company
+      type: text_field
+      html:
+        size: 50
+
+    50:
+      name: address
+      type: text_field
+      html:
+        size: 50
+
+    55:
+      name: post
+      type: text_field
+      html:
+        size: 50
+
+    60:
+      name: country
+      type: text_field
+      html:
+        size: 20
+
+    70:
+      name: email
+      type: text_field
+      html:
+        size: 30
+
+    80:
+      name: phone
+      type: text_field
+      html:
+        size: 30
+
+    90:
+      name: birthdate
+      type: date_select
+      options:
+        start_year: 1930
+
+    100:
+      name: picture
+      type: text_field
+      html:
+        size: 50
+
+    110:
+      name: about
+      type: text_area
+      html:
+        size: 100x10
+
+    120:
+      name: password
+      type: password_field
+      html:
+        size: 20
+
+    130:
+      name: password_confirmation
+      type: password_field
+      html:
+        size: 20
+
+    140:
+      name: dc_user_roles
+      type: embedded
+      formname: dc_user_role
+      html:
+        size: 20
+
+    150:
+      name: signature
+      type: text_area
+      html:
+        size: 100x5
+
+
+#    20:
+#      name: password_digest
+#      type: hidden_field

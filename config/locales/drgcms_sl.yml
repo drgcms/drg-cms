@@ -1,0 +1,88 @@
+#--
+# Copyright (c) 2012-2013 Damjan Rems
+#
+# Permission is hereby granted, free of charge, to any person obtaining
+# a copy of this software and associated documentation files (the
+# "Software"), to deal in the Software without restriction, including
+# without limitation the rights to use, copy, modify, merge, publish,
+# distribute, sublicense, and/or sell copies of the Software, and to
+# permit persons to whom the Software is furnished to do so, subject to
+# the following conditions:
+#
+# The above copyright notice and this permission notice shall be
+# included in all copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+# EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+# MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+# NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+# LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+# OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+# WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+#++
+
+# drgCMS slovenska (sl) lokalizacija 
+sl:
+  drgcms:
+    record_deleted: Dokument izbrisan!
+    confirm_delete: Potrdite izbris dokumenta!
+    confirm_dup: Potrdite podvajanje dokumenta!
+    not_authorized: Uporabnik nima pravic za to operacijo!
+    doc_disabled: Dokument onemogočen!
+    doc_enabled:  Dokument omogočen!
+    doc_saved: Dokument zapisan!
+    doc_info: Info  
+    doc_copy_clipboard: Pripravi vsebino dokumenta v novem oknu.
+    doc_paste_clipboard: Obdelaj podatke    
+    doc_paste_title: Ustvari (spremeni) dokumente iz JSON zapisa
+    doc_paste_update: Spremeni obstoječ dokument, če dokument._id obstaja
+    edit_content: Urejanje vsebine
+    edit_advanced: Napredno urejanje
+    edit_new_page: Ustvarite novo stran
+    edit_new_part: Ustvarite nov element na strani
+    edit_design: 'Uredi: Dizajn'
+    edit_site: 'Uredi: Spletišče'
+    edit_page: 'Uredi: Stran'
+    file_manager: Organizator datotek
+    edit_selected: 'Uredi: Izbrano tabelo'
+    invalid_username: Napaka uporabnik ali geslo!
+    system_menu: CMS sistemske tabele    
+    menu_plus: Malo drugačen menu
+    not_email: ni veljaven e-naslov!
+    updated_by_other: Dokument je spremenil drug uporabnik. Prosimo ponovite vpis podatkov.
+    not_id: Vsebina polja ni ključ ID!    
+
+    edit: Urejanje
+    show: Prikaz
+    new: Dodaj
+    sort: Razvrsti
+    filter: Filter
+    back: Nazaj
+    delete: Izbris
+    enable: Omogoči
+    disable: Onemogoči
+    disabled: 'Neaktivna '
+    save: Shrani
+    save&back: Shrani in nazaj
+    save&close: Shrani in zapri
+    filter_on: Vklopi filter
+    filter_off: Izklopi filter
+    maximize: Povečaj
+    minimize: Pomanjšaj
+    reload: Osveži    
+    error: Napaka!
+    errors_no: 'Število napak:' 
+
+    created_by: Ustvaril
+    updated_by: Spremenil
+    created_at: Ustvarjeno
+    updated_at: Spremenjeno
+    new_record: Nov zapis
+
+    choices4_filter_operators: 'Je enak:eq,Vsebuje:like'
+
+    dc_journal:
+      zero_selected: Ni izbranih podatkov!
+      restored: Podatki so restavrirani.
+      restore: Restavriraj      
+      

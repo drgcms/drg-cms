@@ -1,0 +1,61 @@
+
+<div id="cmsedit-div">
+  <%= link_to('CMS', controller: 'dc_common', action: 'toggle_edit_mode', return_to: request.url) %>
+  <% if session[:edit_mode] > 1 %>
+      <table class="cmsedit-table">
+      <tr>
+        <td class="cmsedit-menu">
+          <%#= link_to(image_tag('drg_cms/view_tile.png', class: 'dc-link-img', title: t('drgcms.menu_plus')), '#', 
+              onclick: "$('#cmsedit-menu-plus').toggleClass('div-hidden');")  %>
+          <% if @page %>
+          <%= link_to( fa_icon('edit lg', class: "dc-animate", title: "#{t('drgcms.edit_page')}"),
+              {controller: 'cmsedit', action: 'edit', table: @site.page_table, id: @page._id}, target: 'iframe_cms') %>
+
+          <%= link_to( fa_icon('credit-card lg', class: "dc-animate", title: "#{t('drgcms.edit_design')}"),
+              {controller: 'cmsedit', action: 'edit', table: 'dc_design', id: @design._id}, target: 'iframe_cms') %>
+          
+          <%= link_to( fa_icon('globe lg', class: "dc-animate", title: "#{t('drgcms.edit_site')}"),
+              {controller: 'cmsedit', action: 'edit', table: 'dc_site', id: @site._id}, target: 'iframe_cms') %>
+          <% end %>
+
+          <%= link_to( fa_icon('compress lg', class: "dc-animate", title: t('drgcms.minimize')), '#',
+              onclick: "$('#iframe_cms').height(1); return false;" ) %>
+          
+          <%= link_to( fa_icon('expand lg', class: "dc-animate", title: t('drgcms.maximize')), '#',
+              onclick: "$('#iframe_cms').height( $('#iframe_cms').height() + 500);; return false;")  %>
+          
+          <%= link_to( fa_icon('refresh lg', class: "dc-animate", title: t('drgcms.reload')), '#',
+              onclick: "document.location.reload(true); return false;")  %>
+          
+          <%= select('record', 'select', dc_choices4_cmsmenu ) %>
+          <%= link_to( fa_icon('bars lg', class: "dc-animate", title: t('drgcms.edit_selected')), '#',
+              onclick: "$('#iframe_cms').attr('src', $('#record_select').val() ); return false;")  %>
+
+          <%= link_to( fa_icon('copy lg', class: "dc-animate", title: "#{t('drgcms.doc_paste_title')}"),
+              {controller: 'dc_common', action: 'paste_clipboard'}, target: 'iframe_cms') %>
+
+          <%= DrgcmsFormFields::Elfinder.file_manager_url(self) %>
+          
+        </td>
+      </tr>
+
+      <tr class="cmsedit-menu-plus" class="div-hidden dc-form-frame"><td>
+        <%= @menu_plus %>
+      </td><tr>
+
+      <tr class="cmsedit-iframe"><td class="cmsedit-iframe">
+        <div><iframe id="iframe_cms" name="iframe_cms"></iframe></div>
+      </td></tr>
+    </table>
+  <% end %>
+</div>
+
+<%= javascript_tag do %>
+// 
+$('#cmsedit-edit-button').click(function() {
+  $('#iframe_cms').attr('src', $('#record_select').val() );
+});
+$('#record_select').change( function(e) {
+  $('#iframe_cms').attr('src', e.target.value );
+});
+<% end %>

@@ -1,0 +1,130 @@
+## YAML Template for page
+---
+table: dc_ad
+
+index:
+  filter: position, description
+  actions: standard
+
+result_set:
+  actions: 
+    1: edit
+    2: duplicate
+    3: delete
+
+  columns:
+    0:  
+      name: position
+    2: 
+      name: description
+    3: 
+      name: displayed
+    4: 
+      name: clicked
+    5: 
+      name: valid_from
+    6: 
+      name: valid_to
+    7: 
+      name: active
+      eval: dc_icon4_boolean      
+
+edit_title: description
+
+form:
+  actions: standard
+
+  fields:
+
+    10:
+      name: position
+      type: text_with_select
+      eval: dc_big_table 'ads-positions'
+      html:
+        size: 20
+
+    20:
+      name: description
+      type: text_field
+      html:
+        size: 50
+
+    30:
+      name: type
+      type: select
+
+    40:
+      name: file
+      type: file_select
+      html:
+        size: 50
+
+    50:
+      name: width
+      type: text_field
+      html:
+        size: 5
+
+    60:
+      name: height
+      type: text_field
+      html:
+        size: 5
+
+    70:
+      name: link
+      type: text_field
+      html:
+        size: 50
+
+    75:
+      name: link_target
+      type: select
+
+    80:
+      name: script
+      type: text_area
+      html:
+        size: 100x20
+
+    90:
+      name: displays
+      type: text_field
+      html:
+        size: 6
+
+    100:
+      name: clicks
+      type: text_field
+      html:
+        size: 6
+
+    110:
+      name: priority
+      type: text_field
+      html:
+        size: 6
+
+    120:
+      name: valid_from
+      type: datetime_select
+      options:
+        include_blank: true
+
+    130:
+      name: valid_to
+      type: datetime_select
+      options:
+        include_blank: true
+
+    140:
+      name: active
+      type: check_box
+      html:
+        size: 50
+
+    150:
+      name: dc_site_id
+      type: select
+      eval: DcSite.choices4_site
+        
