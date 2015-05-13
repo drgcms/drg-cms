@@ -89,6 +89,11 @@ form:
         type: text_field
         html:
           size: 10
+      25:
+        name: site_layout
+        type: text_field
+        html:
+          size: 20
       30:
         name: page_table
         type: text_field

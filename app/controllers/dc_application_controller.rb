@@ -285,9 +285,7 @@ def dc_process_default_request()
     return dc_render_404('Design!') unless @design
   end
 # Add edit menu
-  layout = 'content'
   if session[:edit_mode] > 0
-#    layout = 'cms'
     session[:site_id]         = @site.id
     session[:site_page_table] = @site.page_table
     session[:page_id]         = @page.id
@@ -296,6 +294,7 @@ def dc_process_default_request()
     dc_log_visit()
   end
   @page_title = @page.subject.empty? ? @site.page_title : @page.subject
+  layout      = @site.site_layout.to_s.size > 2 ? @site.site_layout : 'content'
 # render view. inline if defined in design
   view_filename = ''
   view_filename = @design.rails_view.to_s if @design

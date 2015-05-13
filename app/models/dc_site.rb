@@ -36,11 +36,12 @@ included do
   field :error_link,          type: String
   field :header,              type: String, default: ''
   field :css,                 type: String, default: ''
-  field :route_name,          type: String, default: 'page'
+  field :route_name,          type: String, default: ''
   field :page_title,          type: String  
   field :document_extension,  type: String  
   field :page_table,          type: String
   field :page_class,          type: String, default: 'DcPage'
+  field :site_layout,         type: String, default: 'application'
   field :menu_class,          type: String, default: 'DcSimpleMenu'
   field :files_directory,     type: String
   field :logo,                type: String

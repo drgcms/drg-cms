@@ -46,7 +46,8 @@ sl:
         document_extension: Podaljšek
         page_table: Tabela strani
         page_class: Razred strani
-        menu_class: Razred menija        
+        menu_class: Razred menija
+        site_layout: Rails layout
         files_directory: Mapa z datotekami
         logo: Logotip
         dc_policies: Politike za dostop
@@ -494,6 +495,7 @@ sl:
         page_table: Ime tabele (mongo collection), ki vsebuje podatke o straneh
         page_class: Ime Rails razreda modela, ki določa tabelo s podatki o straneh. Običajno DcPage.
         menu_class: Ime Rails razreda modela, ki določa tabelo s podatki o meniju. Običajno DcMenu.
+        site_layout: Rails layout, ki se bo uporabil za izris strani. Privzet je application.
         files_directory: Ime direktorija, kjer se nahajajo dokumenti, slike, priponke
         logo: Slika logotip podjetja
         dc_policies: Privzete politike za dostop do podatkov spletišča
