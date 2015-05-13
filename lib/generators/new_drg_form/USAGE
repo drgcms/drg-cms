@@ -1,0 +1,8 @@
+Description:
+    Explain the generator
+
+Example:
+    rails generate new_drg_form Thing
+
+    This will create:
+        what/will/it/create
