@@ -76,7 +76,7 @@
 # If filter method returns false user will be presented with flash error.
 ########################################################################
 class CmseditController < DcApplicationController
-before_action :check_authorization, :except => [:login]
+before_action :check_authorization, :except => [:login, :logout]
 before_filter :dc_reload_patches if Rails.env.development?
   
 layout 'cms'
@@ -242,29 +242,34 @@ def filter
 end
 
 ########################################################################
-# Show is (ab)used for direct login and logout into cmsedit controller. Login
-# and logout actions can be directly performed by calling http://site.com/cmsedit/login
+# Show displays record in readonly mode.
 ########################################################################
 def show
-=begin  
-  case
-  when params[:id].in?(%w(login logout)) then # show login menu
-    session[:edit_mode] = 0 
-    render action: 'show'#, layout: 'cms'
-  end
-=end
   find_record
   render action: 'edit', layout: 'cms'
 end
 
 ########################################################################
-# Login action. Used to login direct to CMS.
+# Login action. Used to login direct to CMS. It is mostly used when first time
+# creating site and when something goes so wrong, that traditional login procedure 
+# is not available.
+# 
+# Login can be called directly with url http://site.com/cmsedit/login
 ########################################################################
-def login #:nodoc:
-#  session[:edit_mode] = 0 if params[:id].in? %w(login logout) # show login menu
-#  dc_collect_menu_forms
-  session[:edit_mode] = 0 
-  render action: 'show', layout: 'cms'
+def login
+  session[:edit_mode] = 0 unless params[:ok]
+  render action: 'login', layout: 'cms'
+end
+
+########################################################################
+# Logout action. Used to logout direct from CMS.
+# 
+# Logout can be called directly with url http://site.com/cmsedit/logout
+########################################################################
+def logout 
+  session[:edit_mode] = 0
+  session[:user_id]   = nil
+  render action: 'login', layout: 'cms'
 end
 
 ########################################################################

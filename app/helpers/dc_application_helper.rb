@@ -103,6 +103,7 @@ end
 ########################################################################
 def dc_replace_in_design(opts={})
   design = opts[:piece] ? DcPiece.find(name: opts[:piece]).script : dc_get_site.design
+  layout = opts[:layout] || (dc_get_site.site_layout.size > 2 ? dc_get_site.site_layout : nil)
   if opts[:replace]
 # replace more than one part of code
     if opts[:replace].class == Array
@@ -404,7 +405,7 @@ end
 ####################################################################
 def dc_link_for_edit1(opts, link_text) #:nodoc:
   icon = opts.delete('icon')
-  url  = @parent.url_for(opts)
+  url  = _origin.url_for(opts)
   "<li><div class='drgcms_popmenu_item' style='cursor: pointer;' data-url='#{url}'>
 #{_origin.fa_icon(icon)} #{link_text}</div></li>\n"
 end
@@ -430,18 +431,18 @@ end
 def dc_page_edit_menu(opts=@opts)
   return '' if opts[:edit_mode] < 2
 # save some data to cookie. This can not go to session.
-  table = @parent.site.page_table
+  table = _origin.site.page_table
   kukis = { "#{table}.dc_design_id" => @page.dc_design_id,
             "#{table}.menu_id"      => @page.menu_id,
             "#{table}.kats"         => @page.kats,
             "#{table}.page_id"      => @page.id,
-            "#{table}.dc_site_id"   => @parent.site.id
+            "#{table}.dc_site_id"   => _origin.site.id
   }
-  @parent.cookies[:record] = Marshal.dump(kukis)
+  _origin.cookies[:record] = Marshal.dump(kukis)
   title = "#{t('drgcms.edit')}: #{@page.subject}"
   dc_link_menu_tag(title) do |html|
     opts[:editparams].merge!( controller: 'cmsedit', action: 'edit', 'icon' => 'edit' )
-    opts[:editparams].merge!( :id => @page.id, :table => @parent.site.page_table, formname: nil, edit_only: 'body' )
+    opts[:editparams].merge!( :id => @page.id, :table => _origin.site.page_table, formname: nil, edit_only: 'body' )
     html << dc_link_for_edit1( opts[:editparams], t('drgcms.edit_content') )
     
 #    opts[:editparams][:edit_only] = nil
@@ -453,7 +454,7 @@ def dc_page_edit_menu(opts=@opts)
     html << dc_link_for_edit1( opts[:editparams], t('drgcms.edit_new_page') )
 
     opts[:editparams].merge!(ids: @page.id, formname: 'dc_part', 'icon' => 'plus-square-o', 
-                             table: "#{@parent.site.page_table};dc_part"  )
+                             table: "#{_origin.site.page_table};dc_part"  )
     html << dc_link_for_edit1( opts[:editparams], t('drgcms.edit_new_part') )
   end
 end

@@ -62,14 +62,17 @@ def link_4edit()  #:nodoc:
   return html unless @opts[:edit_mode] > 1
 #
   @opts[:editparams].merge!( { table: 'dc_simple_menu', controller: 'cmsedit', action: 'edit' } )
-  title = "#{t('drgcms.edit')}: "
   if @menu # edit, when menu exists
+    title = "#{t('drgcms.edit')}: "
     @opts[:editparams].merge!( { id: @menu.id, title: "#{title}#{@menu.name}" } ) 
+    html << dc_link_for_edit( @opts[:editparams] )
   else # list available menus when menu does not yet exist
+    title = "#{t('drgcms.new')}: "
     title << t('helpers.label.dc_simple_menu.tabletitle')
     @opts[:editparams].merge!( { action: 'index', title: title })
+    html << dc_link_for_create( @opts[:editparams] )
   end
-  html << dc_link_for_edit( @opts[:editparams] )
+  html
 end
 
 ########################################################################
