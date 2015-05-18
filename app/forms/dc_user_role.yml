@@ -16,11 +16,15 @@ result_set:
       name: dc_policy_role_id
       eval: dc_name4_id,dc_policy_role,name
 
-    3: 
+    2: 
       name: valid_from
 
-    4: 
+    3: 
       name: valid_to
+
+    4: 
+      name: active
+      eval: dc_icon4_boolean
 
 edit_title: Policy rule
 

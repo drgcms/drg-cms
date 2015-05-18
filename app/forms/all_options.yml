@@ -104,7 +104,6 @@ form:
       caption: Send
       params:
         before-save: send_mail
-        before-save: send_mail
         after-save: return_to parent.reload
       
   tabs:

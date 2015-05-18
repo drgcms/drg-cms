@@ -627,8 +627,13 @@ def dc_fields_for_tab(fields) #:nodoc:
       next
     end
 # label
-    options['text'] ||= options['name'].capitalize.gsub('_',' ')
-    text = options['text'].match('helpers.') ? t(options['text']) : t_name(options['name'], options['text']) 
+    text = if options['text']
+      t(options['text'], options['text'])
+    else
+      t_name(options['name'], options['name'].capitalize.gsub('_',' ') )
+    end
+#    options['text'] ||= options['name'].capitalize.gsub('_',' ')
+#    text = options['text'].match('helpers.') ? t(options['text']) : t_name(options['name'], options['text']) 
 # help text can be defined in form or in translations starting with helpers. or as helpers.help.collection.field
     help = if options['help'] 
       options['help'].match('helpers.') ? t(options['help']) : options['help']

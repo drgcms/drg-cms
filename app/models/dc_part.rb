@@ -50,7 +50,7 @@ class DcPart
 # Implementation of before_save callback.
 ######################################################################
 def do_before_save
-  if self.link.empty?
+  if self.link.blank?
     self.link = self.name.strip.downcase.gsub(' ','-')
   end
 end

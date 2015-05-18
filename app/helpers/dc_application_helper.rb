@@ -858,16 +858,15 @@ def dc_user_can_view(ctrl, policy_id)
   default_policy = policies.find_by(is_default: true)
   return false, 'Default accsess policy not found for the site!' unless default_policy
 #  
-  h = {}
-  default_policy.dc_policy_rules.to_a.each { |v| h[v.dc_policy_role_id] = v.permission }
+  permissions = {}
+  default_policy.dc_policy_rules.to_a.each { |v| permissions[v.dc_policy_role_id] = v.permission }
 # update permissions with defined policy 
   part_policy = nil
   if policy_id
     part_policy = policies.find(policy_id)
     return false, 'Access policy not found for part!' unless part_policy
-    part_policy.dc_policy_rules.to_a.each { |v| h[v.dc_policy_role_id] = v.permission }
+    part_policy.dc_policy_rules.to_a.each { |v| permissions[v.dc_policy_role_id] = v.permission }
   end
-#  p h
 # apply guest role if user has no roles defined
   if ctrl.session[:user_roles].nil?
     role = DcPolicyRole.find_by(system_name: 'guest', active: true)
@@ -875,10 +874,11 @@ def dc_user_can_view(ctrl, policy_id)
     ctrl.session[:user_roles] = [role.id]
   end
 # Check if user has any role that allows him to view part
+#  p h, ctrl.session[:user_roles]
   can_view, msg = false,''
   ctrl.session[:user_roles].each do |role|
-    next unless h[role]          # role not yet defined. Will die in next line.
-    if h[role] > 0
+    next unless permissions[role]          # role not yet defined. Will die in next line.
+    if permissions[role] > 0
       can_view = true
       break
     end
