@@ -59,7 +59,7 @@ EOT
     yaml = v.class == String ? {'type' => v} : v # if single definition simulate type parameter
     action = yaml['type'].to_s.downcase 
     if action == 'url'
-      p "action: url will be deprecated. Use action: link in index: actions"
+      dc_deprecate "action: url will be deprecated. Use action: link in index: actions"
       action = 'link' 
     end
 # if return_to is present link directly to URL 
@@ -229,7 +229,7 @@ def dc_link_or_ajax(yaml, parms) #:nodoc:
   
 #  method  = yaml['method'] || yaml['request'] || 'get'
 #  caption = yaml['caption'] || yaml['text']
-  p "Form: result_set:action:text directive will be deprecated. Use caption instead of text." if yaml['text']
+  dc_deprecate "Form: result_set:action:text directive will be deprecated. Use caption instead of text." if yaml['text']
 #
 =begin
   if yaml['type'] == 'link'

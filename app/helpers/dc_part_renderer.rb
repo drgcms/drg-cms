@@ -121,7 +121,7 @@ def default
   html = ''
 # Load all parts only once per call  
   load_parts if @parent.parts.nil?
-  p 'DcPart: Parameter location will be deprecated! Please use position keyword.' if @opts['location']
+  dc_deprecate 'DcPart: Parameter location will be deprecated! Please use position keyword.' if @opts['location']
   
   @opts[:position] ||= @opts['position'] # symbols are not strings. Ensure that it works.
 # Select parts

@@ -57,6 +57,14 @@ def _origin #:nodoc:
 end
 
 ############################################################################
+# Writes out deprication msg. It also adds site_name to message, so it is easier to
+# find where the message is comming from.
+############################################################################
+def dc_deprecate(msg)
+  p "#{dc_get_site.name}: #{msg}"
+end
+
+############################################################################
 # This is main method used for render parts of design into final HTML document.
 # 
 # Parameters:
@@ -119,7 +127,7 @@ end
 # Old method name. 
 ########################################################################
 def dc_render_design(opts={}) #:nodoc:
-  p "dc_render_design will be deprecated. Use dc_replace_in_design instead."  
+  dc_deprecate "dc_render_design will be deprecated. Use dc_replace_in_design instead."  
   dc_replace_in_design(opts)
 end
 
@@ -625,7 +633,7 @@ end
 #
 ####################################################################
 def dc_date_time(value, format) #:nodoc:
-  p 'dc_date_time will be deprecated! Use dc_format_date_time instead.'
+  dc_deprecate 'dc_date_time will be deprecated! Use dc_format_date_time instead.'
   dc_format_date_time(value, format)
 end
 

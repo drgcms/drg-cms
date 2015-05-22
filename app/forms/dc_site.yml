@@ -21,9 +21,9 @@ result_set:
     2: 
       name: description
 
-edit_title: name
 
 form:
+  edit_title: name
   actions: standard
 
   tabs:

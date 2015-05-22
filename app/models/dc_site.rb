@@ -41,7 +41,7 @@ included do
   field :document_extension,  type: String  
   field :page_table,          type: String
   field :page_class,          type: String, default: 'DcPage'
-  field :site_layout,         type: String, default: 'application'
+  field :site_layout,         type: String, default: 'content'
   field :menu_class,          type: String, default: 'DcSimpleMenu'
   field :files_directory,     type: String
   field :logo,                type: String
