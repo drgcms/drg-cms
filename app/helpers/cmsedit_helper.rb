@@ -114,16 +114,19 @@ EOT
 end
 
 ############################################################################
-# Subroutine of dc_div_filter
+# Will return field form definition. Subroutine of dc_div_filter
 ############################################################################
 def _get_field_def(name) #:nodoc:
-  @form['form'].each do |tab|
-    next if tab.first.match('actions')
+  @form['form']['tabs'].each do |tab|
     tab.each do |field|
-      next if field.class == String
+      next if field.class == String # tab name
       field.each {|k,v| return v if v['name'] == name }
     end
-  end   
+  end
+#
+  @form['form']['fields'].each do |field|
+    field.each {|k,v| return v if v['name'] == name }
+  end
   nil
 end
 
@@ -131,12 +134,12 @@ end
 # Finds field definition on form and use it for filter input. Subroutine of dc_div_filter.
 ############################################################################
 def _get_field_div(name) #:nodoc:
-# field not defined on form. Must be defined: name as form_field_type  
   filter = nil
+# old filter saved to session  
   if session[@form['table']] and session[@form['table']][:filter]
     filter, operation, value = session[@form['table']][:filter].split("\t")
   end
-#
+# field not defined on form. Must be defined: name as form_field_type  
   if name.match(' as ')
     name, dummy, type = name.split(' ')
     field = {"name" => name, "type" => type, "html"=>{"size"=>20}}

@@ -23,9 +23,10 @@ result_set:
     4: 
       name: updated_at
 
-edit_title: subject
-
 form:
+  title: 
+    field: subject
+    
   actions: standard
   tabs:
     1base:

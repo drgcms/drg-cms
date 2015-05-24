@@ -19,7 +19,9 @@ result_set:
       style: "text-align: left;"
 
 form:
-  edit_title: caption
+  title: 
+    field: caption
+    
   actions: standard
 
   fields:

@@ -25,9 +25,10 @@ result_set:
     4: 
       name: valid_to
 
-edit_title: description
-
 form:
+  title: 
+    field: description
+    
   actions: standard
 
   tabs:

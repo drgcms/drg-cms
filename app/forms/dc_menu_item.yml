@@ -25,7 +25,9 @@ result_set:
 
 
 form:
-  edit_title: caption
+  title: 
+    field: caption
+    
   actions: standard
 
   tabs:

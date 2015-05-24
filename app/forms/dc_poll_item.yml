@@ -23,9 +23,10 @@ result_set:
       name: order
       style: "text-align: right;"
 
-edit_title: text
-
 form:
+  title: 
+    field: text
+    
   actions: standard
 
   fields:

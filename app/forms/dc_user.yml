@@ -22,9 +22,10 @@ result_set:
     4: 
       name: last_visit
 
-edit_title: user
-
 form:
+  title: 
+    field: user
+    
   actions: standard
 
   fields:

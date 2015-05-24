@@ -23,9 +23,10 @@ result_set:
       name: active
       eval: dc_icon4_boolean      
 
-edit_title: folder_name
-
 form:
+  title: 
+    field: folder_name
+    
   actions: standard
 
   fields:

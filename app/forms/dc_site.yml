@@ -21,9 +21,10 @@ result_set:
     2: 
       name: description
 
-
 form:
-  edit_title: name
+  title: 
+    field: name
+    
   actions: standard
 
   tabs:

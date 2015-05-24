@@ -20,9 +20,10 @@ result_set:
       name: permission
       eval: DcPolicyRule.permission_name_for_value
 
-edit_title: name
-
 form:
+  title: 
+    field: name
+    
   actions: standard
 
   fields:

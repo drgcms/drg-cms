@@ -25,9 +25,10 @@ result_set:
     2: 
       name: description
 
-edit_title: name
-
 form:
+  title: 
+    field: name
+    
   actions: 
     standard: yes
 

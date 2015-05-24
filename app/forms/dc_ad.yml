@@ -29,9 +29,9 @@ result_set:
       name: active
       eval: dc_icon4_boolean      
 
-edit_title: description
-
-form:
+form: 
+  title: 
+    field: description
   actions: standard
 
   fields:

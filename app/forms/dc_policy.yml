@@ -18,9 +18,9 @@ result_set:
       name: description
       style: "text-align: left;"
 
-edit_title: name
-
 form:
+  title: 
+    field: name  
 
   fields:
     10:

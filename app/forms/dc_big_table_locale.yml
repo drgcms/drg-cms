@@ -23,9 +23,9 @@ result_set:
     2:  
       name: description
 
-edit_title: locale
-
 form:
+  title: 
+    field: locale  
   actions: standard
 
   fields:

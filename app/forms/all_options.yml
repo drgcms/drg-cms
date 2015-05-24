@@ -79,7 +79,8 @@ result_set:
       eval: dc_icon4_boolean
 
 form:
-  edit_title: description
+  title: 
+    field: description
   height: 600
   title:
     edit: Title for edit

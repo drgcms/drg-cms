@@ -26,9 +26,10 @@ result_set:
       name: order
       style: "text-align: right;"
 
-edit_title: caption
-
 form:
+  title: 
+    field: caption
+    
   actions: standard
 
   fields:

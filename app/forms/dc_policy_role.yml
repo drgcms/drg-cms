@@ -20,9 +20,10 @@ result_set:
       name: active
       eval: dc_icon4_boolean      
 
-edit_title: name
-
 form:
+  title: 
+    field: name
+    
   actions: standard
 
   fields:
