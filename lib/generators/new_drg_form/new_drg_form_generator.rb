@@ -1,26 +1,22 @@
 class NewDrgFormGenerator < Rails::Generators::NamedBase
+  
 source_root File.expand_path('../templates', __FILE__)
+#desc "This generator creates form for model at app/forms"
+#argument :formname, :type => :string, :default => ''
+class_option :tabs, :type => :boolean, :default => false, :description => "Create form with tabulators" 
 
 ###########################################################################
-#
+# Will create output and save it to form filename.
 ###########################################################################
-def create_initializer_file
-#  p Module.const_get(file_name.classify)
+def create_form_file
 #:TODO: find out how to prevent error when model class is not defined
   @file_name = file_name
+  formname = file_name #if formname.size == 0
   @model = file_name.classify.constantize rescue nil
   return (p "Model #{file_name.classify} not found! Aborting.") if @model.nil?
-  p 1,@model
 #  
   yml = top_level_options + index_options + result_set_options + form_top_options + form_fields_options
-  @model.attribute_names.each do |attr_name|
-    next if attr_name == '_id' # no _id
-# if duplicate string must be added. Useful for unique attributes
-    p attr_name, I18n.t("helpers.label.#{file_name}.#{attr_name}")
-    
-  end
- 
-  create_file "app/forms/#{file_name}.yml", yml
+  create_file "app/forms/#{formname}.yml", yml
 end
 
 private
@@ -31,7 +27,7 @@ def top_level_options
   <<EOT 
 # Form for #{file_name}
 table: #{file_name}
-#title: Some title
+#title: Alternative title
 #extend: extend
 #controls: controls_file
 #readonly: 1
@@ -45,7 +41,6 @@ end
 #
 ###########################################################################
 def index_options
-  p 3,@model
   <<EOT 
 index:
   filter: id as text_field
@@ -66,7 +61,6 @@ end
 #
 ###########################################################################
 def result_set_options
-  p 2,@model
   <<EOT 
 result_set:
 #  filter: controls_flter
@@ -143,9 +137,13 @@ end
 ###########################################################################
 def form_field(field, index, offset)
   helper = I18n.t("helpers.label.#{@file_name}.choices4_#{field}")
-  type   = 'text_field'
+  type, eval = 'select',''
   if helper.class == Hash or helper.match( 'translation missing' )
-    type = 'select'
+    if field[-3,3] == '_id'
+      eval = "eval: dc_choices4('#{field[0,field.size-3]}','change_to_description_field_name','_id')\n"
+    else
+      type = 'text_field'
+    end
   end
 #
   yml = ' '*offset
@@ -154,13 +152,17 @@ def form_field(field, index, offset)
 #
   yml << ' '*offset + "name: #{field}\n"
   yml << ' '*offset + "type: #{type}\n"
+  yml << ' '*offset + eval if eval.size > 0
+  yml << ' '*offset + "html:\n"
+  offset += 2
   if type == 'text_field'
-    yml << ' '*offset + "yml:\n"
-    offset += 2
     yml << ' '*offset + "size: 50\n"
+  else
+    yml << ' '*offset + "include_blank: true\n"
   end 
   yml
 end
+
 ###########################################################################
 #
 ###########################################################################
@@ -171,7 +173,7 @@ def embedded_form_field(offset)
     yml << ' '*offset + "#{field_index}:\n"
     yml << ' '*(offset+2) + "name: #{embedded_name}\n"
     yml << ' '*(offset+2) + "type: embedded\n"
-    yml << ' '*(offset+2) + "formname: #{embedded_name[0,embedded_name.size - 2]}\n"
+    yml << ' '*(offset+2) + "formname: #{embedded_name[0,embedded_name.size - 1]}\n"
     yml << '#' + ' '*(offset+2) + "html:\n"
     yml << '#' + ' '*(offset+4) + "height: 500\n"
     field_index += 10      
@@ -183,24 +185,27 @@ end
 #
 ###########################################################################
 def form_fields_options
+  forbidden = ['_id','created_by','updated_by','created_at','updated_at']
   tab_index = 1
   field_index = 0
-  if @with_tabs
+  if options.tabs? 
     yml = "  tabs:\n"
     @model.attribute_names.each do |attr_name|
-      if field_index%10 == 0
-        yml << "    tab#{tab_index}:"
+      next if forbidden.include?(attr_name)
+      if field_index%100 == 0
+        yml << "    tab#{tab_index}:\n"
         field_index = 0
         tab_index += 1
       end
       field_index += 10
       yml << form_field(attr_name, field_index, 6)
     end
-    yml << "    tab#{tab_index}:"
+    yml << "    tab#{tab_index}:\n"
     yml << embedded_form_field(6)
   else  
     yml = "  fields:\n"
     @model.attribute_names.each do |attr_name|
+      next if forbidden.include?(attr_name)
       field_index += 10      
       yml << form_field(attr_name, field_index, 4)
     end

@@ -122,11 +122,11 @@ def _get_field_def(name) #:nodoc:
       next if field.class == String # tab name
       field.each {|k,v| return v if v['name'] == name }
     end
-  end
+  end if @form['form']['tabs'] #  I know. But nice. 
 #
   @form['form']['fields'].each do |field|
-    field.each {|k,v| return v if v['name'] == name }
-  end
+    field.last.each {|k,v| return v if v['name'] == name }
+  end if @form['form']['fields']
   nil
 end
 
