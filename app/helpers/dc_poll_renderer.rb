@@ -95,7 +95,7 @@ def do_one_item(poll, yaml)
       html << if poll.display == 'lr'
         "</table><br>\n"
       else
-        "</div><br>\n"
+        "</div>\n"
       end
       # captcha
       if poll.captcha_type.to_s.size > 1
@@ -107,7 +107,7 @@ def do_one_item(poll, yaml)
       @end_od_data = true
     end
 # submit and link tag      
-    html << "<span class='poll-data-submit'>#{field_html}#{yaml['separator']}</span>"
+    html << "<span class='dc-link-submit dc-animate'>#{field_html}#{yaml['separator']}</span>"
 # other elements
   else
     html << if poll.display == 'lr'
@@ -187,10 +187,9 @@ def default
       yaml['name'] = item.name
       yaml['html'] ||= {}
       yaml['html']['size'] = item.size
-      (yaml['html']['class'] ||= 'poll-submit') if item.type == 'submit_tag'
+      (yaml['html']['class'] ||= 'dc-submit') if item.type == 'submit_tag'
       yaml['text'] = item.text
       yaml['mandatory']  = item.mandatory
-#      y['options']    = item.options
       yaml['type']       = item.type
       html << do_one_item(poll, yaml)
     end
@@ -206,7 +205,7 @@ def default
   html << @parent.hidden_field_tag('return_to_error', @parent.request.url )
   html << @parent.hidden_field_tag('poll_id', poll_id )
   html << @parent.hidden_field_tag('page_id', @parent.page.id )
-  html << "</form><br /></div>"
+  html << "</form></div>"
   
   @part_css = poll.css
   html

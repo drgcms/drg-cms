@@ -854,7 +854,7 @@ end
 # Create datetime_select form field
 # 
 # ===Form options:
-# * +type:+ date_select (required)
+# * +type:+ datetime_select (required)
 # * +name:+ Field name (required) 
 # * +options:+ options which apply to date_select field (optional)
 # * +html:+ html options which apply to password field (optional)
@@ -862,7 +862,7 @@ end
 # Form example:
 #    60:
 #      name: end_time
-#      type: date_time_select
+#      type: datetime_select
 #      options:
 #        include_blank: true
 ###########################################################################
@@ -974,7 +974,7 @@ end
 # Implementation of date_time_picker DRG CMS form field with help of jQuery DateTimePicker plugin
 # 
 # ===Form options:
-# * +type:+ date_time_picker (required)
+# * +type:+ datetime_picker (required)
 # * +name:+ Field name (required) 
 # * +options:+ options which apply to date_picker field. All options can be found here http://xdsoft.net/jqplugins/datetimepicker/ .
 # Options can be defined in single line like:
@@ -990,7 +990,7 @@ end
 # Form example:
 #    10:
 #      name: valid_to
-#      type: date_time_picker
+#      type: datetime_picker
 #      options: 'step: 60'
 ###########################################################################
 class DatetimePicker < DrgcmsField
