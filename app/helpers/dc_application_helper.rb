@@ -451,7 +451,7 @@ def dc_page_edit_menu(opts=@opts)
   title = "#{t('drgcms.edit')}: #{@page.subject}"
   dc_link_menu_tag(title) do |html|
     opts[:editparams].merge!( controller: 'cmsedit', action: 'edit', 'icon' => 'edit' )
-    opts[:editparams].merge!( :id => @page.id, :table => _origin.site.page_table, formname: nil, edit_only: 'body' )
+    opts[:editparams].merge!( :id => @page.id, :table => _origin.site.page_table, formname: opts[:formname], edit_only: 'body' )
     html << dc_link_for_edit1( opts[:editparams], t('drgcms.edit_content') )
     
 #    opts[:editparams][:edit_only] = nil

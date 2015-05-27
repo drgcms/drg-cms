@@ -114,7 +114,7 @@ EOT
 end
 
 ############################################################################
-# Will return field form definition. Subroutine of dc_div_filter
+# Will return field form definition if field is defined on form. Subroutine of dc_div_filter
 ############################################################################
 def _get_field_def(name) #:nodoc:
   @form['form']['tabs'].each do |tab|
@@ -125,7 +125,7 @@ def _get_field_def(name) #:nodoc:
   end if @form['form']['tabs'] #  I know. But nice. 
 #
   @form['form']['fields'].each do |field|
-    field.last.each {|k,v| return v if v['name'] == name }
+    return field.last if field.last['name'] == name
   end if @form['form']['fields']
   nil
 end
