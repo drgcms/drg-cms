@@ -175,6 +175,7 @@ EOT
     subject: 'Home page',
     subject_link: 'home',
     dc_design_id: design._id,
+    dc_site_id: site._id,
   )
 end
 
