@@ -743,6 +743,7 @@ def save_data
     next if v['type'].match('embedded') # don't wipe embedded fields
     next if params[:edit_only] and params[:edit_only] != v['name'] # otherwise other fields would be wiped
     next unless @record.respond_to?(v['name']) # there can be temporary fields on the form
+    next if v['readonly'] # fields with readonly option don't retain value and would be wiped
 # return value from form field definition
     value = DrgcmsFormFields.const_get(v['type'].camelize).get_data(params, v['name'])
     @record.send("#{v['name']}=", value)

@@ -18,10 +18,5 @@
  *= require font-awesome
 */
 
-
-/* IMPORTANT
-
-  Don't forget to update elfinder.min.css and replace all occurences of ../img/ with /assets/elfinder/
-  and copy elfinder/img to images/elfinder folder. 
-
-*/   
+/* Required for link buttons to look alike */
+.dc-link a, .dc-link-submit input {font-weight: bold; font-family: helvetica; font-size: 12px; }   
