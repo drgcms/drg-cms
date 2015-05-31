@@ -128,7 +128,7 @@ def as_table
     klas = item.id == @selected.id ? "#{div_name}-selected" : "#{div_name}-item"
     html << "<td class=\"td-#{klas}\">#{ link_4menu(item) }</td>" #
   end
-  html << "</table>"
+  html << "</tr></table>"
 end
 ########################################################################
 # Renders menu as table. This is single level menu only and uses table elements to 
@@ -274,7 +274,7 @@ def default
 # submenu
   html << "<div class=\"sub-#{div_name}\">
         <ul class=\"ul-sub-#{div_name}\">"
-  y = YAML.load(@selected.submenu) || {}
+  y = YAML.load(@selected.submenu) rescue {}
   y.each do |k,v|
     html << "<li class=\"li-sub-#{div_name}\">#{@parent.link_to(v['title'], v['link'])}</li>"
   end

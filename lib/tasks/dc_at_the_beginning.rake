@@ -2,19 +2,20 @@
 #
 #########################################################################
 def ok_to_start
-  p ''
+  p 'bla'
 #  DcPermission.all.delete
 #  DcPolicyRole.all.delete
 #  DcUser.all.delete
-  if DcPermission.all.size > 0
+p DcPermission.all.to_a
+  if DcPermission.all.to_a.size > 0
     p 'DcPermission (Permissions) collection is not empty! Aborting.'
     return false
   end
-  if DcPolicyRole.all.size > 0
+  if DcPolicyRole.all.to_a.size > 0
     p 'DcUserRole (User roles) collection is not empty! Aborting.'
     return false
   end
-  if DcUser.all.size > 0
+  if DcUser.all.to_a.size > 0
     p 'DcUser (Users) collection is not empty! Aborting.'
     return false
   end
@@ -113,6 +114,11 @@ end
 # Initial database seed
 ########################################################################
 def seed
+  DcSite.all.delete
+  DcSimpleMenu.all.delete
+  DcPage.all.delete
+  DcPiece.all.delete
+  
   if DcSite.all.size > 0
     p 'DcSite (Sites) collection is not empty! Aborting.'
     return 
@@ -127,6 +133,11 @@ def seed
     p 'guest role not defined! Aborting.'
     return 
   end
+# Test site document points to real site document
+  site = DcSite.new(
+    name: 'test',
+    alias_for: 'www.mysite.com')
+  site.save
 # Site document
   site = DcSite.new(
     name: 'www.mysite.com',
@@ -138,19 +149,26 @@ def seed
     files_directory: "files",    
     settings: "ckeditor:\n config_file: /files/ck_config.js\n css_file: /files/ck_css.css\n",
     site_layout: "content")
+# this should end in application css file  
+    site.css =<<EOT
+#site-top, #site-main, #site-bottom, #site-menu {
+width: 960px;
+margin: 0px auto;
+padding-top: 5px;}    
+EOT
   site.save
-#
+# Default site policy
   policy = DcPolicy.new(
     description: "Default policy",
     is_default: true,
     message: "Access denied.",
     name: "Default policy")
   site.dc_policies << policy
-#
-  rule = DcPolicyRule.new( dc_policy_role_id: sa._id, permission: 4)
-  policy << rule
-  rule = DcPolicyRule.new( dc_policy_role_id: guest._id, permission: 1)
-  policy << rule
+# Policy rules. Administrator can edit guest can view
+  rule = DcPolicyRule.new( dc_policy_role_id: sa._id, permission: DcPermission::CAN_EDIT)
+  policy.dc_policy_rules << rule
+  rule = DcPolicyRule.new( dc_policy_role_id: guest._id, permission: DcPermission::CAN_VIEW)
+  policy.dc_policy_rules << rule
 # Design document  
   design = DcDesign.new(name: 'simple',description: 'Simple page')
   design.body =<<EOT
@@ -158,7 +176,7 @@ def seed
   <div id="site-top">
     <a href="/">SITE LOGO</a>
   </div>
-  <div id="site-menu" 
+  <div id="site-menu">
     <%= dc_render(:dc_simple_menu, method: 'as_table') %>\
   </div> 
   <div id="site-main">
@@ -170,13 +188,86 @@ def seed
 </div>
 EOT
   design.save
-#
+# Page document
   page = DcPage.new(
     subject: 'Home page',
     subject_link: 'home',
     dc_design_id: design._id,
     dc_site_id: site._id,
+    publish_date: Time.now,
+    body: '<p>First page data</p>'
   )
+  page.save
+# Site bottom document
+  bottom = DcPiece.new(
+    name: 'site-bottom',
+    description: 'Site bottom document',
+    site_id: site._id,
+    body: '<p>(C)opyright by ME</p>'
+  )
+  bottom.save
+# Menu
+  menu = DcSimpleMenu.new(
+    name: "site-menu",
+    description: "Menu for my Site",
+    )
+  menu.css =<<EOT
+.site-menu {
+  width:500px;
+  margin: 0 auto;
+  border-spacing: 0px;
+  font-weight: bold;
+  border: none;
+}
+
+.td-site-menu-item {
+  font-size: 18px;
+  background-color: #fff;
+  border-left: 20px solid #fff;
+  border-right: 20px solid #fff;
+  padding: 10px;
+  text-align: center;
+  border-radius: 1px;
+  white-space: nowrap
+}
+
+.td-site-menu-item:hover {
+  background-color: #000;
+}
+
+.td-site-menu-selected {
+  font-size: 18px;
+  background-color: #000;
+  border-left: 20px solid white;
+  border-right: 20px solid white;
+  padding: 10px;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.site-menu a {
+  color: #000;
+}
+
+.td-site-menu-item:hover a, .td-site-menu-selected a {
+  color: #fff;
+}
+
+EOT
+ 
+  menu.save
+# Items
+  item = DcSimpleMenuItem.new(caption: 'Home', link: 'home', order: 10)
+  menu.dc_simple_menu_items << item
+# This menu item will be selected when page is displayed  
+  page.menu_id= item._id
+  page.save
+  item = DcSimpleMenuItem.new(caption: 'Menu item 2', link: 'menu-item-2', order: 20)
+  menu.dc_simple_menu_items << item
+  item = DcSimpleMenuItem.new(caption: 'My site', link: 'http://www.drgcms.org', 
+                              target: '_blank', order: 30)
+  menu.dc_simple_menu_items << item
+  p 'Seed data created succesfully.'
 end
 
 #########################################################################
