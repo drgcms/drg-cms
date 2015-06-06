@@ -467,7 +467,7 @@ element = $(this).find(':first').attr('id');
   $('.dc-result tr').on('dblclick', function(e) {
     e.preventDefault();
     url = this.getAttribute("data");
-    if (url !== null) { location.href = url; }
+    if (url !== null & url.length > 5) { location.href = url; } // prevent when url not set
   });
 
 });
