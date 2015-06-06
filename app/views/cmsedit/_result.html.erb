@@ -11,7 +11,7 @@
         <tr class="dc-<%= cycle("odd","even")%>" 
             data="<%= url_for(action: 'show', controller: 'cmsedit', id: r, 
                       readonly: (params[:readonly] ? 2 : 1), table: params[:table],
-                      formname: params[:formname], ids: params[:ids]) %>" >
+                      formname: params[:formname], ids: params[:ids]) if @form['form']%>" >
           <%= dc_actions_for_result r %>
           <%= dc_columns_for_result r %>
         </tr>
