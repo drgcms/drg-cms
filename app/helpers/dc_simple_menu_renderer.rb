@@ -274,9 +274,11 @@ def default
 # submenu
   html << "<div class=\"sub-#{div_name}\">
         <ul class=\"ul-sub-#{div_name}\">"
-  y = YAML.load(@selected.submenu) rescue {}
-  y.each do |k,v|
-    html << "<li class=\"li-sub-#{div_name}\">#{@parent.link_to(v['title'], v['link'])}</li>"
+  y = YAML.load(@selected.submenu) rescue []
+  if y.class == Array
+    y.each do |k,v|
+      html << "<li class=\"li-sub-#{div_name}\">#{@parent.link_to(v['title'], v['link'])}</li>"
+    end
   end
   html << '</ul></div>'
 end
