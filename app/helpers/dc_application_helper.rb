@@ -614,7 +614,7 @@ end
 #        eval: dc_icon4_boolean
 ############################################################################
 def dc_icon4_boolean(value)
-  dc_dont?(value) ? fa_icon('square-o lg') : fa_icon('check-square-o lg') 
+  dc_dont?(value, true) ? fa_icon('square-o lg') : fa_icon('check-square-o lg') 
 end
 
 ############################################################################
