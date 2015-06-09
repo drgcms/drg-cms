@@ -1,0 +1,27 @@
+/* This will center and automatically resize top picture. Picture size is 1280x480px */
+.site-top {
+text-align: center;
+position: relative;
+height: 0;
+overflow: hidden;
+}
+.picture-top { padding-bottom:37.5%; }
+
+/* Prevent too much padding when resized past 1400 px */
+@media screen and (min-width: 1400px) {
+.picture-top { padding-bottom:28%; }
+}
+
+#page {max-width: 820px;  margin: 0 auto;}
+
+#site-footer {
+color: white;
+background: linear-gradient(#474748 4%, #191a1a 100%); 
+}
+#site-footer div { max-width: 820px; margin: 0 auto;}
+#site-footer a {color: #fff; font-weight: normal;}
+#site-footer a:hover {color: #222;}
+
+@media screen and (max-width: 640px) {
+  html { font-size: 18px; }
+}

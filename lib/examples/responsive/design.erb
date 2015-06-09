@@ -1,0 +1,35 @@
+<!-- dc_site.design field data -->
+<div id="site"> 
+ <ul id='meni-site' class='small-block-grid-3'>
+  <%= dc_render(:dc_simple_menu, name: 'meni-site', method: 'as_responsive') %>
+ </ul>
+
+<div class="site-top picture-top">
+ <img src="/files/logos/top-bg-pic.jpg" /> 
+</div>
+
+<div id="page" class="row">
+ <div id="div-main" class="small-12 large-7 columns">
+   <div class="show-for-medium-down" style="padding: 10px;"><%= dc_render(:responsive, method: 'i_move') %></div>
+  [main]
+ </div>
+ <div id="div-right" class="small-12 large-5 columns">
+   <div class="show-for-medium-up"><%= dc_render(:responsive, method: 'i_move') %></div>
+   <%= dc_render(:responsive, method: 'roller') %>
+   <div class="na-mailing"><%= dc_render(:dc_poll, poll_id: 'mail-subscribe') %></div>
+   <div class="na-mailing"><%= dc_render(:sport, method: 'send_mail') %></div>
+ </div>
+</div>
+
+<div id="site-footer">
+ <%= dc_render(:dc_piece, id: 'site-footer') %>
+</div>
+
+</div>
+<%= dc_render(:responsive, method: 'eu_cookies') %>
+<%= dc_render(:dc_common, method: 'google_analytics') %>
+
+<!-- dc_design.body field data -->
+<% main="\<\%= dc_render(:sport, method: 'seznam') \%\>" %>
+
+<%= dc_replace_in_design(replace: '[main]', with: main) %>
