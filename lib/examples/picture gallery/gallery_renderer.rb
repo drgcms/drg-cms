@@ -31,7 +31,7 @@ class GalleryRenderer < DcRenderer
 # Will render picture gallery
 #######################################################################
 def gallery(page=nil)
-  page = @parent.page if page.nil?
+  page ||= @parent.page
   return '' if page.gallery.blank?
 #  
   html = '<div class="picture-gallery">'
