@@ -85,6 +85,7 @@ en:
 
       dc_user:
         tabletitle: Users
+        tab1: Base
 
         id: Id
         username: Username

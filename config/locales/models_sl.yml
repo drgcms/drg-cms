@@ -78,6 +78,7 @@ sl:
 
       dc_user:
         tabletitle: Uporabniki
+        tab1: Osnova
 
         id: Id
         username: Uporabnik
