@@ -109,15 +109,22 @@ end
 # Searches forms path for file_name and returns full file name or nil if not found.
 # 
 # [Parameters:]
-# [form_file] Additional data can be displayed with error.
+# [form_file] Form file name. File name can be passed as gem_name.filename. This can
+# be useful when you are extending form but want to retain same name as original form
+# For example. You are extending dc_user form from drg_cms gem and want to
+# retain same dc_user name. This can be done by setting drg_cms.dc_user to extend option. 
 # 
 # [Return:]
 # String. Full form file name or nil if not found.
 ########################################################################
 def dc_find_form_file(form_file)
+  form_path=nil
+  if form_file.match(/\.|\//)
+    form_path,form_file=form_file.split(/\.|\//)
+  end
   DrgCms.paths(:forms).reverse.each do |path|
     f = "#{path}/#{form_file}.yml"
-    return f if File.exist?(f)
+    return f if File.exist?(f) and (form_path.nil? or path.to_s.match(/\/#{form_path}\//i))
   end
   p "Form file #{form_file} not found!"
   nil
