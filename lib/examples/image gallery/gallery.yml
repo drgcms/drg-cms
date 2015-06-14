@@ -1,0 +1,58 @@
+table: dc_part
+index:
+  actions:
+    1: new
+
+result_set:
+  actions: standard
+
+  columns:
+    1:  
+      name: name
+    2: 
+      name: div_id
+    3: 
+      name: updated_by
+      eval: dc_name4_id,dc_user,name
+    4: 
+      name: updated_at
+
+form:
+  actions: standard
+  title:
+    new: New image
+    edit: Edit image
+    field: name
+  fields:
+    05:
+      name: div_id
+      type: readonly
+      html:
+        size: 10
+    10:
+      name: name
+      type: text_field
+      text: Image title
+      html:
+        size: 50
+    20:
+      name: description
+      type: text_field
+      text: Image description
+      html:
+        size: 50
+    30:
+      name: thumbnail
+      type: file_select
+      html:
+        size: 50
+    40:
+      name: picture
+      type: file_select
+      html:
+        size: 50
+    60:
+      name: order
+      type: text_field
+      html:
+        size: 2

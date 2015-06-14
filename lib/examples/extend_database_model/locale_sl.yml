@@ -1,0 +1,13 @@
+sl:
+  helpers:
+    label:
+      dc_user:
+        tab2: Članstvo
+        member: Je član
+        card_number: Številka kartice
+
+    help:
+      dc_user:
+        member: Uporabnik je naš član
+        card_number: Številka članske kartice
+        

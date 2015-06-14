@@ -1,0 +1,11 @@
+
+extend: drg_cms.dc_user
+form:
+  tabs:
+    tab2:
+      10:
+        name: member
+        type: check_box
+      20:
+        name: card_number
+        type: text_field
