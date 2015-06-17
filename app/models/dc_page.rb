@@ -33,6 +33,7 @@ include Mongoid::Document
 include Mongoid::Timestamps
 
 field :subject,      type: String,  default: ''
+field :title,        type: String
 field :subject_link, type: String,  default: ''
 field :alt_link,     type: String,  default: ''
 field :sub_subject,  type: String,  default: ''

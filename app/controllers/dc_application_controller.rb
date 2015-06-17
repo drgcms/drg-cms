@@ -300,7 +300,7 @@ def dc_process_default_request()
 # Log only visits from non-editors
     dc_log_visit()
   end
-  @page_title = @page.subject.empty? ? @site.page_title : @page.subject
+  @page_title = @page.title.blank? ? "#{@site.page_title}-#{@page.subject}" : @page.title
   layout      = @site.site_layout.to_s.size > 2 ? @site.site_layout : 'content'
 # render view. inline if defined in design
   view_filename = ''

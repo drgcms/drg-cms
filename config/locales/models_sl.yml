@@ -274,9 +274,10 @@ sl:
         3content: Vsebina
         4parts: Elementi
 
-        subject: Naslov
+        subject: Zadeva
         subject_link: Povezava
-        sub_subject: Podnaslov
+        title: Naslov za brskalnik
+        sub_subject: Povzetek
         picture: Slika
         gallery: Id galerije
         alt_link: Alt povezava
@@ -668,9 +669,10 @@ sl:
         link_target: Odpri povezavo v novem oknu ali v istem oknu
 
       dc_page:
-        subject: Naslov sestavka
+        subject: Zadeva (kratek naslov) sestavka
         subject_link: Povezava (link) do sestavka
-        sub_subject: Podnaslov, kratek opis vsebine
+        sub_subject: Povzetek, kratek opis vsebine
+        title: Naslov, ki se izpiše v gornji vrstici brskalnika. Optimiziraj za SEO.
         alt_link: Alternativna povezava do sestavka
         picture: Slika v povezavi s stranjo
         gallery: Id sestavnih elementov, ki sestavljajo slikovno galerijo te strani.

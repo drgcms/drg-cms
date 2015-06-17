@@ -247,6 +247,7 @@ en:
 
         subject: Subject
         subject_link: Subject link
+        title: Browser title
         sub_subject: Sub subject
         picture: Picture
         gallery: Gallery id
@@ -642,6 +643,7 @@ en:
       dc_page:
         subject: Articles subject
         subject_link: Friendly link defined
+        title: Browser title. Optimization for SEO.
         sub_subject: Sub subject, short description of text
         picture: Picture used in conjunction with page
         gallery: Picture gallery id used with page. Id defines id's of parts which consist gallery

@@ -44,6 +44,8 @@ attr_reader :form
 # options object
 attr_reader :options
 
+# page title
+attr_accessor :page_title
 # all parts read from page, design, ...
 attr_accessor :parts
 
