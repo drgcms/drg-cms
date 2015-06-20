@@ -610,6 +610,18 @@ def dc_check_and_default(value, default, values=nil) #:nodoc:
 end
 
 ############################################################################
+# Creates top or bottom horizontal line on form. 
+############################################################################
+def top_bottom_line(yaml)
+  if  yaml.class == Hash 
+    clas  = yaml['class'] 
+    style = yaml['style'] 
+  end
+  clas ||= 'dc-separator'
+  "<tr><td colspan=\"4\" class=\"#{clas}\" style=\"#{style}\"></td></tr>"
+end    
+
+############################################################################
 # Creates input field for one tab. Subroutine of dc_fields_for_form.
 ############################################################################
 def dc_fields_for_tab(fields) #:nodoc:
@@ -654,6 +666,9 @@ def dc_fields_for_tab(fields) #:nodoc:
     else # litle error string
       "Error: Code for field type #{options['type']} not defined!"
     end
+# Separator
+    html << top_bottom_line(options['top-line']) if options['top-line']
+# Double entry fields in one row
     double_field = 1 if options['double']
     html << '<tr>' if double_field < 2
 #    
@@ -672,6 +687,7 @@ def dc_fields_for_tab(fields) #:nodoc:
     html << '</tr>' if double_field != 1
     double_field = 0 if double_field == 2
     double_field = 2 if double_field == 1    
+    html << top_bottom_line(options['bottom-line']) if options['bottom-line']
   end
   html << '</table></table>'
 end

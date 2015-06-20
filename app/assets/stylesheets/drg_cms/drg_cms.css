@@ -438,6 +438,11 @@ background-color: #888;
   background-color: #fff;
 }
 
+.dc-separator {
+padding: 0px;
+border-top: 2px solid #ccc;
+}
+
 #cmsedit-div {
 }
 
