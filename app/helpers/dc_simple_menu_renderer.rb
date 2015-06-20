@@ -98,12 +98,21 @@ def link_4menu(item)
     link  = '/' + link unless link[0] == '/'   # link should start with '/'
   end
 
-  target = item.target.blank? ? nil : item.target
+  caption = ''
+  unless item.picture.blank? 
+    caption = if item.picture.match(/\./)
+      @parent.image_tag(item.picture)
+    elsif item.picture.match('<i')
+      item.picture
+    else
+      @parent.fa_icon(item.picture)
+    end
+   end
   # - in first place won't write caption text
-  caption = item.caption[0] == '-' ? '' : item.caption.to_s
-  img_title = item.caption.to_s.sub('-','')
-  (item.picture.blank? ? '' : @parent.link_to( @parent.image_tag(item.picture), link, {title: img_title, target: target} )) +
-  ( caption.blank? ? '' : @parent.link_to(caption, link, {target: target}))
+  caption = caption.html_safe + (item.caption[0] == '-' ? '' : (' ' + item.caption) )
+  
+  target = item.target.blank? ? nil : item.target
+  @parent.link_to(caption, link, {target: target})
 end
 
 ########################################################################
