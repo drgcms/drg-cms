@@ -1,0 +1,22 @@
+en:
+  helpers:
+    label:
+      note:
+        tabletitle: Notes
+        choices4_duration: "10 min:10,15 min:15,20 min:20,30 min:30,45 min:45,1 hour:60,1 hour 30 min:90,2 hours:120,2 hours 30 min:150,3 hours:180,4 hours:240,5 hours:300,6 hours:360,7 hours:420,8 hours:480"
+        
+        title: Title
+        body: Description      
+        time_start: Start time
+        duration: Duration 
+        search: Search  
+        user_id: Created by    
+
+    help:
+      note:
+        title: Short title
+        body: Description of event or note       
+        time_start: Time or date when note is created or event started
+        duration: Duration of event
+        search: Data used for searching data  
+        user_id: Note owner    

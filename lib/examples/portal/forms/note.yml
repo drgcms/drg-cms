@@ -1,0 +1,55 @@
+table: note
+
+index: 
+  filter: title, search as text_field
+  actions: 
+    1: 
+      type: new
+      caption: New note
+    2: filter
+
+result_set:
+  filter: notes_filter
+  actions: 
+    1: edit
+
+  columns:
+    10: 
+      name: title
+      style: "text-align: left:"
+    20: 
+      name: time_started
+      style: "text-align: left:"
+      format: '%d.%m.%Y'
+      style: 'width: 80px:'
+    30: 
+      name: duration
+
+form:
+  fields:
+    10:
+      name: user_id
+      type: readonly
+      eval: dc_name4_id,dc_user,name
+    20:
+      name: title
+      type: text_field
+      html:
+        size: 50
+    30:
+      name: time_started
+      type: datetime_picker
+      options:
+        step: 15
+    40:
+      name: duration
+      type: datetime_picker
+      options:
+        step: 15
+    50:
+      name: duration
+      type: select
+    60:
+      name: body
+      type: html_field
+      options: "height: 500" 
