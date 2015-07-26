@@ -491,7 +491,7 @@ en:
         page_table: Name of table holding data for pages
         page_class: Rails model class name which defines table holding pages data usually DcPage
         menu_class: Rails model class name which defines table holding menu data usually DcMenu
-        site_layout: Rails layout used to draw response. This is by default application.
+        site_layout: Rails layout used to draw response. This is by default content layout.
         files_directory: Directory name where uploaded files are located
         logo: Logotype picture for the site
         dc_policies: Access policies defined for the site
