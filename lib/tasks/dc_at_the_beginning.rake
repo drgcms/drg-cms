@@ -2,11 +2,9 @@
 #
 #########################################################################
 def ok_to_start
-  p 'bla'
 #  DcPermission.all.delete
 #  DcPolicyRole.all.delete
 #  DcUser.all.delete
-p DcPermission.all.to_a
   if DcPermission.all.to_a.size > 0
     p 'DcPermission (Permissions) collection is not empty! Aborting.'
     return false
