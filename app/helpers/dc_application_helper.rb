@@ -1011,11 +1011,8 @@ def dc_big_table(key)
 end
 
 ########################################################################
-# Will return html code required for open edit form in iframe. If parameters 
-# are found in url iframe will be initial loaded with url parameters thus
-# enabling forms load on page display.
 ########################################################################
-def iframe_edit1()
+def iframe_edit1() #:nodoc
 #  default_table = params[:table] if default_table.nil?
 #  p params
    parms = {}
@@ -1032,6 +1029,44 @@ def iframe_edit1()
   end
   #bla
   p ret
+  ret.html_safe
+end
+
+########################################################################
+# Will return html code required for load DRG form into iframe. If parameters 
+# are passed to method iframe url will have initial value and thus enabling automatic form
+# load on page display.
+# 
+# Parameters:
+# [table] String: Collection (table) name used to load initial form.
+# [opts] Hash: Optional parameters which define url for loading DRG form.
+# These parameters are :action, :oper, :table, :formname, :id, :readonly
+# 
+# Example:
+#    # just iframe code
+#    <%= dc_iframe_edit(nil) %>
+#    # load note form for note collection
+#    <%= dc_iframe_edit('note') %>
+#    # on register collection use reg_adresses formname to display data with id @register.id
+#    <%= dc_iframe_edit('register', action: :show, formname: 'reg_adresses', readonly: 1, id: @register.id ) %>
+# 
+# Returns:
+# Html code for edit iframe
+########################################################################
+def dc_iframe_edit(table, opts={})
+  ret = if params.size > 2 and table  # controller, action, path is minimal
+    params[:controller] = 'cmsedit'
+    params[:action]     = (params[:oper] and (params[:oper] == 'edit')) ? 'edit' : 'index'
+    params[:action]     = opts[:action] unless params[:oper]
+    params[:table]      ||= table 
+    params[:formname]   ||= opts[:formname] || table 
+    params[:id]         ||= params[:idp] || opts[:id]
+    params[:readonly]   ||= opts[:readonly]
+    params[:path]       = nil
+    "<iframe id='iframe_edit' name='iframe_edit' src='#{url_for params}'></iframe>"
+  else
+    "<iframe id='iframe_edit' name='iframe_edit'></iframe>"
+  end
   ret.html_safe
 end
 
