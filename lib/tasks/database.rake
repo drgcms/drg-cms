@@ -20,8 +20,8 @@ def create_index(model)
   return if model.index_specifications.empty?
 #
   if !model.embedded? || model.cyclic?
+    @logger.info("DRGCMS: Creating indexes on #{model}:")
     model.create_indexes
-    @logger.info("DRGCMS: Created indexes on #{model}:")
     model.index_specifications.each do |spec|
       @logger.info("DRGCMS: Index: #{spec.key}, Options: #{spec.options}")
     end
