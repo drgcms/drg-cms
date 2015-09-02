@@ -933,16 +933,17 @@ def dc_user_has_role( role, user=nil, roles=nil )
 end
 
 ####################################################################
-# Returns true if parameter has value of 0, false, no or -. Returns default
+# Returns true if parameter has value of 0, false, no, none or -. Returns default
 # if parameter has nil value.
 # 
 # Parameters:
-# [what] String/boolean. 
+# [what] String/boolean/Integer. 
 # [default] Default value when what has value of nil. False by default.
 # 
 # Example:
-#    dc_dont?('no')  # => true
-#    dc_dont?(1)     # => false
+#    dc_dont?('none') # => true
+#    dc_dont?('-')    # => true
+#    dc_dont?(1)      # => false
 ####################################################################
 def dc_dont?(what, default=false)
   return default if what.nil?
