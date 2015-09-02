@@ -20,9 +20,11 @@ result_set:
     1:  
       name: key
     2:  
+      name: description
+    3:  
       name: site_id
       eval: dc_name4_id,dc_site,name
-    3:  
+    4:  
       name: active
       eval: dc_icon4_boolean
 
