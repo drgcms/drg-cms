@@ -38,59 +38,59 @@ menu:
         params:
           table: dc_design
       30: 
-        caption: helpers.label.dc_category.tabletitle
-        controller: cmsedit
-        picture: dc_category.png
-        params:
-          table: dc_category
-      40: 
         caption: helpers.label.dc_page.tabletitle
         controller: cmsedit
         picture: dc_page.png
         params:
           table: dc_page
+      40: 
+        caption: helpers.label.dc_category.tabletitle
+        controller: cmsedit
+        picture: dc_category.png
+        params:
+          table: dc_category
       50: 
-        caption: helpers.label.dc_piece.tabletitle
-        controller: cmsedit
-        picture: dc_piece.png
-        params:
-          table: dc_piece
-      60: 
-        caption: helpers.label.dc_link.tabletitle
-        controller: cmsedit
-        picture: dc_link.png
-        params:
-          table: dc_link
-      70: 
-        caption: helpers.label.dc_menu.tabletitle
-        controller: cmsedit
-        picture: dc_menu.png
-        params:
-          table: dc_menu
-      80: 
-        caption: helpers.label.dc_simple_menu.tabletitle
-        controller: cmsedit
-        picture: dc_simple_menu.png
-        params:
-          table: dc_simple_menu
-      90: 
-        caption: helpers.label.dc_poll.tabletitle
-        controller: cmsedit
-        picture: dc_poll.png
-        params:
-          table: dc_poll
-      100: 
-        caption: helpers.label.dc_ad.tabletitle
-        controller: cmsedit
-        picture: dc_ad.png
-        params:
-          table: dc_ad
-      110: 
         caption: helpers.label.dc_user.tabletitle
         controller: cmsedit
         picture: dc_user.png
         params:
           table: dc_user
+      60: 
+        caption: helpers.label.dc_piece.tabletitle
+        controller: cmsedit
+        picture: dc_piece.png
+        params:
+          table: dc_piece
+      70: 
+        caption: helpers.label.dc_link.tabletitle
+        controller: cmsedit
+        picture: dc_link.png
+        params:
+          table: dc_link
+      80: 
+        caption: helpers.label.dc_menu.tabletitle
+        controller: cmsedit
+        picture: dc_menu.png
+        params:
+          table: dc_menu
+      90: 
+        caption: helpers.label.dc_simple_menu.tabletitle
+        controller: cmsedit
+        picture: dc_simple_menu.png
+        params:
+          table: dc_simple_menu
+      100: 
+        caption: helpers.label.dc_poll.tabletitle
+        controller: cmsedit
+        picture: dc_poll.png
+        params:
+          table: dc_poll
+      110: 
+        caption: helpers.label.dc_ad.tabletitle
+        controller: cmsedit
+        picture: dc_ad.png
+        params:
+          table: dc_ad
       120: 
         caption: helpers.label.dc_big_table.tabletitle
         controller: cmsedit
