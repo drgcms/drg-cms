@@ -164,7 +164,7 @@ def check_filter_options() #:nodoc:
   if session[table_name][:filter]
     field, oper, value = session[table_name][:filter].split( "\t")
     field = '_id' if field == 'id' # must be
-    value = /#{value}/ if oper == 'like' # do regex if operation is like
+    value = /#{value}/i if oper == 'like' # do regex if operation is like
 # when field type is ObjectId transform value    
     if model.fields[field] and model.fields[field].type == BSON::ObjectId
       value = BSON::ObjectId.from_string(value) rescue nil
