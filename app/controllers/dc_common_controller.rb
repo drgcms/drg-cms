@@ -63,7 +63,7 @@ def autocomplete
       r << { label: v[params['search']], value: v[params['search']], id: v.id.to_s }
     end
   end
-  p a
+
   render inline: a.to_json, formats: 'js'
 end
 
@@ -103,17 +103,16 @@ end
 def process_login
 # Somebody is probably playing
   return dc_render_404 unless ( params[:record] and params[:record][:username] and params[:record][:password] )
-  
-  if params[:record][:password].to_s.size > 0  #password must not be empty
+
+  unless params[:record][:password].blank? #password must not be empty
     user  = DcUser.find_by(username: params[:record][:username])
     if user and user.authenticate(params[:record][:password])
       fill_login_data(user, params[:record][:remember_me].to_i == 1)
+      return redirect_to params[:return_to] ||  '/'
     end
-  else
-    flash[:error]      = t('drgcms.invalid_username')
-    params[:return_to] = params[:return_to_error] # return_to error
   end
-  redirect_to params[:return_to] ||  '/'
+  flash[:error] = t('drgcms.invalid_username')
+  redirect_to params[:return_to_error] ||  '/'
 end
 
 ####################################################################
