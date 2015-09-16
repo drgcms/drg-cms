@@ -98,7 +98,7 @@ form:
       10:
         name: dc_design_id
         type: select
-        eval: DcDesign.choices4_design
+        eval: DcDesign.choices4_design(@parent.dc_get_site)
         html:
           include_blank: true
       20:

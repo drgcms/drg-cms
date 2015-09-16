@@ -4,7 +4,7 @@ title: Site design
 table: dc_design
 
 index:
-  filter: name, description, body as text_field
+  filter: description, body as text_field
   actions: standard
 
 result_set:
@@ -12,16 +12,11 @@ result_set:
     1: edit
     2: 
       type: duplicate
-      dup_fields: name,description
+      dup_fields: description
 
     3: delete
-#    4: 
-#      type: edit_embedded
-#      table: dc_part
 
   columns:
-    1:  
-      name: name
     2: 
       name: description
 
@@ -35,20 +30,22 @@ form:
   tabs:
     tab1:
       10:
-        name: name
-        type: text_field
-        size: 50
-
-      20:
         name: description
         type: text_field
         html:
           size: 50
+      20:
+        name: site_id
+        type: select
+        eval: DcSite.choices4_site
+        html:
+          include_blank: true
       30:
         name: rails_view
         type: text_field
         html:
           size: 50
+          
       40:
         name: body
         type: text_area

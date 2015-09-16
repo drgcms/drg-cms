@@ -73,7 +73,6 @@ class DcDesign
   include Mongoid::Document
   include Mongoid::Timestamps
   
-  field   :name,        type: String
   field   :description, type: String,  default: ''
   field   :body,        type: String,  default: ''
   field   :css,         type: String,  default: ''
@@ -82,17 +81,22 @@ class DcDesign
   field   :active,      type: Boolean, default: true 
   field   :created_by,  type: BSON::ObjectId
   field   :updated_by,  type: BSON::ObjectId
+  field   :site_id,     type: BSON::ObjectId
   
   embeds_many :dc_parts
-#  embeds_many :dc_parts, as: :dc_parts
-
-  index( { name: 1 }, { unique: true } )
+  
+  validates_length_of :description, minimum: 5
   
 ########################################################################
-# Return choices for select for design_id
+# Return choices for select for design_id. 
+# 
+# If site is passed as parameter, only designs which belong to site or do not
+# have site assigned will be selected. Too much designs to select often confuses
+# end user.
 ########################################################################
-def self.choices4_design
-  all.sort(name: 1).inject([]) { |r,design| r << [ design.description, design._id] if design.active; r }
+def self.choices4_design(site=nil)
+  list = site.nil? ? where(active: true) : where(active: true).in(site_id: [nil,site.id])
+  list.sort(name: 1).inject([]) { |r,design| r << [ design.description, design._id] }
 end
   
 end

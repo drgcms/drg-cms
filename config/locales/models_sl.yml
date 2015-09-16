@@ -75,6 +75,7 @@ sl:
         active: Aktiven
         dc_parts: Elementi 
         rails_view: Rails view datoteka
+        site_id: Spletišče
 
       dc_user:
         tabletitle: Uporabniki
@@ -520,6 +521,7 @@ sl:
         active: Ali je dizajn aktiven
         dc_parts: Elementi, sestavni deli dizajna
         rails_view: Ime Rails view datoteke, ki bo uporabljena za izris strani
+        site_id: Izberite spletišče, če dizajn pripada samo enemu spletišču
 
       dc_user:
         username: Uporabniško ime
