@@ -420,10 +420,9 @@ def dc_columns_for_result(document)
             eval( "#{v['eval']} '#{document[ v['name'] ]}'") 
           end
         end
-      else        
-        dc_format_value(document[ v['name'] ], v['format'])
+      else 
+        document.respond_to?(v['name']) ? dc_format_value(document.send( v['name'] ), v['format']) : "!!! #{v['name']}"
       end
-#      td << ">#{value}</td>"
       html << td << ">#{value}</td>"
     end
   end
