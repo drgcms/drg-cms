@@ -400,7 +400,11 @@ def dc_columns_for_result(document)
       value = if v['eval']
         if v['eval'].match('dc_name4_id')
           a = v['eval'].split(',')
-          dc_name4_id(a[1], a[2], document[ v['name'] ])
+          if a.size == 3
+            dc_name4_id(a[1], a[2], nil, document[ v['name'] ])
+          else
+            dc_name4_id(a[1], a[2], a[3], document[ v['name'] ])
+          end
         elsif v['eval'].match('dc_name4_value')
           dc_name4_value( @form['table'], v['name'], document[ v['name'] ] )
         elsif v['eval'].match('eval ')

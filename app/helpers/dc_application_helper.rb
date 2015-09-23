@@ -577,25 +577,32 @@ end
 # Parameters:
 # [model] String. Table (collection) model name (lowercase).
 # [field] String. Field name holding the value of descriptive text.
-# [id] BSON Key. Key value.
+# [field_name] String. ID field name. This is by default id, but can be any other 
+# (preferred unique) field.
+# [value] Value of id_field. Usually a BSON Key but can be any other data type.
 # 
 # Example:
 #    # usage in program.
-#    dc_name4_id('dc_user', 'name', dc_page.created_by)
+#    dc_name4_id('dc_user', 'name', nil, dc_page.created_by)
 #
 #    # usage in form
 #    columns:
 #      2: 
 #        name: site_id
 #        eval: dc_name4_id,site,name
+#    # username is saved to document instead of user.id field
+#      5: 
+#        name: user
+#        eval: dc_name4_id,dc_user,name,username
 # 
 # Returns: 
 # String. Name (descriptive value) for specified key in table.
 ############################################################################
-def dc_name4_id(model, field, id)
+def dc_name4_id(model, field, field_name, id)
   return '' if id.nil?
+  field_name = 'id' if field_name.nil?
   model = model.classify.constantize if model.class == String
-  rec = Mongoid::QueryCache.cache { model.find_by(id: id) }
+  rec = Mongoid::QueryCache.cache { model.find_by(field_name.to_sym => id) }
   rec.nil? ? '' : rec[field]
 end
 
@@ -753,7 +760,7 @@ def dc_choices4_cmsmenu()
   menus.to_a.sort.each do |one_menu|    # sort menus, result is array of sorted hashes
     menu = one_menu[1]                  # value is the second (1) element of array
     next unless menu['caption']
-    choices << ["--- #{ t(menu['caption'], menu['caption']) }",'#']
+    choices << ["--- #{ t(menu['caption'], menu['caption']) } ---",'#']
     menu['items'].to_a.sort.each do |item|          # as above. sort items first 
       key, value = item[0], item[1]
       opts = { controller: value['controller'], action: value['action'] }
