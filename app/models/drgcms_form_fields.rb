@@ -379,9 +379,11 @@ def ro_standard(table, search)
   result = ''
   table = table.classify.constantize
   return self if @record[@yaml['name']].nil?
-    @record[@yaml['name']].each do |element|
-      result << table.find(element)[search] + '<br>'
-    end
+# when field name and method are defined together
+  search = search.split('.').first if search.match('.')
+  @record[@yaml['name']].each do |element|
+    result << table.find(element)[search] + '<br>'
+  end
   super(result)
 end
 
