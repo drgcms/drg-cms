@@ -17,4 +17,4 @@
   
 </div>
 
-<%= javascript_tag @js if @js.to_s.size > 0 %>
+<%= javascript_tag(@js) unless @js.blank? %>
