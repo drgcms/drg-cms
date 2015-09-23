@@ -36,6 +36,12 @@ namespace :drg_cms do
   task :clear_sessions, [:name] => :environment do |t, args|
     p 'This is just an example how to clear sessions collection. It wont do anything because of next line.'
     return if true
+# This should remove all sessions documents created by robots
+# It is quite a task to compare two dates in mongoid. This should not be problem if it is run daily
+    ActionDispatch::Session::MongoidStore::Session.all.each do |doc|
+      doc.delete if (doc.created_at == doc.updated_at or doc.updated_at < 100.days.ago)
+    end
+# or if you want to clear everything older than 1 week    
     ActionDispatch::Session::MongoidStore::Session.where(:updated_at.lt => 1.week.ago).delete
     DcSite.collection.database.command(eval: "db.runCommand ( { compact: 'sessions' } )" )
   end
