@@ -785,7 +785,7 @@ def dc_choices4_folders_list
 end
 
 ############################################################################
-# Returns choices for select input field when choices can be generated from
+# Returns choices for select input field when choices are generated from
 # all documents in collection.
 # 
 # Parameters:  
@@ -802,8 +802,12 @@ end
 #      eval: dc_choices4('dc_poll','name','_id')
 ############################################################################
 def dc_choices4(model, name, id='_id', options = {})
-  qry = model.classify.constantize.only(id, name).sort(name => 1)
-  qry = qry.where(dc_site_id: dc_get_site()) if options[:site_only]
+  model = model.classify.constantize
+  qry   = model.only(id, name)
+  qry   = qry.and(dc_site_id: dc_get_site()) if options[:site_only]
+  qry   = qry.and(active: true) if model.method_defined?(:active)
+  qry   = qry.sort(name: 1) 
+#  
   choices = []
   qry.each {|v| choices << [ v[name], v[id] ] }
   choices
