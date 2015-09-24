@@ -1217,21 +1217,23 @@ end
 # * +type:+ text_with_select (required)
 # * +choices:+ Values for choices separated by comma. Values can also be specified like description:value.
 # In this case description will be shown to user, but value will be saved to document.
-#   * choices: 'OK:0,Ready:1,Error:2'
-#   * choices: Ruby,Pyton,PHP
+#   choices: 'OK:0,Ready:1,Error:2'
+#   choices: Ruby,Pyton,PHP
 # * +eval:+ Choices will be provided by evaluating expression
-#   * eval: dc_choices4('model_name','description_field_name','_id'); dc_choices4 helper will provide data for select field. 
-#   * eval: ModelName.choices4_field; ModelName class will define method choices4_field which 
+#   eval: dc_choices4('model_name','description_field_name','_id'); dc_choices4 helper will provide data for select field. 
+#   eval: ModelName.choices4_field; ModelName class will define method choices4_field which 
 #   will provide data for select field. Since expression is evaluated in the context of Form Field object
-#   even session session variables can be accessed. Ex. +eval: 'MyClass.method(@parent.session[:user_id])'+
-#   * collection_name.search_field_name.method_name; When searching is more complex custom search
-#   method may be defined in CollectionName model which will provide result set for search.
-# * If choices or eval is not defined choices will be provided from translation helpers. For example: 
-#   Collection has field status choices for field may be provided by en.helpers.model_name.choices4_status 
-#   entry of english translation. English is of course default translation. If you provide translations in
-#   your local language then select choices will be localized.
-#   * en.helpers.model_name.choices4_status: 'OK:0,Ready:1,Error:2'
-#   * sl.helpers.model_name.choices4_status: 'V redu:0,Pripravljen:1,Napaka:2'
+# Even session session variables can be accessed. 
+#   eval: 'MyClass.method(@parent.session[:user_id])'
+# When searching is more complex custom search method may be defined in CollectionName 
+# model which will provide result set for search.
+#   eval: collection_name.search_field_name.method_name; 
+# If choices or eval is not defined choices will be provided from translation helpers. For example: 
+# Collection has field status. Choices for field will be provided by en.helpers.model_name.choices4_status 
+# entry of english translation. English is of course default translation. If you provide translations in
+# your local language then select choices will be localized.
+#   en.helpers.model_name.choices4_status: 'OK:0,Ready:1,Error:2'
+#   sl.helpers.model_name.choices4_status: 'V redu:0,Pripravljen:1,Napaka:2'
 # * +html:+ html options which apply to select and text_field fields (optional)
 # 
 # Form example:
