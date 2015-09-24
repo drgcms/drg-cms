@@ -55,8 +55,9 @@ end
 # Renderer for Google analytics code.
 # 
 # Parameters:
-# Are passed through @opts hash and can therefore be set on site or design 
-# or page document parameters field as ga_acc key.
+# Are passed through @opts hash and can therefore be set on site  
+# or page document parameters field as ga_acc key. You may also disable sending 
+# 
 # 
 # If eu_cookies_allowed function is defined in javascript libraries it will be
 # called and if false is returned GA code will not be executed. This is in 
@@ -67,7 +68,7 @@ end
 ########################################################################
 def google_analytics
   ga_acc = @opts[:code] || @opts[:ga_acc]
-  return '' if ga_acc.nil?
+  return '' if ga_acc.nil? or ga_acc == '/'
   html =<<EOT 
   <!-- Google analytics. -->
 <script type="text/javascript">
@@ -93,7 +94,7 @@ end
 # are found in url iframe will be initial loaded with url parameters thus
 # enabling forms load on page display.
 ########################################################################
-def iframe_edit()
+def _remove_iframe_edit()
   @parent.render(partial: 'dc_common/iframe_edit', formats: [:html])
 end
 
