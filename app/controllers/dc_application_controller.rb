@@ -229,7 +229,8 @@ def dc_set_options(parameters)
     parameters.split("\n").each do |line|
       line.chomp.split(',').each do |parm|
         key, value = parm.split(':')
-        parms[key.strip] = value.to_s.strip.gsub(/\'|\"/,'')
+        value = value.to_s.strip.gsub(/\'|\"/,'')
+        parms[key.strip] = (value == '/' ? nil : value)
       end
     end
   end
@@ -408,41 +409,6 @@ def dc_call_rake(task, options = {})
   options[:rails_env] ||= Rails.env
   args = options.map { |o, v| "#{o.to_s.upcase}='#{v}'" }
   system "rake #{task} #{args.join(' ')} --trace 2>&1 >> #{Rails.root}/log/rake.log &"
-end
-
-######################################################################
-# Small helper for rendering ajax return code from controller. When ajax call is
-# made from DRG CMS form return may be quite complicated. All ajax return combinations 
-# can be found in drg_cms.js file. 
-# 
-# [Parameters:]
-# [Hash opts] Different options
-# 
-# [Return:]
-# String. Formatted to be used on ajax return.
-# 
-# [Example:]
-#    html_code = '<span>Some text</span>'
-#    dc_render_ajax(div: 'mydiv', prepand: html_code) # Will prepand code to mydiv div
-#    dc_render_ajax(class: 'myclass', append: html_code) # Will append code to all objects with myclass class
-#    dc_render_ajax(operation: 'window', value: "/pdf_file.pdf") # will open pdf file in new window.
-# 
-######################################################################
-def dc_render_ajax(opts)
-  result = {}
-  if opts[:operation].to_s == 'div' or opts[:operation].to_s == 'class'
-    selector = opts[:operation].to_s == 'div' ? '#' : '.' # for div . for class
-    key = case
-      when opts[:prepend] then "#{selector}+div"
-      when opts[:append]  then "#{selector}div+"
-    else "#{selector}div"
-    end
-    key << '_' + opts[ opts[:operation].to_sym ] 
-  else
-    key = opts[:operation] + '_'
-  end
-  result[key] = opts[:value] || opts[:url] || ''
-  render inline: result.to_json, formats: 'js'
 end
 
 ######################################################################
