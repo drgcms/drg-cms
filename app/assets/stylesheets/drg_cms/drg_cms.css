@@ -154,11 +154,12 @@ background-color: #eee;
 }
 
 .dc-link-ajax:hover {
+  cursor: pointer;
   color: #fff;
   background-color: #888;  
 }
 
-.dc-link-ajax:hover a { color: #fff; }
+.dc-link-ajax:hover a { color: #fff; cursor: pointer }
 
 .dc-link-img {
   padding: 3px;
@@ -167,6 +168,7 @@ background-color: #eee;
 }
 
 .dc-link-img:hover {
+  cursor: pointer;
   background-color: #eee; 
 }
 
