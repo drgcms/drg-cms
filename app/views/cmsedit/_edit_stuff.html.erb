@@ -13,7 +13,9 @@
 
           <%= link_to( fa_icon('credit-card lg', class: "dc-animate", title: "#{t('drgcms.edit_design')}"),
               {controller: 'cmsedit', action: 'edit', table: 'dc_design', id: @design._id}, target: 'iframe_cms') %>
+          <% end %>
           
+          <% if @site %>
           <%= link_to( fa_icon('globe lg', class: "dc-animate", title: "#{t('drgcms.edit_site')}"),
               {controller: 'cmsedit', action: 'edit', table: 'dc_site', id: @site._id}, target: 'iframe_cms') %>
           <% end %>

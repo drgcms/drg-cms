@@ -36,6 +36,8 @@ en:
     doc_paste_clipboard: Start update
     doc_paste_title: Insert (update) documents from JSON data
     doc_paste_update: Update existing document if document._id exists
+    doc_no_delete: Document can not be deleted!
+    doc_no_update: Document can not be updated!
     edit_content: Edit content
     edit_advanced: Advanced edit
     edit_new_page: Create new page

@@ -156,4 +156,12 @@ form:
         formname: dc_policy
         html:
           height: 800
+    6parts:
+      10:
+        name: dc_parts
+        type: embedded
+        formname: dc_part
+        html:
+          height: 1000
+          
 

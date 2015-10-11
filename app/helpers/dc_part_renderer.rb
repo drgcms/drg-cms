@@ -142,7 +142,7 @@ end
 
 ########################################################################
 # This method will search and render single part defined in pages file. Part may
-# be defined in current page document or in any page document in found in pages file. Parameters
+# be defined in current page document or in any page document found in pages file. Parameters
 # are send through options hash. 
 # 
 # Options: 
@@ -171,6 +171,34 @@ def in_page
   else
     "Part with name #{@opts[:name]} not found in page!"
   end
+end
+
+########################################################################
+# Renderer for single datapage kind of sites.
+########################################################################
+def single_sitedoc
+  part = if @opts[:div_id]
+    @parent.parts.find_by(div_id: @opts[:div_id])
+  else
+    @parent.part
+  end
+  return "Part #{@opts[:div_id]} not found!" if part.nil?
+#  
+  @opts[:editparams].merge!(id: part, ids: @parent.site._id, formname: 'dc_part', table: "dc_site;dc_part" )
+  render_particle(part, @opts) 
+end
+
+########################################################################
+# Render menu for single datapage kind of sites.
+########################################################################
+def single_sitedoc_menu
+  menu_div = @opts[:menu_div] ? "id=#{@opts[:menu_div]}" : ''
+  html = "<div #{menu_div}><ul>\n"
+  @parent.parts.where(div_id: 'document').order_by(order: 1).each do |part|
+    selected = (part == @parent.part) ? 'selected' : ''
+    html << "<li class=\"menu-item #{selected}\">#{ @parent.link_to(part.name, part.link ) }</li>\n"
+  end
+  html << "</ul></div>\n"
 end
 
 ########################################################################

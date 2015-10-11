@@ -302,17 +302,49 @@ def dc_process_default_request()
     dc_log_visit()
   end
   @page_title = @page.title.blank? ? "#{@site.page_title}-#{@page.subject}" : @page.title
-  layout      = @site.site_layout.to_s.size > 2 ? @site.site_layout : 'content'
+  layout      = @site.site_layout.blank? ? 'content' : @site.site_layout 
 # render view. inline if defined in design
-  view_filename = ''
-  view_filename = @design.rails_view.to_s if @design
-  view_filename = @site.rails_view.to_s   if view_filename.size < 5
+  view_filename = @design ? @design.rails_view.to_s : ''
+  view_filename = @site.rails_view.to_s   if view_filename.blank?
   if view_filename.size < 5
     @design.body = "<%= render partial: 'cmsedit/edit_stuff' %>\n" + @design.body if session[:edit_mode] > 0 
     @design.body << '<style type="text/css"><%= @css.html_safe %></style><%= javascript_tag @js %>'
     render(inline: @design.body, layout: layout)
   else
     render view_filename, layout: layout
+  end
+end
+
+##########################################################################
+# Single site document kind of request handler.
+# 
+# This request handler assumes that all data for the site is saved in the site 
+# document. 
+# Page data is saved in dc_parts documents embedded into site. 
+# Menus are created from description fields. 
+##########################################################################
+def dc_single_sitedoc_request
+  session[:edit_mode] ||= 0
+  @site = dc_get_site
+# @site is not defined. render 404 error
+  return dc_render_404('Site!') unless @site
+  dc_set_options(@site.settings)
+  dc_set_is_mobile unless session[:is_mobile] # do it only once per session
+# HOMEPAGE. When no parameters is set
+  params[:path] = @site.homepage_link if params[:path].nil?  
+  @parts = @site.dc_parts
+  @part  = @parts.find_by(link: params[:path])
+  return dc_render_404('Part!') unless @part
+# Add CSS and JS part to design  
+  @page_title = "#{@site.page_title} #{@part.name}"
+  @js, @css = '', ''
+  layout = session[:edit_mode] > 0 ? 'cms' : @site.site_layout
+  if @site.rails_view.blank?
+    design = @site.design + '<style type="text/css"><%= @css.html_safe %></style><%= javascript_tag @js %>'
+    design = "<%= render partial: 'cmsedit/edit_stuff' %>\n" + design if session[:edit_mode] > 0 
+    render(inline: design, layout: layout)
+  else
+    render @site.rails_view, layout: layout
   end
 end
 

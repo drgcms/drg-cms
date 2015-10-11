@@ -35,6 +35,7 @@ en:
         3advanced: Advanced
         4design: Design
         5permissions: Permissions
+        6parts: Parts
 
         name: Name
         description: Description
@@ -53,6 +54,7 @@ en:
         files_directory: Files directory
         active: Active
         dc_policies: Access policies
+        dc_parts: Parts
         settings: Settings
         menu_name: Menu name
         alias_for: Alias for
@@ -504,6 +506,7 @@ en:
         alias_for: Is alias name for entered site name
         rails_view: Rails view filename used as standard design
         design: Standard design can also be defined at the site level
+        dc_parts: Parts contained in site
         
       dc_user:
         username: Username

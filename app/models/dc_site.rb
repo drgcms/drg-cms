@@ -56,8 +56,12 @@ included do
   field :design,              type: String,  default: ''
   
   embeds_many :dc_policies
+  embeds_many :dc_parts
   
   index( { name: 1 }, { unique: true } )
+  
+  validates :name, presence: true
+  validates :name, uniqueness: true      
   
 ########################################################################
 # Return choices for select for site_id

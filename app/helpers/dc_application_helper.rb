@@ -43,6 +43,8 @@ attr_reader :ids
 attr_reader :form
 # options object
 attr_reader :options
+# part
+attr_reader :part
 
 # page title
 attr_accessor :page_title
@@ -719,7 +721,7 @@ def dc_choices4_all_collections
       next unless section.last['items']             # next if no items
       section.last['items'].each do |k, v|          # look for caption and 
         key = v['params']['table']
-        choices[key] ||= "#{t(v['caption'], v['caption'])} - #{key}" 
+        choices[key] ||= "#{key} - #{t(v['caption'], v['caption'])}" 
       end
     end
   end  

@@ -36,6 +36,8 @@ sl:
     doc_paste_clipboard: Obdelaj podatke    
     doc_paste_title: Ustvari (spremeni) dokumente iz JSON zapisa
     doc_paste_update: Spremeni obstoječ dokument, če dokument._id obstaja
+    doc_no_delete: Dokumenta ni možno izbrisati!
+    doc_no_update: Dokumenta ni možno spremeniti!
     edit_content: Urejanje vsebine
     edit_advanced: Napredno urejanje
     edit_new_page: Ustvarite novo stran

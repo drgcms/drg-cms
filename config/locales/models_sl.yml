@@ -34,6 +34,7 @@ sl:
         3advanced: Napredno
         4design: Dizajn
         5permissions: Dostop
+        6parts: Elementi
 
         name: Spletišče
         description: Opis
@@ -59,7 +60,7 @@ sl:
         settings: Nastavitve
         rails_view: Rails view
         design: Standard dizajn
-        
+        dc_parts: Sestavni elementi
 
       dc_design:
         tabletitle: Dizajni
@@ -510,6 +511,7 @@ sl:
         settings: Nastavitve veljavne za to spletišče
         rails_view: Rails view datoteka uporabljena za standard dizajn
         design: Standard dizajn lahko definirate tudi pri spletišču
+        dc_parts: Sestavni elementi strani
 
       dc_design:
         name: Unikatno ime za dizajn. Pomembno za iskanje
