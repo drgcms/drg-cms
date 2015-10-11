@@ -60,8 +60,6 @@ field :kats,         type: Array         # Categories
 field :policy_id,    type: BSON::ObjectId
 
 embeds_many :dc_parts
-#embeds_many :dc_parts, as: :dc_parts
-
 
 belongs_to  :dc_site
 belongs_to  :dc_design

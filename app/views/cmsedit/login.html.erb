@@ -1,6 +1,5 @@
 <% if session[:edit_mode] and session[:edit_mode] > 0 %>
   <%= render partial: 'edit_stuff' %>
-  <%= render partial: 'edit_stuff', formats: ['js']  %>
 <% else %>
   <h2>CMS login</h2>
   <%= dc_flash_messages %>   
