@@ -1,6 +1,7 @@
 <% if session[:edit_mode] and session[:edit_mode] > 0 %>
   <%= render partial: 'edit_stuff' %>
 <% else %>
+  <div id="dc-login">
   <h2>CMS login</h2>
   <%= dc_flash_messages %>   
   <%= form_tag controller: 'dc_common', action: 'process_login', return_to: '/cmsedit/login?ok=1', method: :put do %>
@@ -17,4 +18,5 @@
     </table>
     <%= hidden_field_tag('return_to_error', request.url ) %>
   <% end %>
+  </div>
 <% end %>
