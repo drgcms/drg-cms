@@ -879,7 +879,7 @@ def dc_user_can_view(ctrl, policy_id)
   site = ctrl.site
   policies = site.dc_policies
 # permission defined by default policy
-  default_policy = policies.find_by(is_default: true)
+  default_policy = Mongoid::QueryCache.cache { policies.find_by(is_default: true) }
   return false, 'Default accsess policy not found for the site!' unless default_policy
 #  
   permissions = {}
@@ -887,13 +887,13 @@ def dc_user_can_view(ctrl, policy_id)
 # update permissions with defined policy 
   part_policy = nil
   if policy_id
-    part_policy = policies.find(policy_id)
+    part_policy = Mongoid::QueryCache.cache { policies.find(policy_id) }
     return false, 'Access policy not found for part!' unless part_policy
     part_policy.dc_policy_rules.to_a.each { |v| permissions[v.dc_policy_role_id] = v.permission }
   end
 # apply guest role if user has no roles defined
   if ctrl.session[:user_roles].nil?
-    role = DcPolicyRole.find_by(system_name: 'guest', active: true)
+    role = Mongoid::QueryCache.cache { DcPolicyRole.find_by(system_name: 'guest', active: true) }
     return false, 'System guest role not defined!' unless role
     ctrl.session[:user_roles] = [role.id]
   end
