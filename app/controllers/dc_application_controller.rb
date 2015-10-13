@@ -329,13 +329,12 @@ def dc_single_sitedoc_request
 # @site is not defined. render 404 error
   return dc_render_404('Site!') unless @site
   dc_set_options(@site.settings)
-  dc_set_is_mobile unless session[:is_mobile] # do it only once per session
 # HOMEPAGE. When no parameters is set
   params[:path] = @site.homepage_link if params[:path].nil?  
   @parts = @site.dc_parts
   @part  = @parts.find_by(link: params[:path])
   return dc_render_404('Part!') unless @part
-# Add CSS and JS part to design  
+#  
   @page_title = "#{@site.page_title} #{@part.name}"
   @js, @css = '', ''
   layout = session[:edit_mode] > 0 ? 'cms' : @site.site_layout

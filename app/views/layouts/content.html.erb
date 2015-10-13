@@ -4,7 +4,7 @@
   <title><%= @page_title %></title>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
   <%= stylesheet_link_tag "application", media: 'all' %>
-  <style type="text/css" media="all"><%= "#{@site.css}#{@design.css if @design}\n#{@page.css if @page}".html_safe %></style>
+  <style type="text/css" media="all"><%= "#{@site.css if @site}#{@design.css if @design}\n#{@page.css if @page}".html_safe %></style>
   <%= @site.header.html_safe %>
   <%= javascript_include_tag "application" %>
   <%= csrf_meta_tags %>

@@ -177,13 +177,16 @@ end
 # Renderer for single datapage kind of sites.
 ########################################################################
 def single_sitedoc
+# if div_id option specified search for part with this div_id. 
+# This can be used to render footer or header of site.
   part = if @opts[:div_id]
     @parent.parts.find_by(div_id: @opts[:div_id])
   else
     @parent.part
   end
+# part not found. Render error message.
   return "Part #{@opts[:div_id]} not found!" if part.nil?
-#  
+# prepare edit parameters  
   @opts[:editparams].merge!(id: part, ids: @parent.site._id, formname: 'dc_part', table: "dc_site;dc_part" )
   render_particle(part, @opts) 
 end
@@ -192,11 +195,14 @@ end
 # Render menu for single datapage kind of sites.
 ########################################################################
 def single_sitedoc_menu
+# prepare div markup
   menu_div = @opts[:menu_div] ? "id=#{@opts[:menu_div]}" : ''
   html = "<div #{menu_div}><ul>\n"
+# collect all dc_part documents which make menu
   @parent.parts.where(div_id: 'document').order_by(order: 1).each do |part|
-    selected = (part == @parent.part) ? 'selected' : ''
-    html << "<li class=\"menu-item #{selected}\">#{ @parent.link_to(part.name, part.link ) }</li>\n"
+# mark selected item    
+    selected = (part == @parent.part) ? 'class="menu-selected"' : ''
+    html << "<li #{selected}>#{ @parent.link_to(part.name, part.link ) }</li>\n"
   end
   html << "</ul></div>\n"
 end
