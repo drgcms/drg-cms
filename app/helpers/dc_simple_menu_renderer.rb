@@ -107,9 +107,10 @@ def link_4menu(item)
     else
       @parent.fa_icon(item.picture)
     end
+    caption << ' '
    end
   # - in first place won't write caption text
-  caption = caption.html_safe + (item.caption[0] == '-' ? '' : (' ' + item.caption) )
+  caption = caption.html_safe + (item.caption[0] == '-' ? '' : item.caption )
   
   target = item.target.blank? ? nil : item.target
   @parent.link_to(caption, link, {target: target})
