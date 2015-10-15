@@ -600,7 +600,7 @@ end
 # Returns: 
 # String. Name (descriptive value) for specified key in table.
 ############################################################################
-def dc_name4_id(model, field, field_name, id)
+def dc_name4_id(model, field, field_name, id=nil)
   return '' if id.nil?
   field_name = 'id' if field_name.nil?
   model = model.classify.constantize if model.class == String

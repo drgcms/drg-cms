@@ -221,7 +221,13 @@ def render
   @html << if @yaml['eval']
     if @yaml['eval'].match('dc_name4_id')
       a = @yaml['eval'].split(',')
-      @parent.dc_name4_id(a[1], a[2], @record[ @yaml['name'] ])
+      if a.size == 3
+        @parent.dc_name4_id(a[1], a[2], nil, @record[ @yaml['name'] ])
+      else
+        @parent.dc_name4_id(a[1], a[2], a[3], @record[ @yaml['name'] ])
+      end
+      
+#      @parent.dc_name4_id(a[1], a[2], @record[ @yaml['name'] ])
     else
       eval( "#{@yaml['eval']} '#{@record[ @yaml['name'] ]}'") 
     end
