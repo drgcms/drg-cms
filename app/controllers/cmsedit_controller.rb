@@ -425,9 +425,9 @@ def update
     if save_data
       params[:return_to] = 'index' if params[:commit] == t('drgcms.save&back') # save & back
       @parms['action'] = 'update'
-    end
 # Process return_to link
-    return process_return_to(params[:return_to]) if params[:return_to] 
+      return process_return_to(params[:return_to]) if params[:return_to]      
+    end
   else
     flash[:error] = t('drgcms.not_authorized')
   end
@@ -756,7 +756,7 @@ def save_data
 # dont's save if callback method returns false    
     return false if ret.class == FalseClass
   end
-# maybe model has dc_before_save method defined. Call it.
+# maybe model has dc_before_save method defined. Call it. This was before callback
   @record.dc_before_save(self) if @record.respond_to?('dc_before_save')
 #
   changes = @record.changes
