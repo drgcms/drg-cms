@@ -112,10 +112,10 @@ end
 # Initial database seed
 ########################################################################
 def seed
-  DcSite.all.delete
-  DcSimpleMenu.all.delete
-  DcPage.all.delete
-  DcPiece.all.delete
+#  DcSite.all.delete
+#  DcSimpleMenu.all.delete
+#  DcPage.all.delete
+#  DcPiece.all.delete
   
   if DcSite.all.size > 0
     p 'DcSite (Sites) collection is not empty! Aborting.'
