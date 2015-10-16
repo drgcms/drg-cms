@@ -595,7 +595,6 @@ def ro_standard
   return self if value.nil?
 #  
   get_choices.each do |choice|
-      p choice, value
     if choice.class == Array
       return super(choice.first) if choice.last == value
     else
