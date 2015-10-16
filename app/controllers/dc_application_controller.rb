@@ -238,6 +238,30 @@ def dc_set_options(parameters)
 end
 
 ##########################################################################
+# Check if document(s) has been modified since last visit. 
+# [Parameters:]
+# [Documents]: List of documents which are checked against last visit date. If
+# document
+##########################################################################
+def dc_not_modified?(*documents)
+#  request.env.each {|k,v| p k,'*',v}
+  return false unless request.env.include? 'HTTP_IF_MODIFIED_SINCE'
+
+  since_date = Time.parse request.env['HTTP_IF_MODIFIED_SINCE']
+  last_modified = since_date
+  documents.each do |doc|
+    next unless doc.respond_to?(:updated_at)
+    last_modified = doc.updated_at if doc.updated_at > last_modified
+  end
+#  p last_modified, since_date
+  if last_modified >= since_date then
+    render :nothing => true, :status => 304
+    return true
+  end
+  false
+end
+
+##########################################################################
 # This is default page process action. It will search for site, page and
 # design documents, collect parameters from different objects, add CMS edit code if allowed
 # and at the end render design.body or design.rails_view or site.rails_view.
@@ -318,10 +342,14 @@ end
 ##########################################################################
 # Single site document kind of request handler.
 # 
-# This request handler assumes that all data for the site is saved in the site 
-# document. 
-# Page data is saved in dc_parts documents embedded into site. 
+# This request handler assumes that all data for the site is saved in the site document. 
+# 
+# Page data is saved in dc_parts documents embedded into site document.
 # Menus are created from description fields. 
+# Menu links are created from link fields.
+# 
+# This kind of page may be good candidate for caching.
+# # Just a reminder: request.session_options[:skip] = true
 ##########################################################################
 def dc_single_sitedoc_request
   session[:edit_mode] ||= 0
@@ -334,6 +362,8 @@ def dc_single_sitedoc_request
   @parts = @site.dc_parts
   @part  = @parts.find_by(link: params[:path])
   return dc_render_404('Part!') unless @part
+# Document was not modified since last visit  
+#  return if dc_not_modified?(@site, @part)
 #  
   @page_title = "#{@site.page_title} #{@part.name}"
   @js, @css = '', ''
