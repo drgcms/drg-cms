@@ -44,6 +44,7 @@ def initialize( parent, opts={} ) #:nodoc:
   @parent = parent
   @opts   = opts
   @page   = @parent.page
+  @css    = ''
 end
 
 #########################################################################
@@ -70,7 +71,7 @@ end
 # Return CSS part of code.
 ########################################################################
 def render_css
-  @page.css
+  @css
 end
 
 end
