@@ -327,13 +327,14 @@ def dc_process_default_request()
   end
   @page_title = @page.title.blank? ? "#{@site.page_title}-#{@page.subject}" : @page.title
   layout      = @site.site_layout.blank? ? 'content' : @site.site_layout 
+  design      = @design ? @design.body : @site.design
 # render view. inline if defined in design
   view_filename = @design ? @design.rails_view.to_s : ''
-  view_filename = @site.rails_view.to_s   if view_filename.blank?
+  view_filename = @site.rails_view.to_s if view_filename.blank?
   if view_filename.size < 5
-    @design.body = "<%= render partial: 'cmsedit/edit_stuff' %>\n" + @design.body if session[:edit_mode] > 0 
-    @design.body << '<style type="text/css"><%= @css.html_safe %></style><%= javascript_tag @js %>'
-    render(inline: @design.body, layout: layout)
+    design = "<%= render partial: 'cmsedit/edit_stuff' %>\n" + design if session[:edit_mode] > 0 
+    design << '<style type="text/css"><%= @css.html_safe %></style><%= javascript_tag @js %>'
+    render(inline: design, layout: layout)
   else
     render view_filename, layout: layout
   end
