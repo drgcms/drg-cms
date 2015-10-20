@@ -573,7 +573,8 @@ def dc_actions_for_form()
             %Q[<td class="dc-link-ajax dc-animate" id="dc-submit-ajax" data-url="#{url}" 
                data-request="#{request}" title="#{v['title']}">#{icon}#{caption}</td>]
           else                   # link button
-            %Q[<td class="dc-link dc-animate" title="#{v['title']}><a href="#{url}">#{icon}#{caption}</a></td>]
+#            %Q[<td class="dc-link dc-animate" title="#{v['title']}><a href="#{url}">#{icon}#{caption}</a></td>]
+            %Q[<td class="dc-link dc-animate">#{dc_link_to(v['caption'],v['icon'], parms)}</td>]
           end
         end
 # Javascript action        
