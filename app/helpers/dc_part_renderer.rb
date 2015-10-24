@@ -187,7 +187,8 @@ def single_sitedoc
 # part not found. Render error message.
   return "Part #{@opts[:div_id]} not found!" if part.nil?
 # prepare edit parameters  
-  @opts[:editparams].merge!(id: part, ids: @parent.site._id, formname: 'dc_part', table: "dc_site;dc_part")
+  @opts[:editparams].merge!(id: part, ids: @parent.site._id, formname: 'dc_part', 
+                            table: "dc_site;dc_part", record_div_id: 'document' )
   render_particle(part, @opts) 
 end
 
