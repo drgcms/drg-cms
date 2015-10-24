@@ -160,6 +160,20 @@ function dc_reload_window() {
 }
 
 /*******************************************************************
+ * I would like to resize window to display whole tab. This will
+ * be a job for someone with better javascrip knowledge.
+ *******************************************************************/
+function dc_resize_to_tab() {
+  dom = $('iframe');
+  if (dom.contentWindow.document.body.offsetHeight > 10) {
+    alert(dom.style.height);
+    dom.style.height = (dom.contentWindow.document.body.offsetHeight + 30) + 'px'; 
+// scroll to top
+//    $('#' + iframe_name).dc_scroll_view();
+  }
+};
+
+/*******************************************************************
  * Will scroll to position on the screen. This is replacement for 
  * location.hash, which doesn't work in Chrome.
  * 
@@ -168,7 +182,7 @@ function dc_reload_window() {
 $.fn.dc_scroll_view = function () { 
   return this.each(function () {
     $('html, body').animate({
-      scrollTop: $(this).offset().top - 50
+      scrollTop: $(this).offset().top - 20
     }, 500);
   });
 };
@@ -237,6 +251,7 @@ $(document).ready( function() {
       $('#data_' + old_id).toggleClass('div-hidden');
       $('#data_' + e.target.getAttribute("data-div")).toggleClass('div-hidden');
     }
+//    dc_resize_to_tab();
   });  
 
 /*******************************************************************
@@ -248,7 +263,7 @@ $(document).ready( function() {
     new_height = this.contentWindow.document.body.offsetHeight + 50;
     if (new_height < 500 & new_height > 60) new_height = 500;
     this.style.height = new_height + 'px'; 
-    remove_background_from_iframe(this.contentWindow.document);
+//    remove_background_from_iframe(this.contentWindow.document);
     $('#iframe_cms').dc_scroll_view();
   });
 
