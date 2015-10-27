@@ -23,6 +23,57 @@
 #++
 */
 
+/* Web reset. Countributed by
+/* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: separate;
+	border-spacing: 0;
+}
+
+
 body {
 font-family: helvetica;
 font-size: 12px;
@@ -57,14 +108,16 @@ height: 2px;
 }
 
 .div {
-  background-color: red; 
   border: 0px;
   padding: 0px;
 }
 
+
 .normal {
   text-align: left;
 }
+
+td { vertical-align: middle; }
 
 th {
   padding: 5px 1px;
@@ -221,19 +274,21 @@ background-color: #888;
 .dc-link-submit {
   text-align: left;
   padding: 5px 6px;  
-/*  border:1px solid #eee; 
-  padding: 0px;*/
   margin-right: 4px;
 
   border-radius: 5px;
   background-color: #eee;   
-/*  background: linear-gradient(#eee 5%, #fff 100%); */
 }
 
+.dc-link-submit .fa {
+  color: #888;
+}
+.dc-link-submit:hover .fa {
+  color: #fff;
+}
 .dc-link-submit:hover {
   color: #000;
   background-color: #888;
-/*  background: linear-gradient(#fff 5%, #eee 100%); */
 }
 .dc-link-submit:hover .dc-submit {
   color: #fff;
@@ -245,7 +300,6 @@ background-color: #888;
   font-weight: bold;
   box-shadow: none;
   background: none;
-/*  background-color: none;   */
   padding: 0px 2px;
   border-radius: 0px;
 } 
@@ -254,8 +308,6 @@ background-color: #888;
   cursor: pointer;
   text-decoration: none;
   color: #fff;
-/*  border-bottom: 1px solid #888;
-  padding-top: 1px;*/
   background-color: #888; 
 }
 /*
@@ -386,7 +438,7 @@ background-color: #888;
   margin-bottom: 3px;
   padding-right: 2px;
   padding-left: 2px;
-  padding-bottom: 2px;
+  padding-bottom: 3px;
   border-bottom: 1px solid #eee;
 }
 
@@ -539,8 +591,6 @@ display: none;
 }
 
 .drgcms_popmenu_class {
-list-style:none;
-margin-left:-40px;
 padding:4px;
 position:absolute;
 background-color: #eee;
@@ -549,14 +599,14 @@ border-radius: 4px;
 z-index: 100;
 }
 
-.drgcms_popmenu_class a:hover {
-background-color: yellow;
-color: red;
-text-decoration: none;
+.drgcms_popmenu_item {
+padding: 6px;
+border: 1px solid #eee;
 }
-
 .drgcms_popmenu_item:hover {
 background-color: white;
+border: 1px solid #ddd;
+border-radius: 2px;
 }
 
 .drgcms_sort {
