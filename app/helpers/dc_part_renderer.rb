@@ -97,6 +97,11 @@ def load_parts #:nodoc:
     type = decamelize_type(part._type) || 'dc_part'
     @parent.parts << [part, @parent.page.id, type, "#{@parent.site.page_table};#{type}"]
   end
+# add parts in page
+  @parent.site.dc_parts.where(active: true).each do |part|
+    type = decamelize_type(part._type) || 'dc_part'
+    @parent.parts << [part, @parent.site.id, type, "dc_site;#{type}"]
+  end
 # add parts belonging to site, defined in dc_pieces
   DcPiece.where(site_id: @parent.site._id, active: true).each do |part|
     @parent.parts << [part, part._id, 'dc_piece', 'dc_piece']
