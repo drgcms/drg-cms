@@ -3,7 +3,7 @@
 table: dc_page
 
 index:
-  filter: subject, sub_subject as text_field, subject_link, author_name, body as text_field
+  filter: subject, sub_subject as text_field, subject_link, author_name, dc_site_id, body as text_field
   actions: standard
 
 result_set:

@@ -24,11 +24,11 @@
 ########################################################################
 # Task in this file are intend for cleaning up and making archive of statistics collections.
 # 
-# rake drgcms:clear_sessions. This is just an example how to cleanup sessions collection.
+# rake drg_cms:clear_sessions. This is just an example how to cleanup sessions collection.
 # 
 # rake clear_visits. Will archive and delete dc_visits documents. You will be prompted to enter end_date.
 # 
-# rake drgcms:clear_ad_stats. Will archive and delete dc_ad_stats collection. You will be prompted to enter end_date.
+# rake drg_cms:clear_ad_stats. Will archive and delete dc_ad_stats collection. You will be prompted to enter end_date.
 ########################################################################
 
 namespace :drg_cms do

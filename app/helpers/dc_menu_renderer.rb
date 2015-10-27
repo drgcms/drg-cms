@@ -126,8 +126,8 @@ def do_menu_level(menu, options={})
     if (sub = item.dc_menu_items).size > 0
       if @opts[:edit_mode] > 1
         opts = options.clone
-        opts[:ids]   = (opts[:ids]   ? "#{opts[:ids]};" : '')   + menu._id.to_s
-        opts[:table] = (opts[:table] ? "#{opts[:table]};" : '') + 'dc_menu_item'
+        opts['ids']   = (opts['ids']   ? "#{opts['ids']};" : '')   + menu._id.to_s
+        opts['table'] = (opts['table'] ? "#{opts['table']};" : '') + 'dc_menu_item'
       end
       html << do_menu_level(item, opts)
     end
