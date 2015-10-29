@@ -56,6 +56,7 @@ def default
 #  
   html = ''
   html << dc_page_edit_menu() if @opts[:edit_mode] > 1
+  @parent.page_title = @page.title.blank? ? @page.subject : @page.title
   html << @page.body
 end
 
