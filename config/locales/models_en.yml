@@ -181,7 +181,7 @@ en:
         active: Active
 
       dc_simple_menu:
-        tabletitle: Simple (my first) menus
+        tabletitle: Simple menus
         tab1: Base
         tab2: Items
         tab3: CSS
