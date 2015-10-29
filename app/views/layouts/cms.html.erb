@@ -4,8 +4,10 @@
   <title><%= @page_title %></title>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
   <%= stylesheet_link_tag "cms", media: 'all' %>
+<% if false %>  not require in cms mode
   <style type="text/css" media="all"><%= "#{@site.css if @site}#{@design.css if @design}\n#{@page.css if @page}".html_safe  %></style>
   <%= @site.header.html_safe if @site %>
+<% end %>
   <%= javascript_include_tag "cms" %>
   <%= csrf_meta_tags %>
 </head>

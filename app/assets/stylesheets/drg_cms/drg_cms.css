@@ -72,13 +72,14 @@ table {
 	border-collapse: separate;
 	border-spacing: 0;
 }
-
+/* END */
 
 body {
 font-family: helvetica;
 font-size: 12px;
 margin: 0px;
 vertical-align: middle;
+line-height: 1.3em;
 }
 
 textarea, input, select {
@@ -120,12 +121,10 @@ height: 2px;
 td { vertical-align: middle; }
 
 th {
-  padding: 5px 1px;
-  text-align: left;
-  border-bottom:2px solid #ccc;
-  background: #fff;
-/*  border-top:1px solid #ccc;
-  background: linear-gradient(#eee 5%, #fff 100%); */
+padding: 5px 1px;
+text-align: left;
+border-bottom:2px solid #ccc;
+background: #fff;
 }
 
 th a:hover { color: #000;}
@@ -425,21 +424,18 @@ background-color: #888;
 }
 
 .dc-color-odd {
-/*  background-color: #f4f4f4;  
-  border-bottom: solid 1px #eee; */
+  background-color: #f4f4f4;  
+/*  border-bottom: solid 1px #eee; */
 }
 .dc-color-even {
-  background-color: #f4f4f4; 
 /*  border-bottom: solid 1px #eee;  */
 }
 
 .dc-form-ul {
-  margin-top: 10px;
-  margin-bottom: 3px;
-  padding-right: 2px;
-  padding-left: 2px;
-  padding-bottom: 3px;
-  border-bottom: 1px solid #eee;
+margin-top: 6px;
+/*margin-bottom: 3px;*/
+padding: 2px;
+border-bottom: 1px solid #eee;
 }
 
 .dc-spinner {
@@ -454,7 +450,7 @@ background-color: #888;
   text-align: center;
   font-weight: bold;
 
-  padding:3px 15px;
+  padding:2px 15px;
   border-radius: 4px 4px 0px 0px;
   background: #eee;
   margin-right: 2px;
@@ -476,7 +472,7 @@ border-top: 2px solid #ccc;
 }
 
 #cmsedit-div a:link, #cmsedit-div a:active, #cmsedit-div a:visited  {
-color: #888;
+color: #666;
 font-weight: bold;
 text-decoration: none; 
 background: transparent;
@@ -505,20 +501,20 @@ background: transparent;
 }
 
 .cmsedit-table {
-  width: 100%;
-  background-color: #fff; 
-  border-spacing: 0px; 
-  border-collapse: collapse;
+width: 100%;
+background-color: #fff; 
+border-spacing: 0px; 
+border-collapse: collapse;
 }
 
 .cmsedit-menu {
-  background-color: #fff;
-  padding: 4px;
-  border-bottom: 3px solid #666;
-  margin-bottom: 10px;
+background-color: #fff;
+padding: 4px;
+border-bottom: 3px solid #666;
+margin-bottom: 10px;
 }
 .cmsedit-menu a {
-  margin-right: 5px;
+margin-right: 5px;
 }
 
 .cmsedit-menu select#record_select { 
@@ -527,8 +523,75 @@ max-width: 300px;
 height: 26px;
 }
 
+.cmsedit-menu ul {
+display: inline-block; 
+color: #666;
+margin-right: 4px;
+font-size: 14px;
+}
+.cmsedit-menu .fa {width: 20px;}
+
+.cmsedit-menu li a:link, #cmsedit-div li a:visited {
+font-weight: normal;
+color: #fff;
+}
+.cmsedit-menu ul li ul {
+display: none;
+position: absolute;
+z-index: 1000;
+color: #222;
+background-color: #fff;
+border: 1px solid #888;
+box-shadow: 2px 2px 4px #ccc;
+}
+
+.cmsedit-menu ul li ul li:hover > ul li ul  {
+display:block;
+}
+  
+#cmsedit-div li a:link, #cmsedit-div li a:visited {
+font-weight: normal;
+color: #222;
+}
+
+#cmsedit-div li a:hover {
+color: #222;
+}
+
+.cmsedit-menu ul li ul li { 
+padding: 5px;
+}
+.cmsedit-menu ul li ul li:hover {
+background-color: #ddd; 
+color: #222; 
+}
+
+.cmsedit-menu ul li ul li ul {
+z-index: 1000;
+left: 100%;
+position: absolute;
+margin-top: -20px;
+display: none;
+color: #fff;
+background-color: #fff;
+border: 1px solid #888;
+box-shadow: 2px 2px 4px #ccc;
+min-width:300px;
+}
+
+.cmsedit-menu ul li ul a { color: white; }
+
+.cmsedit-menu ul li:hover > ul {
+display:block;
+}
+.cmsedit-menu ul li li {
+position:relative; 
+display:block;
+float:none;
+}
+
 #result {
-  background-color: #eee;
+background-color: #eee;
 }
 
 /*********************/

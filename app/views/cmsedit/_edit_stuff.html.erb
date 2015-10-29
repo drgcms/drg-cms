@@ -5,10 +5,19 @@
     <table class="cmsedit-table">
     <tr>
       <td class="cmsedit-menu">
-        <%#= link_to(image_tag('drg_cms/view_tile.png', class: 'dc-link-img', title: t('drgcms.menu_plus')), '#', 
+  <% if false %>     
+        <%= link_to(image_tag('drg_cms/view_tile.png', class: 'dc-link-img', title: t('drgcms.menu_plus')), '#', 
             onclick: "$('#cmsedit-menu-plus').toggleClass('div-hidden');")  %>
+  <% end %> 
+        <ul><li>
+         <%= fa_icon('bars lg') %>
+         <ul>
+          <%= dc_choices4_cmsmenu.html_safe %>
+         </ul>
+        </li></ul>
+        
         <% if @page %>
-          <%= link_to( fa_icon('edit lg', class: "dc-animate", title: "#{t('drgcms.edit_page')}"),
+          <%= link_to( fa_icon('file-text-o lg', class: "dc-animate", title: "#{t('drgcms.edit_page')}"),
               {controller: 'cmsedit', action: 'edit', table: @site.page_table, id: @page._id}, target: 'iframe_cms') %>
         <% end %>
 
@@ -21,7 +30,7 @@
           <%= link_to( fa_icon('globe lg', class: "dc-animate", title: "#{t('drgcms.edit_site')}"),
               {controller: 'cmsedit', action: 'edit', table: 'dc_site', id: @site._id}, target: 'iframe_cms') %>
         <% end %>
-
+        <b>&nbsp; | &nbsp; </b>
         <%= link_to( fa_icon('compress lg', class: "dc-animate", title: t('drgcms.minimize')), '#',
             onclick: "$('#iframe_cms').height(1); return false;" ) %>
 
@@ -30,10 +39,13 @@
 
         <%= link_to( fa_icon('refresh lg', class: "dc-animate", title: t('drgcms.reload')), '#',
             onclick: "document.location.reload(true); return false;")  %>
-
+        <b>&nbsp; | &nbsp; </b>
+  <% if false %>     
         <%= select('record', 'select', dc_choices4_cmsmenu ) %>
+        
         <%= link_to( fa_icon('bars lg', class: "dc-animate", title: t('drgcms.edit_selected')), '#',
             onclick: "$('#iframe_cms').attr('src', $('#record_select').val() ); return false;")  %>
+  <% end %>
 
         <%= link_to( fa_icon('copy lg', class: "dc-animate", title: "#{t('drgcms.doc_paste_title')}"),
             {controller: 'dc_common', action: 'paste_clipboard'}, target: 'iframe_cms') %>
@@ -42,11 +54,11 @@
 
       </td>
     </tr>
-
-    <tr class="cmsedit-menu-plus" class="div-hidden dc-form-frame"><td>
+<% if false %>
+    <tr class="cmsedit-menu-plus div-hidden dc-form-frame"><td>
       <%= @menu_plus %>
     </td><tr>
-
+<% end %>
     <tr class="cmsedit-iframe"><td class="cmsedit-iframe">
       <div><iframe id="iframe_cms" name="iframe_cms"></iframe></div>
     </td></tr>

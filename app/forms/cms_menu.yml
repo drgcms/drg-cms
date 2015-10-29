@@ -22,104 +22,91 @@
 #++
 
 menu:
-  50_system_menu:
+  10_system_menu:
     caption: drgcms.system_menu
+    icon: support lg
+    
     items:
       10: 
         caption: helpers.label.dc_site.tabletitle
         controller: cmsedit
-        picture: dc_site.png
-        params:
-          table: dc_site
+        icon: globe lg
+        table: dc_site
       20: 
         caption: helpers.label.dc_design.tabletitle
         controller: cmsedit
-        picture: dc_design.png
-        params:
-          table: dc_design
+        icon: credit-card lg
+        table: dc_design
       30: 
         caption: helpers.label.dc_page.tabletitle
         controller: cmsedit
-        picture: dc_page.png
-        params:
-          table: dc_page
+        icon: file-text-o lg
+        table: dc_page
       40: 
-        caption: helpers.label.dc_category.tabletitle
-        controller: cmsedit
-        picture: dc_category.png
-        params:
-          table: dc_category
-      50: 
         caption: helpers.label.dc_user.tabletitle
         controller: cmsedit
-        picture: dc_user.png
-        params:
-          table: dc_user
-      60: 
+        icon: users lg        
+        table: dc_user
+      50: 
         caption: helpers.label.dc_piece.tabletitle
         controller: cmsedit
-        picture: dc_piece.png
-        params:
-          table: dc_piece
-      70: 
+        icon: puzzle-piece lg        
+        table: dc_piece
+      60: 
         caption: helpers.label.dc_link.tabletitle
         controller: cmsedit
-        picture: dc_link.png
-        params:
-          table: dc_link
-      80: 
+        icon: link lg        
+        table: dc_link
+      70: 
         caption: helpers.label.dc_menu.tabletitle
         controller: cmsedit
-        picture: dc_menu.png
-        params:
-          table: dc_menu
-      90: 
+        icon: th-list lg        
+        table: dc_menu
+      80: 
         caption: helpers.label.dc_simple_menu.tabletitle
         controller: cmsedit
-        picture: dc_simple_menu.png
-        params:
-          table: dc_simple_menu
+        icon: ellipsis-h lg        
+        table: dc_simple_menu
+      90: 
+        caption: helpers.label.dc_category.tabletitle
+        controller: cmsedit
+        icon: list lg        
+        table: dc_category
+          
       100: 
         caption: helpers.label.dc_poll.tabletitle
         controller: cmsedit
-        picture: dc_poll.png
-        params:
-          table: dc_poll
+        icon: list-alt lg        
+        table: dc_poll
       110: 
         caption: helpers.label.dc_ad.tabletitle
         controller: cmsedit
-        picture: dc_ad.png
-        params:
-          table: dc_ad
+        icon: money lg        
+        table: dc_ad
       120: 
         caption: helpers.label.dc_big_table.tabletitle
         controller: cmsedit
-        picture: dc_big_table.png
-        params:
-          table: dc_big_table
+        icon: table lg        
+        table: dc_big_table
       130: 
         caption: helpers.label.dc_policy_role.tabletitle
         controller: cmsedit
-        picture: dc_policy_role.png
-        params:
-          table: dc_policy_role
+        icon: user-secret lg        
+        table: dc_policy_role
       140: 
         caption: helpers.label.dc_permission.tabletitle
         controller: cmsedit
-        picture: dc_permission.png
-        params:
-          table: dc_permission
+        icon: shield lg        
+        table: dc_permission
       150: 
         caption: helpers.label.dc_folder_permission.tabletitle
         controller: cmsedit
-        picture: dc_permission.png
-        params:
-          table: dc_folder_permission
+        icon: shield lg        
+        table: dc_folder_permission
       160: 
         caption: helpers.label.dc_journal.tabletitle
         controller: cmsedit
-        picture: dc_journal.png
-        params:
-          table: dc_journal
+        icon: undo lg        
+        table: dc_journal
 
                 

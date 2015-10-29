@@ -773,6 +773,39 @@ def dc_choices4_cmsmenu()
   choices
 end
 
+##########################################################################
+# Returns choices for creating collection edit select field on CMS top menu.
+##########################################################################
+def dc_choices4_cmsmenu()
+  menus = {}
+  DrgCms.paths(:forms).reverse.each do |path|
+    filename = "#{path}/cms_menu.yml"
+    next unless File.exist?(filename)
+    menu = YAML.load_file(filename) rescue nil      # load menu
+    next if menu.nil? or !menu['menu']              # not menu or error
+    menus = forms_merge(menu['menu'], menus)        # ignore top level part
+ end
+#
+  html = ''
+  menus.to_a.sort.each do |one_menu|    # sort menus, result is array of sorted hashes
+    menu = one_menu[1]                  # value is the second (1) element of array
+    next unless menu['caption']
+    html << "<li>#{fa_icon(menu['icon'])}#{t(menu['caption'])}<ul>"
+    menu['items'].to_a.sort.each do |item|          # as above. sort items first 
+      value = item[1]
+      opts = { controller: value['controller'], 
+               action: value['action'], 
+               table: value['table'],
+               formname: value['formname'] || value['table'],
+               target: value['target'] || 'iframe_cms'               
+             }
+      html << "<li>#{dc_link_to(t(value['caption']), value['icon'] || '', opts)}</li>"      
+    end   
+    html << '</ul></li>'  
+  end
+  html
+end
+
 ############################################################################
 # Returns list of directories as array of choices for use in select field 
 # on folder permission form. Directory root is determined from dc_site.files_directory field.
