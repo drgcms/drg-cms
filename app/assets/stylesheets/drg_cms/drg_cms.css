@@ -55,7 +55,7 @@ footer, header, hgroup, menu, nav, section {
 	display: block;
 }
 body {
-	line-height: 1;
+/*	line-height: 1; */
 }
 ol, ul {
 	list-style: none;
@@ -79,7 +79,6 @@ font-family: helvetica;
 font-size: 12px;
 margin: 0px;
 vertical-align: middle;
-line-height: 1.3em;
 }
 
 textarea, input, select {
