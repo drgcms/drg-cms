@@ -368,7 +368,7 @@ def dc_single_sitedoc_request
 #  
   @page_title = "#{@site.page_title} #{@part.name}"
   @js, @css = '', ''
-  layout = session[:edit_mode] > 0 ? 'cms' : @site.site_layout
+  layout = @site.site_layout.blank? ? 'content' : @site.site_layout
   if @site.rails_view.blank?
     design = @site.design + '<style type="text/css"><%= @css.html_safe %></style><%= javascript_tag @js %>'
     design = "<%= render partial: 'cmsedit/edit_stuff' %>\n" + design if session[:edit_mode] > 0 
