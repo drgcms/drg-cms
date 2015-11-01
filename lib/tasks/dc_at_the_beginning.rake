@@ -168,7 +168,7 @@ EOT
   rule = DcPolicyRule.new( dc_policy_role_id: guest._id, permission: DcPermission::CAN_VIEW)
   policy.dc_policy_rules << rule
 # Design document  
-  design = DcDesign.new(name: 'simple',description: 'Simple page')
+  design = DcDesign.new(description: 'Simple page')
   design.body =<<EOT
 <div id="site">
   <div id="site-top">
