@@ -106,8 +106,9 @@ def do_one_item(poll, yaml)
       end
       @end_od_data = true
     end
-# submit and link tag      
-    html << "<span class='dc-link-submit dc-animate'>#{field_html}#{yaml['separator']}</span>"
+# submit and link tag 
+    clas = yaml['type'].match(/submit_tag/) ? '' : 'dc-link-submit'
+    html << "<span class='#{clas} dc-animate'>#{field_html}#{yaml['separator']}</span>"
 # other elements
   else
     html << if poll.display == 'lr'
