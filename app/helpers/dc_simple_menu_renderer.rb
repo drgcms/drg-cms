@@ -285,7 +285,7 @@ def default
   html << "<div class=\"sub-#{div_name}\">
         <ul class=\"ul-sub-#{div_name}\">"
   y = YAML.load(@selected.submenu) rescue []
-  if y.class == Array
+  if y.class == Hash
     y.each do |k,v|
       html << "<li class=\"li-sub-#{div_name}\">#{@parent.link_to(v['title'], v['link'])}</li>"
     end
