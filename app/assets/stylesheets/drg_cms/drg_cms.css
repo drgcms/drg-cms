@@ -101,6 +101,11 @@ background: #fff;
 }
 */
 
+select {
+padding: 3px 0px;
+background: #fff;  
+}
+
 hr {
 background-color: #ccc;
 border: none;
@@ -183,7 +188,7 @@ padding: 0px;
 #data-fields {margin: 5px;}
 
 .dc-link {
-padding: 4px 8px;
+padding: 3px 8px;
 text-align: center;
 border-radius: 5px;
 background-color: #eee;
@@ -280,13 +285,13 @@ transition: 0.3s;
 
 .dc-animate-button {
 background-color: #888;
-background: transparent linear-gradient(to bottom, #ddd 0%, #FFF 100%) repeat scroll 0% 0%;
-border: 1px solid #ddd;
+background: transparent linear-gradient(to bottom, #ddd 0%, #FFF 100%) repeat scroll 0% 0% !important;
+/*border: 1px solid #ddd;*/
 }
 
 .dc-link-submit {
   text-align: left;
-  padding: 5px 6px;  
+  padding: 4px 6px;  
   margin-right: 4px;
 
   border-radius: 5px;
@@ -742,7 +747,7 @@ color: #888;
 #dc-action-menu ul {
 list-style:none;
 padding: 0px;
-margin: 6px 2px 4px 0px; 
+margin: 6px 2px 4px 2px; 
 }
 
 .dc-action-menu  {
