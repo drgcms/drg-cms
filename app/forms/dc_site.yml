@@ -113,7 +113,7 @@ form:
       60:
         name: menu_name
         type: text_with_select
-        eval: dc_choices4('dc_simple_menu','name','name')
+        eval: dc_choices4(@record.menu_class,'description','name')
         html:
           size: 30
       90:
