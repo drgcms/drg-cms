@@ -477,13 +477,30 @@ element = $(this).find(':first').attr('id');
   });
   
  /*******************************************************************
-  * Fire show document when doubleclicked on result row
+  * Fire action (by default show document) when doubleclicked on result row
   *******************************************************************/
   $('.dc-result tr').on('dblclick', function(e) {
-    e.preventDefault();
-    url = this.getAttribute("data");
-    if (url !== null & url.length > 5) { location.href = url; } // prevent when url not set
+    url = String( this.getAttribute("data-dblclick") );
+// prevent when data-dblclick not set
+    if (url.length > 5) { 
+      e.preventDefault();
+      location.href = url;
+    } 
   });
+
+ /*******************************************************************
+  * Fire action clicked on result row. 
+  * TODO: Find out how to prevent event when clicked on action icon.
+  *******************************************************************/
+  $('.dc-result tr').on('click', function(e) {
+    url = String( this.getAttribute("data-click") );
+// prevent when data-click not set
+    if (url.length > 5) { 
+      e.preventDefault();
+      location.href = url; 
+    } 
+  });
+
 
 });
 
