@@ -720,7 +720,7 @@ def dc_choices4_all_collections
     menu['menu'].each do |section|
       next unless section.last['items']             # next if no items
       section.last['items'].each do |k, v|          # look for caption and 
-        key = v['params']['table']
+        key = v['table']
         choices[key] ||= "#{key} - #{t(v['caption'], v['caption'])}" 
       end
     end
