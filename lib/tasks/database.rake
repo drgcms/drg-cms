@@ -2,7 +2,7 @@
 @logger = Logger.new(STDOUT)
 
 #########################################################################
-# Determine module class from filename.
+# Determine model class from filename.
 #########################################################################
 def determine_model(path)
   path =~ /(.*)\/(.*).rb/
