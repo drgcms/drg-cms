@@ -1,0 +1,24 @@
+## Registration form. Not yet implemented.
+---
+table: dc_dummy
+title: Browse field definitions
+controls: browse_models
+
+result_set:
+  filter: fields
+
+  columns:
+      
+    10:   
+      name: collection
+      caption: Collection
+    20:  
+      name: field
+      caption: Field name
+    30:  
+      name: type
+      caption: Field type
+    40:  
+      name: description
+      caption: Description
+      
