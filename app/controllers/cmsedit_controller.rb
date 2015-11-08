@@ -206,9 +206,11 @@ def index
         @records = []
         return render(action:  :index)
       end
-# pagination      
-      per_page = (@form['result_set']['per_page'] || 30).to_i
-      @records = @records.page(params[:page]).per(per_page) if per_page > 0
+# pagination
+      unless @form['table'] == 'dc_dummy'
+        per_page = (@form['result_set']['per_page'] || 30).to_i
+        @records = @records.page(params[:page]).per(per_page) if per_page > 0
+      end
     else
       p "Error: result_set:filter: #{@form['result_set']['filter']} not found in controls!"
     end

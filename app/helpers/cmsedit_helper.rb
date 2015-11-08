@@ -230,56 +230,18 @@ def dc_link_or_ajax(yaml, parms) #:nodoc:
   rest['class']   =  rest['class'].to_s + ' dc-animate'
   rest['title']   = yaml['title']
   
-#  method  = yaml['method'] || yaml['request'] || 'get'
-#  caption = yaml['caption'] || yaml['text']
   dc_deprecate "Form: result_set:action:text directive will be deprecated. Use caption instead of text." if yaml['text']
-#
-=begin
-  if yaml['type'] == 'link'
-    if yaml['icon'] # icon
-      link_to( image_tag(yaml['icon'], class: 'dc-link-img dc-link-ajax dc-animate'), parms, method: method, title: t(yaml['title'],yaml['title']) )
-    else            # caption
-      '<span class="dc-link-ajax dc-animate">' + link_to(" #{t(caption, caption)} ", parms, method: method, title: t(yaml['title'],yaml['title']) ) + '</span>'
-    end
-  else # ajax
-    url = url_for(parms)
-    if yaml['icon'] # icon
-      image_tag(yaml['icon'], class: 'dc-link-img dc-link-ajax dc-animate', 'data-url' => url, 'data-request' => method)
-    else            # caption
-      %Q[<span class="dc-link-ajax dc-animate" data-url="#{url}" data-request="#{method}">#{caption}</span>]
-    end
-  end
-#####
-  caption = ''
-  if yaml['type'] == 'link'
-    if yaml['icon'] # icon
-      caption = if yaml['icon'].match('.')
-        image_tag(yaml['icon'], class: 'dc-link-img dc-link-ajax dc-animate')
-      else    
-        fa_icon("#{yaml['icon']} 2x" , class: 'dc-link-ajax dc-animate')
-      end
-    end
-    if yaml['caption']
-      caption << ' ' if caption.size > 0
-      caption << t(yaml['caption'],yaml['caption'])
-    end
-    link_to(caption, parms, method: method, title: t(yaml['title'],yaml['title']) ) 
-  else
-    ''
-  end
-=end
   if yaml['type'] == 'link'
     dc_link_to(yaml['caption'], yaml['icon'], parms, rest ) 
   else
     ''
   end
-  
 end
 
 ############################################################################
 # Creates actions that could be performed on single row of result set.
 ############################################################################
-def dc_actions_for_result(record)
+def dc_actions_for_result(document)
   actions = @form['result_set']['actions']
   return '' if actions.nil? or @form['readonly']
 # standard actions  
@@ -297,31 +259,31 @@ def dc_actions_for_result(record)
     html << case
     when yaml['type'] == 'edit' then
       parms['action'] = 'edit'
-      parms['id']     = record.id
+      parms['id']     = document.id
       dc_link_to( nil, 'pencil lg', parms )
     when yaml['type'] == 'duplicate' then
-      parms['id']     = record.id
+      parms['id']     = document.id
 # duplicate string will be added to these fields.
       parms['dup_fields'] = yaml['dup_fields'] 
       parms['action'] = 'create'
       dc_link_to( nil, 'copy lg', parms, data: { confirm: t('drgcms.confirm_dup') }, method: :post )
     when yaml['type'] == 'delete' then
       parms['action'] = 'destroy'
-      parms['id']     = record.id
+      parms['id']     = document.id
       dc_link_to( nil, 'remove lg', parms, data: { confirm: t('drgcms.confirm_delete') }, method: :delete )
 # undocumented so far
     when yaml['type'] == 'edit_embedded'
       parms['controller'] = 'cmsedit'
       parms['table'] +=  ";#{yaml['table']}"
       parms['ids']   ||= ''
-      parms['ids']   +=  "#{record.id};"
+      parms['ids']   +=  "#{document.id};"
       dc_link_to( nil, 'table lg', parms, method: :get )
     when yaml['type'] == 'link' || yaml['type'] == 'ajax' then
       if yaml['url']
         parms['controller'] = yaml['url']
-        parms['idr']        = record.id
+        parms['idr']        = document.id
       else
-        parms['id']         = record.id
+        parms['id']         = document.id
       end
       parms['controller'] = yaml['controller'] if yaml['controller']
       parms['action']     = yaml['action']     if yaml['action']
@@ -349,10 +311,10 @@ def dc_header_for_result()
     columns.each do |k,v|
       session[:form_processing] = "result_set:columns: #{k}=#{v}"
       th = '<th '
-      v = {'name' => v} if v.class == String
+      v = {'name' => v} if v.class == String      
       caption = v['caption'] || t("helpers.label.#{@form['table']}.#{v['name']}")
-      th << "style=\"#{v['style']}\" " if v['style']
-      th << "class=\"#{v['class']}\" " if v['class']
+#      th << "style=\"#{v['style']}\" " if v['style']
+#      th << "class=\"#{v['class']}\" " if v['class']
 # no sorting when embedded field or custom filter is active
       if @tables.size == 1 and @form['result_set']['filter'].nil?
         th << ">#{link_to(caption, sort: v['name'], table: @tables[0][1], action: :index )}</th>"
@@ -363,6 +325,30 @@ def dc_header_for_result()
     end
   end
   c.html_safe
+end
+
+############################################################################
+# Creates div with documents of current result set.
+############################################################################
+def dc_clicks_for_result(document)
+  html = ''
+  if @form['result_set']['dblclick']
+    yaml = @form['result_set']['dblclick']
+    opts = {}
+    opts[:controller] = yaml['controller'] || 'cmsedit'
+    opts[:action]     = yaml['action']
+    opts[:table]      = yaml['table']
+    opts[:formname]   = yaml['formname']
+    opts[:method]     = yaml['method'] || 'get'
+    opts[:id]         = document['id']
+    html << ' data-dblclick=' + url_for(opts) 
+  else
+     html << (' data-dblclick=' +
+       url_for(action: 'show', controller: 'cmsedit', id: document, 
+       readonly: (params[:readonly] ? 2 : 1), table: params[:table],
+       formname: params[:formname], ids: params[:ids])  ) if @form['form'] 
+  end
+  html
 end
 
 ############################################################################
@@ -384,6 +370,20 @@ def dc_format_value(value, format=nil)
 end      
 
 ############################################################################
+# Defines style or class for row (tr) or column (td)
+############################################################################
+def dc_style_or_class(selector, yaml, value)
+  return '' if yaml.nil?
+  html = "#{selector}=\""
+  html << if yaml.class == String
+    yaml
+  else
+    yaml['eval'] ? eval(yaml['eval']) : ''
+  end
+  html << '"'
+end      
+
+############################################################################
 # Creates div with documents of current result set.
 ############################################################################
 def dc_columns_for_result(document)
@@ -393,9 +393,6 @@ def dc_columns_for_result(document)
       session[:form_processing] = "result_set:columns: #{k}=#{v}"
 # convert shortcut to hash 
       v = {'name' => v} if v.class == String
-      td = '<td '
-      td << "style=\"#{v['style']}\" " if v['style']
-      td << "class=\"#{v['class']}\" " if v['class']
 # eval
       value = if v['eval']
         if v['eval'].match('dc_name4_id')
@@ -424,10 +421,21 @@ def dc_columns_for_result(document)
             eval( "#{v['eval']} '#{document[ v['name'] ]}'") 
           end
         end
-      else 
-        document.respond_to?(v['name']) ? dc_format_value(document.send( v['name'] ), v['format']) : "!!! #{v['name']}"
+# as field        
+      elsif document.respond_to?(v['name'])
+        dc_format_value(document.send( v['name'] ), v['format']) 
+# as hash (dc_dummy)
+      elsif document.class == Hash 
+        document[ v['name'] ]
+# error
+      else
+        "!!! #{v['name']}"
       end
-      html << td << ">#{value}</td>"
+#
+      td = '<td '
+      td << dc_style_or_class('class',v['class'],value)
+      td << dc_style_or_class('style',v['style'],value)
+      html << "#{td}>#{value}</td>"
     end
   end
   html.html_safe
