@@ -109,4 +109,11 @@ menu:
         icon: undo lg        
         table: dc_journal
 
+      500: 
+        caption: drgcms.browse_collections
+        controller: cmsedit
+        icon: table lg        
+        table: dc_dummy
+        formname: dc_browse_models
+
                 
