@@ -82,6 +82,8 @@ sl:
     new_record: Nov zapis
 
     choices4_filter_operators: 'Je enak:eq,Vsebuje:like'
+    
+    browse_collections: Brskanje po zbirkah
 
     dc_journal:
       zero_selected: Ni izbranih podatkov!

@@ -3,22 +3,30 @@
 table: dc_dummy
 title: Browse field definitions
 controls: browse_models
+permissions:
+  can_view: admin
 
 result_set:
   filter: fields
 
   columns:
-      
     10:   
       name: collection
       caption: Collection
+      td_style: 'width: 150px;'
     20:  
       name: field
       caption: Field name
+      td_style: 'width: 150px;'
     30:  
       name: type
       caption: Field type
     40:  
       name: description
-      caption: Description
+      caption: description
+      td_style:
+        eval: "document['field'] == document['description'] ? 'color: gold;' : 'color: #000;'"
+    50:  
+      name: _default
+      caption: Default
       

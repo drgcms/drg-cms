@@ -3,9 +3,11 @@
 table: dc_dummy
 title: Browse collection models
 controls: browse_models
+permissions:
+  can_view: admin
 
 result_set:
-  filter: models
+  filter: collections
 
   dblclick:
     type: link
@@ -14,16 +16,11 @@ result_set:
     action: index
 
   columns:
-      
     10:   
       name: id
       caption: Collection
-      style: 
-        eval: "if value > '2' then 'width: 150px;color: red;' else 'width: 100px;color: green;' end"
-      class: 
-        eval: "if value > '2' then 'zelena' else 'dc-table' end"
+      td_style: 'font-weight: bold;width: 150px;'
       
     20:  
       name: description
       caption: Decription
-      style: 'color: blue;'

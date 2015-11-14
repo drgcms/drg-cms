@@ -35,6 +35,7 @@ def determine_model(path)
   path =~ /(.*)\/(.*).rb/
   begin
     $2.camelize.constantize 
+    $2
   rescue Exception # it happends
     nil
   end
@@ -43,26 +44,25 @@ end
 #########################################################################
 # Return array of all models found in application.
 #########################################################################
-def all_models()
-  models = []
+def all_collections()
+  collections = []
   DrgCms.paths(:forms).each do |path|
     models_dir = File.expand_path("../models", path)
     Dir["#{models_dir}/*.rb"].each do |model_file| 
-      model = determine_model(model_file)
-      models << model if !model.nil? and model.respond_to?(:index_specifications)
+      collection_name = determine_model(model_file)
+      collections << collection_name if collection_name
     end
   end
-  models
+  collections.sort
 end
 
 ######################################################################
-# List all models
+# List all collections
 ######################################################################
-def models()
+def collections()
   @records = []
-  models = dc_choices4_all_collections
-  models.each do |model|
-    @records << {'id' =>  model.last, 'description' => model.first} 
+  all_collections.each do |collection|
+    @records << {'id' =>  collection, 'description' => t("helpers.label.#{collection}.tabletitle") } 
   end
   @records
 end
@@ -74,9 +74,31 @@ def fields()
   @records = []
   model = params[:id].classify.constantize
   document = model.new
-  document.attribute_names.each do |attr_name|
-    @records << {'collection' =>  params[:id], 'field' => attr_name, 'type' => document['attr_name'].class } 
+  document.attribute_names.each do |attribute_name|
+    options = model.fields[attribute_name].options
+    description = t("helpers.label.#{params[:id]}.#{attribute_name}")
+    description = attribute_name if description.match('helpers.label')
+
+    @records << {'collection' =>  params[:id], 
+                 'field' => attribute_name, 
+                 'type' => options[:type],
+                 'description' => description, 
+                 '_default' => options[:default]
+                } 
   end
+# embedded documents
+  document.embedded_relations.each do |a_embedded|
+    embedded = a_embedded.last
+    description = t("helpers.label.#{params[:id]}.#{embedded.key}")
+    description = embedded.key if description.match('helpers.label')
+
+    @records << {'collection' =>  params[:id], 
+                 'field' => embedded.key, 
+                 'type' => 'Embedded:' + embedded.class_name,
+                 'description' => description
+                }
+  end
+
   @records
 end
 

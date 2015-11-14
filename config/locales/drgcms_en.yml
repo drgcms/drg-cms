@@ -82,6 +82,8 @@ en:
     new_record: New record
 
     choices4_filter_operators: 'Equal:eq,Like:like'
+    
+    browse_collections: Browse all collections
 
     dc_journal:
       zero_selected: No data selected!

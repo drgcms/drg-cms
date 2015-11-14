@@ -1,0 +1,35 @@
+<style>
+.hidden {display: none;}
+.model { font-size: 1.2em; width: 750px;}
+.model .col1 {padding: 3px; width: 150px; background-color: #ddd; float: left;}
+.model .col2 {padding: 3px; width: 550px; background-color: #eee; float: left;}
+.model { font-size: 1.1em; width: 850px; color: #1c94c4 }
+.fields .col1 {padding: 3px; width: 150px;  float: left;}
+.fields .col2 {padding: 3px; width: 150px;  float: left;}
+.fields .col3 {padding: 3px; width: 150px;  float: left;}
+.fields .col4 {padding: 3px; width: 350px;  float: left;}
+</style>
+
+<% for description in descriptions; collection = description.first; fields = description.last.first %>
+<div class="model">
+  <div class="col1" data-model="<%= collection['id'] %>" > <%= collection['id'] %></div>
+  <div class="col2" data-model="<%= collection['id'] %>" > <%= collection['description'] %></div>
+  <div style="clear:both;"></div>
+</div>
+
+<div id="<%= collection['id'] %>" class="fields hidden">
+  <div class="col2"><%= fields['field'] %></div>
+  <div class="col3"><%= fields['type'] %></div>
+  <div class="col4"><%= fields['description'] %></div>
+  <div style="clear:both;"></div>
+</div>
+<% end %>
+
+<%= javascript_tag do %>
+$(document).ready( function() {
+  $('.model').on('click',function(e) {
+    div_id = e.target.getAttribute("data-model");
+    $('#'+div_id).toggleClass('hidden');
+  });
+});
+<% end %>
