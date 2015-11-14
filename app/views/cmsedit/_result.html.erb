@@ -4,14 +4,14 @@
   <%= dc_table_title_for_result @records %>
 
   <% unless @records.nil? %>
-    <table class="dc-result">
+    <table class="dc-result <%= @form['result_set']['table_class'] %>" 
+           style="<%= @form['result_set']['table_style'] %> ">
       <tr><%= dc_header_for_result %></tr>
 
-      <% for r in @records %>
-        <tr class="dc-<%= cycle("odd","even")%>" <%= dc_clicks_for_result r %> >
-        <%= dc_actions_for_result r %>
-        <%= dc_columns_for_result r %>
-          
+      <% for document in @records %>
+        <%= dc_row_for_result(document) %>
+        <%= dc_actions_for_result(document) %>
+        <%= dc_columns_for_result(document) %>
         </tr>
       <% end %>
         

@@ -372,19 +372,29 @@ end
 ############################################################################
 # Defines style or class for row (tr) or column (td)
 ############################################################################
-def dc_style_or_class(selector, yaml, value)
+def dc_style_or_class(selector, yaml, value, document)
   return '' if yaml.nil?
-  html = "#{selector}=\""
+  html = selector ? "#{selector}=\"" : ''
   html << if yaml.class == String
     yaml
   else
-    yaml['eval'] ? eval(yaml['eval']) : ''
+    (yaml['eval'] ? eval(yaml['eval']) : '') rescue 'background-color:red;'
   end
-  html << '"'
-end      
+  html << '"' if selector 
+  html
+end 
 
 ############################################################################
-# Creates div with documents of current result set.
+# Creates tr code for each row of result set.
+############################################################################
+def dc_row_for_result(document)
+  clas  = "dc-#{cycle('odd','even')} " + dc_style_or_class(nil,@form['result_set']['tr_class'],nil,document)
+  style = dc_style_or_class('style',@form['result_set']['tr_style'],nil,document)
+  "<tr class=\"#{clas}\" #{dc_clicks_for_result(document)} #{style}>".html_safe
+end
+
+############################################################################
+# Creates column for each field of result set document.
 ############################################################################
 def dc_columns_for_result(document)
   html = ''  
@@ -433,8 +443,8 @@ def dc_columns_for_result(document)
       end
 #
       td = '<td '
-      td << dc_style_or_class('class',v['class'],value)
-      td << dc_style_or_class('style',v['style'],value)
+      td << dc_style_or_class('class',v['td_class'],value,document)
+      td << dc_style_or_class('style',v['td_style'],value,document)
       html << "#{td}>#{value}</td>"
     end
   end
