@@ -316,18 +316,18 @@ end
 def duplicate_embedded(source) #:nodoc:
 # TODO Works for two embedded levels. Dies with third and more levels.
   dest = {}
-  source.each do |attr_name, value|
-    next if attr_name == '_id' # don't duplicate _id
+  source.each do |attribute_name, value|
+    next if attribute_name == '_id' # don't duplicate _id
     if value.class == Array
-      dest[attr_name] = []
+      dest[attribute_name] = []
       value.each do |ar|
-        dest[attr_name] << duplicate_embedded(ar)
+        dest[attribute_name] << duplicate_embedded(ar)
       end
     else      
 # if duplicate string must be added. Useful for unique attributes
-      add_duplicate = params['dup_fields'].to_s.match(attr_name + ',')
-      dest[attr_name] = value
-      dest[attr_name] << ' dup' if add_duplicate
+      add_duplicate = params['dup_fields'].to_s.match(attribute_name + ',')
+      dest[attribute_name] = value
+      dest[attribute_name] << ' dup' if add_duplicate
     end
   end
   dest
@@ -339,19 +339,19 @@ end
 ########################################################################
 def duplicate_document(source)
   dest = {}
-  source.attribute_names.each do |attr_name|
-    next if attr_name == '_id' # don't duplicate _id
-# if duplicate string must be added. Useful for unique attributes
-    add_duplicate = params['dup_fields'].to_s.match(attr_name + ',')
-    dest[attr_name] = source[attr_name]
-    dest[attr_name] << ' dup' if add_duplicate
+  source.attribute_names.each do |attribute_name|
+    next if attribute_name == '_id' # don't duplicate _id
+# if duplicate, string must be added. Useful for unique attributes
+    add_duplicate = params['dup_fields'].to_s.match(attribute_name + ',')
+    dest[attribute_name] = source[attribute_name]
+    dest[attribute_name] << ' dup' if add_duplicate
   end
-#  
+# embedded documents
   source.embedded_relations.keys.each do |embedded_name|
     next if source[embedded_name].nil? # it happens
     dest[embedded_name] = []
-    source[embedded_name].each do |ar|
-      dest[embedded_name] << duplicate_embedded(ar)
+    source[embedded_name].each do |embedded|
+      dest[embedded_name] << duplicate_embedded(embedded)
     end
   end
   dest
