@@ -68,8 +68,9 @@ def fields(collection)
 #  p document.methods
   document.attribute_names.each do |attribute_name|
     options = model.fields[attribute_name].options
-    description = I18n.t("helpers.label.#{collection}.#{attribute_name}")
-    description = attribute_name if description.match('helpers.label')
+    description = I18n.t("helpers.help.#{collection}.#{attribute_name}")
+    description = I18n.t("helpers.label.#{collection}.#{attribute_name}") if description.match('missing:')
+    description = attribute_name if description.match('missing:')
 
     records.push( {'collection' =>  collection, 
                  'field' => attribute_name, 
@@ -81,8 +82,9 @@ def fields(collection)
 # embedded documents
   document.embedded_relations.each do |a_embedded|
     embedded = a_embedded.last
-    description = I18n.t("helpers.label.#{collection}.#{embedded.key}")
-    description = embedded.key if description.match('helpers.label')
+    description = I18n.t("helpers.help.#{collection}.#{embedded.key}")
+    description = I18n.t("helpers.label.#{collection}.#{embedded.key}") if description.match('missing:')
+    description = embedded.key if description.match('missing:')
 
     records.push( {'collection' =>  collection, 
                  'field' => embedded.key, 

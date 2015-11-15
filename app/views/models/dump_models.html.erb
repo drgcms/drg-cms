@@ -1,16 +1,20 @@
 <style>
 .hidden {display: none;}
-.model { font-size: 1.2em; width: 750px;}
+.model { font-size: 1.2em; width: 952px;}
 .model .col1 {padding: 3px; width: 150px; background-color: #ddd; float: left;}
-.model .col2 {padding: 3px; width: 550px; background-color: #eee; float: left;}
-.model { font-size: 1.1em; width: 850px; color: #1c94c4 }
-.fields .col1 {padding: 3px; width: 150px;  float: left;}
-.fields .col2 {padding: 3px; width: 150px;  float: left;}
-.fields .col3 {padding: 3px; width: 150px;  float: left;}
-.fields .col4 {padding: 3px; width: 350px;  float: left;}
+.model .col2 {padding: 3px; width: 790px; background-color: #eee; float: left;}
+.fields { 
+font-size: 1.1em; width: 952px; color: #669; 
+background-color: #f8f8f8; border: 1px solid #ddd;margin: 2px;
+}
+/*.fields {background-color: #f8f8f8;}*/
+.fields .col1 {background-color: #ddd;  float: left; font-weight: bold; width: 150px;padding:2px;}
+.fields .col2 {padding: 4px; width: 150px;  float: left;}
+.fields .col3 {width: 150px;  float: left;}
+.fields .col4 {width: 600px;  float: left;}
 </style>
 
-<% for description in descriptions; collection = description.first; fields = description.last.first %>
+<% for description in descriptions; collection = description.first; fields = description.last %>
 <div class="model">
   <div class="col1" data-model="<%= collection['id'] %>" > <%= collection['id'] %></div>
   <div class="col2" data-model="<%= collection['id'] %>" > <%= collection['description'] %></div>
@@ -18,11 +22,19 @@
 </div>
 
 <div id="<%= collection['id'] %>" class="fields hidden">
-  <div class="col2"><%= fields['field'] %></div>
-  <div class="col3"><%= fields['type'] %></div>
-  <div class="col4"><%= fields['description'] %></div>
+  <div class="col1">Field name</div>
+  <div class="col1">Field type</div>
+  <div class="col1">Description</div>
   <div style="clear:both;"></div>
+  <div style="clear:both;"></div>
+  <% for field in fields %>
+    <div class="col2"><%= field['field'] %></div>
+    <div class="col3"><%= field['type'] %></div>
+    <div class="col4"><%= field['description'] %></div>
+    <div style="clear:both;"></div>
+  <% end %>
 </div>
+
 <% end %>
 
 <%= javascript_tag do %>

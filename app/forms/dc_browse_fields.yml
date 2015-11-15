@@ -8,6 +8,8 @@ permissions:
 
 result_set:
   filter: fields
+  tr_style:
+    eval: "document['field'] == document['description'] ? 'color: #669;' : 'color: #000;'"
 
   columns:
     10:   
@@ -24,8 +26,6 @@ result_set:
     40:  
       name: description
       caption: description
-      td_style:
-        eval: "document['field'] == document['description'] ? 'color: gold;' : 'color: #000;'"
     50:  
       name: _default
       caption: Default

@@ -76,8 +76,9 @@ def fields()
   document = model.new
   document.attribute_names.each do |attribute_name|
     options = model.fields[attribute_name].options
-    description = t("helpers.label.#{params[:id]}.#{attribute_name}")
-    description = attribute_name if description.match('helpers.label')
+    description = I18n.t("helpers.help.#{params[:id]}.#{attribute_name}")
+    description = I18n.t("helpers.label.#{params[:id]}.#{attribute_name}") if description.match('missing:')
+    description = attribute_name if description.match('missing:')
 
     @records << {'collection' =>  params[:id], 
                  'field' => attribute_name, 
@@ -89,8 +90,9 @@ def fields()
 # embedded documents
   document.embedded_relations.each do |a_embedded|
     embedded = a_embedded.last
-    description = t("helpers.label.#{params[:id]}.#{embedded.key}")
-    description = embedded.key if description.match('helpers.label')
+    description = I18n.t("helpers.help.#{params[:id]}.#{embedded.key}")
+    description = I18n.t("helpers.label.#{params[:id]}.#{embedded.key}") if description.match('missing:')
+    description = embedded.key if description.match('missing:')
 
     @records << {'collection' =>  params[:id], 
                  'field' => embedded.key, 
