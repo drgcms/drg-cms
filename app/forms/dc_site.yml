@@ -146,7 +146,7 @@ form:
         name: design
         type: text_area
         html:
-          size: 150x40
+          size: 130x40
 
     5permissions:        
 
