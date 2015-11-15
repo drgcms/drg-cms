@@ -482,6 +482,13 @@ sl:
 
         key: Ključ
         value: Vrednost
+        
+      dc_key_value_store:
+        tabletitle: Shramba za razna številčenja
+
+        key: Ključ
+        value: Vrednost
+        
 
 # help pomoč na obrazcih ####################################################
 
@@ -833,3 +840,7 @@ sl:
       dc_ident:
         key: Ključ identifikacije (npr. DDV)
         value: Vrednost (SI12345678)
+
+      dc_key_value_store:
+        key: Ključ do shranjene vrednosti
+        value: Shranjena vrednost

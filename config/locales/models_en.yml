@@ -478,6 +478,12 @@ en:
         key: Id key
         value: Value
 
+      dc_key_value_store:
+        tabletitle: Table used for storing all kind of values
+
+        key: Id key
+        value: Value
+
 # help for forms #####################################################
 
     help:
@@ -821,3 +827,6 @@ en:
         key: Key which defines ident
         value: Ident value
         
+      dc_key_value_store:
+        key: Identification key
+        value: Stored value
