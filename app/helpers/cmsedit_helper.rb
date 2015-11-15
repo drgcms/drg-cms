@@ -249,7 +249,7 @@ def dc_actions_for_result(document)
   std_actions = {' 2' => 'edit', ' 3' => 'delete'}
   actions.merge!(std_actions) if actions['standard']
 #  
-  width = @form['result_set']['actions_width'] || 22*actions.size
+  width = @form['result_set']['actions_width'] || 20*actions.size
   html = "<td style=\"width: #{width}px;\">"
   actions.each do |k,v|
     session[:form_processing] = "result_set:actions: #{k}=#{v}"
@@ -305,19 +305,26 @@ end
 def dc_header_for_result()
   c = ''
   actions = @form['result_set']['actions']
-  c = '<th style="border-left: 0px;">&nbsp;</th>' unless actions.nil?  or @form['readonly']
-  
+  c = '<th>&nbsp;</th>' unless actions.nil?  or @form['readonly']
+# preparation for sort icon  
+  sort_field, sort_direction = nil, nil
+  if session[@form['table']]
+    sort_field, sort_direction = session[@form['table']][:sort].to_s.split(' ')
+  end
+#  
   if (columns = @form['result_set']['columns'])
     columns.each do |k,v|
       session[:form_processing] = "result_set:columns: #{k}=#{v}"
       th = '<th '
       v = {'name' => v} if v.class == String      
       caption = v['caption'] || t("helpers.label.#{@form['table']}.#{v['name']}")
-#      th << "style=\"#{v['style']}\" " if v['style']
-#      th << "class=\"#{v['class']}\" " if v['class']
 # no sorting when embedded field or custom filter is active
       if @tables.size == 1 and @form['result_set']['filter'].nil?
-        th << ">#{link_to(caption, sort: v['name'], table: @tables[0][1], action: :index )}</th>"
+        icon = 'sort lg'
+        if v['name'] == sort_field
+          icon = sort_direction == '1' ? 'sort-alpha-asc lg' : 'sort-alpha-desc lg'
+        end        
+        th << ">#{dc_link_to(caption, icon, sort: v['name'], table: @tables[0][1], action: :index )}</th>"
       else
         th << ">#{caption}</th>"
       end
