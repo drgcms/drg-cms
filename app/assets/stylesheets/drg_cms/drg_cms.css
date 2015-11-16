@@ -375,10 +375,11 @@ background: transparent linear-gradient(to bottom, #ddd 0%, #FFF 100%) repeat sc
 
 .dc-form-table {
   width: 100%;
-  border-spacing: 0px;
   padding: 0px;
+  padding-top: 4px;
   border: 1px solid #ddd;
-  border-top: 0px;
+  border-radius: 2px; 
+  background-color: #f8f8f8
 }
 
 .dc-form-info {
@@ -466,10 +467,13 @@ background: transparent linear-gradient(to bottom, #ddd 0%, #FFF 100%) repeat sc
 }
 
 .dc-form-ul {
-margin-top: 6px;
-/*margin-bottom: 3px;*/
 padding: 2px;
+margin-top: 6px;
+/*
+margin-bottom: 3px;
 border-bottom: 1px solid #eee;
+*/
+
 }
 
 .dc-spinner {
@@ -630,7 +634,7 @@ float:none;
 }
 
 #result {
-background-color: #eee;
+/*background-color: #eee;*/
 }
 
 /*********************/
