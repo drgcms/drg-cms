@@ -379,8 +379,11 @@ end
 ############################################################################
 # Defines style or class for row (tr) or column (td)
 ############################################################################
-def dc_style_or_class(selector, yaml, value, document)
+def dc_style_or_class(selector, yaml, value, record)
   return '' if yaml.nil?
+# alias record and value so both names can be used  
+  field = value
+  document = record
   html = selector ? "#{selector}=\"" : ''
   html << if yaml.class == String
     yaml
