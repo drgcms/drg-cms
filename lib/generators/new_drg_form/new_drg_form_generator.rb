@@ -63,7 +63,7 @@ end
 def result_set_options
   <<EOT 
 result_set:
-#  filter: controls_flter
+#  filter: controls_filter
 #  actions_width: 100
 #  per_page: 10
   
