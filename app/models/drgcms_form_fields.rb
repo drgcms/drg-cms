@@ -596,9 +596,9 @@ def ro_standard
 #  
   get_choices.each do |choice|
     if choice.class == Array
-      return super(choice.first) if choice.last == value
+      return super(choice.first) if choice.last.to_s == value.to_s
     else
-      return super(choice) if choice == value
+      return super(choice) if choice.to_s == value.to_s
     end  
   end
   super('')
