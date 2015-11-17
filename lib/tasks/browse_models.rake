@@ -51,7 +51,7 @@ def collections(what)
   collections.each do |collection|
     model = collection.classify.constantize rescue nil
     next if model.nil?
-#    next unless model.respond_to?(:mongo_client)
+    next unless model.respond_to?(:mongo_client)
     record = {'id' =>  collection, 'description' => I18n.t("helpers.label.#{collection}.tabletitle") } 
     list << [record, fields(collection)]
   end
