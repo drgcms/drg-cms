@@ -22,6 +22,9 @@ result_set:
       name: value
     2:  
       name: description
+    3:  
+      name: active
+      eval: dc_icon4_boolean
 
 form:
   title: 
