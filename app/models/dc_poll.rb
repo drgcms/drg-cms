@@ -22,7 +22,29 @@
 #++
 
 ########################################################################
-# Mongoid::Document model for dc_poll documents.
+# == Schema information
+#
+# Collection name: dc_poll : Polls
+#
+#  _id                  BSON::ObjectId       _id
+#  created_at           Time                 created_at
+#  updated_at           Time                 updated_at
+#  name                 String               Unique poll name
+#  title                String               Title for the poll
+#  sub_text             String               Short description of the poll
+#  pre_display          String               pre_display
+#  operation            String               Operation performed on submit
+#  parameters           String               Aditional parameters for operation
+#  display              String               Select how fields are positioned on form
+#  css                  String               CSS specific to this poll
+#  form                 String               You can specified input items by providing form acording to rules of drgCMS form.
+#  valid_from           DateTime             Pole is valid from
+#  valid_to             DateTime             Pole is valid to
+#  captcha_type         String               Catpcha type name if captcha is used
+#  active               Mongoid::Boolean     active
+#  created_by           BSON::ObjectId       created_by
+#  updated_by           BSON::ObjectId       updated_by
+#  dc_poll_items        Embedded:DcPollItem  Items for this poll
 # 
 # DcPoll documents are used for different questionaries and formulars which can
 # be accessed independent or connected with DcPage documents. Entry fields can be defined

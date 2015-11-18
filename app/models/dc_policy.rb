@@ -22,7 +22,20 @@
 #++
 
 ########################################################################
-# Mongoid::Document model for dc_policy documents embedded into dc_sites collection documents.
+# == Schema information
+#
+# Collection name: dc_policy : Access policy declarations
+#
+#  _id                  BSON::ObjectId       _id
+#  created_at           Time                 created_at
+#  updated_at           Time                 updated_at
+#  name                 String               Unique policy name
+#  description          String               Description for this policy
+#  is_default           Mongoid::Boolean     This is default policy for the site
+#  active               Mongoid::Boolean     Policy is active
+#  updated_by           BSON::ObjectId       updated_by
+#  message              String               Error message when blocked by this policy
+#  dc_policy_rules      Embedded:DcPolicyRule Policy rules
 # 
 # DcPolicy documents define policies for accessing data on web site. Policies define which 
 # user roles (defined in dc_policy_roles collection) has no access, can view or edit data (sees CMS menu) on

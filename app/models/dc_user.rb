@@ -111,7 +111,44 @@ end
 end
 
 ########################################################################
-# Mongoid::Document model for dc_user documents.
+# == Schema information
+#
+# Collection name: dc_user : Users
+#
+#  _id                  BSON::ObjectId       _id
+#  created_at           Time                 created_at
+#  updated_at           Time                 updated_at
+#  username             String               Username
+#  title                String               Title (dr, mag)
+#  first_name           String               Users first name
+#  middle_name          String               Middle name
+#  last_name            String               Users last name
+#  name                 String               Name colected from firstname, title and lastname
+#  company              String               company
+#  address              String               Home address
+#  post                 String               Post and post city
+#  country              String               Country
+#  phone                String               Phone number
+#  email                String               e-Mail address
+#  www                  String               www
+#  picture              String               Picture file name
+#  birthdate            Date                 Date of birth
+#  about                String               Short description of user
+#  last_visit           Time                 Users last visit
+#  active               Mongoid::Boolean     Account is active
+#  valid_from           Date                 Account is valid from
+#  valid_to             Date                 Account is valid until
+#  created_by           BSON::ObjectId       created_by
+#  updated_by           BSON::ObjectId       Account last updated by
+#  type                 Integer              Type of user account
+#  members              Array                Members (if type is group)
+#  signature            String               signature
+#  interests            String               interests
+#  job_occup            String               job_occup
+#  description          String               description
+#  reg_date             Date                 reg_date
+#  password_digest      String               password_digest
+#  dc_user_roles        Embedded:DcUserRole  Roles for this user
 # 
 # dc_users collection holds data about regitered users. Passwords are encrypted
 # with bcrypt gem. 

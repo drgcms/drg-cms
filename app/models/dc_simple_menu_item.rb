@@ -22,7 +22,23 @@
 #++
 
 ########################################################################
-# Mongoid::Document model for dc_simple_menu_items embedded documents. 
+# == Schema information
+#
+# Collection name: dc_simple_menu_item : drgCMS Simple menu items
+#
+#  _id                  BSON::ObjectId       _id
+#  created_at           Time                 created_at
+#  updated_at           Time                 updated_at
+#  caption              String               Caption of menu
+#  picture              String               Picture for the menu
+#  link                 String               Link called when menu is chosen
+#  link_prepend         String               Link field usually holds direct link to document. Prepand field holds data, that has to be prepanded to the link.
+#  target               String               Target window for the link. Leave empty when same window.
+#  order                Integer              Order on which menu item is shown. Lower number means prior position.
+#  submenu              String               Submenu captions in form (caption\link).
+#  policy_id            BSON::ObjectId       Menu item will be diplayed according to this policy
+#  css                  String               CSS only for this menu item
+#  active               Mongoid::Boolean     Is active
 # 
 # DcMenuItem documents are embedded in the DcSimpleMenu document and define top
 # level item of menu system. Submenus are simply defined as YAML text in the submenu field.

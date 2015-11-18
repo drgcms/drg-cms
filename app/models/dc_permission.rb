@@ -22,7 +22,17 @@
 #++
 
 ########################################################################
-# Mongoid::Document model for dc_permissions collection.
+# == Schema information
+#
+# Collection name: dc_permission : Collection permissions
+#
+#  _id                  BSON::ObjectId       _id
+#  created_at           Time                 created_at
+#  updated_at           Time                 updated_at
+#  table_name           String               Permission is valid for collection
+#  is_default           Mongoid::Boolean     This is default permission for all collections in database
+#  active               Mongoid::Boolean     Permission is active
+#  dc_policy_rules      Embedded:DcPolicyRule Defined policy rules
 # 
 # dc_permissions collection is used for saving documents which define permissions 
 # for accessing individual collections within DRG CMS system. Document which is marked 

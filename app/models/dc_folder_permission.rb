@@ -22,7 +22,17 @@
 #++
 
 #########################################################################
-# Mongoid::Document model for dc_folder_permissions collection. 
+# == Schema information
+#
+# Collection name: dc_folder_permission : Folders permissions
+#
+#  _id                  BSON::ObjectId       _id
+#  created_at           Time                 created_at
+#  updated_at           Time                 updated_at
+#  folder_name          String               Folder name
+#  inherited            Mongoid::Boolean     Inherit permissions from parent
+#  active               Mongoid::Boolean     Permission is valid
+#  dc_policy_rules      Embedded:DcPolicyRule Policy rules
 # 
 # Similar to DcPermission DcFolderPermission model defines documents
 # for accessing file system. Permissions defined on a parent folder automatically

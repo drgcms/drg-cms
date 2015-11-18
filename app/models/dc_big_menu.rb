@@ -22,7 +22,24 @@
 #++
 
 ##########################################################################
-# Mongoid::Document model for dc_big_menus collection. 
+# == Schema information
+#
+# Collection name: dc_big_menu : Big menus
+#
+#  _id                  BSON::ObjectId       _id
+#  created_at           Time                 created_at
+#  updated_at           Time                 updated_at
+#  caption              String               caption
+#  picture              String               picture
+#  parent               BSON::ObjectId       parent
+#  link                 String               link
+#  page_id              BSON::ObjectId       page_id
+#  order                Integer              order
+#  active               Mongoid::Boolean     active
+#  policy_id            BSON::ObjectId       policy_id
+#  created_by           BSON::ObjectId       created_by
+#  updated_by           BSON::ObjectId       updated_by
+#  dc_site_id           Object               dc_site_id
 #
 # This menu system is still experimental. It can be used for sites with menu
 # which has many sub menus each linked to its own document. Unlike other menu 

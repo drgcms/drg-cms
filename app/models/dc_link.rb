@@ -22,7 +22,20 @@
 #++
 
 #########################################################################
-# Mongoid::Document model for dc_links collection. 
+# == Schema information
+#
+# Collection name: dc_link : Alternative links
+#
+#  _id                  BSON::ObjectId       _id
+#  created_at           Time                 created_at
+#  updated_at           Time                 updated_at
+#  name                 String               Link name ex. homepage
+#  params               String               Aditional parameters passed to document renderer
+#  active               Mongoid::Boolean     Link is active
+#  page_id              BSON::ObjectId       Page redirected to by this shortcut link
+#  created_by           BSON::ObjectId       created_by
+#  updated_by           BSON::ObjectId       updated_by
+#  dc_site_id           Object               Link is valid for site
 # 
 # DcLink documents may be used for creating alternative url links. page_id field must 
 # point to valid DcPage document which will be used for further processing. 

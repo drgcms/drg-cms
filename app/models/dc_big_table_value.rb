@@ -22,8 +22,20 @@
 #++
 
 #####################################################################
-# Mongoid::Document model for dc_big_table_values embedded documents.
-# 
+# == Schema information
+#
+# Collection name: dc_big_table_value : Big Table - values
+#
+#  _id                  BSON::ObjectId       _id
+#  created_at           Time                 created_at
+#  updated_at           Time                 updated_at
+#  value                String               Value
+#  description          String               Short description of the value
+#  active               Mongoid::Boolean     Active
+#  created_by           BSON::ObjectId       created_by
+#  updated_by           BSON::ObjectId       updated_by
+#  dc_big_table_locales Embedded:DcBigTableLocale Locale translations for the value
+#   
 # Documents are embedded in DcBigTable document. Every value defined has its own description,
 # which can further be translated in embedded DcBigTableLocale documents.
 #####################################################################

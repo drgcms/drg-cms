@@ -22,7 +22,25 @@
 #++
 
 #########################################################################
-# Mongoid::Document model for dc_menu_items embedded documents. 
+# == Schema information
+#
+# Collection name: dc_menu_item : Menu items
+#
+#  _id                  BSON::ObjectId       _id
+#  created_at           Time                 created_at
+#  updated_at           Time                 updated_at
+#  caption              String               Caption of menu item
+#  picture              String               Picture for the menu
+#  link                 String               Link called when menu is chosen
+#  link_prepend         String               Link field usually holds direct link to document. Prepand field holds data, that has to be prepanded to the link.
+#  target               String               Target window for the link. Leave empty when same window.
+#  page_id              BSON::ObjectId       Page link
+#  order                Integer              Order on which menu item is shown. Lower number means prior position.
+#  active               Mongoid::Boolean     Is active
+#  policy_id            BSON::ObjectId       Menu item will be diplayed according to this policy
+#  created_by           BSON::ObjectId       created_by
+#  updated_by           BSON::ObjectId       updated_by
+#  dc_menu_items        Embedded:DcMenuItem  Submenu items
 # 
 # DcMenuItem documents are embedded in the DcMenu document and define one menu
 # item of menu system. 

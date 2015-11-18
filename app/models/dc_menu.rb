@@ -22,7 +22,22 @@
 #++
 
 #########################################################################
-# Mongoid::Document model for dc_menus collection. 
+# == Schema information
+#
+# Collection name: dc_menu : Menus
+#
+#  _id                  BSON::ObjectId       _id
+#  created_at           Time                 created_at
+#  updated_at           Time                 updated_at
+#  name                 String               Menu name
+#  description          String               Short description of menu
+#  div_name             String               Div id name around menu area
+#  link_prepend         String               Link field usually holds direct link to document. Prepand field holds data, that has to be prepanded to the link.
+#  css                  String               CSS for this menu
+#  active               Mongoid::Boolean     Active
+#  created_by           BSON::ObjectId       created_by
+#  updated_by           BSON::ObjectId       updated_by
+#  dc_menu_items        Embedded:DcMenuItem  Menu items
 # 
 # Default menu system for DRG CMS. Model recursively embeds DcMenuItem documents
 # which (theoretically) results in infinite level of sub menus. In practice 

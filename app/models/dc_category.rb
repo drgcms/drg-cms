@@ -22,8 +22,22 @@
 #++
 
 #####################################################################
-# Mongoid::Document model for dc_categories collection.
-# 
+# == Schema information
+#
+# Collection name: dc_category : Categories
+#
+#  _id                  BSON::ObjectId       _id
+#  created_at           Time                 created_at
+#  updated_at           Time                 Last update
+#  name                 String               Category name
+#  description          String               Additional description of category
+#  ctype                Integer              Category type. Could be used for grouping categories.
+#  parent               BSON::ObjectId       Parent category. Leave blank if this is top level category.
+#  active               Mongoid::Boolean     Category is active.
+#  order                Integer              Additional order, which can be used for sorting.
+#  created_by           BSON::ObjectId       created_by
+#  updated_by           BSON::ObjectId       updated_by
+#   
 # Categories are used on DcPage documents for grouping documents. Categorization 
 # is most useful for grouping news, blog entries ...
 #####################################################################

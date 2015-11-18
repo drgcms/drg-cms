@@ -22,7 +22,33 @@
 #++
 
 ##########################################################################
-# Mongoid::Document model for dc_ads collection. 
+# == Schema information
+#
+# Collection name: dc_ad : Ads
+#
+#  _id                  BSON::ObjectId       _id
+#  created_at           Time                 created_at
+#  updated_at           Time                 updated_at
+#  position             String               Position (div id) where this ad will be displayed
+#  description          String               Short description
+#  type                 Integer              Content type of add
+#  file                 String               Picture or flash filename
+#  script               String               JavaScript script, when script type
+#  link                 String               Link to page (site, dokument) when ad is clicked
+#  link_target          String               Define if link is open in new window or same
+#  height               Integer              Height of ad
+#  width                Integer              Width of ad
+#  valid_from           DateTime             Ad is valid from
+#  valid_to             DateTime             Ad is valid to
+#  displays             Integer              Maximum number of time this add is displayed
+#  clicks               Integer              Maximum number of clicks this ad will receive
+#  priority             Integer              Priority. Higher priority means ad is shown more often. Priority is calculated only between candidats to be displayed.
+#  displayed            Integer              No. of times this add has been displayed
+#  clicked              Integer              No. of times this ad has been clicked
+#  active               Mongoid::Boolean     Ad is active
+#  created_by           BSON::ObjectId       created_by
+#  updated_by           BSON::ObjectId       Record last updated by
+#  dc_site_id           Object               Ad is valid for the site
 # 
 # Ads can be defined as picture file, flash file or script. 
 # 

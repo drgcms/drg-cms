@@ -22,9 +22,20 @@
 #++
 
 ########################################################################
-# Mongoid::Document model for dc_stat documents.
-# 
-# 
+# == Schema information
+#
+# Collection name: dc_stat : Experimental statistics collection. Not used.
+#
+#  _id                  BSON::ObjectId       _id
+#  created_at           Time                 created_at
+#  updated_at           Time                 updated_at
+#  key1                 String               key1
+#  key2                 String               key2
+#  key3                 String               key3
+#  value                Integer              value
+#  text1                String               text1
+#  text2                String               text2
+#  link                 String               link
 ########################################################################
 
 class DcStat #:nodoc:

@@ -22,7 +22,19 @@
 #++
 
 ########################################################################
-# Mongoid::Document model for dc_user_role embedded documents.
+# == Schema information
+#
+# Collection name: dc_user_role : User roles
+#
+#  _id                  BSON::ObjectId       _id
+#  created_at           Time                 created_at
+#  updated_at           Time                 updated_at
+#  dc_policy_role_id    Object               User role
+#  valid_from           Date                 Role is valid from
+#  valid_to             Date                 Role is valid to
+#  active               Mongoid::Boolean     Role is active
+#  created_by           BSON::ObjectId       created_by
+#  updated_by           BSON::ObjectId       Role last updated 
 # 
 # DcUserRole documents are embedded in DcUser model and define user roles which
 # belong to user.

@@ -22,7 +22,13 @@
 #++
 
 #########################################################################
-# Mongoid::Document model for dc_key_value_stores collection. 
+# == Schema information
+#
+# Collection name: dc_key_value_store : Table used for storing all kind of values
+#
+#  _id                  BSON::ObjectId       _id
+#  key                  String               Identification key
+#  value                String               Stored value
 # 
 # This model represents key/value store. Typical usage is for saving last
 # used document number on some internal document numbering schema.

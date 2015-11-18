@@ -23,7 +23,34 @@
 require_dependency DrgCms.model 'dc_piece'
 
 ########################################################################
-# Mongoid::Document model for dc_part embedded documents.
+# == Schema information
+#
+# Collection name: dc_part : Parts of page
+#
+#  _id                  BSON::ObjectId       _id
+#  created_at           Time                 created_at
+#  updated_at           Time                 Last updated at
+#  name                 String               Parts can be searched by name or by id
+#  description          String               Short description of part
+#  picture              String               Picture contents of part
+#  thumbnail            String               Small version of picture if available
+#  body                 String               Content of this part
+#  css                  String               CSS
+#  script               String               Script, if script is included in part
+#  script_type          String               Script type
+#  params               String               params
+#  piece_id             BSON::ObjectId       Piece name if part is connected to piece
+#  div_id               String               Div id (position name) where this part is displayed as defined on design
+#  site_id              BSON::ObjectId       site_id
+#  order                Integer              Order between parts
+#  active               Mongoid::Boolean     Part is active
+#  valid_from           DateTime             Part is valid from
+#  valid_to             DateTime             Part is valid to
+#  created_by           BSON::ObjectId       created_by
+#  updated_by           BSON::ObjectId       Last updated by
+#  _type                String               _type
+#  policy_id            BSON::ObjectId       Access policy for the part
+#  link                 String               Link when part can be accessed with pretty link
 # 
 # DcPart model is used for embedding parts of final document into other models. It declares fields
 # which may be used in various scenarios. For example:

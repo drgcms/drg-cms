@@ -22,7 +22,23 @@
 #++
 
 ########################################################################
-# Mongoid::Document model for dc_designs collection.
+# == Schema information
+#
+# Collection name: dc_design : Designs
+#
+#  _id                  BSON::ObjectId       _id
+#  created_at           Time                 created_at
+#  updated_at           Time                 updated_at
+#  description          String               Short description of design
+#  body                 String               Body of design which will be rendered like any Rails view
+#  css                  String               CSS for design
+#  rails_view           String               Rails view (file) name which will be used to render design
+#  author               String               Creater if design
+#  active               Mongoid::Boolean     Is the design active
+#  created_by           BSON::ObjectId       created_by
+#  updated_by           BSON::ObjectId       Last updated by
+#  site_id              BSON::ObjectId       Select site name if this design belongs to singe site
+#  dc_parts             Embedded:DcPart      Parts of design
 # 
 # Designs are essential parts of DRG CMS. Every DcPage document must have its design document defined.
 # If DcPage documents are anchors for url addresses, DcDesign documents define how 

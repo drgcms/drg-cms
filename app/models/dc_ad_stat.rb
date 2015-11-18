@@ -22,7 +22,16 @@
 #++
 
 ##########################################################################
-# Mongoid::Document model for dc_ad_stats collection. 
+# == Schema information
+#
+# Collection name: dc_ad_stat : Ads statistics
+#
+#  _id                  BSON::ObjectId       _id
+#  created_at           Time                 created_at
+#  updated_at           Time                 updated_at
+#  dc_ad_id             BSON::ObjectId       dc_ad_id
+#  ip                   String               ip
+#  type                 Integer              type
 # 
 # Documents in this collection holds data about displays and clicks on ads which
 # can be further processed for statistical purposes.

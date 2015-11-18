@@ -45,7 +45,6 @@ included do
   field :menu_class,          type: String, default: 'DcSimpleMenu'
   field :files_directory,     type: String
   field :logo,                type: String
-  field :guest_access,        type: Integer, default: 0
   field :active,              type: Boolean, default: true
   field :created_by,          type: BSON::ObjectId
   field :updated_by,          type: BSON::ObjectId  
@@ -93,9 +92,40 @@ end
 
 
 ######################################################################
-# Mongoid::Document model for dc_sites collection.
+# == Schema information
+#
+# Collection name: dc_site : Sites
+#
+#  _id                  BSON::ObjectId       _id
+#  created_at           Time                 created_at
+#  updated_at           Time                 updated_at
+#  name                 String               Name of the site eg. www.mysite.com
+#  description          String               Short description of site
+#  homepage_link        String               Shortcut link when just site name is in the url
+#  error_link           String               Link to error page
+#  header               String               Additional data used in page html header
+#  css                  String               Site wide CSS
+#  route_name           String               Default route name for creating page link. ex. page. Leave blank if not used.
+#  page_title           String               Default page title displayed in browser's top menu when title can not be extracted from document
+#  document_extension   String               Default document extension eg. html
+#  page_table           String               Name of table holding data for pages
+#  page_class           String               Rails model class name which defines table holding pages data usually DcPage
+#  site_layout          String               Rails layout used to draw response. This is by default content layout.
+#  menu_class           String               Rails model class name which defines table holding menu data usually DcMenu
+#  files_directory      String               Directory name where uploaded files are located
+#  logo                 String               Logotype picture for the site
+#  active               Mongoid::Boolean     Is the site active
+#  created_by           BSON::ObjectId       created_by
+#  updated_by           BSON::ObjectId       updated_by
+#  menu_name            String               Menu name for this site
+#  settings             String               Various site settings
+#  alias_for            String               Is alias name for entered site name
+#  rails_view           String               Rails view filename used as standard design
+#  design               String               Standard design can also be defined at the site level
+#  dc_policies          Embedded:DcPolicy    Access policies defined for the site
+#  dc_parts             Embedded:DcPart      Parts contained in site
 # 
-# Since DRG CMS can handle multiple sites on single ROR instance, every document
+# dc_Since DRG CMS can handle multiple sites on single ROR instance, every document
 # in dc_sites collection defines data which defines a site. 
 # 
 # Sites can be aliased which is very usefull in development and test environment. 

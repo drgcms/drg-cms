@@ -22,7 +22,20 @@
 #++
 
 #########################################################################
-# Mongoid::Document model for dc_journals collection. 
+# == Schema information
+#
+# Collection name: dc_journal : Update journal
+#
+#  _id                  BSON::ObjectId       _id
+#  user_id              BSON::ObjectId       User
+#  site_id              BSON::ObjectId       Site
+#  doc_id               BSON::ObjectId       doc_id
+#  operation            String               Operation
+#  tables               String               Table name
+#  ids                  String               Parent ids
+#  ip                   String               ip address from where operation was performed
+#  time                 DateTime             Time of operation
+#  diff                 String               Differences
 # 
 # dc_journals collections saves all data that has been updated through cmsedit 
 # controller. It saves old and new values of changed fields and can be used for

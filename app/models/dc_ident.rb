@@ -22,7 +22,15 @@
 #++
 
 ########################################################################
-# Mongoid::Document model for dc_idents emdedded documents.
+# == Schema information
+#
+# Collection name: dc_ident : Additional identification
+#
+#  _id                  BSON::ObjectId       _id
+#  created_at           Time                 created_at
+#  updated_at           Time                 updated_at
+#  key                  String               Key which defines ident
+#  value                String               Ident value
 # 
 # dc_idents are similar to mongoid hash structure and can be used for saveing 
 # key/value object. Fact is that I have overlooked the existance of MongoDB Hash field type

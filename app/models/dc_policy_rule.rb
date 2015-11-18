@@ -78,7 +78,15 @@ end
 end
 
 #########################################################################
-# Mongoid::Document model for dc_policy_rule documents embedded into documents.
+# == Schema information
+#
+# Collection name: dc_policy_rule : Access policy rules
+#
+#  _id                  BSON::ObjectId       _id
+#  created_at           Time                 created_at
+#  updated_at           Time                 updated_at
+#  dc_policy_role_id    Object               User role access defined by this rule
+#  permission           Integer              Access permission
 # 
 # DcPolicyRule documents define policies for accessing data. DRG CMS uses policy rules for
 # defining policies in DcSite, DcPermission and DcFolderPermission documents. 

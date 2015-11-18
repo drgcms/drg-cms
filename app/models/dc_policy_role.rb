@@ -22,7 +22,16 @@
 #++
 
 ########################################################################
-# Mongoid::Document model for dc_policy_roles collection.
+# == Schema information
+#
+# Collection name: dc_policy_role : User roles
+#
+#  _id                  BSON::ObjectId       _id
+#  created_at           Time                 created_at
+#  updated_at           Time                 updated_at
+#  name                 String               Role name
+#  system_name          String               System role name if required by application
+#  active               Mongoid::Boolean     Role is active
 # 
 # Documents in this model define all available user roles in the application. Roles 
 # are defined by unique name which is valid for current application or as alternative name (system_name) 

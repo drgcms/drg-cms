@@ -22,7 +22,22 @@
 #++
 
 ########################################################################
-# Mongoid::Document model for dc_poll_item embedded documents.
+# == Schema information
+#
+# Collection name: dc_poll_item : Poll items
+#
+#  _id                  BSON::ObjectId       _id
+#  created_at           Time                 created_at
+#  updated_at           Time                 updated_at
+#  name                 String               Name (alias) of returned field name
+#  text                 String               Caption of item
+#  type                 String               Input item type
+#  size                 String               size
+#  mandatory            Mongoid::Boolean     Item entry is mandatory
+#  separator            String               Separator between items
+#  options              String               Options for the item. Depends on item type.
+#  order                Integer              Order of item on poll
+#  active               Mongoid::Boolean     Item is active
 # 
 # DcPollItems define entry fields on poll questionary and formulars.
 ########################################################################

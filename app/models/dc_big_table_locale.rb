@@ -22,8 +22,19 @@
 #++
 
 #####################################################################
-# Mongoid::Document model for dc_big_table_locale embedded document.
-# 
+# == Schema information
+#
+# Collection name: dc_big_table_locale : Big Table - locales
+#
+#  _id                  BSON::ObjectId       _id
+#  created_at           Time                 created_at
+#  updated_at           Time                 updated_at
+#  locale               String               Locale
+#  description          String               Short description translated for target locale
+#  active               Mongoid::Boolean     active
+#  created_by           BSON::ObjectId       created_by
+#  updated_by           BSON::ObjectId       updated_by
+#   
 # Documents are embedded in DcBigTableValue documents. Every value defined in 
 # DcBigTableValue parent document can have its locale translation.
 #####################################################################

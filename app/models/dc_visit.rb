@@ -22,7 +22,17 @@
 #++
 
 ######################################################################
-# Mongoid::Document model for dc_visit collection.
+# == Schema information
+#
+# Collection name: dc_visit : Visits
+#
+#  _id                  BSON::ObjectId       _id
+#  page_id              BSON::ObjectId       page_id
+#  user_id              BSON::ObjectId       user_id
+#  site_id              BSON::ObjectId       site_id
+#  session_id           String               session_id
+#  ip                   String               ip
+#  time                 DateTime             time
 # 
 # DcVisit documents are used to record visits to web site.
 ######################################################################

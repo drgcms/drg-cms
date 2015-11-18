@@ -22,7 +22,11 @@
 #++
 
 ########################################################################
-# Mongoid::Document model for dc_dummy collection. 
+# == Schema information
+#
+# Collection name: dc_dummy : Collection name used when form does not belong to database model.
+#
+#  _id                  BSON::ObjectId       _id 
 # 
 # Which is not collection at all. DcDummy model is used for entering data on forms 
 # where data will not be saved to database but will instead be processed by custom 

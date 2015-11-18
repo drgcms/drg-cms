@@ -57,7 +57,31 @@ end
 end
 
 ########################################################################
-# Mongoid::Document model for dc_piece documents.
+# == Schema information
+#
+# Collection name: dc_piece : Pieces of content
+#
+#  _id                  BSON::ObjectId       _id
+#  created_at           Time                 created_at
+#  updated_at           Time                 Last updated at
+#  name                 String               Unique name for piece
+#  description          String               Short description of piece
+#  picture              String               Picture contents of piece
+#  thumbnail            String               Small version of picture if available
+#  body                 String               Content of this piece
+#  css                  String               CSS
+#  script               String               Script, if script is included in piece
+#  script_type          String               Script type
+#  params               String               params
+#  piece_id             BSON::ObjectId       Piece
+#  div_id               String               Div (position name) id on design where this piece is rendered
+#  site_id              BSON::ObjectId       Site name where this piece will belong to
+#  order                Integer              Order to be used when pieces are positioned in the same div (location)
+#  active               Mongoid::Boolean     Piece is active
+#  valid_from           DateTime             Piece is valid from
+#  valid_to             DateTime             Piece is valid to
+#  created_by           BSON::ObjectId       created_by
+#  updated_by           BSON::ObjectId       Last updated by
 # 
 # DcPiece collection is used for documents or pieces of web site which are common to site 
 # or perhaps to all sites in database. For example page footer is a good candidate 

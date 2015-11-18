@@ -22,8 +22,21 @@
 #++
 
 ##########################################################################
-# Mongoid::Document model for dc_big_table collection.
-# 
+# == Schema information
+#
+# Collection name: dc_big_table : Big Table
+#
+#  _id                  BSON::ObjectId       _id
+#  created_at           Time                 created_at
+#  updated_at           Time                 updated_at
+#  key                  String               Key (ident) used to retrieve key/values
+#  description          String               description
+#  site_id              BSON::ObjectId       Data will be used only for defined site. If empty, then it is default for all sites in database.
+#  active               Mongoid::Boolean     This key is active
+#  created_by           BSON::ObjectId       created_by
+#  updated_by           BSON::ObjectId       updated_by
+#  dc_big_table_values  Embedded:DcBigTableValue Values defined by this key
+#   
 # Big table is meant to be a common space for defining default choices for select fields on forms. 
 # Documents are organized as key-value pair with the difference that values for the key can 
 # be defined for every site and can also be localized.
