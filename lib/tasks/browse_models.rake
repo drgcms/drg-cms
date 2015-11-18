@@ -97,7 +97,8 @@ def fields(collection)
 end
 
 #########################################################################
-#
+# Create output to models_dump.html and documentation_dump.html. First file
+# is prepared for browsing, second one is prepared for copy+paste for documentation.
 #########################################################################
 def create_output(descriptions)
 # render view which will create actual mail report
@@ -107,6 +108,20 @@ def create_output(descriptions)
     :layout => 'models' 
   ) 
   File.open(Rails.root.join('public','models_dump.html'),'w') {|f| f.write(body)}
+#
+  body = ''
+  descriptions.each do |description|
+    collection = description.first
+    fields = description.last 
+    body << "#\n# == Schema information\n#\n"
+    body << "# Collection name: #{collection['id']} : #{collection['description']}\n#\n"
+    
+    fields.each do |field|
+      body << "#  #{field['field'].ljust(20)} #{field['type'].to_s.ljust(20)} #{field['description']}\n"
+    end
+    body << "\n\n"
+  end 
+  File.open(Rails.root.join('public','description_dump.html'),'w') {|f| f.write(body)}
 end
 
 #########################################################################
