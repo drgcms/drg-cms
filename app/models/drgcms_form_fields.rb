@@ -114,7 +114,7 @@ end
 ####################################################################
 def ro_standard(value=nil)
   value = @record[@yaml['name']] if value.nil? and @record.respond_to?(@yaml['name']) 
-  @html << (value.to_s.size == 0 ? '' : "<table class='dc-readonly'><td>#{value}</td></table>")
+  @html << (value.blank? ? '' : "<table class='dc-readonly'><td>#{value}</td></table>")
   self
 end
 
@@ -1147,6 +1147,13 @@ EOJS
     
   self 
 end
+
+###########################################################################
+# Return value. Return nil if input field is empty
+###########################################################################
+def self.get_data(params, name)
+  params['record']["_#{name}"].blank? ? nil : params['record'][name]
+end
 end
 
 ###########################################################################
@@ -1165,7 +1172,16 @@ end
 #        size: 100x30
 ###########################################################################
 class TextArea < DrgcmsField
-  
+
+###########################################################################
+# Return value for readonly field
+###########################################################################
+def ro_standard
+  value = @record[@yaml['name']]
+  @html << "<table class='dc-readonly'><td>#{value.gsub("\n",'<br>')}</td></table>" unless value.blank?
+  self
+end
+
 ###########################################################################
 # Render text_area field html code
 ###########################################################################
