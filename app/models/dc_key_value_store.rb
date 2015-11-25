@@ -31,7 +31,7 @@
 #  value                String               Stored value
 # 
 # This model represents key/value store. Typical usage is for saving last
-# used document number on some internal document numbering schema.
+# used document number on internal document numbering schema.
 # 
 # Example: 
 #    doc_number = DcKeyValueStore.get_next_value('invoices', invoice_date.year)
