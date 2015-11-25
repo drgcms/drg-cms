@@ -23,7 +23,7 @@
 
 menu:
   10_system_menu:
-    caption: drgcms.system_menu
+    caption: drgcms.cms_main
     icon: support lg
     
     items:
@@ -42,11 +42,6 @@ menu:
         controller: cmsedit
         icon: file-text-o lg
         table: dc_page
-      40: 
-        caption: helpers.label.dc_user.tabletitle
-        controller: cmsedit
-        icon: users lg        
-        table: dc_user
       50: 
         caption: helpers.label.dc_piece.tabletitle
         controller: cmsedit
@@ -83,37 +78,55 @@ menu:
         controller: cmsedit
         icon: money lg        
         table: dc_ad
-      120: 
-        caption: helpers.label.dc_big_table.tabletitle
+
+  11_system_menu:
+    caption: drgcms.cms_advanced
+    icon: star lg
+    items:
+      10: 
+        caption: helpers.label.dc_user.tabletitle
         controller: cmsedit
-        icon: table lg        
-        table: dc_big_table
-      130: 
+        icon: users lg        
+        table: dc_user
+      20: 
         caption: helpers.label.dc_policy_role.tabletitle
         controller: cmsedit
         icon: user-secret lg        
         table: dc_policy_role
-      140: 
+      30: 
         caption: helpers.label.dc_permission.tabletitle
         controller: cmsedit
         icon: shield lg        
         table: dc_permission
-      150: 
+      40: 
         caption: helpers.label.dc_folder_permission.tabletitle
         controller: cmsedit
         icon: shield lg        
         table: dc_folder_permission
-      160: 
+      60: 
+        caption: helpers.label.dc_big_table.tabletitle
+        controller: cmsedit
+        icon: table lg        
+        table: dc_big_table
+      70: 
+        caption: helpers.label.dc_key_value_store.tabletitle
+        controller: cmsedit
+        icon: list lg        
+        table: dc_key_value_store
+      80: 
+        caption: helpers.label.dc_filter.tabletitle
+        controller: cmsedit
+        icon: filter lg        
+        table: dc_filter
+      500: 
         caption: helpers.label.dc_journal.tabletitle
         controller: cmsedit
         icon: undo lg        
         table: dc_journal
 
-      500: 
+      600: 
         caption: drgcms.browse_collections
         controller: cmsedit
         icon: table lg        
         table: dc_dummy
         formname: dc_browse_models
-
-                
