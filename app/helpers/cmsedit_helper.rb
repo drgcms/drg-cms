@@ -71,7 +71,7 @@ EOT
       url['table']      = yaml['table']  if yaml['table']
       url['formname']   = yaml['formname'] if yaml['formname']
     end
-# html options of the link   
+# html link options
     yhtml = yaml['html'] || {}
     yhtml['title'] = yaml['title'] if yaml['title']
     html << '<li class="dc-animate">' 
@@ -88,7 +88,7 @@ EOT
               select('sort', 'sort', choices, { include_blank: true }, 
               { class: 'drgcms_sort', 'data-table' => @form['table']} )
 
-    when action == 'filter' then # filter
+    when action == '_filter' then # filter
       caption = t('drgcms.filter')
       s = session[@form['table']]
 # add checked image to filter, so user will know that data is filtered      
@@ -96,6 +96,15 @@ EOT
       yhtml['onclick'] = "$('#drgcms_filter').toggle(300);"
 #      link_to(caption.html_safe, '#', yhtml )
       dc_link_to('drgcms.filter','filter', '#', yhtml )
+    when action == 'filter' then # filter
+      caption = t('drgcms.filter')
+      s = session[@form['table']]
+#
+      menu_filter = DcFilter.menu_filter(self)
+      caption << '&nbsp;' + fa_icon('caret-down lg') + menu_filter
+# add filter image, so user will know that data is filtered  
+      icon = 'filter' if s and s[:filter]
+      dc_link_to(caption, icon, '#', id: 'menu-filter' ) #+ '</li><li class="menu-filter;">'.html_safe  + menu.html_safe 
     when action == 'new' then # new
       caption = yaml['caption'] || 'drgcms.new'
       dc_link_to(caption,'plus', url, yhtml )
@@ -109,7 +118,7 @@ EOT
     end
     html << '</li>'
   end
-  html << '</ul></div>'
+  html << '</ul></div>' 
   html.html_safe
 end
 
@@ -454,7 +463,7 @@ def dc_columns_for_result(document)
 #
       td = '<td '
       td << dc_style_or_class('class',v['td_class'],value,document)
-      td << dc_style_or_class('style',v['td_style'],value,document)
+      td << dc_style_or_class('style',v['td_style'] || v['style'],value,document)
       html << "#{td}>#{value}</td>"
     end
   end

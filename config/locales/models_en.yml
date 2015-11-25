@@ -479,10 +479,20 @@ en:
         value: Value
 
       dc_key_value_store:
-        tabletitle: Table used for storing all kind of values
+        tabletitle: Numbering store
 
         key: Id key
         value: Value
+
+      dc_filter:
+        tabletitle: Filters definitions for browsing tables
+        
+        dc_user_id: User name
+        table: Collection name
+        description: Description
+        filter: Filter definition
+        public: Is public
+        sort: Default sort        
 
 # help for forms #####################################################
 
@@ -830,3 +840,12 @@ en:
       dc_key_value_store:
         key: Identification key
         value: Stored value
+
+      dc_filter:
+        dc_user_id: User name when filter is for user only
+        table: Collection to which filter apply
+        description: Filter description
+        filter: Filter definition in YAML
+        public: Filter is available to all users
+        sort: Default sort when selecting filter
+        

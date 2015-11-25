@@ -488,7 +488,16 @@ sl:
 
         key: Ključ
         value: Vrednost
+
+      dc_filter:
+        tabletitle: Shramba za podatkovne filtre
         
+        dc_user_id: Uporabnik
+        table: Tabela
+        description: Opis
+        filter: Vsebina filtra
+        public: Je javen
+        sort: Privzeto razvrsti
 
 # help pomoč na obrazcih ####################################################
 
@@ -844,3 +853,12 @@ sl:
       dc_key_value_store:
         key: Ključ do shranjene vrednosti
         value: Shranjena vrednost
+
+      dc_filter:
+        dc_user_id: Uporabnik, ko je filter samo za uporabnika
+        table: Naziv tabele za katero velja filter
+        description: Opis, ki bo prikazan na meniju
+        filter: Vsebina filtra
+        public: Filter je na voljo vsem uporabnikom
+        sort: Privzeto sortiranje ob izbiri filtra
+        

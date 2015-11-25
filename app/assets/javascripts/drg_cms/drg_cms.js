@@ -501,7 +501,16 @@ element = $(this).find(':first').attr('id');
     } 
   });
 
-
+ $('#1menu-filter').on('click', function(e) {
+    var target = e.target;
+//    if (e.target.src !== undefined) {
+//      target = e.target.parent(); // picture
+//    };
+//    dumpAttributes(target);
+    req = target.getAttribute("data-request");
+    $('.menu-filter').toggle(300);
+    
+  });
 });
 
 /*******************************************************************

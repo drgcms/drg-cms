@@ -141,6 +141,7 @@ end
 ########################################################################
 def check_filter_options() #:nodoc:
   table_name = @tables.first[1]
+  model      = @tables.first[0]
   session[table_name] ||= {}
 # process page
   session[table_name][:page] = params[:page] if params[:page]
@@ -150,18 +151,34 @@ def check_filter_options() #:nodoc:
     if params[:filter] == 'off' # clear all values
       nil
     else
-      [ params[:filter_field], params[:filter_oper], params[:record][params[:filter_field]] ].join("\t")
+#      [ params[:filter_field], params[:filter_oper], params[:record][params[:filter_field]] ].join("\t")
+      {'field' =>  params[:filter_field], 
+       'operation' => params[:filter_oper], 
+       'value' => params[:record][params[:filter_field]],
+       'table' => table_name}.to_yaml
     end
     session[table_name][:page] = 1
-    params[:filter] = nil # must be. Otherwise kaminari includes parameter on paging and everything goes wrong
+    params[:filter]    = nil # must be. Otherwise kaminari includes parameter on paging and everything goes wrong
+    params[:filter_id] = nil 
   end
-# if data model has field dc_site_id ensure that only documents which belong 
-# to the site are selected.
-  model = @tables.first[0]
+# if data model has field dc_site_id ensure that only documents which belong to the site are selected.
   site_id = dc_get_site._id if dc_get_site
 # dont't filter site if no dc_site_id field or user is ADMIN
   site_id = nil if !model.method_defined?('dc_site_id') or dc_user_can(DcPermission::CAN_ADMIN)
+#  
+  if @records = DcFilter.get_filter(session[table_name][:filter])
+    @records = @records.and(dc_site_id: site_id) if site_id
+  else
+    @records = if site_id
+      model.where(dc_site_id: site_id)
+    else
+      model
+    end
+  end
+  
+=begin      
   if session[table_name][:filter]
+
     field, oper, value = session[table_name][:filter].split( "\t")
     field = '_id' if field == 'id' # must be
     value = /#{value}/i if oper == 'like' # do regex if operation is like
@@ -175,13 +192,16 @@ def check_filter_options() #:nodoc:
     else
       model.where(field => value)
     end
+
+    filter = DcFilter.get_filter(session[table_name][:filter])
   else
-    @records = if site_id
+     = if site_id
       model.where(dc_site_id: site_id)
     else
       model
     end
   end
+=end  
 # pagination if required
   per_page = (@form['result_set']['per_page'] || 30).to_i
   if per_page > 0
@@ -204,7 +224,7 @@ def index
 # something iz wrong. flash[] should have explanation.
       if @records.class == FalseClass
         @records = []
-        return render(action:  :index)
+        return render(action: :index)
       end
 # pagination
       unless @form['table'] == 'dc_dummy'

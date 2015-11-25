@@ -48,11 +48,12 @@ en:
     file_manager: File manager
     edit_selected: Edit documents in selected collection
     invalid_username: Invalid username or password!
-    system_menu: CMS system tables
     menu_plus: Show alternative menu
     not_email: is not valid e-mail address!
     updated_by_other: Document was updated by other user. Please reenter your data.
     not_id: Value entered is not ID!
+    cms_main: CMS main tables
+    cms_advanced: CMS advanced
 
     edit: Edit
     show: Prikaz

@@ -84,19 +84,10 @@ color: #222;
 
 textarea, input, select {
 color: #222;
-padding: 4px;
-border: solid 1px #aaa;
+padding: 5px 3px;
+border: solid 1px #bbb;
 border-radius: 2px;
 }
-
-/*
-select#record_select { 
-padding: 1px;
-max-width: 300px;
-height: 26px;
-background: #fff;
-}
-*/
 
 select {
 padding: 4px 0px;
@@ -449,12 +440,15 @@ background: transparent linear-gradient(to bottom, #ddd 0%, #FFF 100%) repeat sc
   border-bottom: 1px solid #eee;
 */
 }
-.dc-readonly { font-weight: normal }
 
 .dc-readonly {
+  font-weight: normal;
   margin-left: 2px;
   margin-top: 2px;
-  padding: 2px;
+  padding: 5px 3px;
+  border: 1px solid #ddd;
+  background-color: #fefefe;
+  border-radius: 2px;
 }
 
 .dc-color-odd {
@@ -757,6 +751,7 @@ overflow-x:hidden;
 .clear-both { clear: both;}
 
 /******************* action-menu *********************/
+
 #dc-action-menu {
 padding: 2px 0px 2px 0px;
 font-weight: bold;
@@ -771,7 +766,6 @@ margin: 6px 2px 4px 2px;
 
 .dc-action-menu  {
 list-style:none;
-/*font-size: 12px;*/
 }
 
 .dc-action-menu li {
@@ -789,11 +783,11 @@ background: transparent linear-gradient(to bottom, #FFF 0%, #F2F2F2 100%) repeat
 border: 1px solid #ddd;
 }
 
+
 .dc-action-menu li:hover {
 border: 1px solid #aaa;
 color: #222;
 transition: 0.3s;  
-/*background: linear-gradient(#fff 5%, #eee 100%);  */
 }
 
 .dc-action-menu li:hover a {
@@ -805,19 +799,20 @@ margin-top: 1px;
 background:#fff; 
 position:absolute;
 left:-9999px; 
-
-/*box-shadow: 2px 2px 4px #aaa;*/
-
+border-radius: 4px;
 }
 
 .dc-action-menu ul li {
-display:block; 
-float:none;
+display: block; 
+float: none;
 padding: 4px 10px;
-border-radius: 0px;
+
 margin-right: 0px;
-white-space:nowrap;
-background: transparent linear-gradient(to bottom, #FFF 0%, #F2F2F2 100%) repeat scroll 0% 0%;
+white-space: nowrap;
+background: #FFF;
+border: 0px;
+color: #888;
+/*background: transparent linear-gradient(to bottom, #FFF 0%, #F2F2F2 100%) repeat scroll 0% 0%;*/
 }
 
 .dc-action-menu ul a {
@@ -828,14 +823,26 @@ white-space:nowrap;
 left:0; 
 margin-top:3px;
 background-color: #fff;
+border: 1px solid #aaa;
+box-shadow: 1px 1px 2px #ccc;
 }
 
 .dc-action-menu li:hover ul li a { 
-color: #888;
+color: #eee;
 }
 
 .dc-action-menu li:hover ul li a:hover {
 color: #222;
+}
+.dc-action-menu li:hover ul li:hover {
+border: 0px;
+background: #ddd;
+border-radius: 0px;
+}
+
+.menu-filter {
+min-width: 200px;
+max-width: 400px;
 }
 
 /************************** info popup *************************/

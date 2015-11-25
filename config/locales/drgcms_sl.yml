@@ -48,11 +48,12 @@ sl:
     file_manager: Organizator datotek
     edit_selected: 'Uredi: Izbrano tabelo'
     invalid_username: Napaka uporabnik ali geslo!
-    system_menu: CMS sistemske tabele    
     menu_plus: Malo drugačen menu
     not_email: ni veljaven e-naslov!
     updated_by_other: Dokument je spremenil drug uporabnik. Prosimo ponovite vpis podatkov.
-    not_id: Vsebina polja ni ključ ID!    
+    not_id: Vsebina polja ni ključ ID! 
+    cms_main: CMS tabele
+    cms_advanced: CMS napredne opcije    
 
     edit: Urejanje
     show: Prikaz
