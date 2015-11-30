@@ -61,7 +61,16 @@ included do
   
   validates :name, presence: true
   validates :name, uniqueness: true      
-  
+
+########################################################################
+# Returns value of site setting. If no value is send as parameter it returns 
+# all settings hash object.
+########################################################################
+def params(what=nil)
+  @params ||= self.settings.to_s.size > 5 ? YAML.load(self.settings) : {}
+  what.nil? ? @params : @params[what.to_s]
+end
+
 ########################################################################
 # Return choices for select for site_id
 ########################################################################
@@ -76,15 +85,6 @@ def self.choices4_policies
   site = ApplicationController.dc_get_site_()
   #all.inject([]) { |r,site| r << [ (site.active ? '' : t('drgcms.disabled') ) + site.name, site._id] }
   [['a','b']]
-end
-
-########################################################################
-# Returns value of site setting. If no value is send as parameter it returns 
-# all settings hash object.
-########################################################################
-def params(what=nil)
-  @params ||= self.settings.to_s.size > 5 ? YAML.load(self.settings) : {}
-  what.nil? ? @params : @params[what.to_s]
 end
 
 end  
