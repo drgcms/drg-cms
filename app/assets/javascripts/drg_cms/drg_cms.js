@@ -511,6 +511,50 @@ element = $(this).find(':first').attr('id');
     $('.menu-filter').toggle(300);
     
   });
+  
+ /*******************************************************************
+  * This will fire cmsedit index action and pass value enterred into 
+  * filter field and thus refresh browsed result set.
+  *******************************************************************/
+  $('#record_filter_field').keydown( function(e) {
+    if (e.which == '13' || e.which == '9') {
+      url = $(this).parents('span').attr("data-url");
+      url = url + "&filter_value=" + this.value;
+      location.href = url;
+      return false;      
+    }
+  });
+
+  /*******************************************************************
+  * Same as above, but when clicked on filter icon. enter and tab don't 
+  * work on all field types.
+  *******************************************************************/
+  $('.record_filter_field_icon').on('click', function(e) {
+    field = $('#record_filter_field');
+    url = $(this).parents('span').attr("data-url");
+    url = url + "&filter_value=" + field.val();
+    location.href = url;
+  });
+
+ /*******************************************************************
+  * Click on show filter form
+  *******************************************************************/
+  $('#open_drgcms_filter').on('click', function(e) {
+    $('#drgcms_filter').modal().open();   
+  });
+  
+ /*******************************************************************
+  * 
+  *******************************************************************/
+  $('.drgcms_popup_submit').on('click', function(e) {
+    //e.preventDefault();  
+    url = $(this).attr( 'data-url' );
+    field = $('select#_filter_field').val();
+    oper  = $('select#_filter_oper').val();
+    location.href = url + '&filter_field=' + field + '&filter_oper=' + oper
+//    $('#drgcms_filter').modal().close();
+  });
+  
 });
 
 /*******************************************************************

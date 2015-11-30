@@ -117,6 +117,14 @@ def self.all_pages_for_site(site)
     inject([]) { |r,page| r << [ page.subject, page.subject_link] }
 end
 
+########################################################################
+# Return filter options
+########################################################################
+def self.dc_filters
+  {'title' => 'drgcms.filters.this_site_only', 'operation' => 'eq', 
+   'field' => 'dc_site_id', 'value' => '@current_site'}
+end
+
 end
 end
 

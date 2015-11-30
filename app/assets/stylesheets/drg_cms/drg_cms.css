@@ -443,12 +443,11 @@ background: transparent linear-gradient(to bottom, #ddd 0%, #FFF 100%) repeat sc
 
 .dc-readonly {
   font-weight: normal;
-  margin-left: 2px;
-  margin-top: 2px;
   padding: 5px 3px;
-  border: 1px solid #ddd;
-  background-color: #fefefe;
+  border: 1px solid #ccc;
+  background-color: #eee;
   border-radius: 2px;
+  color: #444;
 }
 
 .dc-color-odd {
@@ -616,7 +615,7 @@ box-shadow: 2px 2px 4px #ccc;
 min-width:300px;
 }
 
-.cmsedit-menu ul li ul a { color: white; }
+/*.cmsedit-menu ul li ul a { color: white; }*/
 
 .cmsedit-menu ul li:hover > ul {
 display:block;
@@ -756,6 +755,7 @@ overflow-x:hidden;
 padding: 2px 0px 2px 0px;
 font-weight: bold;
 color: #888;
+display: flex;
 }
 
 #dc-action-menu ul {
@@ -774,7 +774,6 @@ position:relative;
 list-style:none;
 padding: 5px 8px;
 margin-right: 4px;
-max-width: 200px;
 background: #eee;
 border-radius:5px;
 z-index: 1;
@@ -828,7 +827,7 @@ box-shadow: 1px 1px 2px #ccc;
 }
 
 .dc-action-menu li:hover ul li a { 
-color: #eee;
+/*color: #eee;*/
 }
 
 .dc-action-menu li:hover ul li a:hover {
@@ -843,6 +842,18 @@ border-radius: 0px;
 .menu-filter {
 min-width: 200px;
 max-width: 400px;
+}
+
+.menu-filter a {
+color: #888 !important;
+}
+.menu-filter a:hover {
+color: #222 !important;
+}
+
+.menu-filter hr {margin: 0px;}
+.filter_field {
+
 }
 
 /************************** info popup *************************/
@@ -865,4 +876,17 @@ position:absolute;
 background-color: #f8f8f8;
 border: 1px solid #ddd;
 border-radius: 2px;
+}
+
+/************************** info popup *************************/
+#drgcms_filter {
+    z-index:100;
+    position:fixed;
+    top: 50px;
+    left: 200px;
+    width: 500px;
+    background: #fff;
+    display: none;
+    padding: 20px;
+    border: 2px solid #222;    
 }

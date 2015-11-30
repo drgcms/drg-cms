@@ -52,7 +52,7 @@ def dc_actions_for_index()
   <ul class="dc-action-menu">
 EOT
 #
-   actions.each do |k,v|
+  actions.each do |k,v|
     session[:form_processing] = "index:actions: #{k}=#{v}"
     next if v.nil? # must be
     url = @parms.clone
@@ -75,8 +75,10 @@ EOT
     yhtml = yaml['html'] || {}
     yhtml['title'] = yaml['title'] if yaml['title']
     html << '<li class="dc-animate">' 
+# 
     html << case 
-    when action == 'sort' then # sort
+# sort
+    when action == 'sort' then 
       choices = [['id','id']]
       if @form['index']['sort']
         @form['index']['sort'].split(',').each do |s| 
@@ -87,29 +89,21 @@ EOT
       fa_icon('sort-alpha-asc') + ' ' + t('drgcms.sort') + ' ' + 
               select('sort', 'sort', choices, { include_blank: true }, 
               { class: 'drgcms_sort', 'data-table' => @form['table']} )
-
-    when action == '_filter' then # filter
+# filter
+    when action == 'filter' then 
       caption = t('drgcms.filter')
+      caption << '&nbsp;' + fa_icon('caret-down lg') + DcFilter.menu_filter(self)
+# add check image, so user will know that filter is active
       s = session[@form['table']]
-# add checked image to filter, so user will know that data is filtered      
-#      caption << '&nbsp;'+image_tag('drg_cms/checkbox-checked.png') if s and s[:filter]
-      yhtml['onclick'] = "$('#drgcms_filter').toggle(300);"
-#      link_to(caption.html_safe, '#', yhtml )
-      dc_link_to('drgcms.filter','filter', '#', yhtml )
-    when action == 'filter' then # filter
-      caption = t('drgcms.filter')
-      s = session[@form['table']]
-#
-      menu_filter = DcFilter.menu_filter(self)
-      caption << '&nbsp;' + fa_icon('caret-down lg') + menu_filter
-# add filter image, so user will know that data is filtered  
-      icon = 'filter' if s and s[:filter]
-      dc_link_to(caption, icon, '#', id: 'menu-filter' ) #+ '</li><li class="menu-filter;">'.html_safe  + menu.html_safe 
-    when action == 'new' then # new
+      caption << ('&nbsp;' << fa_icon('check')) if s and s[:filter]
+      caption
+# new
+    when action == 'new' then 
       caption = yaml['caption'] || 'drgcms.new'
       dc_link_to(caption,'plus', url, yhtml )
-    when action == 'menu' then  # menu
-      caption = t(v['caption'], v['caption'])
+# menu      
+    when action == 'menu' then  
+      caption = t(v['caption'], v['caption']) + '&nbsp;' + fa_icon('caret-down lg')
       caption + eval(v['eval'])      
     else 
       caption = yaml['caption'] || yaml['text']
@@ -118,101 +112,45 @@ EOT
     end
     html << '</li>'
   end
-  html << '</ul></div>' 
+  html << '</ul>'
+  html << DcFilter.get_filter_field(self)
+  html << '</div>'
   html.html_safe
 end
 
 ############################################################################
-# Will return field form definition if field is defined on form. Subroutine of dc_div_filter
-############################################################################
-def _get_field_def(name) #:nodoc:
-  @form['form']['tabs'].each do |tab|
-    tab.each do |field|
-      next if field.class == String # tab name
-      field.each {|k,v| return v if v['name'] == name }
-    end
-  end if @form['form']['tabs'] #  I know. But nice. 
-#
-  @form['form']['fields'].each do |field|
-    return field.last if field.last['name'] == name
-  end if @form['form']['fields']
-  nil
-end
-
-############################################################################
-# Finds field definition on form and use it for filter input. Subroutine of dc_div_filter.
-############################################################################
-def _get_field_div(name) #:nodoc:
-  filter = nil
-# old filter saved to session  
-  if session[@form['table']] and session[@form['table']][:filter]
-    filter, operation, value = session[@form['table']][:filter].split("\t")
-  end
-# field not defined on form. Must be defined: name as form_field_type  
-  if name.match(' as ')
-    name, dummy, type = name.split(' ')
-    field = {"name" => name, "type" => type, "html"=>{"size"=>20}}
-  else
-    field = _get_field_def(name)
-    field = {"name" => name, "type" => 'text_field', "html"=>{"size"=>20}} if field.nil?
-  end
-#
-  div_hidden = 'div-hidden'
-  if filter
-    div_hidden = '' if name == filter
-    if field['html'] 
-      field['html']['value'] = value
-    else
-      field['html'] = { "value" => value }
-    end
-  end
-  klas_string = field['type'].camelize
-  klas = DrgcmsFormFields::const_get(klas_string) || nil
-  return 'error' if klas.nil?
-#
-  o = klas.new(self, @record, field).render
-  "<span id=\"filter_#{field['name']}\" class=\"#{div_hidden}\">" << o.html << (o.js.size > 2 ? javascript_tag(o.js) : '') << '</span>'
-end
-  
-############################################################################
 # Creates filter div for cmsedit index/filter action.
 ############################################################################
 def dc_div_filter()
-  choices, inputs = [], ''
+  choices = []
   filter = (@form['index'] and @form['index']['filter']) ? @form['index']['filter'] + ',' : ''
   filter << 'id as text_field' # filter id is added by default
   filter.split(',').each do |f| 
     f.strip!
     name = f.match(' as ') ? f.split(' ').first : f
-    choices << [ t("helpers.label.#{@form['table']}.#{name}", name), name ] 
-# find field definition on form and use it for input field definition
-    inputs << _get_field_div(f)
+    choices << [ t("helpers.label.#{@form['table']}.#{name}", name), f ] 
   end
   choices4_operators = t('drgcms.choices4_filter_operators').chomp.split(',').inject([]) {|r,v| r << (v.match(':') ? v.split(':') : v )}
-  s = session[@form['table']]
-  is_hidden = (s and s[:filter]) ? '' : ' class="div-hidden" '
-#
+# currently selected options
   if session[@form['table']] and session[@form['table']][:filter]
     field_name, operators_value, dummy = session[@form['table']][:filter].split("\t")
   else
     field_name, operators_value = nil, nil
   end
+  #{ form_tag :table => @form['table'], filter: :on, filter_input: 1, action: :index, method: :post }
+  url = url_for(:table => @form['table'], filter: :on, filter_input: 1, action: :index, controller: :cmsedit)  
   html =<<EOT
-  <div id="drgcms_filter" #{is_hidden}>
+  <div id="drgcms_filter" class="div-hidden">
     <table class="dc-menu"><td>
-  #{ form_tag :table => @form['table'], filter: :on, action: :index, method: :post }
     #{ select(nil, 'filter_field', options_for_select(choices, field_name), { include_blank: true }) }
     #{ select(nil, 'filter_oper', options_for_select(choices4_operators, operators_value)) }
-    #{ inputs }
+
       </td>
-      <td class="dc-link-submit dc-animate">#{fa_icon('check-square-o')} #{submit_tag(t('drgcms.filter_on'), :class => 'dc-submit')}</td>
+      <td class="dc-link dc-animate drgcms_popup_submit" data-url="#{url}">#{fa_icon('check-square-o')} #{t('drgcms.filter_on')}</td>
       <td class="dc-link dc-animate">#{dc_link_to('drgcms.filter_off','close', {action: 'index', filter: 'off', :table => @form['table']}) }</td>
     </table>
-  </form>
 </div>
-  
 EOT
-#      <td class="dc-link dc-animate">#{link_to t('drgcms.filter_off'), action: 'index', filter: 'off', :table => @form['table']}</td>
   html.html_safe
 end
 

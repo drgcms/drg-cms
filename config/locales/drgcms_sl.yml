@@ -70,6 +70,7 @@ sl:
     save&close: Shrani in zapri
     filter_on: Vklopi filter
     filter_off: Izklopi filter
+    filter_set: Nastavi filter
     maximize: Povečaj
     minimize: Pomanjšaj
     reload: Osveži    
@@ -82,12 +83,14 @@ sl:
     updated_at: Spremenjeno
     new_record: Nov zapis
 
-    choices4_filter_operators: 'Je enak:eq,Vsebuje:like'
+    choices4_filter_operators: 'Je enak:eq,Vsebuje:like,Je večji od:gt,Je manjši od:lt'
     
-    browse_collections: Brskanje po zbirkah
+    browse_collections: Brskanje po definicijah zbirk
 
     dc_journal:
       zero_selected: Ni izbranih podatkov!
       restored: Podatki so restavrirani.
       restore: Restavriraj      
       
+    filters:
+      this_site_only: Dokumenti samo trenutnoo izbrane strani

@@ -107,33 +107,64 @@ end
 # Set aditional filter options when filter is defined by filter method in control object.
 ########################################################################
 def user_filter_options(model) #:nodoc:
-# no filter is active or set off
-  if params[:filter] == 'off' or (params[:filter].nil? and session[:tmp_filter].nil?)
-    session[:tmp_filter] = nil
-    return model
-  end
-# 
-  table, field, oper, value = if params[:filter] == 'on' 
-    [model.to_s, params[:filter_field], params[:filter_oper], params[:record][params[:filter_field]] ]
+  table_name = @tables.first[1]
+  if session[table_name]
+    DcFilter.get_filter(session[table_name][:filter]) || model
   else
-    session[:tmp_filter].split("\t")
+    model
   end
-# filter set previously on other collection
-  if table != model.to_s
-    session[:tmp_filter] = nil
-    return model 
+end
+
+########################################################################
+# Will set session[table_name][:filter] and save last filter settings to session.
+# subroutine of check_filter_options.
+########################################################################
+def set_session_filter(table_name)
+  if params[:filter] == 'off' # clear all values
+    session[table_name][:filter] = nil
+    return
   end
-#
-  field = '_id' if field == 'id' # must be
-  value = /#{value}/ if oper == 'like' # do regex if operation is like
-# when field type is ObjectId transform value    
-  if model.fields[field] and model.fields[field].type == BSON::ObjectId
-    value = BSON::ObjectId.from_string(value) rescue nil
-    flash[:error] = t('drgcms.not_id') if value.nil?
+
+  filter_value = if params[:filter_value].nil?
+# NIL indicates that no filtering is needed        
+    '#NIL'
+  else     
+    if params[:filter_value].class == String and params[:filter_value][0] == '@'
+# Internal value. Remove leading @ and evaluate expression
+      expression = DcInternals.get(params[:filter_value])
+      eval(expression) rescue nil
+    else
+# No filter when empty      
+      params[:filter_value] == '' ? '#NIL' : params[:filter_value] 
+    end
   end
-# save filter to session  
-  session[:tmp_filter] = [ table, field, oper, value ].join("\t")
-  model.where(field => value)
+# if filter field parameter is omitted then just set filter value
+  session[table_name][:filter] =
+  if params[:filter_field].nil?
+    saved = YAML.load(session[table_name][:filter])
+    saved['value'] = filter_value
+    saved.to_yaml
+  else 
+# As field defined. Split name and alternative input field
+    field = if params[:filter_field].match(' as ')
+      params[:filter_input] = params[:filter_field].split(' as ').last.strip
+      params[:filter_field].split(' as ').first.strip
+    else
+      params[:filter_field]
+    end
+#    
+    {'field'     => field, 
+     'operation' => params[:filter_oper], 
+     'value'     => filter_value,
+     'input'     => params[:filter_input],
+     'table'     => table_name }.to_yaml
+  end
+# must be. Otherwise kaminari includes parameter on paging
+   params[:filter]        = nil 
+   params[:filter_id]     = nil 
+   params[:filter_oper]   = nil  
+   params[:filter_input]  = nil 
+   params[:filter_field]  = nil 
 end
 
 ########################################################################
@@ -147,19 +178,8 @@ def check_filter_options() #:nodoc:
   session[table_name][:page] = params[:page] if params[:page]
 # new filter is applied
   if params[:filter]
-    session[table_name][:filter] =
-    if params[:filter] == 'off' # clear all values
-      nil
-    else
-#      [ params[:filter_field], params[:filter_oper], params[:record][params[:filter_field]] ].join("\t")
-      {'field' =>  params[:filter_field], 
-       'operation' => params[:filter_oper], 
-       'value' => params[:record][params[:filter_field]],
-       'table' => table_name}.to_yaml
-    end
+    set_session_filter(table_name)
     session[table_name][:page] = 1
-    params[:filter]    = nil # must be. Otherwise kaminari includes parameter on paging and everything goes wrong
-    params[:filter_id] = nil 
   end
 # if data model has field dc_site_id ensure that only documents which belong to the site are selected.
   site_id = dc_get_site._id if dc_get_site
@@ -176,32 +196,6 @@ def check_filter_options() #:nodoc:
     end
   end
   
-=begin      
-  if session[table_name][:filter]
-
-    field, oper, value = session[table_name][:filter].split( "\t")
-    field = '_id' if field == 'id' # must be
-    value = /#{value}/i if oper == 'like' # do regex if operation is like
-# when field type is ObjectId transform value    
-    if model.fields[field] and model.fields[field].type == BSON::ObjectId
-      value = BSON::ObjectId.from_string(value) rescue nil
-      flash[:error] = t('drgcms.not_id') if value.nil?
-    end
-    @records =  if site_id
-      model.where(dc_site_id: site_id, field => value)
-    else
-      model.where(field => value)
-    end
-
-    filter = DcFilter.get_filter(session[table_name][:filter])
-  else
-     = if site_id
-      model.where(dc_site_id: site_id)
-    else
-      model
-    end
-  end
-=end  
 # pagination if required
   per_page = (@form['result_set']['per_page'] || 30).to_i
   if per_page > 0
@@ -217,6 +211,11 @@ def index
   if @form['result_set'].nil?
     return process_return_to(params[:return_to] || 'reload') 
   end
+# for now enable only filtering of main tables
+  if @tables.size == 1 
+    check_filter_options()
+    check_sort_options()
+  end  
 # result set is defined by filter method in control object
   if @form['result_set']['filter']
     if respond_to?(@form['result_set']['filter'])
@@ -235,13 +234,9 @@ def index
       p "Error: result_set:filter: #{@form['result_set']['filter']} not found in controls!"
     end
   else
-    if @tables.size == 1 # for now enable only filtering of main tables
-      check_filter_options()
-      check_sort_options()
-    else
+    if @tables.size > 1 
       rec = @tables.first[0].find(@ids.first)          # top most document.id
       1.upto(@tables.size - 2) { |i| rec = rec.send(@tables[i][1].pluralize).find(@ids[i]) }  # find embedded childrens by ids
-#      p rec,@tables, @tables.last[1].pluralize
       @records = rec.send(@tables.last[1].pluralize)   # current embedded set
 # sort by order if order field is present in model
       if @tables.last[1].classify.constantize.respond_to?(:order)
