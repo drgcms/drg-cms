@@ -22,69 +22,37 @@
 #++
 
 ##########################################################################
-# == Schema information
-#
-# Collection name: dc_ad : Ads
-#
-#  _id                  BSON::ObjectId       _id
-#  created_at           Time                 created_at
-#  updated_at           Time                 updated_at
-#  position             String               Position (div id) where this ad will be displayed
-#  description          String               Short description
-#  type                 Integer              Content type of add
-#  file                 String               Picture or flash filename
-#  script               String               JavaScript script, when script type
-#  link                 String               Link to page (site, dokument) when ad is clicked
-#  link_target          String               Define if link is open in new window or same
-#  height               Integer              Height of ad
-#  width                Integer              Width of ad
-#  valid_from           DateTime             Ad is valid from
-#  valid_to             DateTime             Ad is valid to
-#  displays             Integer              Maximum number of time this add is displayed
-#  clicks               Integer              Maximum number of clicks this ad will receive
-#  priority             Integer              Priority. Higher priority means ad is shown more often. Priority is calculated only between candidats to be displayed.
-#  displayed            Integer              No. of times this add has been displayed
-#  clicked              Integer              No. of times this ad has been clicked
-#  active               Mongoid::Boolean     Ad is active
-#  created_by           BSON::ObjectId       created_by
-#  updated_by           BSON::ObjectId       Record last updated by
-#  dc_site_id           Object               Ad is valid for the site
-# 
-# Ads can be defined as picture file, flash file or script. 
-# 
-# More than one ad can be shown on the same place of design. They are grouped by 
-# position field, have priority, valid time period and can be limited by number of 
-# clicks or displays. 
+# Internals model represents bridge to action's internal variables like 
+# session, params, record ... They are used for interacting with user in terms
+# they understand and provides internal values behind the scene. 
 ##########################################################################
-class DcAd
-  include Mongoid::Document
-  include Mongoid::Timestamps
+module DcInternals
+  INTERNALS = {
+    'current_user' => 'session[:user_id]',
+    'current_user_name' => 'session[:user_name]',
+    'current_site' => 'dc_get_site.id'
+  }
+#
+  @additions = {}
   
-  field :position,    type: String,  default: ''
-  field :description, type: String,  default: ''
-  field :type,        type: Integer, default: 1 # 1:pic, 2:flash, 3:script
-  field :file,        type: String,  default: ''
-  field :script,      type: String,  default: ''
-  field :link,        type: String,  default: ''
-  field :link_target, type: String,  default: ''
-  field :height,      type: Integer
-  field :width,       type: Integer  
-  field :valid_from,  type: DateTime
-  field :valid_to,    type: DateTime
-  field :displays,    type: Integer, default: 0
-  field :clicks,      type: Integer, default: 0
-  field :priority,    type: Integer, default: 5
-  field :displayed,   type: Integer, default: 0
-  field :clicked,     type: Integer, default: 0
-  
-  field :active,      type: Boolean, default: true 
-  field :created_by,  type: BSON::ObjectId
-  field :updated_by,  type: BSON::ObjectId
-  
-  belongs_to  :dc_site
-  
-  index( { dc_site: 1, position: 1 } )
-  
-  validates :position, presence: true
-  validates :description, presence: true  
+##########################################################################
+# Add additional internal. This method allows application specific internals 
+# to be added to structure and be used together with predefined values.
+##########################################################################
+def self.add_internal(hash)
+  hash.each {|key,value| additions[key] = value} 
+end
+
+##########################################################################
+# Add additional internal. This method allows application specific internals 
+# to be added to structure and be used together with predefined values.
+##########################################################################
+def self.get(key)
+  key = key.sub('@','')
+
+  value = INTERNALS[key]
+  value = @additions[key] if value.nil?
+  value
+end
+
 end
