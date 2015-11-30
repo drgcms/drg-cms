@@ -23,7 +23,8 @@
 #++
 
 ##########################################################################
-# Controller holds methods which are of use for all application controllers.
+# DcApplicationControllerController holds methods which are useful for all 
+# application controllers.
 ##########################################################################
 class DcApplicationController < ActionController::Base
   protect_from_forgery
@@ -31,9 +32,10 @@ class DcApplicationController < ActionController::Base
   before_filter :dc_reload_patches if Rails.env.development?
   
 ########################################################################
-# Writes anything passed as parameter to logger file.
+# Writes anything passed as parameter to logger file. 
+# Very useful for debuging strange errors.
 # 
-# Very usefull for debuging strange errors.
+# @param [Objects] args any parameter can be passed 
 ########################################################################
 def dc_dump(*args)
   args.each do |arg|
@@ -51,15 +53,13 @@ end
 ####################################################################
 # Checks if user has required role.
 # 
-# [Parameters:]
-# [role] 
-# Role can be passed as DcPolicyRole object or as string. If string
-# is passed, dc_policy_roles files is searched for appropriate role.
+# @param [DcPolicyRole] role can be passed as DcPolicyRole object or 
+# @param [String] role as role name. If passed as name, dc_policy_roles  
+# is searched for appropriate role.
 # 
-# [Return:]
-# Boolean. True if user has required role added to his profile.
+# @return [Boolean] True if user has required role added to his profile.
 # 
-# [Example:]
+# @example If user has required role
 #    if dc_user_has_role('admin') ...
 #    if dc_user_has_role('Site editors') ...
 ####################################################################
@@ -75,12 +75,14 @@ def dc_user_has_role(role)
 end
 
 ####################################################################
-# Determine site from url and return site document. 
+# Determines site from url and returns site document. 
 # 
-# [Return:]
-# Site document. If site is not found and not in production environment 'test' 
-# site document is returned. If site has alias set then alias site document is
+# @return [DcSite] site document. If site is not found and not in production environment,
+# 'test' document is returned. If site has alias set then alias site document is
 # returned.
+# 
+# @example Returns Google analytics code from site settings
+#    settings = dc_get_site.params['ga_acc']
 ####################################################################
 def dc_get_site()
   return @site if @site 
@@ -103,9 +105,9 @@ end
 ####################################################################
 # Determine and return site record from url. It would be nice but it is not working.
 ####################################################################
-def self.dc_get_site_() #:nodoc:
-  #self.dc_get_site()
-end
+#def self.dc_get_site_() #:nodoc:
+#  self.dc_get_site()
+#end
 
 ########################################################################
 # Searches forms path for file_name and returns full file name or nil if not found.
