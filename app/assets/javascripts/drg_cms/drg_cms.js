@@ -540,7 +540,10 @@ element = $(this).find(':first').attr('id');
   * Click on show filter form
   *******************************************************************/
   $('#open_drgcms_filter').on('click', function(e) {
-    $('#drgcms_filter').modal().open();   
+    $('#drgcms_filter').bPopup({
+      speed: 650,
+      transition: 'slideDown'
+    });      
   });
   
  /*******************************************************************
@@ -552,8 +555,12 @@ element = $(this).find(':first').attr('id');
     field = $('select#_filter_field').val();
     oper  = $('select#_filter_oper').val();
     location.href = url + '&filter_field=' + field + '&filter_oper=' + oper
-//    $('#drgcms_filter').modal().close();
-  });
+// Still opening in new window
+//    iframe = parent.document.getElementsByTagName("iframe")[0].getAttribute("id");
+//    loc = url + '&filter_field=' + field + '&filter_oper=' + oper
+//    $('#'+iframe).attr('src', loc);
+//    parent.document.getElementById(iframe).src = loc   
+   });
   
 });
 

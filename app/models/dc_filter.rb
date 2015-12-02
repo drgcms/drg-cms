@@ -68,7 +68,6 @@ def self.get_filter(filter)
     value = BSON::ObjectId.from_string(value) rescue nil
   end
 #
-p yaml,'***************'
   if ['eq','like'].include?(yaml['operation'])
     model.where(field => value)
 # TODO in operator    
@@ -107,8 +106,7 @@ def self.get_filter_field(parent)
   filter = YAML.load(filter) rescue nil 
   return '' if filter.nil?
 #  return '' if filter['input'].nil?
-#
-  p filter
+
   field = get_field_form_definition(filter['field'], parent)
   return '' if field.nil? and filter['input'].nil?
   field = {} if field.nil?

@@ -880,13 +880,14 @@ border-radius: 2px;
 
 /************************** info popup *************************/
 #drgcms_filter {
-    z-index:100;
-    position:fixed;
-    top: 50px;
-    left: 200px;
-    width: 500px;
-    background: #fff;
-    display: none;
-    padding: 20px;
-    border: 2px solid #222;    
+z-index:100;
+background: #fff;
+display: none;
+padding: 4px;
+border: 2px solid #222;    
+}
+#drgcms_filter h1 {
+background-color: #ccc;
+font-size: 2em; 
+padding: 5px;
 }

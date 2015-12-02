@@ -16,7 +16,7 @@
  *= #require ../javascripts/drg_cms/elfinder/css/elfinder.min.css
  *= #require ../javascripts/drg_cms/elfinder/css/theme.css
  *= require font-awesome
- *= require drg_cms/the-modal.css
+ *= #require drg_cms/the-modal.css
 */
 
 /* Required for link buttons to look alike */

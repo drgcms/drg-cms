@@ -26,6 +26,7 @@
 //= #require drg_cms/elfinder/js/elfinder.min.js
 //= #require drg_cms/elfinder/js/proxy/elFinderSupportVer1.js
 
-//= require drg_cms/jquery.the-modal.js
+//= #require drg_cms/jquery.the-modal.js
+//= require drg_cms/jquery.bpopup.min.js
 
 

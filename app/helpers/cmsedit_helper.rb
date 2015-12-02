@@ -141,6 +141,7 @@ def dc_div_filter()
   url = url_for(:table => @form['table'], filter: :on, filter_input: 1, action: :index, controller: :cmsedit)  
   html =<<EOT
   <div id="drgcms_filter" class="div-hidden">
+    <h1>#{t('drgcms.filter_set')}</h1>
     <table class="dc-menu"><td>
     #{ select(nil, 'filter_field', options_for_select(choices, field_name), { include_blank: true }) }
     #{ select(nil, 'filter_oper', options_for_select(choices4_operators, operators_value)) }
