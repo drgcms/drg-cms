@@ -44,9 +44,9 @@ result_set:
   actions_width: 100
   per_page: 10
   table_style: 'color: green;'
-  table_class: 'color: green;'
+  table_class: tclass
   tr_style: 'color: green;'
-  tr_class: 'color: green;'
+  tr_class: trclass
   
   actions: standard
 
@@ -75,6 +75,7 @@ result_set:
   columns:
     1:  
       name: name
+      eval: dc_name4_id,dc_site,name
       style: 'align: left; width: 100px'
     2:  
       name: title
