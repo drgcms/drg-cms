@@ -54,6 +54,7 @@ end
 def self.get_filter(filter)
   yaml = YAML.load(filter) rescue nil
   return yaml if yaml.nil?
+  return nil if yaml['table'].nil? # old data
 #
   model = yaml['table'].classify.constantize
   field = yaml['field'] == 'id' ? '_id' : yaml['field'] # must be
