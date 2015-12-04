@@ -45,6 +45,8 @@ end
   
 ####################################################################
 # Return true if CMS is in edit mode
+# 
+# @return [Boolean] True if user CMS edit mode is selected
 ####################################################################
 def dc_edit_mode?
   session[:edit_mode] > 1
@@ -54,8 +56,7 @@ end
 # Checks if user has required role.
 # 
 # @param [DcPolicyRole] role can be passed as DcPolicyRole object or 
-# @param [String] role as role name. If passed as name, dc_policy_roles  
-# is searched for appropriate role.
+# @param [String] role as role name. If passed as name, dc_policy_roles is searched for appropriate role.
 # 
 # @return [Boolean] True if user has required role added to his profile.
 # 
@@ -112,14 +113,12 @@ end
 ########################################################################
 # Searches forms path for file_name and returns full file name or nil if not found.
 # 
-# [Parameters:]
-# [form_file] Form file name. File name can be passed as gem_name.filename. This can
+# @param [String] Form file name. File name can be passed as gem_name.filename. This can
 # be useful when you are extending form but want to retain same name as original form
 # For example. You are extending dc_user form from drg_cms gem and want to
 # retain same dc_user name. This can be done by setting drg_cms.dc_user to extend option. 
 # 
-# [Return:]
-# String. Full form file name or nil if not found.
+# @return [String] Form file name including path or nil if not found.
 ########################################################################
 def dc_find_form_file(form_file)
   form_path=nil
@@ -137,8 +136,11 @@ end
 #######################################################################
 # Will render public/404.html file with some debug code includded.
 # 
-# [Parameters:]
-# [Object where_the_error_is] Additional data can be displayed with error.
+# @param [Object] Object where_the_error_is. Additional data can be displayed with error.
+# 
+# @example Render error 
+#   site = dc_get_site()
+#   return dc_render_404('Site') unless site
 ########################################################################
 def dc_render_404(where_the_error_is=nil)
   render(file: "#{Rails.root}/public/404", :status => 404, :layout => false, :formats => [:html], 
@@ -177,15 +179,13 @@ end
 # Checks if user can perform (read, create, edit, delete) document in specified
 # table (collection).
 # 
-# [Parameters:]
-# [Integer permission] Required permission level
-# [String table] Name of table(collection) for which permission is required. Defaults to params[table].
+# @param [Integer] Required permission level
+# @param [String] Collection (table) name for which permission is queried. Defaults to params[table].
 # 
-# [Returns:]
-# Boolean true if user's role permits operation on a table(collection) with required permission.
+# @return [Boolean] true if user's role permits (is higher or equal then required) operation on a table (collection). 
 # 
-# [Example:]
-#     dc_user_can(DcPermission::CAN_VIEW, params[:table])
+# @Example True when user has view permission on the table
+#   if dc_user_can(DcPermission::CAN_VIEW, params[:table]) then ...
 ############################################################################
 def dc_user_can(permission, table=params[:table])
   if @permissions.nil?
@@ -220,8 +220,8 @@ end
 
 ##########################################################################
 # Merge values from parameters fields (from site, page ...) into internal @options hash.
-# [Parameters:]
-# [String parameters] String in yaml syntax.
+# 
+# @param [String] YAML string.
 ##########################################################################
 def dc_set_options(parameters)
   @options ||= {}
@@ -242,10 +242,13 @@ def dc_set_options(parameters)
 end
 
 ##########################################################################
-# Check if document(s) has been modified since last visit. 
-# [Parameters:]
-# [Documents]: List of documents which are checked against last visit date. If
-# document
+# Check if document(s) has been modified since last visit. It turned out that caching
+# is not that simple and that there are multiple caching scenarios that can be used.
+# So this code is here just for a example, how documents can be checked for changed status.
+# 
+# @param [Documents] List of documents which are checked against last visit date
+# 
+# @return [Boolean] true when none of documents is changed.
 ##########################################################################
 def dc_not_modified?(*documents)
 #  request.env.each {|k,v| p k,'*',v}
@@ -270,15 +273,14 @@ end
 # design documents, collect parameters from different objects, add CMS edit code if allowed
 # and at the end render design.body or design.rails_view or site.rails_view.
 # 
-# [Example:] as defined in routes.rb
-#    get '*path' => 'dc_application_controller#dc_process_default_request'
-#    # or
-#    get '*path' => 'my_controller#page'
-#    # then in my_controller.rb
-#    def page
-#      dc_process_default_request
-#    end
-#    
+# @example as defined in routes.rb
+#   get '*path' => 'dc_application_controller#dc_process_default_request'
+#   # or
+#   get '*path' => 'my_controller#page'
+#   # then in my_controller.rb
+#   def page
+#     dc_process_default_request
+#   end
 ##########################################################################
 def dc_process_default_request() 
   session[:edit_mode] ||= 0
@@ -383,12 +385,14 @@ def dc_single_sitedoc_request
 end
 
 ########################################################################
-# Decamelizes string. Does oposite from camelize method. It probably doesn't work 
+# Decamelizes string. Does oposite of camelize method. It probably doesn't work 
 # very good with non ascii chars. Since this method is used for converting from model
 # to collection names it is very unwise to use non ascii chars for table (collection) names.
 # 
-# [Parameters:]
-# [String string] String to be converted # 'DcSimpleMenu' => 'dc_simple_menu'.
+# @param [String] String to be converted 
+# 
+# @example
+#   decamelize_type(ModelName) # 'ModelName' => 'model_name'
 ########################################################################
 def decamelize_type(string)
   return nil unless string
@@ -406,11 +410,9 @@ end
 ####################################################################
 # Return's error messages for the document formated for display on edit form.
 # 
-# [Parameters:]
-# [document] Document which will be examined for errors.
+# @param [Document] Document object which will be examined for errors.
 # 
-# [Return:]
-# String. HTML code for displaying error on edit form.
+# @return [String] HTML code for displaying error on edit form.
 ####################################################################
 def dc_error_messages_for(document)
   return '' unless document.errors.any?
@@ -435,19 +437,17 @@ end
 # model errors or when saving to multiple collections and where each save must be 
 # checked if succesfull.
 # 
-# [Parameters:]
-# [Object document] Document var
-# [Boolean crash] Should crash when errors detected. Default = false.
+# @param [Document] Document object which will be checked
+# @param [Boolean] If true method should end in runtime error. Default = false.
 # 
-# [Return:]
-# String. Documents error message empty string if everything is OK.
+# @return [String] Error messages or empty string if everything is OK.
 # 
-# [Example:]
-#    model.save
-#    if (msg = dc_check_model(model) ).size > 0
-#      p msg
-#      error process ......
-#    end
+# @Example Check for error when data is saved.
+#   model.save
+#   if (msg = dc_check_model(model) ).size > 0
+#     p msg
+#     error process ......
+#   end
 #      
 ####################################################################
 def dc_check_model(document, crash=false)
@@ -464,12 +464,11 @@ end
 ######################################################################
 # Call rake task from controller.
 # 
-# [Parameters:]
-# [String task] Rake task name
-# [Hash options] Options that will be send to task as environment variables
+# @param [String] Rake task name
+# @param [Hash] Options that will be send to task as environment variables
 # 
-# [Example:]
-#    dc_call_rake('clear:all', some_parm: some_id)
+# @example Call rake task from application
+#   dc_call_rake('clear:all', some_parm: some_id)
 ######################################################################
 def dc_call_rake(task, options = {})
   options[:rails_env] ||= Rails.env
@@ -482,17 +481,15 @@ end
 # made from DRG CMS form return may be quite complicated. All ajax return combinations 
 # can be found in drg_cms.js file. 
 # 
-# [Parameters:]
-# [Hash opts] Different options
+# @param [Hash] Options
 # 
-# [Return:]
-# String. Formatted to be used on ajax return.
+# @return [JSON Response] Formatted to be used for ajax return.
 # 
-# [Example:]
-#    html_code = '<span>Some text</span>'
-#    dc_render_ajax(div: 'mydiv', prepand: html_code) # Will prepand code to mydiv div
-#    dc_render_ajax(class: 'myclass', append: html_code) # Will append code to all objects with myclass class
-#    dc_render_ajax(operation: 'window', value: "/pdf_file.pdf") # will open pdf file in new window.
+# @example
+#   html_code = '<span>Some text</span>'
+#   dc_render_ajax(div: 'mydiv', prepand: html_code) # Will prepand code to mydiv div
+#   dc_render_ajax(class: 'myclass', append: html_code) # Will append code to all objects with myclass class
+#   dc_render_ajax(operation: 'window', value: "/pdf_file.pdf") # will open pdf file in new window.
 # 
 ######################################################################
 def dc_render_ajax(opts)
@@ -514,19 +511,16 @@ def dc_render_ajax(opts)
 end
 
 ########################################################################
-# Find document by parameters. This is how cmsedit finds document based
-# on url parameters.
+# Find document by parameters. This is how cmsedit finds document based on url parameters.
 # 
-# [Parameters:]
-# [String table] Table (collection) name. Could be dc_page;dc_part;... when searching for embedded document.
-# [String id] Id of the document
-# [String table] Ids of parent documents when document is embedded. Ids are separated by ; char. 
+# @param [String] Table (collection) name. Could be dc_page;dc_part;... when searching for embedded document.
+# @param [String] Id of the document
+# @param [String] Ids of parent documents when document is embedded. Ids are separated by ; char. 
 # 
-# [Return:]
-# Document. Required document or nil if not found.
+# @return [document]. Required document or nil if not found.
 # 
-# [Example:] 
-#    dc_find_document(params[:table], params[:id], params[:ids])
+# @example As used in Cmsedit_controller
+#   dc_find_document(params[:table], params[:id], params[:ids])
 ########################################################################
 def dc_find_document(table, id, ids)
   tables = table.split(';')
@@ -543,12 +537,12 @@ end
 
 ########################################################################
 # Reload patches in development. Since patching files are not automatically loaded in
-# development environment thiws litle method automatically reloads all patch files
+# development environment this little method automatically reloads all patch files
 # found in DrgCms.paths(:patches) path array.
 ########################################################################
 def dc_reload_patches
   DrgCms.paths(:patches).each do |patches| 
-    Dir["#{patches}/**/*.rb"].each { |path| require_dependency path }
+    Dir["#{patches}/**/*.rb"].each { |file| require_dependency(file) }
   end
 end
 
