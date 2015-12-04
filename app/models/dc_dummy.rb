@@ -69,15 +69,13 @@ class DcDummy
 # Respond_to should always return true.
 ########################################################################
 def respond_to?(m)
-#  p "respond_to #{m}"
   true
 end
 
 ########################################################################
 # Redefine send method. Send is used to assign value by cmsedit controller.
 ########################################################################
-def send(field,value)
-#  p "send #{field} #{value}"
+def send(field,value=nil)
   if field.to_s.match('=')
     field.chomp!('=')
     @internals ||= {}
@@ -90,7 +88,6 @@ end
 # @internals array or will assign new value to @internals hash if m matches '='.
 ########################################################################
 def method_missing(m, *args, &block) #:nodoc:
-#  p "#{m},#{args},#{block}"
   @internals ||= {}
   m = m.to_s
   if m.match('=')

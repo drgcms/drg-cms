@@ -135,6 +135,9 @@ form:
       40:
         name: operation
         type: select
+        double: 1
+        bottom-line: 1
+        top-line: 1
 
       30:
         name: sub_text
