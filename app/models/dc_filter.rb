@@ -105,25 +105,24 @@ def self.get_filter_field(parent)
 #
   filter = YAML.load(filter) rescue nil 
   return '' if filter.nil?
-#  return '' if filter['input'].nil?
-
+#
   field = get_field_form_definition(filter['field'], parent)
   return '' if field.nil? and filter['input'].nil?
   field = {} if field.nil?
-# field redefined with input keyword
-  field['name'] = 'filter_field'
+# field redefined with input keyword. Name must start with _
+  field['name'] = '_filter_field'
   field['type'] = filter['input'] if filter['input'].size > 5
+  field['type'] ||= 'text_field'
   field['html'] = {} if field['html'].nil?
   field['html']['size']  = 20
   field['html']['value'] = filter['value'] unless filter['value'] == '#NIL'
-                      
+#                      
   field['html']['data-url'] = parent.url_for(
     controller: 'cmsedit',action: :index, filter: 'on',
     table: parent.form['table'], formname: parent.form['formname'])
   url = field['html']['data-url']
 #
-  field_type  = filter['input'].size > 5 ? filter['input'] : field['type']
-  klas_string = field_type.camelize
+  klas_string = field['type'].camelize
   klas = DrgcmsFormFields::const_get(klas_string) rescue nil
   return '' if klas.nil?
 #  

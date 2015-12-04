@@ -123,11 +123,21 @@ end
 # 
 # Example: Form has field named picture. Field can be initialized by 
 # setting value of param p_picture.
+#    params['p_picture'] = '/path/to_picture'
+#    
+# When multiple initial values are assigned it is more convinient to assign them 
+# through flash method.
+#    flash[:record] = {}
+#    flash[:record]['picture'] = '/path/to_picture'
 ####################################################################
 def set_initial_value(opt1='html', opt2='value')
   @yaml['html'] ||= {}
   value_send_as = 'p_' + @yaml['name']
-  @yaml[opt1][opt2] = @parent.params[value_send_as] if @parent.params[value_send_as]
+  if @parent.params[value_send_as]
+    @yaml[opt1][opt2] = @parent.params[value_send_as] 
+  elsif @parent.flash[:record] and @parent.flash[:record][@yaml['name']]
+    @yaml[opt1][opt2] = @parent.flash[:record][@yaml['name']]
+  end
 end
 
 ####################################################################
@@ -1187,10 +1197,11 @@ end
 ###########################################################################
 def render
   return ro_standard if @readonly
+  set_initial_value
 #
-  @yaml['html'] ||= {}
-  value_send_as = 'p_' + @yaml['name']
-  @yaml['html']['value'] = @parent.params[value_send_as] if @parent.params[value_send_as]
+#  @yaml['html'] ||= {}
+#  value_send_as = 'p_' + @yaml['name']
+#  @yaml['html']['value'] = @parent.params[value_send_as] if @parent.params[value_send_as]
 
   record = record_text_for(@yaml['name'])
   @html << @parent.text_area(record, @yaml['name'], @yaml['html'])

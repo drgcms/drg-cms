@@ -516,7 +516,7 @@ element = $(this).find(':first').attr('id');
   * This will fire cmsedit index action and pass value enterred into 
   * filter field and thus refresh browsed result set.
   *******************************************************************/
-  $('#record_filter_field').keydown( function(e) {
+  $('#_record__filter_field').keydown( function(e) {
     if (e.which == '13' || e.which == '9') {
       url = $(this).parents('span').attr("data-url");
       url = url + "&filter_value=" + this.value;
@@ -530,7 +530,7 @@ element = $(this).find(':first').attr('id');
   * work on all field types.
   *******************************************************************/
   $('.record_filter_field_icon').on('click', function(e) {
-    field = $('#record_filter_field');
+    field = $('#_record__filter_field');
     url = $(this).parents('span').attr("data-url");
     url = url + "&filter_value=" + field.val();
     location.href = url;
