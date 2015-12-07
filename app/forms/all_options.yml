@@ -93,6 +93,8 @@ form:
   title:
     edit: Title for edit
     show: Title for show
+  labels_pos: top
+    
 
   actions: standard
   actions: none
@@ -117,6 +119,9 @@ form:
       
   tabs:
     tab1:
+      0:
+        columns: 3 
+
       10:
         name: name
         type: text_field
