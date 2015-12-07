@@ -757,6 +757,7 @@ def save_data
   return true unless fields.size > 0
 #
   fields.each do |v|
+    next if v['type'].nil?
     next if v['type'].match('embedded') # don't wipe embedded fields
     next if params[:edit_only] and params[:edit_only] != v['name'] # otherwise other fields would be wiped
     next unless @record.respond_to?(v['name']) # there can be temporary fields on the form

@@ -593,13 +593,13 @@ end
 ############################################################################
 # Creates top or bottom horizontal line on form. 
 ############################################################################
-def top_bottom_line(yaml)
+def top_bottom_line(yaml, columns=2)
   if  yaml.class == Hash 
     clas  = yaml['class'] 
     style = yaml['style'] 
   end
   clas ||= 'dc-separator'
-  "<tr><td colspan=\"4\" class=\"#{clas}\" style=\"#{style}\"></td></tr>"
+  "<tr><td colspan=\"#{columns*2}\" class=\"#{clas}\" style=\"#{style}\"></td></tr>"
 end    
 
 ############################################################################
@@ -671,6 +671,81 @@ def dc_fields_for_tab(fields) #:nodoc:
     html << top_bottom_line(options['bottom-line']) if options['bottom-line']
   end
   html << '</table></table>'
+end
+
+############################################################################
+# Creates input field for one tab. Subroutine of dc_fields_for_form.
+############################################################################
+def dc_fields_for_tab(fields) #:nodoc:
+  @js      ||= ''
+  html       = '<table class="dc-form-table">'
+  labels_pos = dc_check_and_default(@form['form']['labels_pos'], 'right', ['top','left','right'])
+  columns    = (fields[0]['columns'] if fields[0] and fields[0]['columns']) || 1
+  current_column = 0
+  odd_even       = nil
+  hidden_fields  = ''
+  reset_cycle()
+# sort fields by name  
+  fields.to_a.sort.each do |element|
+    options = element.last
+    next if options['type'].nil?  # additional options for tab or fields
+    session[:form_processing] = "form:fields: #{element.first}=#{options}"
+# ignore if edit_only singe field is required
+    next if params[:edit_only] and params[:edit_only] != options['name'] 
+# hidden_fields. Add them at the end
+    if options['type'] == 'hidden_field'
+      hidden_fields << DrgcmsFormFields::HiddenField.new(self, @record, options).render
+      next
+    end
+# initialize when column is 0    
+    if current_column == 0 
+      odd_even = cycle('odd','even') 
+      current_column = columns
+    end
+# label
+    text = if options['text']
+      t(options['text'], options['text'])
+    else 
+      t_name(options['name'], options['name'].capitalize.gsub('_',' ') )
+    end
+# help text can be defined in form or in translations starting with helpers. or as helpers.help.collection.field
+    help = if options['help'] 
+      options['help'].match('helpers.') ? t(options['help']) : options['help']
+    end
+    help ||= t('helpers.help.' + @form['table'] + '.' + options['name'],' ')    
+# create field object from class and call its render method
+    klas_string = options['type'].camelize
+    field_html = if DrgcmsFormFields.const_defined?(klas_string) # check if field type is defined
+      klas = DrgcmsFormFields.const_get(klas_string)
+      field = klas.new(self, @record, options).render
+      @js << field.js
+      field.html 
+    else # litle error string
+      "Error: Code for field type #{options['type']} not defined!"
+    end
+# Separator
+    html << top_bottom_line(options['top-line'], columns) if options['top-line']
+    html << '<tr>' if current_column == columns
+    colspan = options['colspan'] || 1
+#    
+    html << if labels_pos == 'top'
+      %Q[<td class="dc-form-label-top dc-color-#{odd_even} dc-align-left" title="#{help}" 
+      colspan="#{colspan*2}">
+      <div><label for="record_#{options['name']}">#{text} </label></div>
+      <div id="td_record_#{options['name']}">#{field_html}</div></td>]
+    else  
+      %Q[<td class="dc-form-label dc-color-#{odd_even} dc-align-#{labels_pos}" title="#{help}">
+      <label for="record_#{options['name']}">#{text} </label></td>
+      <td id="td_record_#{options['name']}" class="dc-form-field dc-color-#{odd_even}" 
+       colspan="#{colspan*2 - 1}">#{field_html}
+      </td>
+      ]
+    end
+    current_column -= colspan
+    html << '</tr>' if current_column == 0
+    html << top_bottom_line(options['bottom-line'], columns) if options['bottom-line']
+  end
+  html << '</table>'
 end
 
 ############################################################################

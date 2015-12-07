@@ -13,7 +13,6 @@ result_set:
     10: 
       type: duplicate
       dup_fields: name
-    
 
   columns:
     1:  

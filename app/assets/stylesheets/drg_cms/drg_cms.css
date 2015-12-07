@@ -415,14 +415,18 @@ background: transparent linear-gradient(to bottom, #ddd 0%, #FFF 100%) repeat sc
   font-weight: bold;
   padding: 10px 2px;
   width:  150px;
-/*
-  background-color: #f4f4f4;
-  border-bottom: 1px solid #eee;
-*/
 }
 
 .dc-form-label label {
   padding: 0px 0px 2px 1px;
+}
+
+.dc-form-label-top {
+  color: #555;
+  text-align: right;
+  vertical-align: middle;
+  font-weight: bold;
+  padding: 3px 5px;
 }
 
 .dc-align-left {
