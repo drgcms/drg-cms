@@ -93,9 +93,12 @@ EOT
     when action == 'filter' then 
       caption = t('drgcms.filter')
       caption << '&nbsp;' + fa_icon('caret-down lg') + DcFilter.menu_filter(self)
-# add check image, so user will know that filter is active
+# add filter OFF link
       s = session[@form['table']]
-      caption << ('&nbsp;' << fa_icon('check')) if s and s[:filter]
+      if s and s[:filter]
+        caption << '&nbsp;&nbsp;' + dc_link_to(nil,'remove lg', controller: 'cmsedit', 
+                   filter: 'off', table: @form['table'], title: 'drgcms.filter_off') 
+      end
       caption
 # new
     when action == 'new' then 
@@ -143,7 +146,7 @@ def dc_div_filter()
   <div id="drgcms_filter" class="div-hidden">
     <h1>#{t('drgcms.filter_set')}</h1>
     <table class="dc-menu"><td>
-    #{ select(nil, 'filter_field', options_for_select(choices, field_name), { include_blank: true }) }
+    #{ select(nil, 'filter_field1', options_for_select(choices, field_name), { include_blank: true }) }
     #{ select(nil, 'filter_oper', options_for_select(choices4_operators, operators_value)) }
 
       </td>
@@ -603,84 +606,13 @@ def top_bottom_line(yaml, columns=2)
 end    
 
 ############################################################################
-# Creates input field for one tab. Subroutine of dc_fields_for_form.
-############################################################################
-def dc_fields_for_tab(fields) #:nodoc:
-  @js ||= ''
-  double_field = 0
-  html = '<table class="dc-form-table">'
-  labels_pos = dc_check_and_default(@form['form']['labels_pos'], 'right', ['top','left','right'])
-  reset_cycle()
-# sort fields by name  
-  fields.to_a.sort.each do |element|
-    options = element.last
-    session[:form_processing] = "form:fields: #{element.first}=#{options}"
-# ignore if edit_only singe field is required
-    next if params[:edit_only] and params[:edit_only] != options['name'] 
-# hidden_fields. Ignore description text, otherwise it will be seen on screen
-    if options['type'] == 'hidden_field'
-      html << DrgcmsFormFields::HiddenField.new(self, @record, options).render
-      next
-    end
-# label
-    text = if options['text']
-      t(options['text'], options['text'])
-    else
-      t_name(options['name'], options['name'].capitalize.gsub('_',' ') )
-    end
-#    options['text'] ||= options['name'].capitalize.gsub('_',' ')
-#    text = options['text'].match('helpers.') ? t(options['text']) : t_name(options['name'], options['text']) 
-# help text can be defined in form or in translations starting with helpers. or as helpers.help.collection.field
-    help = if options['help'] 
-      options['help'].match('helpers.') ? t(options['help']) : options['help']
-    end
-    help ||= t('helpers.help.' + @form['table'] + '.' + options['name'],' ')    
-    odd_even = cycle('odd','even')
-    odd_even = cycle('odd','even') if double_field == 2 # it should be same style as first
-# create field object from class and call its render method
-    klas_string = options['type'].camelize
-    field_html = if DrgcmsFormFields.const_defined?(klas_string) # check if field type is defined
-      klas = DrgcmsFormFields.const_get(klas_string)
-      field = klas.new(self, @record, options).render
-      @js << field.js
-      field.html 
-    else # litle error string
-      "Error: Code for field type #{options['type']} not defined!"
-    end
-# Separator
-    html << top_bottom_line(options['top-line']) if options['top-line']
-# Double entry fields in one row
-    double_field = 1 if options['double']
-    html << '<tr>' if double_field < 2
-#    
-    html << if labels_pos == 'top' 
-      %Q[<td class="dc-form-label dc-color-#{odd_even} dc-align-left" title="#{help}" 
-      #{double_field == 0 ? 'colspan="2"' : 'style="width:50%;"'}>
-      <div><label for="record_#{options['name']}">#{text} </label></div>
-      <div id="td_record_#{options['name']}">#{field_html}</div></td>]
-    else  
-      %Q[<td class="dc-form-label dc-color-#{odd_even} dc-align-#{labels_pos}" title="#{help}">
-      <label for="record_#{options['name']}">#{text} </label></td>
-      <td id=\"td_record_#{options['name']}\" class=\"dc-form-field dc-color-#{odd_even}\" #{'colspan="3"' if double_field == 0 }>#{field_html}
-      </td>
-      ]
-    end
-    html << '</tr>' if double_field != 1
-    double_field = 0 if double_field == 2
-    double_field = 2 if double_field == 1    
-    html << top_bottom_line(options['bottom-line']) if options['bottom-line']
-  end
-  html << '</table></table>'
-end
-
-############################################################################
-# Creates input field for one tab. Subroutine of dc_fields_for_form.
+# Creates input fields for one tab. Subroutine of dc_fields_for_form.
 ############################################################################
 def dc_fields_for_tab(fields) #:nodoc:
   @js      ||= ''
   html       = '<table class="dc-form-table">'
   labels_pos = dc_check_and_default(@form['form']['labels_pos'], 'right', ['top','left','right'])
-  columns    = (fields[0]['columns'] if fields[0] and fields[0]['columns']) || 1
+  columns    = fields.try(:[],0).try(:[],'columns') || 1
   current_column = 0
   odd_even       = nil
   hidden_fields  = ''
@@ -723,29 +655,29 @@ def dc_fields_for_tab(fields) #:nodoc:
     else # litle error string
       "Error: Code for field type #{options['type']} not defined!"
     end
-# Separator
+# Line separator
     html << top_bottom_line(options['top-line'], columns) if options['top-line']
     html << '<tr>' if current_column == columns
     colspan = options['colspan'] || 1
 #    
     html << if labels_pos == 'top'
-      %Q[<td class="dc-form-label-top dc-color-#{odd_even} dc-align-left" title="#{help}" 
-      colspan="#{colspan*2}">
+      %Q[<td class="dc-form-label-top dc-color-#{odd_even} dc-align-left" 
+      title="#{help}" colspan="#{colspan*2}">
       <div><label for="record_#{options['name']}">#{text} </label></div>
-      <div id="td_record_#{options['name']}">#{field_html}</div></td>]
+      <div id="td_record_#{options['name']}">#{field_html}</div></td> ]
     else  
       %Q[<td class="dc-form-label dc-color-#{odd_even} dc-align-#{labels_pos}" title="#{help}">
       <label for="record_#{options['name']}">#{text} </label></td>
       <td id="td_record_#{options['name']}" class="dc-form-field dc-color-#{odd_even}" 
        colspan="#{colspan*2 - 1}">#{field_html}
-      </td>
-      ]
+      </td> ]
     end
+# check if  must go to next line    
     current_column -= colspan
     html << '</tr>' if current_column == 0
     html << top_bottom_line(options['bottom-line'], columns) if options['bottom-line']
   end
-  html << '</table>'
+  html << '</table>' << hidden_fields
 end
 
 ############################################################################

@@ -127,6 +127,8 @@ form:
         type: text_field
         type: hidden_field
         type: readonly
+        colspan: 2
+        size: 50 or
         html:
           size: 50
       40:
@@ -140,7 +142,6 @@ form:
       40:
         name: operation
         type: select
-        double: 1
         bottom-line: 1
         top-line: 1
 
