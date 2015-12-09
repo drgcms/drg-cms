@@ -109,27 +109,36 @@ def self.get_filter_field(parent)
   field = get_field_form_definition(filter['field'], parent)
   return '' if field.nil? and filter['input'].nil?
   field = {} if field.nil?
+# If field has choices available in labels, use them. This is most likely select input field.
+  if field['name']
+    choices = parent.t('helpers.label.' + parent.form['table'] + '.choices4_' + field['name'] )
+    unless choices.match( 'translation missing' ) or choices.match('helpers.label')
+      field['choices'] = choices
+    end
+  end
 # field redefined with input keyword. Name must start with _
   field['name'] = '_filter_field'
-  field['type'] = filter['input'] if filter['input'].size > 5
+  field['type'] = filter['input'] if filter['input'].to_s.size > 5
   field['type'] ||= 'text_field'
-  field['html'] = {} if field['html'].nil?
+  field['html'] ||= {} 
   field['html']['size']  = 20
+# Start with last entered value
   field['html']['value'] = filter['value'] unless filter['value'] == '#NIL'
-#                      
+  field['html']['selected'] = field['html']['value'] # for select field
+# url for filter ON action
   field['html']['data-url'] = parent.url_for(
     controller: 'cmsedit',action: :index, filter: 'on',
     table: parent.form['table'], formname: parent.form['formname'])
   url = field['html']['data-url']
-#
+# create input field object
   klas_string = field['type'].camelize
   klas = DrgcmsFormFields::const_get(klas_string) rescue nil
   return '' if klas.nil?
-#  
+# return data from object and create html code to display field
   object = klas.new(parent, nil, field).render
   js     = object.js
   "<span class=\"filter_field\" data-url=\"#{url}\">#{object.html} " <<
-    parent.fa_icon('filter lg dc-green', class: 'record_filter_field_icon') <<
+    parent.fa_icon('filter lg dc-green', class: 'record_filter_field_icon dc-link dc-animate') <<
     (js.size > 2 ? parent.javascript_tag(js) : '') << '</span>'
 end
 

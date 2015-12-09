@@ -758,34 +758,6 @@ def dc_choices4_cmsmenu()
     menus = forms_merge(menu['menu'], menus)        # ignore top level part
  end
 #
-  choices = []
-  menus.to_a.sort.each do |one_menu|    # sort menus, result is array of sorted hashes
-    menu = one_menu[1]                  # value is the second (1) element of array
-    next unless menu['caption']
-    choices << ["--- #{ t(menu['caption'], menu['caption']) } ---",'#']
-    menu['items'].to_a.sort.each do |item|          # as above. sort items first 
-      key, value = item[0], item[1]
-      opts = { controller: value['controller'], action: value['action'] }
-      value['params'].each {|k,v| opts.merge!(k => v) }   # add parameters to options
-      choices << [ t(value['caption'], value['caption']), url_for( opts ) ] 
-    end   
-  end
-  choices
-end
-
-##########################################################################
-# Returns choices for creating collection edit select field on CMS top menu.
-##########################################################################
-def dc_choices4_cmsmenu()
-  menus = {}
-  DrgCms.paths(:forms).reverse.each do |path|
-    filename = "#{path}/cms_menu.yml"
-    next unless File.exist?(filename)
-    menu = YAML.load_file(filename) rescue nil      # load menu
-    next if menu.nil? or !menu['menu']              # not menu or error
-    menus = forms_merge(menu['menu'], menus)        # ignore top level part
- end
-#
   html = ''
   menus.to_a.sort.each do |one_menu|    # sort menus, result is array of sorted hashes
     menu = one_menu[1]                  # value is the second (1) element of array
@@ -1055,28 +1027,6 @@ def dc_big_table(key)
     ret << [desc, v.value] 
   end
   ret
-end
-
-########################################################################
-########################################################################
-def iframe_edit1() #:nodoc
-#  default_table = params[:table] if default_table.nil?
-#  p params
-   parms = {}
-  ret = if params.size > 2 #and default_table  # controller, action, path is minimum
-    parms[:controller] = 'cmsedit'
-    parms[:action]     = params[:oper] ? params[:oper] : 'index'
-    parms[:table]      = params[:table]
-    parms[:formname]   = params[:formname] || params[:table]
-    parms[:id]         = params[:idp]
-  p '**************', url_for(parms)    
-    "<iframe id='iframe_edit' name='iframe_edit' src='#{url_for parms}'></iframe>"
-  else
-    "<iframe id='iframe_edit' name='iframe_edit'></iframe>"
-  end
-  #bla
-  p ret
-  ret.html_safe
 end
 
 ########################################################################

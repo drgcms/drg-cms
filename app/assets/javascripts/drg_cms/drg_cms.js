@@ -552,7 +552,7 @@ element = $(this).find(':first').attr('id');
   $('.drgcms_popup_submit').on('click', function(e) {
     //e.preventDefault();  
     url = $(this).attr( 'data-url' );
-    field = $('select#_filter_field').val();
+    field = $('select#_filter_field1').val();
     oper  = $('select#_filter_oper').val();
     location.href = url + '&filter_field=' + field + '&filter_oper=' + oper
 // Still opening in new window
