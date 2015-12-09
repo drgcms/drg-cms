@@ -82,8 +82,7 @@ def initialize( parent, record, yaml )
   @readonly = (@yaml and @yaml['readonly']) || (@form and @form['readonly'])
   if @yaml['size'] # move size to html element if not already there
     @yaml['html'] ||= {}
-    @yaml['html']['size'] = @yaml['size']
-    @yaml['size'] = nil
+    @yaml['html']['size'] ||= @yaml['size']
   end
   @html   = ''  
   @js     = ''
