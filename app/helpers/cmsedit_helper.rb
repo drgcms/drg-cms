@@ -612,15 +612,17 @@ def dc_fields_for_tab(fields) #:nodoc:
   @js      ||= ''
   html       = '<table class="dc-form-table">'
   labels_pos = dc_check_and_default(@form['form']['labels_pos'], 'right', ['top','left','right'])
-  columns    = fields.try(:[],0).try(:[],'columns') || 1
   current_column = 0
-  odd_even       = nil
   hidden_fields  = ''
+  odd_even       = nil
   reset_cycle()
-# sort fields by name  
-  fields.to_a.sort.each do |element|
+# options and fields must be separated before sorting  
+  form_options = fields.select {|field| field.class != Fixnum }
+  columns      = form_options.try(:[],'columns') || 1
+# Select form fields and sort them by key
+  form_fields  = fields.select {|field| field.class == Fixnum }
+  form_fields.to_a.sort.each do |element|
     options = element.last
-    next if options['type'].nil?  # additional options for tab or fields
     session[:form_processing] = "form:fields: #{element.first}=#{options}"
 # ignore if edit_only singe field is required
     next if params[:edit_only] and params[:edit_only] != options['name'] 

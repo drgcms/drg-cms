@@ -119,8 +119,7 @@ form:
       
   tabs:
     tab1:
-      0:
-        columns: 3 
+      columns: 3 
 
       10:
         name: name

@@ -263,6 +263,15 @@ end
 ########################################################################
 def show
   find_record
+  if (m = callback_method('before_show') )
+    ret = call_callback_method(m)
+# Don't do anything if return is false
+    if ret.class == FalseClass
+      @form['readonly'] = nil # must be
+      return index 
+    end
+  end  
+
   render action: 'edit', layout: 'cms'
 end
 
@@ -646,23 +655,6 @@ def update_standards(record = @record)
 end
 
 ########################################################################
-# Since tabs have been introduced on form it is a little more complicated
-# to get all edit fields on form. This method does it. Subroutine of save_data.
-########################################################################
-def fields_on_form() #:nodoc:
-  fields = []
-  if @form['form']['fields']
-# second element of array is hash. Get only hash element
-    @form['form']['fields'].each {|field| fields << field[1]}
-  else
-    @form['form']['tabs'].keys.each do |key|
-      @form['form']['tabs'][key].each {|field| fields << field[1]}
-    end  
-  end
-  fields
-end
-
-########################################################################
 # Save document changes to journal table. Saves all parameters to retrieve record if needed.
 # 
 # [Parameters:]
@@ -746,6 +738,23 @@ def process_return_to(return_to)
     else "location.href='#{return_to}'"
   end
   render text: js_tag(script)
+end
+
+########################################################################
+# Since tabs have been introduced on form it is a little more complicated
+# to get all edit fields on form. This method does it. Subroutine of save_data.
+########################################################################
+def fields_on_form() #:nodoc:
+  fields = []
+  if @form['form']['fields']
+# read only field elements (key is Fixnum)
+    @form['form']['fields'].each {|key,options| fields << options if key.class == Fixnum }
+  else
+    @form['form']['tabs'].keys.each do |tab|
+      @form['form']['tabs'][tab].each {|key,options| fields << options if key.class == Fixnum }
+    end  
+  end
+  fields
 end
 
 ########################################################################

@@ -83,13 +83,13 @@ end
 def self.get_field_form_definition(name, parent) #:nodoc:
   form = parent.form
   form['form']['tabs'].each do |tab|
-    tab.each do |field|
-      next if field.class == String # tab name
-      field.each {|k,v| return v if v['name'] == name }
-    end
+# Array with 2 elements. First is tabname, second is data      
+    fields = tab.last
+    fields.each {|k,v| return v if (k.class == Fixnum and v['name'] == name) }
   end if form['form']['tabs'] #  I know. But nice. 
 #
   form['form']['fields'].each do |field|
+    next unless field.first.class == Fixnum # options
     return field.last if field.last['name'] == name
   end if form['form']['fields']
   nil
