@@ -189,3 +189,12 @@ form:
       20:
         name: odhod
         type: datetime_picker          
+      40:
+        name: customer_id
+        type: text_autocomplete
+        search: 
+          table: customer
+          field: custumer_name
+          method: search
+        with_new: customer
+        size: 50         

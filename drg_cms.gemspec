@@ -10,10 +10,10 @@ Gem::Specification.new do |s|
   s.authors     = ["Damjan Rems"]
   s.email       = ["damjan.rems@gmail.com"]
   s.homepage    = "http://www.drgcms.org"
-  s.summary     = "DRG CMS: Content management system for Ruby, Rails and MongoDB"
-  s.description = "DRG CMS can be used for rapid building of complex, data-entry intensive web sites as well as building your private Intranet applications."
+  s.summary     = "DRG CMS: Rapid web application development tool for Ruby, Rails and MongoDB"
+  s.description = "DRG CMS can be used for rapid building of complex, data-entry intensive web sites as well as building your in-house private cloud applications."
   s.license     = "MIT-LICENSE"
-  s.files = Dir["{app,config,db,lib}/**/*"] + ["MIT-LICENSE", "Rakefile", "README.md", "drg_cms.gemspec"]
+  s.files = Dir["{app,config,db,lib}/**/*"] + ["MIT-LICENSE", "Rakefile", "README.md", "History.log", "drg_cms.gemspec"]
   s.test_files = Dir["test/**/*"]
 
   s.add_dependency 'rails' #, '~> 3.2.16'
