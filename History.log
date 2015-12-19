@@ -1,0 +1,48 @@
+
+New features for DRG CMS version 0.5.9
+
+    Main CMS menu was becoming to large and was divided into two menus.
+    Result set browse filter data entry redesigned. Values can now be entered directly on actions area. Value of entered fied is also retained beetwen calls. 
+    New DcInternals model introduced. It will be used for accessing internal variables.
+    DRG Forms has new option columns. Option defines number of columns per tab or fields. Field option also got colspan option indicating over how many columns field spans.
+    DRG Forms field size can now also be defined on same level as field type. Before it was defined in html sublevel.
+    
+Bugs resolved for DRG CMS version 0.5.9
+
+    Improved readonly display of select and text_autocomplete DRG Forms fields.
+    Text_autocomplete field is set to nil when content of field is deleted.
+
+--
+
+New features for DRG CMS version 0.5.8
+
+    Browsing array of hashes is now possible with DRG Forms
+    Simple browsing of all defined models and field definitions added to CMS System menu
+    new result_set options table_style, table_class, tr_style, tr_class, td_style, td_class. Welcome colors to result_set browser
+    result_set has been renewed for more modern design. Header elements have now sorting icons
+    dblclick and click actions can now be defined on result set and can fire any action when clicked or double clicked on result set row.
+
+Bugs resolved for DRG CMS version 0.5.8
+
+    associated menu can now be selected on dc_page form also for non dc_simple_menu menus
+
+--
+
+New features for DRG CMS version 0.5.7
+
+    single site document. All data for the site can be saved to single dc_site document and processed by dc_single_sitedoc_request
+    site parts can now also be saved and collected from dc_site document
+    CMS menu done right
+    Page title is now set from dc_page_renderer default method
+
+Bugs resolved for DRG CMS version 0.5.7
+
+    Corrected bug when multitext_autocomplete field was not displaying right values when displayed readonly
+
+    dc_choices4 now checks if model has active field defined and returns only choices of documents that have active field value set to true
+
+    Design and page edit icons are now displayed only when design or page documents are available
+
+    return_to from drgcms_control was not properly handled
+
+    Mouse cursor now changes to pointer when moved over ajax link
