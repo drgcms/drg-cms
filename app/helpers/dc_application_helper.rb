@@ -21,7 +21,7 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #++
-
+require 'sort_alphabetical'
 
 ###########################################################################
 # 
@@ -813,11 +813,11 @@ def dc_choices4(model, name, id='_id', options = {})
   qry   = model.only(id, name)
   qry   = qry.and(dc_site_id: dc_get_site()) if options[:site_only]
   qry   = qry.and(active: true) if model.method_defined?(:active)
-  qry   = qry.sort(name: 1) 
-#  
-  choices = []
-  qry.each {|v| choices << [ v[name], v[id] ] }
-  choices
+#  qry   = qry.sort(name => 1) 
+#  choices = []
+#  qry.each {|v| choices << [ v[name], v[id] ] }
+  choices = qry.inject([]) {|result,e| result << [ e[name], e[id] ]}
+  choices.sort_alphabetical_by(&:first) # use UTF-8 sort
 end
 
 ############################################################################

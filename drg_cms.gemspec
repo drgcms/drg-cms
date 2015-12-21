@@ -25,4 +25,5 @@ Gem::Specification.new do |s|
   s.add_dependency 'mongoid'
   s.add_dependency 'kaminari'
   s.add_dependency 'font-awesome-rails'
+  s.add_dependency 'sort_alphabetical'
 end
