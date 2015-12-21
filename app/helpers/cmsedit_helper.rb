@@ -40,7 +40,7 @@ def dc_actions_for_index()
   return '' if actions.nil? or actions.size == 0
 # Simulate standard actions  
   actions = {'standard' => true} if actions.class == String && actions == 'standard'
-  std_actions = {' 2' => 'new', ' 3' => 'sort', ' 4' => 'filter' }
+  std_actions = {2 => 'new', 3 => 'sort', 4 => 'filter' }
   if actions['standard']
     actions.merge!(std_actions)
     actions['standard'] = nil
@@ -51,8 +51,12 @@ def dc_actions_for_index()
   <span id="dc-spinner" class="div-hidden">#{fa_icon('spinner lg spin')}</span>
   <ul class="dc-action-menu">
 EOT
-#
-  actions.each do |k,v|
+# Remove actions settings and sort
+  only_actions = []
+  actions.each { |key, value| only_actions << [key, value] if key.class == Fixnum }
+  only_actions.sort_by!(&:first)
+  only_actions.each do |element|
+    k,v = element
     session[:form_processing] = "index:actions: #{k}=#{v}"
     next if v.nil? # must be
     url = @parms.clone
