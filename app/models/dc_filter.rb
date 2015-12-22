@@ -138,7 +138,7 @@ def self.get_filter_field(parent)
   object = klas.new(parent, nil, field).render
   js     = object.js
   "<span class=\"filter_field\" data-url=\"#{url}\">#{object.html} " <<
-    parent.fa_icon('filter lg dc-green', class: 'record_filter_field_icon dc-link dc-animate') <<
+    parent.fa_icon('filter lg', class: 'record_filter_field_icon dc-link-icon dc-animate') <<
     (js.size > 2 ? parent.javascript_tag(js) : '') << '</span>'
 end
 

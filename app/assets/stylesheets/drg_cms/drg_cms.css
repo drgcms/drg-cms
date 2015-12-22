@@ -237,6 +237,14 @@ transition: 0.3s;
   background-color: #eee; 
 }
 
+.dc-link-icon {
+padding: 3px;
+border-radius: 3px;
+background: transparent linear-gradient(to bottom, #FFF 0%, #F2F2F2 100%) repeat scroll 0% 0%;
+border: 1px solid #ddd;
+}
+
+
 .dc-link-selected {
   text-align: center;
   border:1px solid #888;
@@ -329,17 +337,20 @@ background: transparent linear-gradient(to bottom, #ddd 0%, #FFF 100%) repeat sc
   color: #fff;
   background-color: #888; 
 }
-/*
-.dc-img-link {
-  border: 0px;
-  padding-top: 1px
+/* Pagination */
+.pagination span {
+  border: 1px solid #ddd;
+  padding: 4px 4px 3px 6px;
+  margin-left: 1px;
+  background: transparent linear-gradient(to bottom, #FFF 0%, #F2F2F2 100%) repeat scroll 0% 0%;  
+  border-radius: 1px;
 }
 
-.dc-img-link:hover {
-  text-decoration: none;
-  background-color: #c43;
+.pagination .current {
+  background: #888;
+  color: #fff;
+  border: 1px solid #888;
 }
-*/
 
 .dc-title {
   font-weight: bold;
@@ -799,10 +810,10 @@ color: #222;
 
 .dc-action-menu ul {
 margin-top: 1px;
-background:#fff; 
+/*background:#fff; */
 position:absolute;
 left:-9999px; 
-border-radius: 4px;
+border-radius: 2px;
 }
 
 .dc-action-menu ul li {
@@ -826,8 +837,8 @@ white-space:nowrap;
 left:0; 
 margin-top:3px;
 background-color: #fff;
-border: 1px solid #aaa;
-box-shadow: 1px 1px 2px #ccc;
+border: 1px solid #ccc;
+/*box-shadow: 1px 1px 2px #ccc;*/
 }
 
 .dc-action-menu li:hover ul li a { 
@@ -839,8 +850,8 @@ color: #222;
 }
 .dc-action-menu li:hover ul li:hover {
 border: 0px;
-background: #ddd;
-border-radius: 0px;
+background: #eee;
+border-radius: 2px;
 }
 
 .menu-filter {
