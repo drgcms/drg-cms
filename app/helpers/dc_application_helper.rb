@@ -147,7 +147,7 @@ end
 # String. HTML code for title.
 ############################################################################
 def dc_table_title(text, result_set=nil)
-  c = "<table width='100%' cellspacing='0' cellpadding='1' class='dc-title'><tr><td>#{text}</td>"
+  c = "<table width='100%' class='dc-title'><tr><td>#{text}</td>"
   if result_set and result_set.respond_to?(:current_page)
     c << "<td align='right' style='font-size: 0.8em;'> #{paginate(result_set, :params => {:action => 'index'})}</td>" 
   end

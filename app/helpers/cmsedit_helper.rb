@@ -273,13 +273,15 @@ def dc_header_for_result()
       th = '<th '
       v = {'name' => v} if v.class == String      
       caption = v['caption'] || t("helpers.label.#{@form['table']}.#{v['name']}")
-# no sorting when embedded field or custom filter is active
-      if @tables.size == 1 and @form['result_set']['filter'].nil?
+# no sorting when embedded documents or custom filter is active 
+      sort_ok = @form['result_set'].nil? || (@form['result_set'] && @form['result_set']['filter'].nil?)
+      sort_ok = sort_ok || (@form['index'] && @form['index']['sort'])
+      if @tables.size == 1 and sort_ok
         icon = 'sort lg'
         if v['name'] == sort_field
           icon = sort_direction == '1' ? 'sort-alpha-asc lg' : 'sort-alpha-desc lg'
         end        
-        th << ">#{dc_link_to(caption, icon, sort: v['name'], table: @tables[0][1], action: :index )}</th>"
+        th << ">#{dc_link_to(caption, icon, sort: v['name'], table: params[:table], formname: params[:formname], action: :index )}</th>"
       else
         th << ">#{caption}</th>"
       end

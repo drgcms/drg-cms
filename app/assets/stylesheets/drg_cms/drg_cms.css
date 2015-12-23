@@ -42,9 +42,9 @@ article, aside, canvas, details, embed,
 figure, figcaption, footer, header, hgroup, 
 menu, nav, output, ruby, section, summary,
 time, mark, audio, video {
-	margin: 0;
-	padding: 0;
-	border: 0;
+	margin: 0px;
+	padding: 0px;
+	border: 0px;
 	font-size: 100%;
 	font: inherit;
 	vertical-align: baseline;
@@ -74,6 +74,11 @@ table {
 }
 /* END */
 
+/* Firefox only
+@-moz-document url-prefix() { 
+}
+*/
+
 body {
 font-family: helvetica;
 font-size: 12px;
@@ -87,6 +92,10 @@ color: #222;
 padding: 5px 3px;
 border: solid 1px #bbb;
 border-radius: 2px;
+}
+
+input.file {
+border: none;
 }
 
 select {
@@ -356,7 +365,7 @@ background: transparent linear-gradient(to bottom, #ddd 0%, #FFF 100%) repeat sc
   font-weight: bold;
   color: #333;
   font-size: 1.2em;
-  padding: 4px;
+  padding: 5px 1px;
   border-spacing: 0px;
   width: 100%;
   margin: 0px;

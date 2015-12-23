@@ -195,7 +195,6 @@ def check_filter_options() #:nodoc:
       model
     end
   end
-  
 # pagination if required
   per_page = (@form['result_set']['per_page'] || 30).to_i
   if per_page > 0
@@ -211,7 +210,7 @@ def index
   if @form['result_set'].nil?
     return process_return_to(params[:return_to] || 'reload') 
   end
-# for now enable only filtering of main tables
+# for now enable only filtering of top level documents
   if @tables.size == 1 
     check_filter_options()
     check_sort_options()
@@ -225,8 +224,8 @@ def index
         @records = []
         return render(action: :index)
       end
-# pagination
-      unless @form['table'] == 'dc_dummy'
+# pagination but only if not already set
+      unless (@form['table'] == 'dc_dummy' or @records.options[:limit])
         per_page = (@form['result_set']['per_page'] || 30).to_i
         @records = @records.page(params[:page]).per(per_page) if per_page > 0
       end
