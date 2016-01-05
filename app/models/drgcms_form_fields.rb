@@ -1130,7 +1130,8 @@ def render
   record = record_text_for(@yaml['name'])  
   @html << @parent.text_field(record, _name, @yaml['html'])
   if @yaml['with_new']
-    @html << @parent.image_tag('drg_cms/add.png', class: 'in-edit-add', title: t('drgcms.new'), 
+    @html << ' ' + 
+             @parent.fa_icon('plus-square lg', class: 'in-edit-add', title: t('drgcms.new'), 
              style: "vertical-align: top;", 'data-table' => @yaml['with_new'] )    
   end
   @html << @parent.hidden_field(record, @yaml['name'], value: value)        # actual value will be in hidden field
