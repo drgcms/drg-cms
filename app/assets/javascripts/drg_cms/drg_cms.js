@@ -311,10 +311,14 @@ $(document).ready( function() {
       type: req,
       dataType: "json",
       data: data,
+//      success: function(files,data,xhr) { 
+//        document.getElementById('if_priponkas').contentDocument.location.reload(true); 
+//      }
       success: function(data) {
         process_json_result(data);
         $('#dc-spinner').toggleClass('div-hidden');
       }
+      
     });  
   });  
 
