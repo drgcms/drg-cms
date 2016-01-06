@@ -301,14 +301,14 @@ end
 # New action.
 ########################################################################
 def new
+# clear flash messages.
+  flash[:error] = flash[:warning] = flash[:info] = nil 
+  create_new_empty_record
   if (m = callback_method('before_new') )
     ret = call_callback_method(m)
 # Don't do anything if return is false
     return index if ret.class == FalseClass
   end  
-# clear flash messages.
-  flash[:error] = flash[:warning] = flash[:info] = nil 
-  create_new_empty_record
   table = @tables.last[1] + '.'
 # initial values set on page
   if cookies[:record] and cookies[:record].size > 0
@@ -762,7 +762,7 @@ end
 ########################################################################
 def save_data
   fields = fields_on_form()
-  return true unless fields.size > 0
+  return true if fields.size == 0
 #
   fields.each do |v|
     next if v['type'].nil?
