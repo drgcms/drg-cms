@@ -140,6 +140,9 @@ process_json_result = function(json) {
       case 'url':
         window.location.href = val;
         break;
+      case 'alert':
+        alert(val);
+        break;
       case 'window':
         w = window.open(val, what);
         w.focus();        
