@@ -3,8 +3,8 @@
 en:
   datetimepicker: 
     formats:
-      date: 'Y/m/d'
-      datetime: 'Y/m/d H:i'
+      date: 'd/m/Y'
+      datetime: 'd/m/Y H:i'
 
 sl:
   datetimepicker: 
