@@ -5,7 +5,7 @@
 // the compiled file.
 
 //= #require_self
-//= require jquery
+//= require jquery2
 //= require drg_cms/jquery-migrate.js
 //= require jquery_ujs
 
