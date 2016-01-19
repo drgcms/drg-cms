@@ -76,6 +76,7 @@ en:
     reload: Reload
     error: Error!
     errors_no: 'No. of errors:'
+    two_chars: type in at least two chars
 
     created_by: Created by
     updated_by: Updated by

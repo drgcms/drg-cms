@@ -1125,6 +1125,7 @@ def render
   ret_name = "#{ret_name}.#{method}" if method
   @yaml['html'] ||= {}
   @yaml['html']['value'] = value_displayed
+  @yaml['html']['placeholder'] ||= t('drgcms.two_chars') || nil
 #    
   _name = '_' + @yaml['name']
   record = record_text_for(@yaml['name'])  

@@ -76,6 +76,7 @@ sl:
     reload: Osveži    
     error: Napaka!
     errors_no: 'Število napak:' 
+    two_chars: vpišite vsaj dva znaka
 
     created_by: Ustvaril
     updated_by: Spremenil
