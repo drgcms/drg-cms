@@ -1,3 +1,5 @@
+# Copyright 2012-2016 Damjan Rems
+
 source "http://rubygems.org"
 
 # Declare your gem's dependencies in drg_cms.gemspec.

@@ -27,7 +27,7 @@ Please see the DRG CMS website for up-to-date documentation:
 License (MIT LICENCE)
 ---------------------
 
-Copyright (c) 2012-2015 Damjan Rems
+Copyright (c) 2012-2016 Damjan Rems
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the

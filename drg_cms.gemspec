@@ -1,3 +1,5 @@
+# Copyright 2012-2016 Damjan Rems
+
 $:.push File.expand_path("../lib", __FILE__)
 
 # Maintain your gem's version:
