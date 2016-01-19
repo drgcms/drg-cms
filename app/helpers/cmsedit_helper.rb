@@ -100,8 +100,8 @@ EOT
 # add filter OFF link
       s = session[@form['table']]
       if s and s[:filter]
-        caption << '&nbsp;&nbsp;' + dc_link_to(nil,'remove lg', controller: 'cmsedit', 
-                   filter: 'off', table: @form['table'], title: 'drgcms.filter_off') 
+        caption << '&nbsp;&nbsp;' + dc_link_to(nil,'remove lg', {controller: 'cmsedit', 
+                   filter: 'off', table: @form['table']}, { title: t('drgcms.filter_off')+s[:filter]}) 
       end
       caption
 # new
@@ -135,6 +135,12 @@ def dc_div_filter()
   filter.split(',').each do |f| 
     f.strip!
     name = f.match(' as ') ? f.split(' ').first : f
+# like another field on the form
+    if f.match(' like ')
+      a = f.split(' ')
+      name = a.first
+      f    = a.last
+    end
     choices << [ t("helpers.label.#{@form['table']}.#{name}", name), f ] 
   end
   choices4_operators = t('drgcms.choices4_filter_operators').chomp.split(',').inject([]) {|r,v| r << (v.match(':') ? v.split(':') : v )}
@@ -294,7 +300,7 @@ def dc_header_for_result()
 end
 
 ############################################################################
-# Creates div with documents of current result set.
+# Creates link for single or double click on result column
 ############################################################################
 def dc_clicks_for_result(document)
   html = ''
