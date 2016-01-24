@@ -1,4 +1,17 @@
 
+New features for DRG CMS version 0.5.10
+
+    jQuery javascript library forced to jQuery2
+    Choices for select fields are now UTF-8 sorted since MongoDB does not provide utf sorting.
+    Placeholder text added for text_autocomplete field. It can also be defined in form field html options.
+    
+Bugs resolved for DRG CMS version 0.5.10
+
+    jQuery migrate udated to version 1.3. This was required by jquery-rails gem which included latest version of jQuery which resulted in an runtime error.
+    Call before_new callback only when new empty record has been created.
+
+--
+
 New features for DRG CMS version 0.5.9
 
     Main CMS menu was becoming to large and was divided into two menus.
