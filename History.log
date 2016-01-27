@@ -4,6 +4,7 @@ New features for DRG CMS version 0.5.10
     jQuery javascript library forced to jQuery2
     Choices for select fields are now UTF-8 sorted since MongoDB does not provide utf sorting.
     Placeholder text added for text_autocomplete field. It can also be defined in form field html options.
+    Filters option can now have "like" keyword for fields that are not defined on form. For example created_by like user_id.
     
 Bugs resolved for DRG CMS version 0.5.10
 
