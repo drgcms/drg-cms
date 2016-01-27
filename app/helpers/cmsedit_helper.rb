@@ -373,55 +373,55 @@ end
 ############################################################################
 def dc_columns_for_result(document)
   html = ''  
-  if (columns = @form['result_set']['columns'])
-    columns.each do |k,v|
-      session[:form_processing] = "result_set:columns: #{k}=#{v}"
+  return html unless @form['result_set']['columns']
+#  
+  @form['result_set']['columns'].each do |k,v|
+    session[:form_processing] = "result_set:columns: #{k}=#{v}"
 # convert shortcut to hash 
-      v = {'name' => v} if v.class == String
+    v = {'name' => v} if v.class == String
 # eval
-      value = if v['eval']
-        if v['eval'].match('dc_name4_id')
-          a = v['eval'].split(',')
-          if a.size == 3
-            dc_name4_id(a[1], a[2], nil, document[ v['name'] ])
-          else
-            dc_name4_id(a[1], a[2], a[3], document[ v['name'] ])
-          end
-        elsif v['eval'].match('dc_name4_value')
-          dc_name4_value( @form['table'], v['name'], document[ v['name'] ] )
-        elsif v['eval'].match('eval ')
-# evaluate with specified parameters
+    value = if v['eval']
+      if v['eval'].match('dc_name4_id')
+        a = v['eval'].split(',')
+        if a.size == 3
+          dc_name4_id(a[1], a[2], nil, document[ v['name'] ])
         else
-          if v['params']
-            if v['params'] == 'document'     # pass document as parameter when all
-              eval( "#{v['eval']} document") 
-            else                        # list of fields delimeted by ,
-              params = v['params'].chomp.split(',').inject('') do |result,e| 
-                result << (e.match(/\.|\:|\(/) ? e : "document['#{e.strip}']") + ','
-              end
-              params.chomp!(',')
-              eval( "#{v['eval']} #{params}") 
-            end
-          else
-            eval( "#{v['eval']} '#{document[ v['name'] ]}'") 
-          end
+          dc_name4_id(a[1], a[2], a[3], document[ v['name'] ])
         end
-# as field        
-      elsif document.respond_to?(v['name'])
-        dc_format_value(document.send( v['name'] ), v['format']) 
-# as hash (dc_dummy)
-      elsif document.class == Hash 
-        document[ v['name'] ]
-# error
+      elsif v['eval'].match('dc_name4_value')
+        dc_name4_value( @form['table'], v['name'], document[ v['name'] ] )
+      elsif v['eval'].match('eval ')
+# evaluate with specified parameters
       else
-        "!!! #{v['name']}"
+        if v['params']
+          if v['params'] == 'document'     # pass document as parameter when all
+            eval( "#{v['eval']} document") 
+          else                        # list of fields delimeted by ,
+            params = v['params'].chomp.split(',').inject('') do |result,e| 
+              result << (e.match(/\.|\:|\(/) ? e : "document['#{e.strip}']") + ','
+            end
+            params.chomp!(',')
+            eval( "#{v['eval']} #{params}") 
+          end
+        else
+          eval( "#{v['eval']} '#{document[ v['name'] ]}'") 
+        end
       end
-#
-      td = '<td '
-      td << dc_style_or_class('class',v['td_class'],value,document)
-      td << dc_style_or_class('style',v['td_style'] || v['style'],value,document)
-      html << "#{td}>#{value}</td>"
+# as field        
+    elsif document.respond_to?(v['name'])
+      dc_format_value(document.send( v['name'] ), v['format']) 
+# as hash (dc_dummy)
+    elsif document.class == Hash 
+      document[ v['name'] ]
+# error
+    else
+      "!!! #{v['name']}"
     end
+#
+    td = '<td '
+    td << dc_style_or_class('class',v['td_class'],value,document)
+    td << dc_style_or_class('style',v['td_style'] || v['style'],value,document)
+    html << "#{td}>#{value}</td>"
   end
   html.html_safe
 end
@@ -583,6 +583,19 @@ def dc_actions_for_form()
     end
   end
   c.html_safe
+end
+
+############################################################################
+# Create background div and table definitions for result set.
+############################################################################
+def dc_background_for_result
+  html = '<div class="dc-result-div" ' 
+  html << (@form['result_set']['table_style'] ? "style=\"overflow-x: scroll;\" >" : '>')
+  html << "\n"  
+#
+  html << "<table class=\"dc-result #{@form['result_set']['table_class']}\" "
+  html << (@form['result_set']['table_style'] ? "style=\"#{@form['result_set']['table_style']}\" >" : '>')
+  html.html_safe
 end
 
 ############################################################################

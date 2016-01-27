@@ -4,8 +4,7 @@
   <%= dc_table_title_for_result @records %>
 
   <% unless @records.nil? %>
-    <table class="dc-result <%= @form['result_set']['table_class'] %>" 
-           style="<%= @form['result_set']['table_style'] %> ">
+      <%= dc_background_for_result %>
       <tr><%= dc_header_for_result %></tr>
 
       <% for document in @records %>
@@ -16,6 +15,7 @@
       <% end %>
         
     </table>
+  </div>
   <% end %>
   
 </div>
