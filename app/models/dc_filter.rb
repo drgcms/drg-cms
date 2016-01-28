@@ -58,6 +58,10 @@ def self.get_filter(filter)
 #
   model = yaml['table'].classify.constantize
   field = yaml['field'] == 'id' ? '_id' : yaml['field'] # must be
+# if empty required 
+  if yaml['operation'] == 'empty'
+    return model.in(field => [nil,''])
+  end
 # if value == NIL no filter is necessary
   return nil if yaml['value'].class == String and yaml['value'] == '#NIL'
   
@@ -175,4 +179,19 @@ def self.menu_filter(parent)
   html << '<li id="open_drgcms_filter">' + I18n.t('drgcms.filter_set') + '</li>'
   html << '</ul>'
 end
+
+######################################################################
+# Creates title for turn filter off, which consists of displaying curently
+# active filter and text to turn it off.
+######################################################################
+def self.title4_filter_off(filter_yaml)
+  filter = YAML.load(filter_yaml)
+  operations = I18n.t('drgcms.choices4_filter_operators').chomp.split(',').inject([]) {|r,v| r << v.split(':') }
+  operation = ''
+  operations.each{|a| (operation = a.first; break) if a.last == filter['operation']}
+#
+  '[ ' + I18n.t("helpers.label.#{filter['table']}.#{filter['field']}") + 
+  " ] #{operation} [ #{filter['value'].to_s} ] : #{I18n.t('drgcms.filter_off')}"
+end
+
 end
