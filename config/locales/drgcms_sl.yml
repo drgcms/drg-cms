@@ -84,7 +84,7 @@ sl:
     updated_at: Spremenjeno
     new_record: Nov zapis
 
-    choices4_filter_operators: 'Je enak:eq,Vsebuje:like,Je večji od:gt,Je manjši od:lt'
+    choices4_filter_operators: 'Je enak:eq,Vsebuje:like,Je večji od:gt,Je manjši od:lt,Je prazen:empty'
     
     browse_collections: Brskanje po definicijah zbirk
 

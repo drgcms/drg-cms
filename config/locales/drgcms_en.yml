@@ -84,7 +84,7 @@ en:
     updated_at: Updated at
     new_record: New record
 
-    choices4_filter_operators: 'Equal to:eq,Contains:like,Greater then:gt,Less then:lt'
+    choices4_filter_operators: 'Equal to:eq,Contains:like,Greater then:gt,Less then:lt,Is empty:empty'
     
     browse_collections: Browse all collections
 
