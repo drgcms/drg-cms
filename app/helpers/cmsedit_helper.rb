@@ -101,7 +101,7 @@ EOT
       s = session[@form['table']]
       if s and s[:filter]
         caption << '&nbsp;&nbsp;' + dc_link_to(nil,'remove lg', {controller: 'cmsedit', 
-                   filter: 'off', table: @form['table']}, { title: t('drgcms.filter_off')+s[:filter]}) 
+                   filter: 'off', table: @form['table']}, { title: DcFilter.title4_filter_off(s[:filter]) }) 
       end
       caption
 # new
@@ -161,7 +161,7 @@ def dc_div_filter()
 
       </td>
       <td class="dc-link dc-animate drgcms_popup_submit" data-url="#{url}">#{fa_icon('check-square-o')} #{t('drgcms.filter_on')}</td>
-      <td class="dc-link dc-animate">#{dc_link_to('drgcms.filter_off','close', {action: 'index', filter: 'off', :table => @form['table']}) }</td>
+      <td class="dc-link dc-animate">#{dc_link_to('drgcms.filter_off','close', {action: :index, filter: 'off', table: @form['table'], formname: params['formname']}) }</td>
     </table>
 </div>
 EOT
