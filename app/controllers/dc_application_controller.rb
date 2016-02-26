@@ -294,6 +294,8 @@ def dc_process_default_request()
   dc_set_options(@site.settings)
 # HOMEPAGE. When no parameters is set
   params[:path] = @site.homepage_link if params[:id].nil? and params[:path].nil?
+# some other process request. It shoud fail if not defined
+  return eval(@site.request_processor) if !@site.request_processor.blank?
 # Search for page 
   pageclass = @site.page_table.classify.constantize
   if params[:id]
@@ -359,11 +361,13 @@ end
 # # Just a reminder: request.session_options[:skip] = true
 ##########################################################################
 def dc_single_sitedoc_request
-  session[:edit_mode] ||= 0
-  @site = dc_get_site
-# @site is not defined. render 404 error
-  return dc_render_404('Site!') unless @site
-  dc_set_options(@site.settings)
+  if @site.nil?
+    session[:edit_mode] ||= 0
+    @site = dc_get_site
+  # @site is not defined. render 404 error
+    return dc_render_404('Site!') unless @site
+    dc_set_options(@site.settings)
+  end
 # HOMEPAGE. When no parameters is set
   params[:path] = @site.homepage_link if params[:path].nil?  
   @parts = @site.dc_parts

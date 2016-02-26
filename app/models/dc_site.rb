@@ -43,6 +43,7 @@ included do
   field :page_class,          type: String, default: 'DcPage'
   field :site_layout,         type: String, default: 'content'
   field :menu_class,          type: String, default: 'DcSimpleMenu'
+  field :request_processor,   type: String
   field :files_directory,     type: String
   field :logo,                type: String
   field :active,              type: Boolean, default: true

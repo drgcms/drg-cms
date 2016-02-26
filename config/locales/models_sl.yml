@@ -50,6 +50,7 @@ sl:
         menu_class: Razred menija
         site_layout: Rails layout
         files_directory: Mapa z datotekami
+        request_processor: Metoda zahtevka
         logo: Logotip
         dc_policies: Politike za dostop
         active: Aktivna
@@ -528,6 +529,7 @@ sl:
         rails_view: Rails view datoteka uporabljena za standard dizajn
         design: Standard dizajn lahko definirate tudi pri spletišču
         dc_parts: Sestavni elementi strani
+        request_processor: Ime ruby metode, ki bo klicana namesto dc_process_default_request 
 
       dc_design:
         name: Unikatno ime za dizajn. Pomembno za iskanje

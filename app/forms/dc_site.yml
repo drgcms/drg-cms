@@ -57,14 +57,18 @@ form:
         type: text_field
         size: 50
       70:
-        name: files_directory
+        name: request_processor
         type: text_field
         size: 50
       80:
+        name: files_directory
+        type: text_field
+        size: 50
+      90:
         name: logo
         type: file_select
         size: 50
-      90:
+      100:
         name: active
         type: check_box
         size: 50

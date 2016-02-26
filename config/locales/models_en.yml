@@ -60,6 +60,7 @@ en:
         alias_for: Alias for
         rails_view: Rails view
         design: Standard design
+        request_processor: Request processor
 
       dc_design:
         tabletitle: Designs
@@ -523,6 +524,7 @@ en:
         rails_view: Rails view filename used as standard design
         design: Standard design can also be defined at the site level
         dc_parts: Parts contained in site
+        request_processor: Method which will provide output instead of dc_process_default_request 
         
       dc_user:
         username: Username
