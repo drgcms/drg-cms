@@ -393,6 +393,12 @@ def create
   end
 #
   if params['id'].nil? # create record
+# Prevent double form submit
+    params[:form_time_stamp] = params[:form_time_stamp].to_i
+    session[:form_time_stamp] ||= 0
+    return index if params[:form_time_stamp] <= session[:form_time_stamp]
+    session[:form_time_stamp] = params[:form_time_stamp]
+#    
     create_new_empty_record
     params[:return_to] = 'index' if params[:commit] == t('drgcms.save&back') # save & back
     if save_data

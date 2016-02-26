@@ -748,7 +748,9 @@ def dc_fields_for_form()
     html << tdata
   end
   # add last_updated_at hidden field so controller can check if record was updated in during editing
-  html << hidden_field(nil, :last_updated_at, :value => @record.updated_at.to_i) if @record.respond_to?(:updated_at)
+  html << hidden_field(nil, :last_updated_at, value: @record.updated_at.to_i) if @record.respond_to?(:updated_at)
+  # add form time stamp to prevent double form submit
+  html << hidden_field(nil, :form_time_stamp, value: Time.now.to_i)
   html.html_safe
 end
 
