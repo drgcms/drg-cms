@@ -607,13 +607,27 @@ end
 def ro_standard
   value = @record.respond_to?(@yaml['name']) ? @record[@yaml['name']] : nil
   return self if value.nil?
-#  
-  get_choices.each do |choice|
-    if choice.class == Array
-      return super(choice.first) if choice.last.to_s == value.to_s
-    else
-      return super(choice) if choice.to_s == value.to_s
-    end  
+# 
+  choices = get_choices()
+  if value.class == Array   # multiple choices
+    html = ''
+    value.each do |element|
+      choices.each do |choice|
+        if choice.to_s == element.to_s
+          html << '<br>' if html.size > 0
+          html << "#{element.to_s}"
+        end
+      end       
+    end
+    return super(html)
+  else
+    choices.each do |choice|
+      if choice.class == Array
+        return super(choice.first) if choice.last.to_s == value.to_s
+      else
+        return super(choice) if choice.to_s == value.to_s
+      end 
+    end
   end
   super('')
 end
@@ -624,10 +638,15 @@ end
 def render
   return ro_standard if @readonly
   set_initial_value('html','selected')
- #
+#
   @yaml['html'].symbolize_keys!
-  record = record_text_for(@yaml['name'])  
-  @html << @parent.select(record, @yaml['name'], get_choices, @yaml['html'])
+  record = record_text_for(@yaml['name'])
+  if @yaml['multiple']  
+    @html << @parent.select(record, @yaml['name'], get_choices, @yaml['html'], {multiple: true})
+    @js   << "$('##{record}_#{@yaml['name']}').selectMultiple();"
+  else
+    @html << @parent.select(record, @yaml['name'], get_choices, @yaml['html'])
+  end
   self
 end
 
