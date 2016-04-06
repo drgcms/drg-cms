@@ -153,11 +153,10 @@ def form_field(field, index, offset)
   yml << ' '*offset + "name: #{field}\n"
   yml << ' '*offset + "type: #{type}\n"
   yml << ' '*offset + eval if eval.size > 0
-  yml << ' '*offset + "html:\n"
-  offset += 2
-  if type == 'text_field'
-    yml << ' '*offset + "size: 50\n"
-  else
+  yml << ' '*offset + "size: 50\n" if type == 'text_field'
+  if type == 'select'
+    yml << ' '*offset + "html:\n"
+    offset += 2
     yml << ' '*offset + "include_blank: true\n"
   end 
   yml
