@@ -107,6 +107,25 @@ def self.choices4_country()
   @@countries
 end
 
+##########################################################################
+# Performs ligically test on passed email parameter.
+# 
+# Parameters:
+# [email] String: e-mail address
+# 
+# Returns:
+# Boolean: True if parameter is logically valid email address.
+# 
+# Example:
+#    if !DcUser.is_email?(params[:email])
+#      flash[:error] = 'e-Mail address is not valid!'
+#    end
+# 
+##########################################################################
+def self.is_email?(email)
+  email.to_s =~ /^[a-zA-Z0-9][\w\.-]*[a-zA-Z0-9]@[a-zA-Z0-9][\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]$/
+end
+
 end
 end
 
