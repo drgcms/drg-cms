@@ -15,7 +15,7 @@ def create_form_file
   @model = file_name.classify.constantize rescue nil
   return (p "Model #{file_name.classify} not found! Aborting.") if @model.nil?
 #  
-  yml = top_level_options + index_options + result_set_options + form_top_options + form_fields_options
+  yml = top_level_options + index_options + result_set_options + form_top_options + form_fields_options + localize_options
   create_file "app/forms/#{formname}.yml", yml
 end
 
@@ -212,5 +212,29 @@ def form_fields_options
   end
   yml
 end
+
+###########################################################################
+#
+###########################################################################
+def localize_options
+  forbidden = ['_id','created_by','updated_by','created_at','updated_at']
+  yml =<<EOT
+  
+#################################################################
+# Localization
+en:
+  helpers:
+    label:
+      #{file_name}:
+        tabletitle: 
+        choices4_ : 
+
+EOT
+  @model.attribute_names.each do |attr_name|
+    next if forbidden.include?(attr_name)
+    yml << "        #{attr_name}: \n"
+  end
+  yml
+end  
     
 end
