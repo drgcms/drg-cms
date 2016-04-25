@@ -573,6 +573,25 @@ def dc_name4_value(model, field, value)
 end
 
 ############################################################################
+# Return choices for field in model if choices are defined in localization text.
+# 
+# Parameters:
+# [model] String. Table (collection) model name (lowercase).
+# [field] String. Field name used.
+# 
+# Example:
+#    dc_choices4_field('dc_user', 'state' )
+#        
+# Returns: 
+# Array. Choices for select input field
+############################################################################
+def dc_choices4_field(model, field)
+  c = t('helpers.label.' + model + '.choices4_' + field )
+  return ['error'] if c.match( 'translation missing' )
+  c.chomp.split(',').inject([]) {|r,v| r << v.split(':') }
+end
+
+############################################################################
 # Will return descriptive text for id key when field in one table (collection) has belongs_to 
 # relation to other table.
 # 
