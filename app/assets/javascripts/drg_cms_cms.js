@@ -27,6 +27,7 @@
 //= #require drg_cms/elfinder/js/proxy/elFinderSupportVer1.js
 
 //= require drg_cms/jquery.bpopup.min.js
-//= require select-multiple
+//= require drg_cms/select-multiple
+
 
 

@@ -28,5 +28,4 @@ Gem::Specification.new do |s|
   s.add_dependency 'kaminari'
   s.add_dependency 'font-awesome-rails'
   s.add_dependency 'sort_alphabetical'
-  s.add_dependency 'select-multiple-rails'
 end

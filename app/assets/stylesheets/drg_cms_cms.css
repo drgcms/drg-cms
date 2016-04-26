@@ -10,13 +10,13 @@
  *
  *= require drg_cms/drg_cms
  *= require drg_cms/jquery.datetimepicker.css
+ *= require drg_cms/select-multiple
  *= #require jquery-ui/all  
  *= require jquery-ui/tooltip
  *= require jquery-ui/autocomplete
  *= #require ../javascripts/drg_cms/elfinder/css/elfinder.min.css
  *= #require ../javascripts/drg_cms/elfinder/css/theme.css
  *= require font-awesome
- *= require select-multiple
 */
 
 /* Required for link buttons to look alike */
