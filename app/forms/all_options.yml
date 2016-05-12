@@ -85,6 +85,7 @@ result_set:
     4: 
       name: active
       eval: dc_icon4_boolean
+      eval: dc_name4_value      
 
 form:
   title: 

@@ -188,7 +188,8 @@ def dc_link_or_ajax(yaml, parms) #:nodoc:
   rest = {}
   rest['method']  = yaml['method'] || yaml['request'] || 'get'
   rest['caption'] = yaml['caption'] || yaml['text']
-  rest['class']   = (yaml['type'] == 'link' ? 'dc-link' : 'dc-link-ajax') + ' dc-animate'
+#  rest['class']   = (yaml['type'] == 'link' ? 'dc-link' : 'dc-link-ajax') + ' dc-animate'
+  rest['class']   = 'dc-animate'
   rest['title']   = yaml['title']
   
   dc_deprecate "Form: result_set:action:text directive will be deprecated. Use caption instead of text." if yaml['text']

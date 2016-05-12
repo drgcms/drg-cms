@@ -1,4 +1,4 @@
 module DrgCms #:nodoc:
   # drg_cms gem version
-  VERSION = "0.5.10.5"
+  VERSION = "0.5.10.6"
 end
