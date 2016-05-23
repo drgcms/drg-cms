@@ -200,7 +200,7 @@ def dc_user_can(permission, table=params[:table])
   end
 # Sometimes anonymous user is allowed to use cmsedit. Search for system default role.
 #TODO This might not be the best idea. Check in the future.
-  if session[:user_roles].nil?
+  if session[:user_roles].nil? or session[:user_roles] == []
     guest = DcUserRole.find_by(:system_name => 'guest')
     session[:user_roles] = guest ? [guest.id] : []
   end
