@@ -70,7 +70,7 @@ def dc_user_has_role(role)
     role = DcPolicyRole.find_by(name: rol)
     role = DcPolicyRole.find_by(system_name: rol) if role.nil?
   end
-  return false if role.nil?
+  return false if role.nil? or session[:user_roles].nil?
 # role is found in user_roles
   session[:user_roles].include?(role._id)
 end
