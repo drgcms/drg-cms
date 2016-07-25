@@ -195,6 +195,15 @@ def check_filter_options() #:nodoc:
       model
     end
   end
+=begin  
+# TODO Use only fields requested. Higly experimental but necessary in some scenarios
+  if (columns = @form['result_set']['columns'])
+    cols = []
+    columns.each { |k,v| cols << v['name'] }
+    p '*',cols,'*'
+    @records = @records.only(cols)
+  end
+=end  
 # pagination if required
   per_page = (@form['result_set']['per_page'] || 30).to_i
   if per_page > 0
