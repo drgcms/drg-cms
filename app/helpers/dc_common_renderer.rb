@@ -41,6 +41,7 @@ include DcApplicationHelper
 #  Defines renderer's class method
 ########################################################################
 def layout_4print
+  return '' if @parent.params[:renderer].blank?
   opts = @opts.dup
   opts[:method] = @parent.params[:method]
   klass = (@parent.params[:renderer] + '_renderer').classify
