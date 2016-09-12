@@ -149,8 +149,7 @@ end
 def restore_from_journal
 # Only administrators can perform this operation  
   unless dc_user_has_role('admin')
-    { 'msg_info' => (t ('drgcms.not_authorized')) }
-    return render inline: result.to_json, formats: 'js'
+    return render inline: { 'msg_info' => (t ('drgcms.not_authorized')) }.to_json, formats: 'js'
   end
 # selected fields to hash  
   restore = params[:select].inject({}) {|r,v| r[v.first] = 0 if v.last == '1'; r}
