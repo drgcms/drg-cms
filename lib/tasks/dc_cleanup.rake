@@ -47,6 +47,16 @@ namespace :drg_cms do
   end
 
 ###########################################################################
+  desc 'Clears mongodb session documents created by web robots'
+  task :clear_sessions_from_robots, [:name] => :environment do |t, args|
+# This should remove all sessions documents created by web robots
+    ActionDispatch::Session::MongoidStore::Session.all.each do |doc|
+      doc.delete if (doc.created_at == doc.updated_at)
+    end
+    DcSite.collection.database.command(eval: "db.runCommand ( { compact: 'sessions' } )" )
+  end
+
+###########################################################################
   desc 'Removes all statistics from dc_visits up to specified date and save them to visits_date.json.'
   task :clear_visits, [:name] => :environment do |t, args|
     date = read_input("Enter end date (yyyymmdd): ")
