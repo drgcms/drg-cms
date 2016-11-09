@@ -110,7 +110,7 @@ def link_4menu(item)
     caption << ' '
    end
   # - in first place won't write caption text
-  caption = caption.html_safe + (item.caption[0] == '-' ? '' : item.caption )
+  caption = caption.html_safe + (item.caption[0] == '-' ? '' : item.caption.html_safe )
   
   target = item.target.blank? ? nil : item.target
   @parent.link_to(caption, link, {target: target})
