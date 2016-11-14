@@ -468,7 +468,7 @@ def render
         link  = @parent.link_to(@parent.fa_icon('remove lg', class: 'dc-animate dc-red'), '#',
                 onclick: "$('##{rec.id}').hide(); var v = $('##{record}_#{@yaml['name']}_#{rec.id}'); v.val(\"-\" + v.val());return false;")
         field = @parent.hidden_field(record, "#{@yaml['name']}_#{rec.id}", value: element)
-        "<div id=\"#{rec.id}\" style=\"padding:2px;\">#{link} #{rec[field_name]}<br>#{field}</div>"
+        "<div id=\"#{rec.id}\" style=\"padding:2px;\">#{link} #{rec.send(field_name)}<br>#{field}</div>"
       else
         '** error **'
       end
@@ -1136,7 +1136,8 @@ def render
 # Found value to be written in field  
   if value
     record = t.find(value)
-    value_displayed = record[ret_name] if record      
+#    value_displayed = record[ret_name] if record      
+    value_displayed = record.send(ret_name) if record      
   end
 # return if readonly
   return ro_standard(value_displayed) if @readonly
