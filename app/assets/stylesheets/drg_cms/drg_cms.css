@@ -584,8 +584,10 @@ height: 26px;
 }
 
 .cmsedit-menu ul {
-display: inline-block; 
+display: inline-block;
+list-style-type: none;
 color: #666;
+margin: 0px;
 margin-right: 4px;
 font-size: 14px;
 }
