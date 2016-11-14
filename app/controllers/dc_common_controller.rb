@@ -304,11 +304,10 @@ def fill_login_data(user, remember_me)
   session[:user_id]   = user.id
   session[:user_name] = user.name
   session[:edit_mode] = 0 
-  session[:user_roles] = nil
+  session[:user_roles] = []
 # special for SUPERADMIN
   sa = DcPolicyRole.find_by(system_name: 'superadmin')
   if sa and (role = user.dc_user_roles.find_by(dc_policy_role_id: sa.id))
-    session[:user_roles] = []
     session[:user_roles] << role.dc_policy_role_id
     session[:edit_mode]  = 2
     return
@@ -327,9 +326,16 @@ def fill_login_data(user, remember_me)
 # set edit_mode      
 #    session[:edit_mode] = 1 if policy_role.has_cms_menu
     session[:edit_mode] = 1 if policy_role.permission > 1
-    session[:user_roles] ||= []  # 
     session[:user_roles] << role.dc_policy_role_id
   end
+# Add default guest role if no role set
+# This was previously in dc_user_can. I belive it should be here. 
+#TODO This might not be the best idea. Check in the future.
+  if session[:user_roles].size == 0
+    guest = DcUserRole.find_by(:system_name => 'guest')
+    session[:user_roles] << guest.id if guest
+  end
+  
 # Save remember me cookie if not CMS user and remember me is selected
   if session[:edit_mode] == 0 and remember_me
     cookies.signed[:remember_me] = { :value => user.id, :expires => 180.days.from_now}
