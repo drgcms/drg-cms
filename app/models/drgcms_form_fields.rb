@@ -1136,7 +1136,6 @@ def render
 # Found value to be written in field  
   if value
     record = t.find(value)
-#    value_displayed = record[ret_name] if record      
     value_displayed = record.send(ret_name) if record      
   end
 # return if readonly
