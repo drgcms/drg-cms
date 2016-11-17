@@ -124,7 +124,28 @@ def dc_replace_in_design(opts={})
       design.sub!(opts[:replace], opts[:with])
     end
   end
-  render(inline: design, layout: opts[:layout])
+  render(inline: design, layout: layout)
+end
+
+########################################################################
+# Used for designs with lots of common code and one (or more) part which differs.
+# It will simply replace anchor code with value of variable.
+# 
+# Example: As used in design. Backslashing < and % is important \<\%
+#    <% part = "<div  class='some-class'>\<\%= dc_render(:my_renderer, method: 'render_method') \%\></div>" %>
+#    <%= dc_replace_in_design(piece: 'piece_name', replace: '[main]', with: part) %>
+# 
+# Want to replace more than one part. Use array.
+#    <%= dc_replace_in_design(replace: ['[part1]','[part2]'], with: [part1, part2]) %>
+# 
+# This helper is replacement for old 'script' method defined in dc_piece_renderer, 
+# but it uses design defined in site document if piece parameter is not set.
+########################################################################
+def dc_render_from_site(opts={})
+  design = opts[:piece] ? DcPiece.find(name: opts[:piece]).script : dc_get_site.design
+  layout = opts[:layout] || (dc_get_site.site_layout.size > 2 ? dc_get_site.site_layout : nil)
+  
+  render(inline: design, layout: opts[:layout], with: opts[:with])
 end
 
 ########################################################################
