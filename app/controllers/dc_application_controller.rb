@@ -263,6 +263,38 @@ def dc_not_modified?(*documents)
 end
 
 ##########################################################################
+# Will determine design content or view filename which defines design.
+# 
+# Returns:
+#  design_body: design body as defined in site or design document.
+#  design_view: view file name which will be used for rendering design
+##########################################################################
+def get_design_and_render(design_doc)
+  layout = @site.site_layout.blank? ? 'content' : @site.site_layout
+  site_top = session[:edit_mode] > 0 ? "<%= render partial: 'cmsedit/edit_stuff' %>\n" : ''
+  site_bottom = '<style type="text/css"><%= @css.html_safe %></style><%= javascript_tag @js %>'
+#  
+  if design_doc
+    if !design_doc.rails_view.blank? 
+      if design_doc.rails_view.downcase != 'site'
+        eval(design_doc.body) unless design_doc.body.blank?
+        return render design_doc.rails_view, layout: layout
+      end
+    elsif !design_doc.body.blank?
+      design = site_top + design_doc.body + site_bottom
+      return render(inline: design, layout: layout)
+    end
+  end
+# first evaluete if anything code in design body 
+  eval(design_doc.body) if design_doc and !design_doc.body.blank?
+  if @site.rails_view.blank? 
+    design = site_top + @site.design + site_bottom
+    return render(inline: design, layout: layout)
+  end
+  render @site.rails_view, layout: layout
+end
+
+##########################################################################
 # This is default page process action. It will search for site, page and
 # design documents, collect parameters from different objects, add CMS edit code if allowed
 # and at the end render design.body or design.rails_view or site.rails_view.
@@ -328,7 +360,8 @@ def dc_process_default_request()
     dc_log_visit()
   end
   @page_title = @page.title.blank? ? "#{@site.page_title}-#{@page.subject}" : @page.title
-  layout      = @site.site_layout.blank? ? 'content' : @site.site_layout 
+# define design
+=begin
   design      = @design ? @design.body : @site.design
 # render view. inline if defined in design
   view_filename = @design ? @design.rails_view.to_s : ''
@@ -340,6 +373,8 @@ def dc_process_default_request()
   else
     render view_filename, layout: layout
   end
+=end
+  get_design_and_render @design
 end
 
 ##########################################################################
@@ -372,6 +407,7 @@ def dc_single_sitedoc_request
 #  
   @page_title = "#{@site.page_title} #{@part.name}"
   @js, @css = '', ''
+=begin  
   layout = @site.site_layout.blank? ? 'content' : @site.site_layout
   if @site.rails_view.blank?
     design = @site.design + '<style type="text/css"><%= @css.html_safe %></style><%= javascript_tag @js %>'
@@ -380,6 +416,8 @@ def dc_single_sitedoc_request
   else
     render @site.rails_view, layout: layout
   end
+=end
+  get_design_and_render nil
 end
 
 ########################################################################

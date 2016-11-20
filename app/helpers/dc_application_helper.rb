@@ -149,13 +149,45 @@ def dc_render_from_site(opts={})
 end
 
 ########################################################################
-# Old method name. 
+# Used for designs with lots of common code and one (or more) part which differs.
+# Point is to define design once and replace some parts of design dinamically.
+# Design may be defined in site and design doc defines only parts that vary
+# from page to page.
+# 
+# Example: As used in design.
+#    <%= dc_render_design_part(@main) %>
+#    
+#    main variable is defined in design body for example:
+#    
+#    @main = Proc.new {render partial: 'parts/home'}
+# 
+# This helper is replacement dc_render_from_site method which will soon be deprecated. 
 ########################################################################
-def dc_render_design(opts={}) #:nodoc:
-  dc_deprecate "dc_render_design will be deprecated. Use dc_replace_in_design instead."  
-  dc_replace_in_design(opts)
+def dc_render_design_part(part) 
+  if part.nil?
+    ''
+  elsif part.class == Proc
+    result = part.call
+    result.class == Array ? result.first : result
+  else
+    part.to_s
+  end.html_safe
 end
 
+########################################################################
+# Helper for rendering top CMS menu when in editing mode
+########################################################################
+def dc_page_top()
+  session[:edit_mode] > 0 ? render(partial: 'cmsedit/edit_stuff') : ''
+end
+
+########################################################################
+# Helper for adding additional css and javascript code added by documents
+# and renderers during page rendering.
+########################################################################
+def dc_page_bottom()
+  %Q[<style type="text/css">#{@css}</style>#{javascript_tag @js}].html_safe
+end
 ############################################################################
 # Creates title div for DRG CMS dialogs. Title may also contain pagination section on right side if 
 # result_set is provided as parameter.
