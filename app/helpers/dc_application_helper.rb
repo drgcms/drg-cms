@@ -124,7 +124,7 @@ def dc_replace_in_design(opts={})
       design.sub!(opts[:replace], opts[:with])
     end
   end
-  render(inline: design, layout: layout)
+  render(inline: design, layout: nil)
 end
 
 ########################################################################
@@ -174,10 +174,15 @@ def dc_render_design_part(part)
   end.html_safe
 end
 
+def dc_render_design(part) 
+  dc_render_design_part(part) 
+end
+
 ########################################################################
 # Helper for rendering top CMS menu when in editing mode
 ########################################################################
 def dc_page_top()
+  p '***',session[:edit_mode]
   session[:edit_mode] > 0 ? render(partial: 'cmsedit/edit_stuff') : ''
 end
 
