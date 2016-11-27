@@ -148,6 +148,8 @@ def dc_render_from_site(opts={})
   render(inline: design, layout: opts[:layout], with: opts[:with])
 end
 
+
+
 ########################################################################
 # Used for designs with lots of common code and one (or more) part which differs.
 # Point is to define design once and replace some parts of design dinamically.
@@ -169,6 +171,8 @@ def dc_render_design_part(part)
   elsif part.class == Proc
     result = part.call
     result.class == Array ? result.first : result
+  elsif part.class == String
+    eval part
   else
     part.to_s
   end.html_safe
@@ -182,7 +186,10 @@ end
 # Helper for rendering top CMS menu when in editing mode
 ########################################################################
 def dc_page_top()
-  p '***',session[:edit_mode]
+  if @design and !@design.rails_view.blank?
+# Evaluate parameters in design body    
+    eval(@design.body)
+  end
   session[:edit_mode] > 0 ? render(partial: 'cmsedit/edit_stuff') : ''
 end
 

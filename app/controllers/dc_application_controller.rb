@@ -270,14 +270,14 @@ end
 #  design_view: view file name which will be used for rendering design
 ##########################################################################
 def get_design_and_render(design_doc)
-  layout = @site.site_layout.blank? ? 'content' : @site.site_layout
-  site_top = session[:edit_mode] > 0 ? "<%= render partial: 'cmsedit/edit_stuff' %>\n" : ''
-  site_bottom = '<style type="text/css"><%= @css.html_safe %></style><%= javascript_tag @js %>'
+  layout      = @site.site_layout.blank? ? 'content' : @site.site_layout
+  site_top    = '<%= dc_page_top %>'
+  site_bottom = '<%= dc_page_bottom %>'
 #  
   if design_doc
     if !design_doc.rails_view.blank? 
       if design_doc.rails_view.downcase != 'site'
-        eval(design_doc.body) unless design_doc.body.blank?
+#        eval(design_doc.body) unless design_doc.body.blank?
         return render design_doc.rails_view, layout: layout
       end
     elsif !design_doc.body.blank?
@@ -286,7 +286,7 @@ def get_design_and_render(design_doc)
     end
   end
 # first evaluete if anything code in design body 
-  eval(design_doc.body) if design_doc and !design_doc.body.blank?
+#  eval(design_doc.body) if design_doc and !design_doc.body.blank?
   if @site.rails_view.blank? 
     design = site_top + @site.design + site_bottom
     return render(inline: design, layout: layout)
