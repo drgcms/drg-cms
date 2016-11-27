@@ -277,7 +277,6 @@ def get_design_and_render(design_doc)
   if design_doc
     if !design_doc.rails_view.blank? 
       if design_doc.rails_view.downcase != 'site'
-#        eval(design_doc.body) unless design_doc.body.blank?
         return render design_doc.rails_view, layout: layout
       end
     elsif !design_doc.body.blank?
@@ -286,7 +285,6 @@ def get_design_and_render(design_doc)
     end
   end
 # first evaluete if anything code in design body 
-#  eval(design_doc.body) if design_doc and !design_doc.body.blank?
   if @site.rails_view.blank? 
     design = site_top + @site.design + site_bottom
     return render(inline: design, layout: layout)
