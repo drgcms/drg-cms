@@ -284,7 +284,7 @@ def get_design_and_render(design_doc)
       return render(inline: design, layout: layout)
     end
   end
-# first evaluete if anything code in design body 
+# 
   if @site.rails_view.blank? 
     design = site_top + @site.design + site_bottom
     return render(inline: design, layout: layout)

@@ -391,6 +391,7 @@ en:
         order: Order
         parent: Parent
         active: Active
+        dc_site_id: Valid for site
         updated_at: Spremenjen
 
       dc_mail:
@@ -777,6 +778,7 @@ en:
         order: Additional order, which can be used for sorting.
         parent: Parent category. Leave blank if this is top level category.
         active: Category is active.
+        dc_site_id: Category is valid only for site
         updated_at: Last update
 
       dc_mail:

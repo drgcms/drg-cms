@@ -883,8 +883,9 @@ end
 # [model] String. Collection (table) name in lowercase format.
 # [name] String. Field name containing description text.
 # [id] String. Field name containing id field. Default is '_id'
-# [options] Hash. Various options. Currently site_only is used. Will return only 
-# documents belonging to current site.
+# [options] Hash. Various options. Currently site: (:only, :with_nil, :all) is used.
+# Will return only documents belonging to current site, also with site not defined,
+# or all documents.
 # 
 # Example (as used in forms):
 #    50:
@@ -895,7 +896,11 @@ end
 def dc_choices4(model, name, id='_id', options = {})
   model = model.classify.constantize
   qry   = model.only(id, name)
-  qry   = qry.and(dc_site_id: dc_get_site()) if options[:site_only]
+  if (param = options[:site])
+    sites = [dc_get_site.id] unless param == :all
+    sites << nil if param == :with_nil 
+    qry   = qry.in(dc_site_id: sites) if sites
+  end
   qry   = qry.and(active: true) if model.method_defined?(:active)
 #  qry   = qry.sort(name => 1) 
 #  choices = []

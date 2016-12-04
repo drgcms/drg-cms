@@ -396,6 +396,7 @@ sl:
         order: Zaporedje
         parent: Nadrejeni
         active: Aktiven
+        dc_site_id: Spletišče
         updated_at: Spremenjen
 
       dc_mail:
@@ -790,6 +791,7 @@ sl:
         order: Zaporedje, ki se lahko uporabi pri grupiranju člankov.
         parent: Nadrejena kategorija. Pustite prazno če je to najvišja kategorija.
         active: Aktivna
+        dc_site_id: Kategorija velja za stran
         updated_at: Podatki so bili zadnjič spremenjeni
 
       dc_mail:

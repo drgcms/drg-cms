@@ -53,16 +53,19 @@ class DcCategory
   field   :order,       type: Integer, default: 0
   field   :created_by,  type: BSON::ObjectId
   field   :updated_by,  type: BSON::ObjectId
+  field   :dc_site_id,     type: BSON::ObjectId
 
   validates :name, :presence => true
   
   index  name: 1
   index  ctype: 1
+  index  site_id: 1
   
 #########################################################################
 # Returns all values where parent value is nil (top level parent).
 #########################################################################
-  def self.values_for_parent #:nodoc:
-    where(parent: nil).sort(name: 1).inject([]) {|r,v| r << [v.name, v._id]} 
-  end
+def self.values_for_parent #:nodoc:
+  where(parent: nil).sort(name: 1).inject([]) {|r,v| r << [v.name, v._id]} 
+end
+
 end

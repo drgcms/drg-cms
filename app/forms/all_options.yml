@@ -135,7 +135,7 @@ form:
         name: dc_site_id
         type: select
         multiple: true || 1
-        eval: dc_choices4('model','description_field_name','_id')
+        eval: "dc_choices4('model','description_field_name','_id',site: :with_nil)"
         eval: ModelName.choices4_site
         html:
           include_blank: true        

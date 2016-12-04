@@ -650,6 +650,19 @@ def render
   self
 end
 
+###########################################################################
+# Return value. 
+###########################################################################
+def self.get_data(params, name)
+  if params['record'][name].class == Array
+    params['record'][name].delete_if {|e| e.blank? }
+    return nil if params['record'][name].size == 0
+# convert to BSON objects    
+#    return params['record'][name].map{ |e| BSON::ObjectId.from_string(e) }
+  end
+  params['record'][name]
+end
+
 end
 
 ###########################################################################
