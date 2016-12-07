@@ -50,9 +50,15 @@ namespace :drg_cms do
   desc 'Clears mongodb session documents created by web robots'
   task :clear_sessions_from_robots, [:name] => :environment do |t, args|
 # This should remove all sessions documents created by web robots
-    ActionDispatch::Session::MongoidStore::Session.all.each do |doc|
-      doc.delete if (doc.created_at == doc.updated_at)
+# ActionDispatch::Session::MongoidStore::Session.where('$where' => 'this.created_at == this.updated_at').limit(1000).each do |doc|
+    n = 0
+    ActionDispatch::Session::MongoidStore::Session.batch_size(1000).all.each do |doc|
+      if (doc.created_at == doc.updated_at)
+        doc.delete 
+        p "Deleted #{n}" if (n+=1)%1000 == 0
+      end
     end
+    p "Deleted #{n}"
     DcSite.collection.database.command(eval: "db.runCommand ( { compact: 'sessions' } )" )
   end
 
