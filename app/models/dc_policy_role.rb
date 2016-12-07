@@ -58,4 +58,16 @@ def self.choices4_roles
   where(active: true).order_by(name: 1).inject([]) { |r,role| r << [ role.name, role._id] }
 end
 
+########################################################################
+# Search for role when role parameter is String.
+########################################################################
+def self.get_role(role)
+  if role.class == String
+    rol = role
+    role = find_by(name: rol) || find_by(system_name: rol)
+  end
+  role
+end
+
+
 end

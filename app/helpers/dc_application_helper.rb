@@ -1027,13 +1027,9 @@ end
 def dc_user_has_role( role, user=nil, roles=nil )
   roles = _origin.session[:user_roles] if roles.nil?
   user  = _origin.session[:user_id] if user.nil?
-  return false if user.nil?  
+  return false if user.nil? or roles.nil?
 #  
-  if role.class == String
-    rol = role
-    role = DcPolicyRole.find_by(name: rol)
-    role = DcPolicyRole.find_by(system_name: rol) if role.nil?
-  end
+  role = DcPolicyRole.get_role(role)
   return false if role.nil?
 # role is included in roles array
   roles.include?(role._id)
