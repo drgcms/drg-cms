@@ -21,10 +21,11 @@ Gem::Specification.new do |s|
   s.add_dependency 'rails', '~> 4'
   s.add_dependency 'jquery-rails'
   s.add_dependency 'jquery-ui-rails'
+  s.add_dependency 'non-stupid-digest-assets'  
 
   s.add_dependency 'bcrypt' #, '~> 3.0.0'
-  s.add_dependency 'bson'
-  s.add_dependency 'mongoid'
+  s.add_dependency 'mongoid', '~> 5'
+  s.add_dependency 'mongo_session_store-rails4'  
   s.add_dependency 'kaminari'
   s.add_dependency 'font-awesome-rails'
   s.add_dependency 'sort_alphabetical'
