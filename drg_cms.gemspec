@@ -14,13 +14,13 @@ Gem::Specification.new do |s|
   s.homepage    = "http://www.drgcms.org"
   s.summary     = "DRG CMS: Rapid web application development tool for Ruby, Rails and MongoDB"
   s.description = "DRG CMS can be used for rapid building of complex, data-entry intensive web sites as well as building your in-house private cloud applications."
-  s.license     = "MIT-LICENSE"
+  s.license     = "MIT"
   s.files = Dir["{app,config,db,lib}/**/*"] + ["MIT-LICENSE", "Rakefile", "README.md", "History.log", "drg_cms.gemspec"]
   s.test_files = Dir["test/**/*"]
 
   s.add_dependency 'rails', '~> 4'
   s.add_dependency 'jquery-rails'
-  s.add_dependency 'jquery-ui-rails'
+  s.add_dependency 'jquery-ui-rails', '~> 5'
   s.add_dependency 'non-stupid-digest-assets'  
 
   s.add_dependency 'bcrypt' #, '~> 3.0.0'
