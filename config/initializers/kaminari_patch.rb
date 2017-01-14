@@ -25,13 +25,33 @@
 ###########################################################################
 # This patch adds page param to url when page one is choosed. This is needed
 # for paging to work as expected.
+# 
+# Since Kaminari 1.0 functionality can be set by Kaminari.configure.
 ###########################################################################
-module Kaminari #:nodoc:
-  module Helpers #:nodoc:
-    class Tag #:nodoc:
-      def page_url_for(page)
-        @template.url_for @params.merge(@param_name => (page < 1 ? 1 : page))
+
+begin
+# Kaminari >= 1.0
+Kaminari.configure do |config|
+  # config.default_per_page = 25
+  # config.max_per_page = nil
+  # config.window = 4
+  # config.outer_window = 0
+  # config.left = 0
+  # config.right = 0
+  # config.page_method_name = :page
+  # config.param_name = :page
+  config.params_on_first_page = true
+end 
+# Kaminari = 0.17
+rescue Exception => e
+  module Kaminari #:nodoc:
+    module Helpers #:nodoc:
+      class Tag #:nodoc:
+        def page_url_for(page)
+          @template.url_for @params.merge(@param_name => (page < 1 ? 1 : page))
+        end
       end
     end
   end
+  
 end

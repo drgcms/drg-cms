@@ -630,7 +630,7 @@ def top_bottom_line(yaml, columns=2)
     style = yaml['style'] 
   end
   clas ||= 'dc-separator'
-  "<tr><td colspan=\"#{columns*2}\" class=\"#{clas}\" style=\"#{style}\"></td></tr>"
+  "<tr><td>&nbsp;</td></tr><tr><td colspan=\"#{columns*2}\" class=\"#{clas}\" style=\"#{style}\"></td></tr><tr><td>&nbsp;</td></tr>"
 end    
 
 ############################################################################
