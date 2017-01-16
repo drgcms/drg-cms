@@ -9,12 +9,11 @@
 //= require drg_cms/jquery-migrate.js
 //= require jquery_ujs
 
-//= #require jquery-ui/all
-//= require jquery-ui/tooltip
-//= require jquery-ui/autocomplete
-//= require jquery-ui/selectable
-//= require jquery-ui/draggable
-//= require jquery-ui/droppable
+//= require jquery-ui/widgets/tooltip
+//= require jquery-ui/widgets/autocomplete
+//= require jquery-ui/widgets/draggable
+//= require jquery-ui/widgets/droppable
+//= require jquery-ui/widgets/selectable
 
 //= require drg_cms/drg_cms
 //= require drg_cms/jquery.datetimepicker

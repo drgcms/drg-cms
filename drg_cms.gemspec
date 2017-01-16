@@ -20,7 +20,7 @@ Gem::Specification.new do |s|
 
   s.add_dependency 'rails', '~> 4'
   s.add_dependency 'jquery-rails'
-  s.add_dependency 'jquery-ui-rails', '~> 5'
+  s.add_dependency 'jquery-ui-rails'
   s.add_dependency 'non-stupid-digest-assets'  
 
   s.add_dependency 'bcrypt' #, '~> 3.0.0'

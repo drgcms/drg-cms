@@ -656,7 +656,7 @@ float:none;
 /*background-color: #eee;*/
 }
 
-/*********************/
+
 .default-table {
   width: 100%;
   padding: 0px;
@@ -664,6 +664,7 @@ float:none;
   text-align: left;
 }
 
+/****** jquery ui-autocomplete widget ***************/
 .ui-autocomplete-input {
   font-style: italic;
   padding: 4px;
@@ -672,16 +673,22 @@ float:none;
 /*  background: linear-gradient(#8d8 0%, #ffe 15%, #fff 80%); */
 }
 
-.ui-autocomplete-table {
-padding: 3px;
-border: solid 1px #aaa;
-border-radius: 2px;
-background: #fff;
-/*
-box-shadow: rgba(0,0,0, 0.1) 0px 0px 4px;
-background: linear-gradient(#8d8 40%, #fff 90%); */
-color: #222;  
+.ui-autocomplete.ui-menu{
+ font-size: 1.1em;
 }
+
+.ui-autocomplete .ui-menu-item div {
+padding: 3px;
+border: 1px solid #fff;
+}
+
+.ui-autocomplete .ui-menu-item .ui-state-active {
+padding: 3px;  
+background-color: #eee;
+border: 1px solid #ddd;
+color: #000;
+}
+
 .dc-red { color: red;}
 .dc-green { color: #396;}
 
