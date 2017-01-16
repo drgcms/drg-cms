@@ -130,7 +130,8 @@ def default
   poll = DcPoll.find(poll_id)
   poll = DcPoll.find_by(name: poll_id) if poll.nil? # name instead of id
   return "<div class=\"dc-form-error\">Invalid Poll id #{poll_id}</div>" if poll.nil?
-  html = '<a name="poll-top"></a>'
+  html = @opts[:div] ? "<div id='#{@opts[:div]}'>" : ''
+  html << '<a name="poll-top"></a>'
 
   # Operation called before poll is displayed. Usefull for filling predefined values into flash[:record][value]
   # Called method must return at least one result if process can continue.
@@ -207,6 +208,7 @@ def default
   html << @parent.hidden_field_tag('poll_id', poll_id )
   html << @parent.hidden_field_tag('page_id', @parent.page.id )
   html << "</form></div>"
+  html << '</div>' if @opts[:div]
   
   @part_css = poll.css
   html
