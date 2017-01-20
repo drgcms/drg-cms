@@ -273,6 +273,12 @@ def get_design_and_render(design_doc)
   layout      = @site.site_layout.blank? ? 'content' : @site.site_layout
   site_top    = '<%= dc_page_top %>'
   site_bottom = '<%= dc_page_bottom %>'
+# lets try the rails way
+ if @options[:controller] and @options[:action]
+    controller = "#{@options[:controller]}_control".classify.constantize rescue nil
+    extend controller if controller
+    return send @options[:action] if respond_to?(@options[:action])
+  end
 #  
   if design_doc
     if !design_doc.rails_view.blank? 
