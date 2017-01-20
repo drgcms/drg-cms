@@ -623,6 +623,11 @@ def check_authorization
 # Extend class with methods defined in drgcms_controls module. May include embedded forms therefor ; => _ 
     controls_string = (@form['controls'] ? @form['controls'] : params[:table].gsub(';','_')) + '_control'
     controls = "DrgcmsControls::#{controls_string.classify}".constantize rescue nil
+# version next
+    if controls.nil?
+      controls_string = "#{@form['controls'] || params[:table].gsub(';','_')}_control"
+      controls = "#{controls_string.classify}".constantize rescue nil
+    end
     extend controls if controls 
   else
     render(action: 'error', locals: { error: t('drgcms.not_authorized')} )

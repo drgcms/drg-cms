@@ -25,7 +25,7 @@
 ######################################################################
 # DrgcmsControls for DcPage model.
 ######################################################################
-module DrgcmsControls::DcPageControl
+module DcPageControl
 
 ######################################################################
 # Called when new empty record is created
