@@ -274,8 +274,8 @@ def get_design_and_render(design_doc)
   site_top    = '<%= dc_page_top %>'
   site_bottom = '<%= dc_page_bottom %>'
 # lets try the rails way
- if @options[:controller] and @options[:action]
-    controller = "#{@options[:controller]}_control".classify.constantize rescue nil
+ if @options[:control] and @options[:action]
+    controller = "#{@options[:control]}_control".classify.constantize rescue nil
     extend controller if controller
     return send @options[:action] if respond_to?(@options[:action])
   end
