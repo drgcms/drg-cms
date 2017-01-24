@@ -14,9 +14,8 @@
 
  *= require jquery-ui/tooltip
  *= require jquery-ui/autocomplete
+ *= require jquery-ui/all
 
- *= #require ../javascripts/drg_cms/elfinder/css/elfinder.min.css
- *= #require ../javascripts/drg_cms/elfinder/css/theme.css
  *= require font-awesome
 */
 
