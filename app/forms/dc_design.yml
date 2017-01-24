@@ -41,18 +41,30 @@ form:
         html:
           include_blank: true
       30:
-        name: rails_view
+        name: control
         type: text_field
         html:
           size: 50
           
       40:
+        name: control_method
+        type: text_field
+        html:
+          size: 50
+          
+      50:
+        name: rails_view
+        type: text_field
+        html:
+          size: 50
+          
+      60:
         name: body
         type: text_area
         html:
-          size: 120x30
+          size: 120x25
 
-      50:
+      70:
         name: css
         type: text_area
         html:

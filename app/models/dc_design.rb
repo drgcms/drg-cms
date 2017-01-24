@@ -93,6 +93,8 @@ class DcDesign
   field   :body,        type: String,  default: ''
   field   :css,         type: String,  default: ''
   field   :rails_view,  type: String,  default: ''
+  field   :control,     type: String,  default: ''
+  field   :control_method,  type: String,  default: ''
   field   :author,      type: String
   field   :active,      type: Boolean, default: true 
   field   :created_by,  type: BSON::ObjectId

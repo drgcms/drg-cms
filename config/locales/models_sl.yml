@@ -78,6 +78,9 @@ sl:
         dc_parts: Elementi 
         rails_view: Rails view datoteka
         site_id: Spletišče
+        control: Kontrolna datoteka
+        control_method: Kontrolna metoda
+        
 
       dc_user:
         tabletitle: Uporabniki
@@ -543,6 +546,9 @@ sl:
         dc_parts: Elementi, sestavni deli dizajna
         rails_view: Ime Rails view datoteke, ki bo uporabljena za izris strani
         site_id: Izberite spletišče, če dizajn pripada samo enemu spletišču
+        control: Izvorna datoteka z akcijami za izris dizajna
+        control_method: Kontrolna metoda (akcija), ki se bo klicala v izvorni datoteki
+        
 
       dc_user:
         username: Uporabniško ime

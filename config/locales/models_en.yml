@@ -77,6 +77,8 @@ en:
         dc_parts: Parts
         site_id: Site name
         rails_view: Rails view filename
+        control: Control file
+        control_method: Control method
 
       dc_user_role:
         tabletitle: User roles
@@ -571,6 +573,9 @@ en:
         dc_parts: Parts of design
         rails_view: Rails view (file) name which will be used to render design
         site_id: Select site name if this design belongs to singe site
+        control: Control file which holds actions for rendering design
+        control_method: Control method (action) which will be invoked in control file
+        
 
       dc_poll:
         name: Unique poll name
