@@ -74,6 +74,10 @@ end
 # Parameters:
 # [renderer] String or Symbol. Class name (in lowercase) that will be used to render final HTML code. 
 # If class name is provided without '_renderer' suffix it will be added automatically.
+# 
+# When renderer has value :part, it is a shortcut for dc_render_design_part method which
+# is used to draw parts of layout on design.
+# 
 # [opts] Hash. Additional options that are passed to method. Options are merged with
 # options set on site, design, page and passed to renderer object.
 # 
@@ -81,6 +85,8 @@ end
 #    <%= dc_render(:dc_page, method: 'view', category: 'news') %>
 ############################################################################
 def dc_render(renderer, opts={})
+  return dc_render_design_part(renderer[:part]) if renderer.class == Hash
+# 
   opts[:edit_mode]  = session[:edit_mode] 
   opts[:editparams] = {}
   opts = @options.merge(opts) # merge options with parameters passed on site, page, design ...
