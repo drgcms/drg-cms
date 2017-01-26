@@ -12,11 +12,8 @@
  *= require drg_cms/jquery.datetimepicker.css
  *= require drg_cms/select-multiple
 
- *= require jquery-ui/tooltip
- *= require jquery-ui/autocomplete
  *= require jquery-ui/all
-
-
+ 
  *= require font-awesome
 */
 
