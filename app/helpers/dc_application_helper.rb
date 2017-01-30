@@ -439,7 +439,9 @@ def dc_link_for_create(opts)
   title = opts.delete('title') #
   title = t(title, title) if title
   target = opts.delete('target')  || 'iframe_cms'
-  opts['action'] = 'new'
+  opts['form_name']  ||= opts['table']
+  opts['action']       = 'new'
+  opts['controller'] ||= 'cmsedit'
   js = "$('##{target}').attr('src', '#{_origin.url_for(opts)}'); return false;"
   dc_link_to(nil, _origin.fa_icon('plus-circle lg', class: 'dc-inline-link'), '#',
              { onclick: js, title: title, alt: 'Create'}).html_safe
@@ -462,8 +464,9 @@ def dc_link_for_edit(opts)
   opts.stringify_keys!  
   title  = opts.delete('title') #
   target = opts.delete('target') || 'iframe_cms'
-  opts['action'] = 'edit'
   opts['controller'] ||= 'cmsedit'
+  opts['action']       = 'edit'
+  opts['form_name']  ||= opts['table']
   js  = "$('##{target}').attr('src', '#{_origin.url_for(opts)}'); return false;"
   dc_link_to(nil, _origin.fa_icon('edit lg', class: 'dc-inline-link'), '#', 
              { onclick: js, title: title, alt: 'Edit'})
