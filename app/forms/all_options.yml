@@ -65,6 +65,7 @@ result_set:
       icon: delete.png
     4:
       type: link
+      caption: Caption
       controller: controller_name
       action: action_name
       table: table_name
