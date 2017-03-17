@@ -3,7 +3,7 @@
 table: dc_journal
 
 index:
-  filter: tables, user_id, site_id
+  filter: tables, user_id, site_id, doc_id
   actions:
     1: filter
 
