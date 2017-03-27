@@ -518,18 +518,19 @@ end
 def dc_page_edit_menu(opts=@opts)
   return '' if opts[:edit_mode] < 2
 # save some data to cookie. This can not go to session.
+  page  = opts[:page] || @page
   table = _origin.site.page_table
-  kukis = { "#{table}.dc_design_id" => @page.dc_design_id,
-            "#{table}.menu_id"      => @page.menu_id,
-            "#{table}.kats"         => @page.kats,
-            "#{table}.page_id"      => @page.id,
+  kukis = { "#{table}.dc_design_id" => page.dc_design_id,
+            "#{table}.menu_id"      => page.menu_id,
+            "#{table}.kats"         => page.kats,
+            "#{table}.page_id"      => page.id,
             "#{table}.dc_site_id"   => _origin.site.id
   }
   _origin.cookies[:record] = Marshal.dump(kukis)
-  title = "#{t('drgcms.edit')}: #{@page.subject}"
+  title = "#{t('drgcms.edit')}: #{page.subject}"
   dc_link_menu_tag(title) do |html|
     opts[:editparams].merge!( controller: 'cmsedit', action: 'edit', 'icon' => 'edit' )
-    opts[:editparams].merge!( :id => @page.id, :table => _origin.site.page_table, formname: opts[:formname], edit_only: 'body' )
+    opts[:editparams].merge!( :id => page.id, :table => _origin.site.page_table, formname: opts[:formname], edit_only: 'body' )
     html << dc_link_for_edit1( opts[:editparams], t('drgcms.edit_content') )
     
 #    opts[:editparams][:edit_only] = nil
@@ -540,7 +541,7 @@ def dc_page_edit_menu(opts=@opts)
     opts[:editparams].merge!( action: 'new', 'icon' => 'plus' )
     html << dc_link_for_edit1( opts[:editparams], t('drgcms.edit_new_page') )
 
-    opts[:editparams].merge!(ids: @page.id, formname: 'dc_part', 'icon' => 'plus-square-o', 
+    opts[:editparams].merge!(ids: page.id, formname: 'dc_part', 'icon' => 'plus-square-o', 
                              table: "#{_origin.site.page_table};dc_part"  )
     html << dc_link_for_edit1( opts[:editparams], t('drgcms.edit_new_part') )
   end
