@@ -2,19 +2,24 @@
 <div id="cmsedit-div">
   <%= link_to('CMS', controller: 'dc_common', action: 'toggle_edit_mode', return_to: request.url) %>
   <% if session[:edit_mode] > 1 %>
-    <table class="cmsedit-table">
-    <tr>
-      <td class="cmsedit-menu">
+    <div class="cmsedit-table cmsedit-top">
+      <div id="menu">
+        
   <% if false %>     
         <%= link_to(image_tag('drg_cms/view_tile.png', class: 'dc-link-img', title: t('drgcms.menu_plus')), '#', 
             onclick: "$('#cmsedit-menu-plus').toggleClass('div-hidden');")  %>
   <% end %> 
+        
+  <% if false %>     
         <ul><li>
          <%= fa_icon('bars lg') %>
          <ul>
           <%= dc_choices4_cmsmenu.html_safe %>
          </ul>
-        </li></ul>
+        </li>
+        
+        </ul>
+  <% end %> 
         
         <% if @page %>
           <%= link_to( fa_icon('file-text-o lg', class: "dc-animate", title: "#{t('drgcms.edit_page')}"),
@@ -40,6 +45,7 @@
         <%= link_to( fa_icon('refresh lg', class: "dc-animate", title: t('drgcms.reload')), '#',
             onclick: "document.location.reload(true); return false;")  %>
         <b>&nbsp; | &nbsp; </b>
+        
   <% if false %>     
         <%= select('record', 'select', dc_choices4_cmsmenu ) %>
         
@@ -52,20 +58,26 @@
 
         <%= DrgcmsFormFields::Elfinder.file_manager_url(self) %>
 
-      </td>
-    </tr>
-<% if false %>
-    <tr class="cmsedit-menu-plus div-hidden dc-form-frame"><td>
-      <%= @menu_plus %>
-    </td><tr>
-<% end %>
-    <tr class="cmsedit-iframe"><td class="cmsedit-iframe">
-      <div><iframe id="iframe_cms" name="iframe_cms"></iframe></div>
-    </td></tr>
-    </table>
+      </div>
+    </div>
+    
+    <div class="cmsedit-container">  
+      <div id="menu">
+        <%= dc_choices4_cmsmenu.html_safe %>
+      </div>
+      <div class="cmsedit-iframe" style="width: 99%;">
+        <iframe id="iframe_cms" name="iframe_cms"></iframe>
+      </div>
+
+      <div style="clear: both;"></div>    
+    </div>
+
+  
   <% end %>
 </div>
 
+
+<% if false %>
 <%= javascript_tag do %>
 // 
 $('#cmsedit-edit-button').click(function() {
@@ -74,4 +86,5 @@ $('#cmsedit-edit-button').click(function() {
 $('#record_select').change( function(e) {
   $('#iframe_cms').attr('src', e.target.value );
 });
+<% end %>
 <% end %>

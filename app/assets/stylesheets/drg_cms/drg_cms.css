@@ -388,9 +388,9 @@ background: transparent linear-gradient(to bottom, #ddd 0%, #FFF 100%) repeat sc
   width: 100%;
   padding: 0px;
   padding-top: 4px;
-  border: 1px solid #ddd;
+  border: 1px solid #eee;
   border-radius: 2px; 
-  background-color: #f8f8f8
+  background-color: #fcfcfc;
 }
 
 .dc-form-info {
@@ -475,11 +475,11 @@ background: transparent linear-gradient(to bottom, #ddd 0%, #FFF 100%) repeat sc
 }
 
 .dc-color-odd {
-  background-color: #f8f8f8;  
+  background-color: #fcfcfc;  
 /*  border-bottom: solid 1px #eee; */
 }
 .dc-color-even {
-  background-color: #f8f8f8;  
+  background-color: #fcfcfc;  
 /*  border-bottom: solid 1px #eee;  */
 }
 
@@ -526,6 +526,11 @@ padding: 0px;
 border-top: 2px solid #ccc;
 }
 
+#cmsedit-div {
+font-family: helvetica;
+font-size: 13px;
+line-height: 13px;
+}
 #cmsedit-div a:link, #cmsedit-div a:active, #cmsedit-div a:visited  {
 color: #666;
 font-weight: bold;
@@ -541,121 +546,95 @@ border-radius: 2px;
 font-size: 1.2em;
 }
 
-/* NOT WORKING
-.cmsedit_iframe a:link, #iframe_cms a:active, #iframe_cms a:visited  {
-color: #888;
-font-weight: bold;
-text-decoration: none; 
-background: transparent;
+/*******    TOP MENU    *********/
+.cmsedit-top {
+  width: 100%;
+  background-color: #fff; 
+  border: 4px solid #fff;
 }
 
-.cmsedit_iframe a:hover { color: #000; }
-*/
-
-.cmsedit-menu-plus {
+.cmsedit-top #menu {
+  padding: 4px 4px 8px 4px;
+  color: #666;
+  background-color: #fff;
+  border-bottom: 3px solid #666;
+}
+.cmsedit-top #menu a {
+ margin-right: 5px;
 }
 
-.cmsedit-table {
-width: 100%;
-background-color: #fff; 
-border-collapse: collapse;
-border: 4px solid #fff;
+.cmsedit-top #menu select#record_select { 
+  padding: 0px;
+  max-width: 300px;
+  height: 26px;
+}
+.cmsedit-top #menu .fa {width: 20px;}
+
+.cmsedit-container {
+  display: flex;
+  width: 100%; 
+  background-color: #fff;
 }
 
-.cmsedit-table tr {
-background-color: #fff;
-background: #fff;
-}  
-
-.cmsedit-menu {
-background-color: #fff;
-padding: 4px;
-border-bottom: 3px solid #666;
-margin-bottom: 10px;
-}
-.cmsedit-menu a {
-margin-right: 5px;
+.cmsedit-container #menu {
+  min-width: 20%; 
+  height: 100%;
+  background-color: #fcfcfc;
+  border: 1px solid #eee;
+  border-radius: 1px;
 }
 
-.cmsedit-menu select#record_select { 
-padding: 0px;
-max-width: 300px;
-height: 26px;
-}
-
-.cmsedit-menu ul {
+.cmsedit-container #menu {
 display: inline-block;
-list-style-type: none;
+padding: 4px 0px;
+margin: 4px;
+font-size: 13px;
+color: #222;
+font-weight: bold;
+}
+
+.cmsedit-container .fa {
+width: 20px;
+}
+
+.cmsedit-container #menu a {
+font-weight: normal;
 color: #666;
-margin: 0px;
-margin-right: 4px;
-font-size: 14px;
 }
-.cmsedit-menu .fa {width: 20px;}
 
-.cmsedit-menu li a:link, #cmsedit-div li a:visited {
+.cmsedit-container #menu ul {
+  margin: 0 5px;
+  line-height: 1.5rem;
+}
+
+.cmsedit-container #menu ul ul {
+  margin: 0 0 0 0.5rem;
+}
+
+.cmsedit-container #menu li {
+list-style-type: none;
+padding: 2px;
+width: 100%;
+
+}
+
+.cmsedit-container #menu a:hover {
 font-weight: normal;
-color: #fff;
+color: #000;
 }
-.cmsedit-menu ul li ul {
+
+.cmsedit-container #menu .cmsedit-top-level-menu:hover {
+cursor: pointer;
+}
+
+.cmsedit-container #menu li li:hover {
+background-color: #eee;
+padding: 2px 1px 2px 3px;
+}
+
+.cmsedit-container #menu ul li ul {
 display: none;
-position: absolute;
-z-index: 1000;
-color: #222;
-background-color: #fff;
-border: 1px solid #888;
-box-shadow: 2px 2px 4px #ccc;
 }
-
-.cmsedit-menu ul li ul li:hover > ul li ul  {
-display:block;
-}
-  
-#cmsedit-div li a:link, #cmsedit-div li a:visited {
-font-weight: normal;
-color: #222;
-}
-
-#cmsedit-div li a:hover {
-color: #222;
-}
-
-.cmsedit-menu ul li ul li { 
-padding: 5px;
-}
-.cmsedit-menu ul li ul li:hover {
-background-color: #ddd; 
-color: #222; 
-}
-
-.cmsedit-menu ul li ul li ul {
-z-index: 1000;
-left: 100%;
-position: absolute;
-margin-top: -20px;
-display: none;
-color: #fff;
-background-color: #fff;
-border: 1px solid #888;
-box-shadow: 2px 2px 4px #ccc;
-min-width:300px;
-}
-
-/*.cmsedit-menu ul li ul a { color: white; }*/
-
-.cmsedit-menu ul li:hover > ul {
-display:block;
-}
-.cmsedit-menu ul li li {
-position:relative; 
-display:block;
-float:none;
-}
-
-#result {
-/*background-color: #eee;*/
-}
-
 
 .default-table {
   width: 100%;

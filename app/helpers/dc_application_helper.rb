@@ -852,11 +852,11 @@ def dc_choices4_cmsmenu()
     menus = forms_merge(menu['menu'], menus)        # ignore top level part
  end
 #
-  html = ''
+  html = '<ul>'
   menus.to_a.sort.each do |one_menu|    # sort menus, result is array of sorted hashes
     menu = one_menu[1]                  # value is the second (1) element of array
     next unless menu['caption']
-    html << "<li>#{fa_icon(menu['icon'])}#{t(menu['caption'])}<ul>"
+    html << "<li class=\"cmsedit-top-level-menu\">#{fa_icon(menu['icon'])}#{t(menu['caption'])}<ul>"
     menu['items'].to_a.sort.each do |item|          # as above. sort items first 
       value = item[1]
       opts = { controller: value['controller'], 

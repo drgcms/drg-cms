@@ -568,6 +568,13 @@ element = $(this).find(':first').attr('id');
 //    $('#'+iframe).attr('src', loc);
 //    parent.document.getElementById(iframe).src = loc   
    });
+   
+ /*******************************************************************
+  * Toggle one cmsedit menu level
+  *******************************************************************/
+   $('.cmsedit-top-level-menu').on('click', function(e) {
+     $(e.target).find('ul').toggle('fast');
+   });
   
 });
 
