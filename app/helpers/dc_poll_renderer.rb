@@ -58,7 +58,11 @@ def do_one_item(poll, yaml)
   yaml['text']      ||= ''
 # 
   text = yaml['text'].match(/\./) ? t(yaml['text']) : yaml['text'] 
-  text << '<font color="red"> *</font>' if yaml['mandatory']
+  if yaml['mandatory']
+    text << '<font color="red"> *</font>' 
+    (yaml['html']['required'] = true)
+  end
+  
 # Just add text if comment and go to next one    
   if yaml['type'] == 'comment'
     html << if poll.display == 'lr'
@@ -157,7 +161,7 @@ def default
   html <<  "<div class=\"poll-div\">\n"
 # edit link  
   if @opts[:edit_mode] > 1
-    @opts[:editparams].merge!( controller: 'cmsedit', action: 'edit', id: poll._id, table: 'dc_poll' )
+    @opts[:editparams].merge!( controller: 'cmsedit', action: 'edit', id: poll._id, table: 'dc_poll', formname: 'dc_poll' )
     @opts[:editparams].merge!(title: "#{t('drgcms.edit')}: #{poll.name}")
     @opts[:editparams].delete(:ids) # this is from page, but it gets in a way
     html << dc_link_for_edit( @opts[:editparams] )
