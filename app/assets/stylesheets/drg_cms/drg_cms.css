@@ -135,15 +135,24 @@ th a:hover { color: #000;}
 
 img { vertical-align:bottom; }
 
-a:link, a:active, a:visited { 
+.dc-link a:link, .dc-link a:active, .dc-link a:visited, 
+.dc-animate a:link, .dc-animate a:active, .dc-animate a:visited, 
+.dc-result a:link, .dc-result a:active, .dc-result a:visited { 
 color: #888;
 font-weight: bold;
 text-decoration: none; 
 background: transparent;
 }
 
-a:hover { text-decoration: none; color: #000; }
-a img { border: none; }
+.dc-link a:hover, .dc-animate a:hover, .dc-result a:hover  { 
+background: #f8f8f8;
+transition: 0.3s;
+color: #555;
+}
+
+a.dc-animate:hover { color: #555; background: transparent;}
+
+.dc-link a img { border: none; }
 
 
 .text-with-select {
@@ -194,20 +203,20 @@ padding: 0px;
 .dc-link {
 padding: 3px 8px;
 text-align: center;
-border-radius: 5px;
+border-radius: 3px;
 background-color: #eee;
 background: transparent linear-gradient(to bottom, #FFF 0%, #F2F2F2 100%) repeat scroll 0% 0%;
 border: 1px solid #ddd;
 }
 
 .dc-link:hover {
-  background-color: #888;
-  border: 1px solid #aaa;
+  background-color: #f8f8f8;
+  border: 1px solid #ccc;
   transition: 0.3s;  
 }
 
 .dc-link:hover a { 
-  color: #222; 
+  color: #555; 
   transition: 0.3s;  
 }
 
@@ -296,17 +305,15 @@ border: 1px solid #ddd;
 .skip-next a:hover { text-decoration: none; color: #c43; }
 
 .dc-animate-button {
-background-color: #888;
-background: transparent linear-gradient(to bottom, #ddd 0%, #FFF 100%) repeat scroll 0% 0% !important;
-/*border: 1px solid #ddd;*/
+background: transparent linear-gradient(to bottom, #eee 0%, #eee 100%) repeat scroll 0% 0% !important; 
 }
 
 .dc-link-submit {
   text-align: left;
-  padding: 4px 6px;  
+  padding: 5px 6px;  
   margin-right: 4px;
 
-  border-radius: 5px;
+  border-radius: 3px;
   background-color: #eee;
   background: transparent linear-gradient(to bottom, #FFF 0%, #F2F2F2 100%) repeat scroll 0% 0%;
   border: 1px solid #ddd;
@@ -316,16 +323,16 @@ background: transparent linear-gradient(to bottom, #ddd 0%, #FFF 100%) repeat sc
   color: #888;
 }
 .dc-link-submit:hover .fa {
-  color: #222;
+  color: #555;
   transition: 0.3s;
 }
 .dc-link-submit:hover {
   color: #000;
-  border: 1px solid #aaa;
+  border: 1px solid #ccc;
   transition: 0.3s;
 }
 .dc-link-submit:hover .dc-submit {
-  color: #222;
+  color: #555;
   transition: 0.3s;
 }
 .dc-submit {
@@ -346,20 +353,30 @@ background: transparent linear-gradient(to bottom, #ddd 0%, #FFF 100%) repeat sc
   color: #fff;
   background-color: #888; 
 }
+
 /* Pagination */
-.pagination span {
+#result .pagination span {
   border: 1px solid #ddd;
   padding: 4px 4px 3px 6px;
   margin-left: 1px;
   background: transparent linear-gradient(to bottom, #FFF 0%, #F2F2F2 100%) repeat scroll 0% 0%;  
   border-radius: 1px;
 }
+#result .pagination span a {
+  color: #888;
+  text-decoration: none;
+}
 
-.pagination .current {
+#result .pagination span:hover > a {
+  color: #555;
+}
+
+#result .pagination .current {
   background: #888;
   color: #fff;
   border: 1px solid #888;
 }
+
 
 .dc-title {
   font-weight: bold;
@@ -787,7 +804,7 @@ list-style:none;
 padding: 5px 8px;
 margin-right: 4px;
 background: #eee;
-border-radius:5px;
+border-radius:3px;
 z-index: 1;
 
 background: transparent linear-gradient(to bottom, #FFF 0%, #F2F2F2 100%) repeat scroll 0% 0%;
@@ -796,13 +813,12 @@ border: 1px solid #ddd;
 
 
 .dc-action-menu li:hover {
-border: 1px solid #aaa;
-color: #222;
+border: 1px solid #ccc;
+color: #555;
 transition: 0.3s;  
 }
 
 .dc-action-menu li:hover a {
-color: #222;
 }
 
 .dc-action-menu ul {
