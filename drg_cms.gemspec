@@ -18,14 +18,14 @@ Gem::Specification.new do |s|
   s.files = Dir["{app,config,db,lib}/**/*"] + ["MIT-LICENSE", "Rakefile", "README.md", "History.log", "drg_cms.gemspec"]
   s.test_files = Dir["test/**/*"]
 
-  s.add_dependency 'rails', '~> 4'
+  s.add_dependency 'rails'#, '~> 4'
   s.add_dependency 'jquery-rails'
   s.add_dependency 'jquery-ui-rails'
   s.add_dependency 'non-stupid-digest-assets'  
 
   s.add_dependency 'bcrypt' #, '~> 3.0.0'
   s.add_dependency 'mongoid', '~> 5'
-  s.add_dependency 'mongo_session_store-rails4'  
+#  s.add_dependency 'mongo_session_store-rails4'  
 #  s.add_dependency 'kaminari'
   s.add_dependency 'kaminari-mongoid'
   s.add_dependency 'kaminari-actionview'
