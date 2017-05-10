@@ -77,7 +77,7 @@
 ########################################################################
 class CmseditController < DcApplicationController
 before_action :check_authorization, :except => [:login, :logout]
-before_filter :dc_reload_patches if Rails.env.development?
+before_action :dc_reload_patches if Rails.env.development?
   
 layout 'cms'
 

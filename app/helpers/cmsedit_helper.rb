@@ -788,7 +788,7 @@ def dc_document_statistics
   parms = params.clone
   parms[:controller] = 'dc_common'
   parms[:action]     = 'copy_clipboard'
-  url = url_for(parms)
+  url = url_for(parms.permit!)
 #  caption = image_tag('drg_cms/copy.png', title: t('drgcms.doc_copy_clipboard'))
 #  html << %Q[<hr><img class="dc-link-img dc-link-ajax dc-animate" data-url="#{url}" data-request="get" #{caption}]
   html << fa_icon('copy 2x', class: 'dc-link-img dc-link-ajax dc-animate', 

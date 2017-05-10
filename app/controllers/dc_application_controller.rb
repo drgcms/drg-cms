@@ -29,7 +29,7 @@
 class DcApplicationController < ActionController::Base
   protect_from_forgery
   
-  before_filter :dc_reload_patches if Rails.env.development?
+  before_action :dc_reload_patches if Rails.env.development?
   
 ########################################################################
 # Writes anything passed as parameter to logger file. 

@@ -1155,6 +1155,7 @@ def dc_iframe_edit(table, opts={})
     params[:id]         ||= params[:idp] || opts[:id]
     params[:readonly]   ||= opts[:readonly]
     params[:path]       = nil
+    params.permit! # rails 5 request
     "<iframe id='iframe_edit' name='iframe_edit' src='#{url_for params}'></iframe>"
   else
     "<iframe id='iframe_edit' name='iframe_edit'></iframe>"
