@@ -79,21 +79,22 @@ class DcBigTable
 # Will return possible choices for specified key prepared for usega in select input field.
 ########################################################################
 def self.choices4(key, site, locale=nil)
-  a = []
-  r = find(key: key, site: site)
-  if r
-    r.dc_big_table_values.each do |v| 
-      desc = v.description
+  result = []
+  choices = find_by(key: key, site: site)
+  choices = find_by(key: key, site: nil) if choices.nil?
+  if choices
+    choices.dc_big_table_values.each do |choice| 
+      description = choice.description
       if locale
-        d = v.find('dc_big_table_values.locale' => locale)
-        desc = d.value if d
+        desc = choice.find_by('dc_big_table_values.locale' => locale)
+        description = desc.value if desc
       end             
-      a << [v.value, desc]
+      result << [description, choice.value]
     end
   end
 # Error if empty
-  a = [[I18n.t('drgcms.error'),I18n.t('drgcms.error')]] if a.size == 0
-  a
+  result = [[I18n.t('drgcms.error'),I18n.t('drgcms.error')]] if result.size == 0
+  result
 end
  
 end

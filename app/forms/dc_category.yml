@@ -42,6 +42,7 @@ form:
     30:
       name: ctype
       type: select
+      eval: "DcCategory.choices4_ctype(@parent.dc_get_site)"
 
     40:
       name: order

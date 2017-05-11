@@ -68,4 +68,21 @@ def self.values_for_parent #:nodoc:
   where(parent: nil).sort(name: 1).inject([]) {|r,v| r << [v.name, v._id]} 
 end
 
+#########################################################################
+# Returns values for category type. Values should be defined in BigTable 
+# on the site level all owerall.
+#########################################################################
+def self.choices4_ctype(site_id=nil)
+  site_id = site_id.id if site_id
+  choices = if DcBigTable.find_by(key: 'dc_category_type', :site.in => [site_id, nil])
+    DcBigTable.choices4('dc_category_type', site_id)
+  else
+    opts = I18n.t('helpers.label.dc_category.choices4_ctype')
+# not defined    
+    return [] if opts.blank?
+    opts.split(',').inject([]) {|result, e| result << e.split(':')}    
+  end
+end
+
+
 end
