@@ -60,7 +60,8 @@ def do_one_item(poll, yaml)
   text = yaml['text'].match(/\./) ? t(yaml['text']) : yaml['text'] 
   if yaml['mandatory']
     text << '<font color="red"> *</font>' 
-    (yaml['html']['required'] = true)
+    yaml['html'] ||= {}
+    yaml['html']['required'] = true
   end
   
 # Just add text if comment and go to next one    
