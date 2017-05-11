@@ -355,9 +355,11 @@ def render
   @yaml['name'] = 'old' if @record[@yaml['name']].nil?
   @html << '<table width="99%">'
   JSON.parse(@record[@yaml['name']]).each do |k,v|
+    old_value = v.class == Array ? v[0] : v
+    new_value = v.class == Array ? v[1] : v
     @html << "<tr><td style='background-color: #654ddd;'>#{@parent.check_box('select', k)} #{k}:</td></tr>
-             <tr><td style='background-color: #ffe;'>#{v[0]}</td></tr>
-             <tr><td style='background-color: #eff;'>#{v[1]}</td></tr>"
+             <tr><td style='background-color: #ffe;'>- #{old_value}</td></tr>
+             <tr><td style='background-color: #eff;'>+ #{new_value}</td></tr>"
   end
   @html << '</table>'
   self
