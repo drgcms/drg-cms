@@ -598,7 +598,7 @@ def get_choices
       choices.chomp.split(',').inject([]) {|r,v| r << (v.match(':') ? v.split(':') : v )} :
       choices
   rescue Exception => e 
-    p "Error in select eval. #{e.message}"
+    Rails.logger.debug "Error in select eval. #{e.message}\n"
     ['error'] # return empty array when error occures
   end
 end
