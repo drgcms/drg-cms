@@ -245,9 +245,11 @@ def dc_edit_title()
     c << (@form['title'] ? t( @form['title'], @form['title'] ) : t_tablename(@form['table'])) + ' : '
     title = (title and title['field']) ? title['field'] : @form['form']['edit_title']
     dc_deprecate('form:edit_title will be deprecated. Use form:title:field instead.') if @form['form']['edit_title']
+#
     c << "#{@record[ title ]} : " if title and @record.respond_to?(title)
-    c << @record._id #if @record._id 
+    c << @record._id if @record
   end
+  c
 end
 
 ############################################################################
