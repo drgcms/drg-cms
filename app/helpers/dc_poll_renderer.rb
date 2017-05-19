@@ -117,9 +117,9 @@ def do_one_item(poll, yaml)
 # other elements
   else
     html << if poll.display == 'lr'
-      "<tr><td class='poll-data-text'>#{text}</td><td class='poll-data-field'>#{field_html}</td></tr>\n"
+      "<tr><td class='poll-data-text'>#{text}</td><td class='poll-data-field #{yaml['class']}'>#{field_html}</td></tr>\n"
     else
-      "<div class='poll-data-text'>#{text}</div><div class='poll-data-field'>#{field_html}#{yaml['separator']}</div>\n"
+      "<div class='poll-data-text'>#{text}</div><div class='poll-data-field #{yaml['class']}'>#{field_html}#{yaml['separator']}</div>\n"
     end    
   end
 end
