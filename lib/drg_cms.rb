@@ -12,7 +12,7 @@ module DrgCms
 # Used wherever end user wants to extend basic DrgCms model. Model source definition 
 # file is tricky to require since it is included in DrgCms gem and thus a moving 
 # target. Whenever gem version changes file location changes with it. This way 
-# end user doesn't have to care about actual source file location.
+# programmer doesn't have to care about actual source file location.
 #   
 # Parameters:
 # [ model_name ] String. Must be passed in lower case, just like the file name is. 
@@ -100,13 +100,6 @@ def self.add_path(type, path)
 end
 
 ###############################################################################
-###############################################################################
-def self.add_form_path(path) #:nodoc:
-  p 'DrgCms.add_form_path will be deprecated. Use add_forms_path instead.'
-  self.add_forms_path(path)
-end
-
-###############################################################################
 # Will return value saved to internal @@paths hash.
 # 
 # Parameters:
@@ -116,6 +109,30 @@ end
 ###############################################################################
 def self.paths(key)
   @@paths[key]
+end
+
+###############################################################################
+# All Routes required by DrgCms. 
+# 
+# Usage:
+# put DrgCms.routes line anywhere into your application routes file
+###############################################################################
+def self.routes
+  Rails.application.routes.draw do
+    #  match '/dc_common/:action' => 'dc_common#:action', via: [:get, :put, :post]
+    controller :dc_common do
+      post 'dc_common/autocomplete'     => :autocomplete
+      get 'dc_common/ad_click'          => :ad_click
+      get 'dc_common/toggle_edit_mode'  => :toggle_edit_mode
+      post 'dc_common/process_login'    => :process_login
+      get 'dc_common/logout'            => :logout
+      get 'dc_common/copy_clipboard'    => :copy_clipboard
+      post 'dc_common/paste_clipboard'  => :paste_clipboard
+      put 'dc_common/restore_from_journal'  => :restore_from_journal
+    end
+    match 'elfinder' => 'dc_elfinder#connector', via: [:get, :post]
+    resources :cmsedit
+  end
 end
 
 end
