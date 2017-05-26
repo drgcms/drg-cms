@@ -16,7 +16,8 @@ Project Tracking
 Compatibility
 -------------
 
-DRG CMS is tested against Ruby 2.0, 2.1 and 2.2, Rails 4.2, Mongoid 4 and 5, MongoDB 2.4, 2.6, 3.0
+DRG CMS is tested against Ruby 2.2 and higher, Rails 5.0 and higher, Mongoid 6, MongoDB 3.0, 3.2
+
 
 Documentation
 -------------
