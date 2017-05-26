@@ -124,8 +124,9 @@ def self.routes
       post 'dc_common/autocomplete'     => :autocomplete
       get 'dc_common/ad_click'          => :ad_click
       get 'dc_common/toggle_edit_mode'  => :toggle_edit_mode
-      post 'dc_common/process_login'    => :process_login
+      match 'dc_common/process_login'   => :process_login, via: [:put, :post]
       get 'dc_common/logout'            => :logout
+      get 'dc_common/login'             => :login
       get 'dc_common/copy_clipboard'    => :copy_clipboard
       post 'dc_common/paste_clipboard'  => :paste_clipboard
       put 'dc_common/restore_from_journal'  => :restore_from_journal
