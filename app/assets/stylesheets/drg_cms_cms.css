@@ -11,6 +11,7 @@
  *= require drg_cms/drg_cms
  *= require drg_cms/jquery.datetimepicker.css
  *= require drg_cms/select-multiple
+ *= require drg_cms/jstree
 
  *= require jquery-ui/all
  

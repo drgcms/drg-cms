@@ -62,10 +62,12 @@ class DcCategory
   index  site_id: 1
   
 #########################################################################
-# Returns all values where parent value is nil (top level parent).
+# Returns all values vhich can be used as parent select field.
 #########################################################################
-def self.values_for_parent #:nodoc:
-  where(parent: nil).sort(name: 1).inject([]) {|r,v| r << [v.name, v._id]} 
+def self.values_for_parent(site_id=nil) #:nodoc:
+  qry = where(active: true)
+  qry = qry.and(dc_site_id: site_id.id) if site_id
+  qry.sort(name: 1).inject([]) {|r,v| r << [v.name, v._id]} 
 end
 
 #########################################################################
@@ -82,6 +84,19 @@ def self.choices4_ctype(site_id=nil)
     return [] if opts.blank?
     opts.split(',').inject([]) {|result, e| result << e.split(':')}    
   end
+end
+
+#########################################################################
+# Returns choices for all categories, prepared for tree_select input field
+#########################################################################
+def self.choices4_categories(site_id=nil)
+  qry = where(active: true)
+# 
+  ar = [nil]
+  ar << site_id.id if site_id
+  qry = qry.in(dc_site_id: ar)
+#
+  qry.inject([]) { |result, category| result << [category.name, category.id, category.parent] }
 end
 
 

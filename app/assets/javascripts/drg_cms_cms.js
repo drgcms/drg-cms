@@ -18,8 +18,9 @@
 //= require drg_cms/drg_cms
 //= require drg_cms/jquery.datetimepicker
 
-//= require drg_cms/jquery.bpopup.min.js
+//= require drg_cms/jquery.bpopup.min
 //= require drg_cms/select-multiple
+//= require drg_cms/jstree.min
 
 
 

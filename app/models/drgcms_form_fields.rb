@@ -1347,6 +1347,118 @@ end
 end
 
 ###########################################################################
+# Implementation of tree_select DRG CMS form field. Field will provides
+# multiple select functionality displayed as a tree. Might be used for selecting
+# multiple categories in a parent-child tree view.# 
+# 
+# ===Form options:
+# * +name:+ field name (required)
+# * +type:+ tree_select (required)
+# * +choices:+ Values for choices separated by comma. Values can also be specified like description:value.
+# In this case description will be shown to user, but value will be saved to document.
+#   choices: 'OK:0,Ready:1,Error:2'
+#   choices: Ruby,Pyton,PHP
+# * +eval:+ Choices will be provided by evaluating expression
+#   eval: ModelName.choices4_field; Model class should define method which will provide data for field. 
+#   Data returned must be of type Array and have 3 elements.
+#   1 - description text
+#   2 - id value
+#   3 - parent id
+# * +html:+ html options which apply to select and text_field fields (optional)
+# 
+# Form example:
+#    10:
+#      name: categories
+#      type: tree_select
+#      eval: 'Categories.all_categories'
+#      html:
+#        size: 50x10
+###########################################################################
+class TreeSelect < Select
+
+###########################################################################
+# Prepare choices for tree data rendering.
+###########################################################################
+def make_tree(parent)
+  @html << '<ul>'
+  p parent.to_s
+  choices = @choices[parent.to_s].sort_alphabetical_by(&:first) # use UTF-8 sort
+  choices.each do |choice|
+    jstree = %Q[{"selected" : #{choice[3] ? 'true' : 'false'} }]
+# data-jstree must be singe quoted
+    @html << %Q[<li data-id="#{choice[1]}" data-jstree='#{jstree}'>#{choice.first}\n]
+# call recursively for every     
+    make_tree(choice[1]) if @choices[ choice[1].to_s ]
+    @html << "</li>"
+  end
+  @html << '</ul>'  
+end
+
+###########################################################################
+# Render tree_select field html code
+###########################################################################
+def render
+  return ro_standard if @readonly  
+  set_initial_value('html','value')
+  require 'sort_alphabetical'  
+  
+  record = record_text_for(@yaml['name'])
+  @yaml['html']['class'] = 'tree-select'
+  @yaml['html'].symbolize_keys!
+  @html << "<div id=\"#{@yaml['name']}\">"
+# Fill @choices hash. The key is parent object id
+  @choices = {}
+  do_eval(@yaml['eval']).each {|data| @choices[ data[2].to_s ] ||= []; @choices[ data[2].to_s ] << (data << false)}
+# put current values hash with. To speed up selection when there is a lot of categories
+  current_values = {}
+  current = @record[@yaml['name']] || []
+  current.each {|e| current_values[e.to_s] = true}
+# set third element of @choices when selected
+  @choices.keys.each do |key|
+    0.upto( @choices[key].size - 1 ) do |i|
+      choice = @choices[key][i]
+      choice[3] = true if current_values[ choice[1].to_s ]
+    end
+  end
+  make_tree(nil)
+  @html << '</ul></div>'
+# add hidden communication field  
+  @html << @parent.hidden_field(record, @yaml['name'], value: current.join(','))
+# javascript to update hidden record field when tree looses focus
+  @js =<<EOJS
+$(function(){
+  // using default options
+  $("##{@yaml['name']}").jstree( {
+    "checkbox" : {"three_state" : false},        
+    "core" : { "themes" : { "icons": false } },
+    "plugins" : ["checkbox"]
+  });
+});
+  
+$(document).ready(function() {
+  $('##{@yaml['name']}').on('focusout', function(e) {
+    var checked_ids = [];
+    var checked = $('##{@yaml['name']}').jstree("get_checked", true);
+    $.each(checked, function() {
+      checked_ids.push( this.data.id );
+    });
+    $('#record_#{@yaml['name']}').val( checked_ids.join(",") );
+  });
+});
+EOJS
+  self
+end
+
+###########################################################################
+# Return value. Return nil if input field is empty
+###########################################################################
+def self.get_data(params, name)
+  params['record'][name].blank? ? nil : params['record'][name].split(',')
+end
+
+end
+
+###########################################################################
 # Implementation of html_field DRG CMS form field. 
 # 
 # HtmlField class only implements code for calling actual html edit field code.

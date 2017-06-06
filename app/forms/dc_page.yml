@@ -89,13 +89,16 @@ form:
           include_blank: true
       120:
         name: kats
-#        type: multitext_autocomplete
-#        search: dc_category.name     
-#        html:
-#          size: 30
         type: select
         multiple: true
         eval: "dc_choices4('DcCategory','name','_id',site: :with_nil)"
+        html:
+          include_blank: true 
+          size: 4
+      120:
+        name: kats
+        type: tree_select
+        eval: "DcCategory.choices4_categories(@parent.dc_get_site)"
         html:
           include_blank: true 
           size: 4

@@ -50,15 +50,15 @@ form:
       html:
         size: 5
     50:
-      name: parent
-      type: select
-      eval: DcCategory.values_for_parent
-      html:
-        include_blank: true
-    60:
       name: dc_site_id
       type: select
       eval: DcSite.choices4_site
+      html:
+        include_blank: true
+    60:
+      name: parent
+      type: select
+      eval: DcCategory.values_for_parent
       html:
         include_blank: true
 
