@@ -130,7 +130,7 @@ end
 #    params['p_picture'] = '/path/to_picture'
 #    
 # When multiple initial values are assigned it is more convinient to assign them 
-# through flash method.
+# through flash object.
 #    flash[:record] = {}
 #    flash[:record]['picture'] = '/path/to_picture'
 ####################################################################
@@ -142,6 +142,40 @@ def set_initial_value(opt1='html', opt2='value')
   elsif @parent.flash[:record] and @parent.flash[:record][@yaml['name']]
     @yaml[opt1][opt2] = @parent.flash[:record][@yaml['name']]
   end
+end
+
+####################################################################
+# Returns style html code for DRGForm object if style directive is present in field definition.
+# Otherwiese returns empty string.
+# 
+# Style may be defined like:
+#    style:
+#      height: 400px
+#      width: 800px
+#      padding: 10px 20px
+#     
+#    or 
+#     
+#    style: "height:400px; width:800px; padding: 10px 20px;"
+#    
+#  Style directive may also be defined under html directive.
+#    html:
+#      style:
+#        height: 400px
+#        width: 800px
+#    
+# 
+####################################################################
+def set_style()
+  style = @yaml['html']['style'] || @yaml['style']
+  case
+    when style.nil? then ''
+    when style.class == String then "style=\"#{style}\""
+    when style.class == Hash then
+      value = style.to_a.inject([]) {|r,v| r << "#{v[0]}: #{v[1]}" }.join(';')
+      "style=\"#{value}\"" 
+    else ''
+  end 
 end
 
 ####################################################################
@@ -164,10 +198,7 @@ end
 #      
 ####################################################################
 def hash_to_options(hash)
-  options = hash.to_a.inject('') do |r,v|
-    r << "#{v[0]}: #{v[1]},"
-  end
-  options.chomp(',')
+  hash.to_a.inject([]) {|r,v| r << "#{v[0]}: #{v[1]}" }.join(',')
 end
 
 ####################################################################
@@ -1397,9 +1428,8 @@ def render
   require 'sort_alphabetical'  
   
   record = record_text_for(@yaml['name'])
-  @yaml['html']['class'] = 'tree-select'
-  @yaml['html'].symbolize_keys!
-  @html << "<div id=\"#{@yaml['name']}\">"
+  p '******', "<div id=\"#{@yaml['name']}\" class=\"tree-select\" #{set_style()} >"
+  @html << "<div id=\"#{@yaml['name']}\" class=\"tree-select\" #{set_style()} >"
 # Fill @choices hash. The key is parent object id
   @choices = {}
   do_eval(@yaml['eval']).each {|data| @choices[ data[2].to_s ] ||= []; @choices[ data[2].to_s ] << (data << false)}

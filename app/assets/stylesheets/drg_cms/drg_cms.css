@@ -919,3 +919,11 @@ background-color: #ccc;
 font-size: 2em; 
 padding: 5px;
 }
+
+.tree-select {
+  overflow-y: auto;
+  max-width: 50%;
+  background-color: #fff;
+  padding: 10px;
+  border: 1px solid #ccc;
+}

@@ -207,6 +207,5 @@ form:
         name: kats
         type: tree_select
         eval: "DcCategory.choices4_categories(@parent.dc_get_site)"
-        html:
-          size: 100x200
+        style: 'max-height: 300px'
         
