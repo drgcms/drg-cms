@@ -144,7 +144,7 @@ def login
 end
 
 ####################################################################
-# Action is called when restore document from journal is requested.
+# Action for restoring document data from journal document.
 ####################################################################
 def restore_from_journal
 # Only administrators can perform this operation  
@@ -152,17 +152,18 @@ def restore_from_journal
     return render inline: { 'msg_info' => (t ('drgcms.not_authorized')) }.to_json, formats: 'js'
   end
 # selected fields to hash  
-  restore = params[:select].inject({}) {|r,v| r[v.first] = 0 if v.last == '1'; r}
+  restore = {} 
+  params[:select].each {|key,value| restore[key] = value if value == '1' }
   result = if restore.size == 0
     { 'msg_error' => (t ('drgcms.dc_journal.zero_selected')) }
   else
-    j = DcJournal.find(params[:id])
+    journal_doc = DcJournal.find(params[:id])
 # update hash with data to be restored    
-    JSON.parse(j.diff).each {|k,v| restore[k] = v.first if restore[k] }
-# determine tables and record ids    
-    tables = j.tables.split(';')
-    ids = (j.ids.blank? ? [] : j.ids.split(';') ) << j.doc_id
-# find record
+    JSON.parse(journal_doc.diff).each {|k,v| restore[k] = v.first if restore[k] }
+# determine tables and document ids    
+    tables = journal_doc.tables.split(';')
+    ids = (journal_doc.ids.blank? ? [] : journal_doc.ids.split(';') ) << journal_doc.doc_id
+# find document
     doc = nil
     tables.each_index do |i|
       doc = if doc.nil?
@@ -171,11 +172,8 @@ def restore_from_journal
         doc.send(tables[i].pluralize).find(ids[i])
       end
     end
-# restore values
-    restore.each do |k,v|
-      doc.send("#{k}=",v)
-    end
-# save record    
+# restore and save values
+    restore.each { |field,value| doc.send("#{field}=",value) }
     doc.save
 # TODO Error checking    
     { 'msg_info' => (t ('drgcms.dc_journal.restored')) }
