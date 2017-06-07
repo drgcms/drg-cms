@@ -885,23 +885,13 @@ def render
   self
 end
 
-####################################################################
-# Get data for DateSelect field
-# According to  https://gist.github.com/315227
-####################################################################
+###########################################################################
+# DatetimeSelect get_data method.
+###########################################################################
 def self.get_data(params, name)
-  attrs = params['record'].collect do |key, value|
-    if key =~ /^#{Regexp.escape(name.to_s)}\((\d+)(\w)\)$/
-      [$1.to_i, value.send("to_#$2")]
-    end
-  end.compact.sort_by(&:first).map(&:last)
-# Return nil if error
-  begin
-    Time.zone.local(*attrs) #unless attrs.empty?
-  rescue 
-    nil
-  end
+  DatetimeSelect.get_data(params, name).to_date
 end
+
 
 end
 
@@ -939,11 +929,16 @@ def render
   self
 end
 
-###########################################################################
+####################################################################
 # DatetimeSelect get_data method.
-###########################################################################
+####################################################################
 def self.get_data(params, name)
-  DateSelect.get_data(params, name)
+  begin
+    attrs = (1..5).map { |i| params['record']["#{name}(#{i}i)"]}
+    Time.zone.local(*attrs) 
+  rescue 
+    nil
+  end
 end
 
 end
@@ -1381,13 +1376,12 @@ class TreeSelect < Select
 ###########################################################################
 def make_tree(parent)
   @html << '<ul>'
-  p parent.to_s
   choices = @choices[parent.to_s].sort_alphabetical_by(&:first) # use UTF-8 sort
   choices.each do |choice|
     jstree = %Q[{"selected" : #{choice[3] ? 'true' : 'false'} }]
 # data-jstree must be singe quoted
     @html << %Q[<li data-id="#{choice[1]}" data-jstree='#{jstree}'>#{choice.first}\n]
-# call recursively for every     
+# call recursively for children     
     make_tree(choice[1]) if @choices[ choice[1].to_s ]
     @html << "</li>"
   end
@@ -1427,7 +1421,6 @@ def render
 # javascript to update hidden record field when tree looses focus
   @js =<<EOJS
 $(function(){
-  // using default options
   $("##{@yaml['name']}").jstree( {
     "checkbox" : {"three_state" : false},        
     "core" : { "themes" : { "icons": false } },

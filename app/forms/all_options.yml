@@ -202,4 +202,11 @@ form:
           field: custumer_name
           method: search
         with_new: customer
-        size: 50         
+        size: 50      
+      50:
+        name: kats
+        type: tree_select
+        eval: "DcCategory.choices4_categories(@parent.dc_get_site)"
+        html:
+          size: 100x200
+        

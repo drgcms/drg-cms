@@ -95,13 +95,6 @@ form:
         html:
           include_blank: true 
           size: 4
-      120:
-        name: kats
-        type: tree_select
-        eval: "DcCategory.choices4_categories(@parent.dc_get_site)"
-        html:
-          include_blank: true 
-          size: 4
 
     2advanced:
       10:
