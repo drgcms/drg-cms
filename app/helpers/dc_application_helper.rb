@@ -562,7 +562,8 @@ end
 #      eval: 'dc_page_class.all_pages_for_site(@parent.dc_get_site)'
 ########################################################################
 def dc_page_class()
-  dc_get_site.page_class.classify.constantize  
+#  dc_get_site.page_class.classify.constantize  
+  dc_get_site.page_table.classify.constantize
 end
 
 ####################################################################

@@ -1428,7 +1428,6 @@ def render
   require 'sort_alphabetical'  
   
   record = record_text_for(@yaml['name'])
-  p '******', "<div id=\"#{@yaml['name']}\" class=\"tree-select\" #{set_style()} >"
   @html << "<div id=\"#{@yaml['name']}\" class=\"tree-select\" #{set_style()} >"
 # Fill @choices hash. The key is parent object id
   @choices = {}
