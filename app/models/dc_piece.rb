@@ -21,41 +21,6 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #++
 
-
-#########################################################################
-# ActiveSupport::Concern definition for DcPiece class. 
-#########################################################################
-module DcPieceConcern
-  extend ActiveSupport::Concern
-  included do
-  
-  include Mongoid::Document
-  include Mongoid::Timestamps
-
-  field :name,          type: String,  default: ''
-  field :description,   type: String,  default: ''
-  field :picture,       type: String   
-  field :thumbnail,     type: String   
-  field :body,          type: String,  default: ''
-  field :css,           type: String,  default: ''
-  field :script,        type: String,  default: ''
-  field :script_type,   type: String,  default: ''
-  field :params,        type: String,  default: ''
-  field :piece_id,      type: BSON::ObjectId
-  field :div_id,        type: String
-  field :site_id,       type: BSON::ObjectId
-  field :order,         type: Integer, default: 0
-  field :active,        type: Boolean, default: true  
-  field :valid_from,    type: DateTime
-  field :valid_to,      type: DateTime
-  
-  field :created_by,    type: BSON::ObjectId
-  field :updated_by,    type: BSON::ObjectId  
-  
-  validates :name, presence: true
-end
-end
-
 ########################################################################
 # == Schema information
 #

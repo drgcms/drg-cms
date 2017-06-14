@@ -21,25 +21,37 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #++
 
+
 #########################################################################
-# == Schema information
-#
-# Collection name: dc_policy_rule : Access policy rules
-#
-#  _id                  BSON::ObjectId       _id
-#  created_at           Time                 created_at
-#  updated_at           Time                 updated_at
-#  dc_policy_role_id    Object               User role access defined by this rule
-#  permission           Integer              Access permission
-# 
-# DcPolicyRule documents define policies for accessing data. DRG CMS uses policy rules for
-# defining policies in DcSite, DcPermission and DcFolderPermission documents. 
-# 
-# Since they are defined as polymorphic they can be embedded into any 
-# application specific model by specifying this line in the model:
-# 
-#    embeds_many :dc_policy_rules, as: :policy_rules
+# ActiveSupport::Concern definition for DcPiece class. 
 #########################################################################
-class DcPolicyRule
-  include DcPolicyRuleConcern
+module DcPieceConcern
+  extend ActiveSupport::Concern
+  included do
+  
+  include Mongoid::Document
+  include Mongoid::Timestamps
+
+  field :name,          type: String,  default: ''
+  field :description,   type: String,  default: ''
+  field :picture,       type: String   
+  field :thumbnail,     type: String   
+  field :body,          type: String,  default: ''
+  field :css,           type: String,  default: ''
+  field :script,        type: String,  default: ''
+  field :script_type,   type: String,  default: ''
+  field :params,        type: String,  default: ''
+  field :piece_id,      type: BSON::ObjectId
+  field :div_id,        type: String
+  field :site_id,       type: BSON::ObjectId
+  field :order,         type: Integer, default: 0
+  field :active,        type: Boolean, default: true  
+  field :valid_from,    type: DateTime
+  field :valid_to,      type: DateTime
+  
+  field :created_by,    type: BSON::ObjectId
+  field :updated_by,    type: BSON::ObjectId  
+  
+  validates :name, presence: true
+  end
 end

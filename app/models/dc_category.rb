@@ -53,7 +53,7 @@ class DcCategory
   field   :order,       type: Integer, default: 0
   field   :created_by,  type: BSON::ObjectId
   field   :updated_by,  type: BSON::ObjectId
-  field   :dc_site_id,     type: BSON::ObjectId
+  field   :dc_site_id,  type: BSON::ObjectId
 
   validates :name, :presence => true
   
@@ -96,7 +96,7 @@ def self.choices4_categories(site_id=nil)
   ar << site_id.id if site_id
   qry = qry.in(dc_site_id: ar)
 #
-  qry.inject([]) { |result, category| result << [category.name, category.id, category.parent] }
+  qry.inject([]) { |result, category| result << [category.name, category.id, category.parent, category.order] }
 end
 
 
