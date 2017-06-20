@@ -61,8 +61,8 @@ field :policy_id,    type: BSON::ObjectId
 
 embeds_many :dc_parts
 
-belongs_to  :dc_site,   optional: true
-belongs_to  :dc_design, optional: true
+belongs_to  :dc_site #,   optional: true
+belongs_to  :dc_design #, optional: true
 
 index  ({ dc_site_id: 1, subject_link: 1 })
 index  kats: 1

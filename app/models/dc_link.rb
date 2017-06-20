@@ -51,7 +51,7 @@ class DcLink
   field :created_by,  type: BSON::ObjectId
   field :updated_by,  type: BSON::ObjectId
 
-  belongs_to  :dc_site, optional: true
+  belongs_to  :dc_site #, optional: true
  
   index({ site_id: 1, name: 1 }, { unique: true })
   

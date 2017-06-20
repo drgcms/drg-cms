@@ -58,7 +58,7 @@ class DcSimpleMenu
   index( { name: 1 }, { unique: true } )
 
   embeds_many :dc_simple_menu_items
-  belongs_to  :dc_site, optional: true
+  belongs_to  :dc_site #, optional: true
   
   validates_length_of :description, minimum: 10
   
