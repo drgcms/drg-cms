@@ -54,6 +54,7 @@ included do
   field :alias_for,           type: String  
   field :rails_view,          type: String,  default: ''
   field :design,              type: String,  default: ''
+  field :inherit_policy,      type: BSON::ObjectId 
   
   embeds_many :dc_policies
   embeds_many :dc_parts

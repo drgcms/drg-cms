@@ -566,6 +566,22 @@ def dc_page_class()
   dc_get_site.page_table.classify.constantize
 end
 
+########################################################################
+# Return menu class model defined in site document menu_class field. 
+# 
+# Used in forms for providing menus class to the forms object.
+# 
+# Example as used on form:
+#    30:
+#      name: menu_id
+#      type: tree_view
+#      eval: 'dc_menu_class.all_menus_for_site(@parent.dc_get_site)'
+########################################################################
+def dc_menu_class()
+  dc_get_site.menu_class.classify.constantize
+end
+
+
 ####################################################################
 # Wrapper for i18 t method, with some spice added. If translation is not found English
 # translation value will be returned. And if still not found default value will be returned if passed.
@@ -985,6 +1001,11 @@ def dc_user_can_view(ctrl, policy_id)
 #
   site = ctrl.site
   policies = site.dc_policies
+  policies = if site.inherit_policy.blank? 
+    site.dc_policies
+  else
+    Mongoid::QueryCache.cache { DcSite.find(site.inherit_policy) }.dc_policies
+  end
 # permission defined by default policy
   default_policy = Mongoid::QueryCache.cache { policies.find_by(is_default: true) }
   return false, 'Default accsess policy not found for the site!' unless default_policy
