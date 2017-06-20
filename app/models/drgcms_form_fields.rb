@@ -1407,9 +1407,31 @@ class TreeSelect < Select
 ###########################################################################
 def make_tree(parent)
   @html << '<ul>'
+  choices = if @choices[parent.to_s].first.last != 0
+    @choices[parent.to_s].sort_by {|e| e[3] } # sort by order if first is not 0
+#    @choices[parent.to_s].sort_alphabetical_by(&:first) # use UTF-8 sort
+  else  
+    @choices[parent.to_s].sort_alphabetical_by(&:first) # use UTF-8 sort
+  end
+  choices.each do |choice|
+    jstree = %Q[{"selected" : #{choice[4] ? 'true' : 'false'} }]
+# data-jstree must be singe quoted
+    @html << %Q[<li data-id="#{choice[1]}" data-jstree='#{jstree}'>#{choice.first}\n]
+# call recursively for children     
+    make_tree(choice[1]) if @choices[ choice[1].to_s ]
+    @html << "</li>"
+  end
+  @html << '</ul>'  
+end
+
+###########################################################################
+# Prepare choices for tree data rendering.
+###########################################################################
+def _make_tree(parent)
+  @html << '<ul>'
   choices = @choices[parent.to_s].sort_alphabetical_by(&:first) # use UTF-8 sort
   choices.each do |choice|
-    jstree = %Q[{"selected" : #{choice[3] ? 'true' : 'false'} }]
+    jstree = %Q[{"selected" : #{choice[4] ? 'true' : 'false'} }]
 # data-jstree must be singe quoted
     @html << %Q[<li data-id="#{choice[1]}" data-jstree='#{jstree}'>#{choice.first}\n]
 # call recursively for children     
@@ -1435,12 +1457,13 @@ def render
 # put current values hash with. To speed up selection when there is a lot of categories
   current_values = {}
   current = @record[@yaml['name']] || []
+  current = [current] unless current.class == Array # non array fields
   current.each {|e| current_values[e.to_s] = true}
 # set third element of @choices when selected
   @choices.keys.each do |key|
     0.upto( @choices[key].size - 1 ) do |i|
       choice = @choices[key][i]
-      choice[3] = true if current_values[ choice[1].to_s ]
+      choice[4] = true if current_values[ choice[1].to_s ]
     end
   end
   make_tree(nil)
