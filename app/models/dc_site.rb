@@ -52,6 +52,7 @@
 #  alias_for            String               Is alias name for entered site name
 #  rails_view           String               Rails view filename used as standard design
 #  design               String               Standard design can also be defined at the site level
+#  inherit_policy       BSON::ObjectId       Use policy from other site
 #  dc_policies          Embedded:DcPolicy    Access policies defined for the site
 #  dc_parts             Embedded:DcPart      Parts contained in site
 # 

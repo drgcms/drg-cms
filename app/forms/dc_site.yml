@@ -133,6 +133,12 @@ form:
     5permissions:        
 
       10:
+        name: inherit_policy
+        type: select
+        eval: DcSite.choices4_site
+        html:
+          include_blank: true
+      20:
         name: dc_policies
         type: embedded
         formname: dc_policy
