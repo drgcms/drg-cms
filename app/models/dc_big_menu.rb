@@ -62,7 +62,7 @@ class DcBigMenu
   field :created_by,  type: BSON::ObjectId
   field :updated_by,  type: BSON::ObjectId
 
-  belongs_to  :dc_site
+  belongs_to  :dc_site, optional: true
 
   index( { dc_site_id: 1, parent: 1 } )
   index( { page_id: 1 } )

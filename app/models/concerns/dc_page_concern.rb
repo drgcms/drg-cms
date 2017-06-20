@@ -43,7 +43,7 @@ field :body,         type: String,  default: ''
 field :css,          type: String,  default: ''
 field :script,       type: String,  default: ''
 field :params,       type: String
-field :menu_id,      type: BSON::ObjectId
+field :menu_id,      type: String
 field :author_id,    type: BSON::ObjectId
 field :dc_poll_id,   type: BSON::ObjectId
 field :author_name,  type: String
@@ -61,8 +61,8 @@ field :policy_id,    type: BSON::ObjectId
 
 embeds_many :dc_parts
 
-belongs_to  :dc_site
-belongs_to  :dc_design
+belongs_to  :dc_site,   optional: true
+belongs_to  :dc_design, optional: true
 
 index  ({ dc_site_id: 1, subject_link: 1 })
 index  kats: 1
@@ -103,6 +103,8 @@ def do_before_save
     # add date to link, but only if something is written in subject   
     self.subject_link << self.publish_date.strftime('-%Y%m%d') if self.subject_link.size > 1 
   end
+# menu_id is returned as string Array class if entered on form as tree_select object.
+  self.menu_id = self.menu_id.scan(/"([^"]*)"/)[0][0] if self.menu_id.to_s.match('"')
 end
 
 ######################################################################
@@ -113,7 +115,7 @@ end
 # [site] Site document.
 ######################################################################
 def self.all_pages_for_site(site)
-  where(dc_site_id: site._id, active: true).order(subject: 1).
+  only(:subject, :subject_link).where(dc_site_id: site._id, active: true).order(subject: 1).
     inject([]) { |r,page| r << [ page.subject, page.subject_link] }
 end
 
