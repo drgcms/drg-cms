@@ -76,10 +76,23 @@ validates :publish_date, presence: true
 protected
 
 ######################################################################
+# Implementation of before_save callback.
+######################################################################
+def do_before_save
+  if self.subject_link.empty?
+    self.subject_link = DcPage.clear_link(self.subject.downcase.strip) 
+    # add date to link, but only if something is written in subject   
+    self.subject_link << self.publish_date.strftime('-%Y%m%d') if self.subject_link.size > 1 
+  end
+# menu_id is returned as string Array class if entered on form as tree_select object.
+  self.menu_id = self.menu_id.scan(/"([^"]*)"/)[0][0] if self.menu_id.to_s.match('"')
+end
+
+######################################################################
 # Clears subject link of chars that shouldn't be there and also takes care 
 # than link size is not larger than 100 chars.
 ######################################################################
-def clear_link(link)
+def self.clear_link(link)
   link.gsub!(/\.|\?|\!\&|»|«|\,|\"|\'|\:/,'')
   link.gsub!('<br>','')
   link.gsub!(' ','-')
@@ -92,19 +105,6 @@ def clear_link(link)
   end
   link.chop! if link[-1,1] == '-' # remove - at the end
   link
-end
-
-######################################################################
-# Implementation of before_save callback.
-######################################################################
-def do_before_save
-  if self.subject_link.empty?
-    self.subject_link = clear_link(self.subject.downcase.strip) 
-    # add date to link, but only if something is written in subject   
-    self.subject_link << self.publish_date.strftime('-%Y%m%d') if self.subject_link.size > 1 
-  end
-# menu_id is returned as string Array class if entered on form as tree_select object.
-  self.menu_id = self.menu_id.scan(/"([^"]*)"/)[0][0] if self.menu_id.to_s.match('"')
 end
 
 ######################################################################
