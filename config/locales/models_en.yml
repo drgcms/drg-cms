@@ -61,6 +61,7 @@ en:
         rails_view: Rails view
         design: Standard design
         request_processor: Request processor
+        inherit_policy: Policy from site
 
       dc_design:
         tabletitle: Designs
@@ -225,6 +226,7 @@ en:
         link_prepend: Link prepend
         active: Active
         dc_menu_items: Menu items
+        dc_site_id: Site
 
       dc_menu_item:
         tabletitle: Menu items
@@ -528,6 +530,7 @@ en:
         design: Standard design can also be defined at the site level
         dc_parts: Parts contained in site
         request_processor: Method which will provide output instead of dc_process_default_request 
+        inherit_policy: Use policy defined on other site
         
       dc_user:
         username: Username
@@ -633,7 +636,7 @@ en:
         link_prepend: Link field usually holds direct link to document. Prepand field holds data, that has to be prepanded to the link.
         active: Active
         dc_simple_menu: Menu items
-        dc_site_id: Site this menu belongs to
+        dc_site_id: Site to which this menu belongs to
 
       dc_simple_menu_item:
         caption: Caption of menu
@@ -654,7 +657,7 @@ en:
         active: Active
         link_prepend: Link field usually holds direct link to document. Prepand field holds data, that has to be prepanded to the link.
         dc_menu_items: Menu items
-        dc_site_id: Site this menu belongs to
+        dc_site_id: Site to which this menu belongs to
 
       dc_menu_item:
         caption: Caption of menu item

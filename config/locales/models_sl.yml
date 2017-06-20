@@ -62,6 +62,7 @@ sl:
         rails_view: Rails view
         design: Standard dizajn
         dc_parts: Sestavni elementi
+        inherit_policy: Uporabi od strani
 
       dc_design:
         tabletitle: Dizajni
@@ -534,6 +535,7 @@ sl:
         design: Standard dizajn lahko definirate tudi pri spletišču
         dc_parts: Sestavni elementi strani
         request_processor: Ime ruby metode, ki bo klicana namesto dc_process_default_request 
+        inherit_policy: Uporabi politiko od druge strani
 
       dc_design:
         name: Unikatno ime za dizajn. Pomembno za iskanje

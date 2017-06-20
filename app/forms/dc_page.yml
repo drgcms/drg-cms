@@ -95,6 +95,12 @@ form:
         html:
           include_blank: true 
           size: 4
+      120:
+        name: kats
+        type: tree_select
+        eval: "DcCategory.choices4_categories(@parent.dc_get_site)"
+        style: 'max-height: 300px'
+          
 
     2advanced:
       10:
@@ -106,7 +112,14 @@ form:
       20:
         name: menu_id
         type: select
-        eval: dc_choices4_menu      
+        eval: dc_choices4_menu
+
+      20:
+        name: menu_id
+        type: tree_select
+        eval: '@parent.dc_menu_class.choices4_menu_as_tree(@parent.dc_get_site)'        
+        style: 'max-height: 300px'
+        single: true       
 
       30:
         name: params

@@ -77,7 +77,7 @@ class DcMenu
 # Returns:
 # Array. Of choices prepared for select input field.
 #######################################################################
-  def self.choices4_menu(site)
+def self.choices4_menu(site)
   rez = []
   menus = (site.menu_name.blank? ? all : where(name: site.menu_name)).to_a
   menus.each do |menu|
@@ -88,5 +88,44 @@ class DcMenu
   end
   rez
 end
+  
+#######################################################################
+# Subroutine of choices4_menu_as_tree
+#######################################################################
+def self.do_sub_menu(menus, parent, ids) #:nodoc:
+  result = []
+  menus.each do |item|
+    long_id = "#{ids};#{item.id}"
+    result << [item.caption, long_id, parent, item.order]
+    sub_menus = item.dc_menu_items.order_by(order: 1).to_a
+    result += do_sub_menu(sub_menus, long_id, long_id) if sub_menus.size > 0
+  end
+  result
+end
 
+#######################################################################
+# Will return menu structure for menus belonging to the site.
+# 
+# Parameters: 
+# [Site] DcSite document. Site for which menu belongs to. If site is not specified 
+# all current menus in collection will be returned.
+# 
+# Returns:
+# Array. Of choices prepared for tree:select input field.
+#######################################################################
+def self.choices4_menu_as_tree(site_id=nil)
+  qry = where(active: true)
+# 
+  ar = [nil]
+  ar << site_id.id if site_id
+  qry = qry.in(dc_site_id: ar)
+#
+  result = []
+  qry.each do |menu|
+    result << [menu.name, menu.id, nil,0]
+    sub_menus = menu.dc_menu_items.order_by(order: 1).to_a
+    result += do_sub_menu(sub_menus, menu.id, menu.id.to_s) if sub_menus.size > 0
+  end
+  result
+end
 end

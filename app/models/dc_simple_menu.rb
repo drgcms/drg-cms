@@ -58,6 +58,7 @@ class DcSimpleMenu
   index( { name: 1 }, { unique: true } )
 
   embeds_many :dc_simple_menu_items
+  belongs_to  :dc_site
   
   validates_length_of :description, minimum: 10
   
@@ -84,6 +85,33 @@ class DcSimpleMenu
     end
   end
   rez
+end
+
+#######################################################################
+# Will return menu structure for menus belonging to the site.
+# 
+# Parameters: 
+# [Site] DcSite document. Site for which menu belongs to. If site is not specified 
+# all current menus in collection will be returned.
+# 
+# Returns:
+# Array. Of choices prepared for tree:select input field.
+#######################################################################
+  def self.choices4_menu_as_tree(site_id=nil)
+  qry = where(active: true)
+# 
+  ar = [nil]
+  ar << site_id.id if site_id
+  qry = qry.in(dc_site_id: ar)
+#
+  result = []
+  qry.each do |menu|
+    result << [menu.name, menu.id, nil,0]
+    menu.dc_simple_menu_items.order_by(order: 1).each do |item|
+      result << [item.caption, item.id, menu.id, item.order]
+    end
+  end
+  result
 end
 
 end

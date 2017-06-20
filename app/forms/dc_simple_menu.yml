@@ -52,6 +52,12 @@ form:
         type: text_field
         html:
           size: 20
+      50:
+        name: dc_site_id
+        type: select
+        eval: DcSite.choices4_site
+        html:
+          include_blank: true
 
     tab2:
       10:
