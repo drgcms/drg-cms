@@ -56,10 +56,11 @@ class DcMenu
   field :created_by,  type: BSON::ObjectId
   field :updated_by,  type: BSON::ObjectId
 
-  index( { name: 1 }, { unique: true } )
-
+  belongs_to :dc_site
   embeds_many :dc_menu_items
   
+  index( { name: 1 }, { unique: true } )
+
   validates :name, :length => { :minimum => 4 }
   validates :name, uniqueness: true  
   validates_length_of :description, minimum: 10
@@ -117,7 +118,11 @@ def self.choices4_menu_as_tree(site_id=nil)
   qry = where(active: true)
 # 
   ar = [nil]
-  ar << site_id.id if site_id
+  if site_id.class == BSON::ObjectId
+    ar << site_id
+  elsif site_id.respond_to?(:id)
+    ar << site_id.id
+  end
   qry = qry.in(dc_site_id: ar)
 #
   result = []

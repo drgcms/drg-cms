@@ -63,4 +63,21 @@ class DcMenuItem
   field :updated_by,  type: BSON::ObjectId
 
   embeds_many :dc_menu_items, :cyclic => true
+  
+#######################################################################
+# Will return menu path for the item as array of id-s. Method can be used
+# to determine all parents of current item.
+# 
+# Returns:
+# Array. Of parent items ids.
+#######################################################################
+def menu_path()
+  path, parent = [], self
+  while parent
+    path << parent.id
+    parent = parent._parent
+  end 
+  path.reverse
+end
+  
 end
