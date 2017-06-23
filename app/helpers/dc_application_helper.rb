@@ -518,6 +518,7 @@ end
 # String. HTML code required for manipulation of currently processed document.
 ########################################################################
 def dc_page_edit_menu(opts=@opts)
+  opts[:edit_mode] ||= _origin.session[:edit_mode]
   return '' if opts[:edit_mode] < 2
 # save some data to cookie. This can not go to session.
   page  = opts[:page] || @page
@@ -530,6 +531,7 @@ def dc_page_edit_menu(opts=@opts)
   }
   _origin.cookies[:record] = Marshal.dump(kukis)
   title = "#{t('drgcms.edit')}: #{page.subject}"
+  opts[:editparams] ||= {}
   dc_link_menu_tag(title) do |html|
     opts[:editparams].merge!( controller: 'cmsedit', action: 'edit', 'icon' => 'edit' )
     opts[:editparams].merge!( :id => page.id, :table => _origin.site.page_table, formname: opts[:formname], edit_only: 'body' )
@@ -546,7 +548,7 @@ def dc_page_edit_menu(opts=@opts)
     opts[:editparams].merge!(ids: page.id, formname: 'dc_part', 'icon' => 'plus-square-o', 
                              table: "#{_origin.site.page_table};dc_part"  )
     html << dc_link_for_edit1( opts[:editparams], t('drgcms.edit_new_part') )
-  end
+  end.html_safe
 end
 
 ########################################################################
