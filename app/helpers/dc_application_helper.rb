@@ -1028,7 +1028,6 @@ def dc_user_can_view(ctrl, policy_id)
     ctrl.session[:user_roles] = [role.id]
   end
 # Check if user has any role that allows him to view part
-#  p h, ctrl.session[:user_roles]
   can_view, msg = false,''
   ctrl.session[:user_roles].each do |role|
     next unless permissions[role]          # role not yet defined. Will die in next line.

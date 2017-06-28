@@ -320,9 +320,7 @@ def fill_login_data(user, remember_me)
 # check if role is active in this site
     policy_role = default_policy.dc_policy_rules.find_by(dc_policy_role_id: role.dc_policy_role_id)
     next unless policy_role
-    
 # set edit_mode      
-#    session[:edit_mode] = 1 if policy_role.has_cms_menu
     session[:edit_mode] = 1 if policy_role.permission > 1
     session[:user_roles] << role.dc_policy_role_id
   end
@@ -333,7 +331,6 @@ def fill_login_data(user, remember_me)
     guest = DcUserRole.find_by(:system_name => 'guest')
     session[:user_roles] << guest.id if guest
   end
-  
 # Save remember me cookie if not CMS user and remember me is selected
   if session[:edit_mode] == 0 and remember_me
     cookies.signed[:remember_me] = { :value => user.id, :expires => 180.days.from_now}
