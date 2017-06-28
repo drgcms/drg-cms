@@ -920,7 +920,7 @@ end
 # DatetimeSelect get_data method.
 ###########################################################################
 def self.get_data(params, name)
-  DatetimeSelect.get_data(params, name).to_date
+  DatetimeSelect.get_data(params, name).to_date rescue nil
 end
 
 
