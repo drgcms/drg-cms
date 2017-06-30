@@ -143,8 +143,8 @@ end
 #   return dc_render_404('Site') unless site
 ########################################################################
 def dc_render_404(where_the_error_is=nil)
-  render(file: "#{Rails.root}/public/404", :status => 404, :layout => false, :formats => [:html], 
-         locals: {error_is: where_the_error_is})
+  logger.info("Error 404: path=#{params[:path]} site=#{@site.name if @site} page=#{@page.subject if @page} design=#{@design}")
+  render(file: "#{Rails.root}/public/404", :status => 404, :layout => false, :formats => [:html])
 end
 
 ########################################################################
