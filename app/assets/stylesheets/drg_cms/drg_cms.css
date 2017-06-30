@@ -725,6 +725,7 @@ background-color: #eee;
 border: 1px solid #ddd;
 border-radius: 4px;
 z-index: 100;
+list-style-type: none;
 }
 
 .drgcms_popmenu_item {
