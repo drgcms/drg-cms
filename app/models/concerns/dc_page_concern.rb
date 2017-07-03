@@ -81,8 +81,8 @@ protected
 def do_before_save
   if self.subject_link.empty?
     self.subject_link = DcPage.clear_link(self.subject.downcase.strip) 
-    # add date to link, but only if something is written in subject   
-    self.subject_link << self.publish_date.strftime('-%Y%m%d') if self.subject_link.size > 1 
+    # add id to link, but only if something is written in subject   
+    self.subject_link << "-#{self.id.to_s}" if self.subject_link.size > 1 
   end
 # menu_id is returned as string Array class if entered on form as tree_select object.
   self.menu_id = self.menu_id.scan(/"([^"]*)"/)[0][0] if self.menu_id.to_s.match('"')
