@@ -89,12 +89,14 @@ def do_before_save
 end
 
 ######################################################################
-# Clears subject link of chars that shouldn't be there and also takes care 
-# than link size is not larger than 100 chars.
+# Clears subject link of chars that shouldn't be there, takes care 
+# than link size is not larger than 100 chars and adds link.id to the end of link
+# so link stays unique.
 ######################################################################
 def self.clear_link(link)
   link.gsub!(/\.|\?|\!\&|»|«|\,|\"|\'|\:/,'')
   link.gsub!('<br>','')
+  link.gsub!('–','-')
   link.gsub!(' ','-')
   link.gsub!('---','-')
   link.gsub!('--','-')
@@ -104,7 +106,7 @@ def self.clear_link(link)
     link.chop! until link[-1,1] == '-' or link.size < 10 # delete until -
   end
   link.chop! if link[-1,1] == '-' # remove - at the end
-  link
+  "#{link}-#{self.id}"
 end
 
 ######################################################################
