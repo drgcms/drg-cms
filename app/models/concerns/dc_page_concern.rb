@@ -95,6 +95,7 @@ end
 def self.clear_link(link)
   link.gsub!(/\.|\?|\!\&|»|«|\,|\"|\'|\:/,'')
   link.gsub!('<br>','')
+  link.gsub!('–','-')
   link.gsub!(' ','-')
   link.gsub!('---','-')
   link.gsub!('--','-')
