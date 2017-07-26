@@ -785,8 +785,9 @@ def save_data
   return true if fields.size == 0
 #
   fields.each do |v|
+    session[:form_processing] = v['name'] # for debuging
     next if v['type'].nil?
-    next if v['type'].match('embedded') # don't wipe embedded fields
+    next if %w(embedded readonly).include?(v['type']) # don't wipe embedded and readonly types
     next if params[:edit_only] and params[:edit_only] != v['name'] # otherwise other fields would be wiped
     next unless @record.respond_to?(v['name']) # there can be temporary fields on the form
     next if v['readonly'] # fields with readonly option don't retain value and would be wiped
@@ -802,17 +803,13 @@ def save_data
 # dont's save if callback method returns false    
     return false if ret.class == FalseClass
   end
-# maybe model has dc_before_save method defined. Call it. This was before callback
-  @record.dc_before_save(self) if @record.respond_to?('dc_before_save')
-#
+# save data  
   changes = @record.changes
   update_standards() if changes.size > 0  # update only if there has been some changes
   if (saved = @record.save)
     save_journal(operation, changes)
 # callback methods
     if (m = callback_method('after_save') ) then call_callback_method(m)  end
-# check if model has dc_after_save method
-    @record.dc_after_save(self) if @record.respond_to?('dc_after_save')
   end
   saved
 end
