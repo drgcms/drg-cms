@@ -589,13 +589,17 @@ end
 ############################################################################
 # Create background div and table definitions for result set.
 ############################################################################
-def dc_background_for_result
-  html = '<div class="dc-result-div" ' 
-  html << (@form['result_set']['table_style'] ? "style=\"overflow-x: scroll;\" >" : '>')
-  html << "\n"  
-#
-  html << "<table class=\"dc-result #{@form['result_set']['table_class']}\" "
-  html << (@form['result_set']['table_style'] ? "style=\"#{@form['result_set']['table_style']}\" >" : '>')
+def dc_background_for_result(start)
+  if start == :start
+    html = '<div class="dc-result-div" ' 
+    html << (@form['result_set']['table_style'] ? "style=\"overflow-x: scroll;\" >" : '>')
+    html << "\n"  
+  #
+    html << "<table class=\"dc-result #{@form['result_set']['table_class']}\" "
+    html << (@form['result_set']['table_style'] ? "style=\"#{@form['result_set']['table_style']}\" >" : '>')
+  else
+    html = '</table></div>'
+  end
   html.html_safe
 end
 
