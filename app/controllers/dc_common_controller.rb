@@ -46,7 +46,7 @@ layout false
 ########################################################################
 def autocomplete
 #  return '' unless session[:edit_mode] > 0 # 
-  return render text: t('drgcms.not_authorized') unless dc_user_can(DcPermission::CAN_VIEW)
+  return render plain: t('drgcms.not_authorized') unless dc_user_can(DcPermission::CAN_VIEW)
 # TODO Double check if previous line works as it should.
   table = params['table'].classify.constantize
   id = [params['id']] || '_id'
@@ -187,7 +187,7 @@ end
 ########################################################################
 def copy_clipboard
 # Only administrators can perform this operation  
-  return render(text: t('drgcms.not_authorized') )  unless dc_user_has_role('admin')
+  return render(plain: t('drgcms.not_authorized') )  unless dc_user_has_role('admin')
 #  
   respond_to do |format|
 # just open new window to same url and come back with html request    
@@ -196,7 +196,7 @@ def copy_clipboard
     format.html do
       doc = dc_find_document(params[:table], params[:id], params[:ids])
       text = "<br><br>[#{params[:table]},#{params[:id]},#{params[:ids]}]<br>"
-      render text: text + doc.as_document.to_json
+      render plain: text + doc.as_document.to_json
     end
     
   end  
@@ -209,7 +209,7 @@ end
 ########################################################################
 def paste_clipboard
 # Only administrators can perform this operation  
-  return render(text: t('drgcms.not_authorized') ) unless dc_user_has_role('admin')
+  return render(plain: t('drgcms.not_authorized') ) unless dc_user_has_role('admin')
   
   result = ''
   respond_to do |format|

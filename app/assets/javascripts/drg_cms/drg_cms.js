@@ -397,7 +397,7 @@ $(document).ready( function() {
  * When filter_field (field name) is selected on filter subform this routine finds 
  * and displays apropriate span with input field.
  **********************************************************************/
-  $('#_filter_field').on('change', function() {
+  $('#filter_field').on('change', function() {
     if (this.value.length > 0) { 
       name = 'filter_' + this.value;
       $(this).parents('form').find('span').each( function() {
