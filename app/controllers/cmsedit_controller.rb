@@ -756,7 +756,7 @@ def process_return_to(return_to)
     when return_to.match(/reload/i) then 'location.href=location.href;'
     else "location.href='#{return_to}'"
   end
-  render text: js_tag(script)
+  render html: js_tag(script).html_safe, layout: false
 end
 
 ########################################################################
@@ -786,11 +786,11 @@ def save_data
 #
   fields.each do |v|
     session[:form_processing] = v['name'] # for debuging
-    next if v['type'].nil?
-    next if %w(embedded readonly).include?(v['type']) # don't wipe embedded and readonly types
-    next if params[:edit_only] and params[:edit_only] != v['name'] # otherwise other fields would be wiped
-    next unless @record.respond_to?(v['name']) # there can be temporary fields on the form
-    next if v['readonly'] # fields with readonly option don't retain value and would be wiped
+    next if v['type'].nil? or
+            v['type'].match('embedded') or # don't wipe embedded types
+            (params[:edit_only] and params[:edit_only] != v['name']) or # otherwise other fields would be wiped
+            v['readonly'] or # fields with readonly option don't return value and would be wiped
+            !@record.respond_to?(v['name']) # there can be temporary fields on the form
 # return value from form field definition
     value = DrgcmsFormFields.const_get(v['type'].camelize).get_data(params, v['name'])
     @record.send("#{v['name']}=", value)
