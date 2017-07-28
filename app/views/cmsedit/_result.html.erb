@@ -4,9 +4,9 @@
   <%= dc_table_title_for_result @records %>
 
   <% unless @records.nil? %>
-      <%= dc_background_for_result %>
+      <%= dc_background_for_result(:start) %>
+  
       <tr><%= dc_header_for_result %></tr>
-
       <% for document in @records %>
         <%= dc_row_for_result(document) %>
         <%= dc_actions_for_result(document) %>
@@ -14,8 +14,7 @@
         </tr>
       <% end %>
         
-    </table>
-  </div>
+      <%= dc_background_for_result(:end) %>
   <% end %>
   
 </div>

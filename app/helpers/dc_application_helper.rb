@@ -1171,7 +1171,7 @@ end
 # Html code for edit iframe
 ########################################################################
 def dc_iframe_edit(table, opts={})
-  ret = if params.size > 2 and table  # controller, action, path is minimal
+  ret = if params.to_unsafe_h.size > 2 and table  # controller, action, path is minimal
     params[:controller] = 'cmsedit'
     params[:action]     = (params[:oper] and (params[:oper] == 'edit')) ? 'edit' : 'index'
     params[:action]     = opts[:action] unless params[:oper]
