@@ -458,8 +458,9 @@ end
 # Will create HTML code required to edit document.
 # 
 # Parameters: 
-# [opts] Hash. Optional parameters for url_for helper. These options must provide at least table and formname
-# and id parameters. 
+# [opts] Hash. Optional parameters for url_for helper. These options must provide 
+# at least table, formname and id parameters. Optional title, target and icon parameters
+# can be set.
 # 
 # Example:
 #    html << dc_link_for_edit( @options ) if @opts[:edit_mode] > 1
@@ -470,12 +471,14 @@ end
 def dc_link_for_edit(opts)
   opts.stringify_keys!  
   title  = opts.delete('title') #
+  title  = t(title)
   target = opts.delete('target') || 'iframe_cms'
+  icon   = opts.delete('icon') || 'edit lg'
   opts['controller'] ||= 'cmsedit'
-  opts['action']       = 'edit'
-  opts['form_name']  ||= opts['table']
+  opts['action']     ||= 'edit'
+  opts['formname']   ||= opts['table']
   js  = "$('##{target}').attr('src', '#{_origin.url_for(opts)}'); return false;"
-  dc_link_to(nil, _origin.fa_icon('edit lg', class: 'dc-inline-link'), '#', 
+  dc_link_to(nil, _origin.fa_icon(icon, class: 'dc-inline-link'), '#', 
              { onclick: js, title: title, alt: 'Edit'})
 end
 
