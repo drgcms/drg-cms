@@ -23,90 +23,112 @@
 #++
 
 ######################################################################
-# DrgcmsControls for DcDummy model for editing settings in a document.
-######################################################################
-module DcDummySettingsControl
-
-######################################################################
-# Called when new empty record is created
-######################################################################
-def _dc_new_record()
-  @record.design_id = params[:design_id] if params[:design_id]
-  return unless params[:page_id]
-#
-  if page = DcPage.find(params[:page_id])
-    @record.design_id = page.design_id
-    @record.menu      = page.menu
-  end
-end
-
-######################################################################
-# Called before edit. 
+# DrgcmsControls for editing settings in a document.
 # 
-# Loads fields on form with values from settings document.
+# Parameters to settings call:
+# :location - model_name where settings document is located. Typicaly dc_page or dc_site.
+# :field_name - name of the field where settings are saved
+# :element - element name as defined on design 
+# :id - document id
+######################################################################
+module DesignElementSettingsControl
+
+######################################################################
+# Check if settings control document exists and return document and 
+# settings values as yaml string.
+# 
+# Return:
+#   [document, data] : Mongoid document, yaml as String
 ######################################################################
 def get_settings()
-# Check model  
+# On save. Set required variables
+  if params[:record]
+    params[:location]   = params[:record][:dc_location]
+    params[:field_name] = params[:record][:dc_field_name]
+    params[:element]    = params[:record][:dc_element]
+    params[:id]         = params[:record][:dc_document_id]    
+  end
+# Check model
   begin
-    model = params[:table].classify.constantize    
-  rescue Exception => e 
+    model = params[:location].classify.constantize    
+  rescue 
     flash[:error] = 'Invalid or undefined model name!'
     return false    
   end
 # Check fild name 
   begin
-    doc = model.find(params[:id])
-    yaml = doc.send(params[:field_name])
+    document = model.find(params[:id])
+    params[:field_name] = case
+      when params[:location] == 'dc_page' then 'params'
+      when params[:location] == 'dc_site' then 'options'
+      otherwise params[:field_name]
+    end  
+# field not defined on document   
+    raise unless document.respond_to?(params[:field_name])
+    yaml = document[params[:field_name]]
     yaml = '' if yaml.blank?
-  rescue Exception => e 
+  rescue 
     flash[:error] = 'Invalid or undefined field name!'
     return false    
   end
 # Check data
   begin
-    data = YAML.load(yaml)
-  rescue Exception => e 
+    data = YAML.load(yaml) || {}
+  rescue 
     flash[:error] = 'Invalid configuration data found!'
     return false    
   end
-  [doc, data] 
+  [document, data] 
 end
 
 ######################################################################
 # Called before edit. 
 # 
-# Loads fields on form with values from settings document.
+# Load fields on form with values from settings document.
 ######################################################################
-def dc_before_edit()
-  doc, data = get_settings
-  return false if doc.class == FalseClass
-#  
-  data['settings'].each { |key, value| @record[key] = value }
+def dc_new_record()
+  document, data = get_settings
+  return false if document.class == FalseClass and data.nil?
+# fill values with settings values
+  if data['settings'] and data['settings'][ params[:element] ]
+    data['settings'][ params[:element] ].each { |key, value| @record.send("#{key}=", value) }
+  end
+# add some fields required at post as hidden fields to form
+  form = @form['form']['tabs'] ? @form['form']['tabs'].last : @form['form']['fields']
+  form[9999] = {'type' => 'hidden_field', 'name' => 'dc_location', 'html' => {'value' => params[:location]}}
+  form[9998] = {'type' => 'hidden_field', 'name' => 'dc_field_name'}
+  @record[:dc_field_name] = params[:field_name]
+  form[9997] = {'type' => 'hidden_field', 'name' => 'dc_element'}
+  @record.dc_element = params[:element]
+  form[9996] = {'type' => 'hidden_field', 'name' => 'dc_document_id', 'html' => {'value' => params[:id]}}
   true
 end
 
 ######################################################################
 # Called before save. 
 # 
-# Convert data from fields on form to yaml and save it to document field.
+# Convert data from fields on form to yaml and save it to document settings field.
 ######################################################################
 def dc_before_save()
-  doc, data = get_settings
-  return false if doc.class == FalseClass
+  document, data = get_settings
+  return false if document.class == FalseClass and data.nil?
 #
   fields_on_form.each do |v|
     session[:form_processing] = v['name'] # for debuging
     next if v['type'].nil? or
-            v['type'].match('embedded') or # don't wipe embedded types
-            v['readonly'] or # fields with readonly option don't return value and would be wiped
+            v['readonly'] # fields with readonly option don't return value and would be wiped
 # return value from form field definition
     value = DrgcmsFormFields.const_get(v['type'].camelize).get_data(params, v['name'])
-    data['settings'][v['name']] = value
+    data['settings'] ||= {}
+    data['settings'][ params[:element] ] ||= {}
+    data['settings'][ params[:element] ][ v['name'] ] = value
   end
 # save data to document field  
-  doc.send(params[:field_name], data.to_yaml)
-  doc.save
-  false # must be set
+  document.send("#{params[:field_name]}=", data.to_yaml)
+  document.save
+# to re-set form again
+  dc_new_record
+  false # must be 
 end
 
 
