@@ -24,17 +24,18 @@
 ########################################################################
 # == Schema information
 #
-# Collection name: dc_dummy : Collection name used when form does not belong to database model.
+# Collection name: dc_memory : Collection name used when form does not belong to database model.
 #
 #  _id                  BSON::ObjectId       _id 
 # 
-# Which is not collection at all. DcDummy model is used for entering data on forms 
-# where data will not be saved to database but will instead be processed by custom 
-# made routine. For example entering begin and end date on report.
+# Which is not collection at all. DcMemory model is used for entering data on forms 
+# where data will not be saved to database but will instead be saved only to memory as 
+# temporary variable and processed by custom made methods. 
+# For example, define start and end date when making a timeline report.
 # 
 # Example (as used in forms):
 # 
-#    table: dc_dummy
+#    table: dc_memory
 #    title: Enter time period
 #
 #      form:
@@ -63,7 +64,7 @@
 #    
 # As result report.pdf file will be opened in new browser window.
 ########################################################################
-class DcDummy
+class DcMemory
   include Mongoid::Document
   
 ########################################################################
@@ -86,7 +87,7 @@ end
   
 ########################################################################
 # Method missing will return value if value defined by m parameter is saved to
-# @internals array or will assign new value to @internals hash if m matches '='.
+# @internals array or will save field value to @internals hash if m matches '='.
 ########################################################################
 def method_missing(m, *args, &block) #:nodoc:
   @internals ||= {}

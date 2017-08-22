@@ -128,5 +128,5 @@ menu:
         caption: drgcms.browse_collections
         controller: cmsedit
         icon: table lg        
-        table: dc_dummy
+        table: dc_memory
         formname: dc_browse_models

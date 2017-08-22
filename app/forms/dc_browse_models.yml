@@ -1,6 +1,6 @@
 ## Registration form. Not yet implemented.
 ---
-table: dc_dummy
+table: dc_memory
 title: Browse collection models
 controls: browse_models
 permissions:
@@ -11,7 +11,7 @@ result_set:
 
   dblclick:
     type: link
-    table: dc_dummy
+    table: dc_memory
     formname: dc_browse_fields
     action: index
 

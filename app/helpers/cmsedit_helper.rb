@@ -411,7 +411,7 @@ def dc_columns_for_result(document)
 # as field        
     elsif document.respond_to?(v['name'])
       dc_format_value(document.send( v['name'] ), v['format']) 
-# as hash (dc_dummy)
+# as hash (dc_memory)
     elsif document.class == Hash 
       document[ v['name'] ]
 # error

@@ -234,7 +234,7 @@ def index
         return render(action: :index)
       end
 # pagination but only if not already set
-      unless (@form['table'] == 'dc_dummy' or @records.options[:limit])
+      unless (@form['table'] == 'dc_memory' or @records.options[:limit])
         per_page = (@form['result_set']['per_page'] || 30).to_i
         @records = @records.page(params[:page]).per(per_page) if per_page > 0
       end

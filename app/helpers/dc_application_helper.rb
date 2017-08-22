@@ -65,7 +65,7 @@ end
 # find where the message is comming from.
 ############################################################################
 def dc_deprecate(msg)
-  p "#{dc_get_site.name}: #{msg}"
+  logger.info "#{dc_get_site.name}: #{msg}"
 end
 
 ############################################################################
@@ -265,6 +265,11 @@ def dc_new_title()
     t( title['new'], title['new'] )
   else
     if @form['table'] == 'dc_dummy'
+      dc_deprecate('dc_dummy will be deprecated. Use dc_memory instead.')
+      @form['table'] = 'dc_memory'
+    end
+# in memory variables    
+    if @form['table'] == 'dc_memory'
       t( @form['title'], @form['title'] )
     else
       "#{t('drgcms.new')} : #{t_tablename(@form['table'])}"    

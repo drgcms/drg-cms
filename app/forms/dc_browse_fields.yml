@@ -1,6 +1,6 @@
 ## Registration form. Not yet implemented.
 ---
-table: dc_dummy
+table: dc_memory
 title: Browse field definitions
 controls: browse_models
 permissions:
