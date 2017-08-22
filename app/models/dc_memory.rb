@@ -78,11 +78,35 @@ end
 # Redefine send method. Send is used to assign value by cmsedit controller.
 ########################################################################
 def send(field,value=nil)
-  if field.to_s.match('=')
+  field = field.to_s
+  if field.match('=')
     field.chomp!('=')
     @internals ||= {}
     @internals[field] = value
   end
+end
+
+########################################################################
+# Redefine [] method to act similar as send method
+########################################################################
+def [](field)
+  return nil unless @internals
+  @internals[field.to_s]
+end
+
+########################################################################
+# Redefine [] method to act similar as send method
+########################################################################
+def []=(field, value)
+  @internals ||= {}
+  @internals[field.to_s] = value
+end
+
+########################################################################
+# For debugging purposes
+########################################################################
+def to_s
+  "DcMemory: @internals=#{@internals}"
 end
   
 ########################################################################
