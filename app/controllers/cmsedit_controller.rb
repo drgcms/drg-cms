@@ -590,6 +590,11 @@ def read_drg_cms_form
   if @form['extend']
     form = YAML.load_file( dc_find_form_file(@form['extend']) )
     @form = forms_merge(form, @form)
+# If combined form contains tabs and fields options, merge fields into tabs
+    if @form['form']['tabs'] and @form['form']['fields']
+      @form['form']['tabs']['fields'] = @form['form']['fields']
+      @form['form']['fields'] = nil
+    end
   end
 # add readonly key to form if readonly parameter is passed in url
   @form['readonly'] = 1 if params['readonly'] #and %w(1 yes true).include?(params['readonly'].to_s.downcase.strip)
