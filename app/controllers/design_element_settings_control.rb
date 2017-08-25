@@ -94,7 +94,7 @@ def dc_new_record()
     data['settings'][ params[:element] ].each { |key, value| @record.send("#{key}=", value) }
   end
 # add some fields required at post as hidden fields to form
-  form = @form['form']['tabs'] ? @form['form']['tabs'].last : @form['form']['fields']
+  form = @form['form']['tabs'] ? @form['form']['tabs'].to_a.last : @form['form']['fields']
   form[9999] = {'type' => 'hidden_field', 'name' => 'dc_location', 'html' => {'value' => params[:location]}}
   form[9998] = {'type' => 'hidden_field', 'name' => 'dc_field_name'}
   @record[:dc_field_name] = params[:field_name]

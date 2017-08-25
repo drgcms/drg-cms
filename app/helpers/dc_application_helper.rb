@@ -188,6 +188,26 @@ def dc_render_design(part)
   dc_render_design_part(part) 
 end
 
+############################################################################
+# This is main method used for render parts of design into final HTML document.
+# 
+# Parameters:
+# [renderer] String or Symbol. Class name (in lowercase) that will be used to render final HTML code. 
+# If class name is provided without '_renderer' suffix it will be added automatically.
+# 
+# When renderer has value :part, it is a shortcut for dc_render_design_part method which
+# is used to draw parts of layout on design.
+# 
+# [opts] Hash. Additional options that are passed to method. Options are merged with
+# options set on site, design, page and passed to renderer object.
+# 
+# Example:
+#    <%= dc_render(:dc_page, method: 'view', category: 'news') %>
+############################################################################
+def dc_render_partial(opts={})
+  _origin.render(partial: opts[:partial], formats: [:html], locals: opts[:locals])
+end
+
 ########################################################################
 # Helper for rendering top CMS menu when in editing mode
 ########################################################################
@@ -206,6 +226,7 @@ end
 def dc_page_bottom()
   %Q[<style type="text/css">#{@css}</style>#{javascript_tag @js}].html_safe
 end
+
 ############################################################################
 # Creates title div for DRG CMS dialogs. Title may also contain pagination section on right side if 
 # result_set is provided as parameter.

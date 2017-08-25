@@ -616,7 +616,8 @@ end
 def get_choices
   begin
     choices = case 
-    when @yaml['choices'] then @yaml['choices']
+    when @yaml['choices'] then 
+      (@yaml['choices'].match('helpers.') ) ? t(@yaml['choices']) : @yaml['choices']
     when @yaml['eval']    then
       do_eval(@yaml['eval'])
     else 

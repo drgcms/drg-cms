@@ -500,6 +500,11 @@ en:
         public: Is public
         sort: Default sort        
 
+      dc_memory:
+        fields: General
+        ztab: Advanced
+        dc_element: Element name
+
 # help for forms #####################################################
 
     help:
@@ -860,4 +865,4 @@ en:
         filter: Filter definition in YAML
         public: Filter is available to all users
         sort: Default sort when selecting filter
-        
+                

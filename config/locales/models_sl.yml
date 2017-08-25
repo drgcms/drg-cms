@@ -505,6 +505,11 @@ sl:
         public: Je javen
         sort: Privzeto razvrsti
 
+      dc_memory:
+        fields: Splošno
+        ztab: Napredno
+        dc_element: Ime elementa
+
 # help pomoč na obrazcih ####################################################
 
     help:
