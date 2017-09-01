@@ -133,6 +133,7 @@ def self.routes
     end
     match 'elfinder' => 'dc_elfinder#connector', via: [:get, :post]
     resources :cmsedit
+    resources :cms, controller: :cmsedit
   end
 end
 
