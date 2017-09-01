@@ -467,7 +467,7 @@ def dc_link_for_create(opts)
   title = opts.delete('title') #
   title = t(title, title) if title
   target = opts.delete('target')  || 'iframe_cms'
-  opts['form_name']  ||= opts['table']
+  opts['formname']   ||= opts['table'].split(';').last
   opts['action']       = 'new'
   opts['controller'] ||= 'cmsedit'
   js = "$('##{target}').attr('src', '#{_origin.url_for(opts)}'); return false;"
@@ -497,7 +497,7 @@ def dc_link_for_edit(opts)
   icon   = opts.delete('icon') || 'edit lg'
   opts['controller'] ||= 'cmsedit'
   opts['action']     ||= 'edit'
-  opts['formname']   ||= opts['table']
+  opts['formname']   ||= opts['table'].split(';').last
   js  = "$('##{target}').attr('src', '#{_origin.url_for(opts)}'); return false;"
   dc_link_to(nil, _origin.fa_icon(icon, class: 'dc-inline-link'), '#', 
              { onclick: js, title: title, alt: 'Edit'})

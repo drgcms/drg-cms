@@ -40,4 +40,12 @@ def dc_new_record()
   end
 end
 
+######################################################################
+# Caled just after record is saved to DB.
+######################################################################
+def dc_after_save()
+  menu_class = dc_get_site.menu_class.classify.constantize
+  menu_class.update_menu_item_link(@record.menu_id, @record.subject_link)
+end
+
 end 

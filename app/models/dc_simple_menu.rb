@@ -101,7 +101,7 @@ end
   qry = where(active: true)
 # 
   ar = [nil]
-  ar << site_id.id if site_id
+  ar << (site_id.respond_to?(:id) ? site_id.id : site_id)
   qry = qry.in(dc_site_id: ar)
 #
   result = []
@@ -112,6 +112,14 @@ end
     end
   end
   result
+end
+
+#######################################################################
+# Will update link value of selected menu_item.
+# 
+# Do nothing. The method is defined only for compatibility.
+#######################################################################
+def self.update_menu_item_link(path, link)
 end
 
 end

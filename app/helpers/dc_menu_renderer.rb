@@ -50,7 +50,11 @@ end
 # Return selected topmenu level.
 ########################################################################
 def find_selected
-  ret = @menu.dc_menu_items.find( @parent.page.menu_id ) if @parent.page.menu_id
+  if @parent.page.menu_id
+    top_menu_id = @parent.page.menu_id
+    top_menu_id = @parent.page.menu_id.split(';')[1] if @parent.page.menu_id.match(';')
+    ret = @menu.dc_menu_items.find(top_menu_id)
+  end
 # return first if not found (something is wrong)
   ret ||= @menu.dc_menu_items[0]
 end
@@ -128,6 +132,7 @@ def do_menu_level(menu, options={})
         opts = options.clone
         opts['ids']   = (opts['ids']   ? "#{opts['ids']};" : '')   + menu._id.to_s
         opts['table'] = (opts['table'] ? "#{opts['table']};" : '') + 'dc_menu_item'
+        opts['formname'] = nil # must be
       end
       html << do_menu_level(item, opts)
     end

@@ -1409,6 +1409,7 @@ class TreeSelect < Select
 # Prepare choices for tree data rendering.
 ###########################################################################
 def make_tree(parent)
+  return '' unless @choices[parent.to_s]
   @html << '<ul>'
   choices = if @choices[parent.to_s].first.last != 0
     @choices[parent.to_s].sort_by {|e| e[3] } # sort by order if first is not 0

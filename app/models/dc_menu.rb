@@ -133,4 +133,26 @@ def self.choices4_menu_as_tree(site_id=nil)
   end
   result
 end
+
+#######################################################################
+# Will update link value of selected menu_item
+# 
+# Parameters: 
+# [path] String. String path to MenuItem document, separated by ;
+# [link] String. New value of the link field
+#######################################################################
+def self.update_menu_item_link(path, link)
+  return unless path and link
+# 
+  ar = path.split(';')
+  menu = find(ar.shift)
+  while (item = ar.shift) do
+    menu = menu.dc_menu_items.find(item)
+  end
+  return unless menu.respond_to?(:link) # top level selected
+#  
+  menu.link = link
+  menu.save  
+end
+
 end
