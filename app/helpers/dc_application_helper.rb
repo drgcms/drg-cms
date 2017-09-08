@@ -154,8 +154,6 @@ def dc_render_from_site(opts={})
   render(inline: design, layout: opts[:layout], with: opts[:with])
 end
 
-
-
 ########################################################################
 # Used for designs with lots of common code and one (or more) part which differs.
 # Point is to define design once and replace some parts of design dinamically.
@@ -172,13 +170,24 @@ end
 # This helper is replacement dc_render_from_site method which will soon be deprecated. 
 ########################################################################
 def dc_render_design_part(part) 
-  if part.nil?
-    ''
-  elsif part.class == Proc
+  case
+  when part.nil? then ''
+# Send as array. Part may be defined with options on page. First element has
+# name of element which defines what to do. If not defined default behaviour is 
+# called. That is what is defined in second part of array.
+  when part.class == Array then
+    if @options.dig(:settings, part.first)
+      #TODO to be defined 
+    else  
+      result = part.last.call
+      result.class == Array ? result.first : result
+    end
+  when part.class == Proc then
     result = part.call
     result.class == Array ? result.first : result
-  elsif part.class == String
-    eval part
+# Send as string. Evaluate content of string    
+  when part.class == String then eval part
+# For future maybe. Just call objects to_s method.
   else
     part.to_s
   end.html_safe
