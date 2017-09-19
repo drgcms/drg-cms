@@ -100,12 +100,14 @@ def link_4menu(item)
 
   caption = ''
   unless item.picture.blank? 
-    caption = if item.picture.match(/\./)
-      @parent.image_tag(item.picture)
-    elsif item.picture.match('<i')
-      item.picture
-    else
-      @parent.fa_icon(item.picture)
+    caption = case
+      when item.picture[0] == '@' then # call method
+        method = item.picture.sub('@','')
+        return eval(method) rescue 'ERROR!'
+      when item.picture.match(/\./) then @parent.image_tag(item.picture)
+      when item.picture.match('<i') then item.picture
+      else
+        @parent.fa_icon(item.picture)
     end
     caption << ' '
    end
