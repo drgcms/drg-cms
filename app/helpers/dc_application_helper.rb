@@ -170,8 +170,9 @@ end
 # This helper is replacement dc_render_from_site method which will soon be deprecated. 
 ########################################################################
 def dc_render_design_part(part) 
+  
   case
-  when part.nil? then ''
+  when part.nil? then logger.error('ERROR dc_render_design_part! part is NIL !'); ''
 # Send as array. Part may be defined with options on page. First element has
 # name of element which defines what to do. If not defined default behaviour is 
 # called. That is what is defined in second part of array.

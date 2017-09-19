@@ -128,7 +128,7 @@ def self.routes
       get 'dc_common/logout'            => :logout
       get 'dc_common/login'             => :login
       get 'dc_common/copy_clipboard'    => :copy_clipboard
-      post 'dc_common/paste_clipboard'  => :paste_clipboard
+      match 'dc_common/paste_clipboard'  => :paste_clipboard, via: [:get, :post]
       put 'dc_common/restore_from_journal'  => :restore_from_journal
     end
     match 'elfinder' => 'dc_elfinder#connector', via: [:get, :post]
