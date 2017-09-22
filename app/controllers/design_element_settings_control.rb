@@ -119,10 +119,14 @@ def dc_before_save()
             v['readonly'] # fields with readonly option don't return value and would be wiped
 # return value from form field definition
     value = DrgcmsFormFields.const_get(v['type'].camelize).get_data(params, v['name'])
+# set to nil if blank
+    value = nil if value.blank?
     data['settings'] ||= {}
     data['settings'][ params[:element] ] ||= {}
     data['settings'][ params[:element] ][ v['name'] ] = value
   end
+# remove nil elements  
+  data['settings'][ params[:element] ].compact!
 # save data to document field  
   document.send("#{params[:field_name]}=", data.to_yaml)
   document.save
