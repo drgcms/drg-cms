@@ -1,4 +1,51 @@
 
+New features for DRG CMS version up to 0.5.51.1
+    Rails version 5.1 compatibility
+    Ruby version 2.3 is now required
+    select field with multiple can now properly process non BSON array values
+    DRG CMS Form readonly field with readonly : yes option will not be saved to database on save
+    dc_dummy collection will be deprecated and replaced with dc_memory collection. Name was chosen unfortunately  
+    DrgForms can now be used for editing YAML settings saved in dc_page document. This enables editing dynamic settings of elements embedded in design
+    cms_edit url can now be used only as cms 
+
+Bugs resolved for DRG CMS version up to 0.5.51.1
+    journal is now able to undelete deleted document
+
+New features for DRG CMS version up to 0.5.50.4
+    Rails 5.0 compatibility
+    category types can now be defined in dc_big_table under dc_category_type key
+    DrgCms gem routes can now be defined as DrgCms.routes
+    new field tree_select added to DRG CMS Forms. Tree select will be used as data entry field for categories instead of select field with multiple option
+    switch to Rails concern for main model definitions which may be reused.
+    site policy can be inherited from other site
+    menus can now belong to site
+    clear_link method is now a class method of DcPage model and can thus be called directly from other parts of application
+
+Bugs resolved for DRG CMS version up to 0.5.50.4
+    journal is now able to undelete deleted document
+
+
+New features for DRG CMS version 0.5.10.14
+    table_style added to result_set DRGCMS Forms option. This allows CSS style like width: 150% which will result in horizontal scroler on table and view more columns on result set.
+    result_set filter now has is empty option allowing to filter fields with null value.
+    filter OFF icon now displays currently active filter when hovered.
+    request_process field added to dc_site collection. It allowis for site to have different requests processing as defined in rails routes file. Single rails instance can now mix single document sites with complex sites.
+    multiple option is added to DRGCMS Forms select_field. 
+    is_email? class method added to dc_user model.
+    form generator has now list of all model fields added at the end of generated form. Field names can be used as template in YAML translation file.
+    dc_choices4_field method implemented. It returns choices that are defined in localization files.
+    categories field changed from multitext_autocomplete to select field with multiple options.
+    a poll form can now be surrounded by div tag thus allowing for additional styling of polls
+    drgcms_controlls files can now also be defined only as control files.
+    journal documents can now be filtered by document id
+    CMS menu redesigned. Instead of pulldown menus are now displayed fixed on the left side of edit area
+
+Bugs resolved for DRG CMS version 0.5.10.14
+    prevent double form submit when browser is restarted.
+    when user has no role defined guest role is automatically applied
+    dc_cleanup rake task deletes 1000 session documents created by robots at once instead of all which ended in error if number of documents was higher then 100.000
+
+
 New features for DRG CMS version 0.5.10
 
     jQuery javascript library forced to jQuery2

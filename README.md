@@ -18,6 +18,7 @@ Compatibility
 
 DRG CMS is tested against Ruby 2.2 and higher, Rails 5.0 and higher, Mongoid 6, MongoDB 3.0, 3.2
 
+Version from 0.5.51 and higher require Ruby 2.3 and Rails 5.1
 
 Documentation
 -------------
@@ -28,7 +29,7 @@ Please see the DRG CMS website for up-to-date documentation:
 License (MIT LICENCE)
 ---------------------
 
-Copyright (c) 2012-2016 Damjan Rems
+Copyright (c) 2012-2017 Damjan Rems
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
