@@ -248,10 +248,12 @@ en:
       dc_page:
         tabletitle: Pages
         choices4_comments: 'Allowed:1,Not allowed:0'
+        choices4_if_scroll: 'Auto,Yes,No'
         1base: Base
         2advanced: Advanced
         3content: Content
         4parts: Parts
+        5iframe: IFrame
 
         subject: Subject
         subject_link: Subject link
@@ -279,6 +281,14 @@ en:
         kats: Categories
         gallery: Gallery name
         updated_at: Updated
+        if_url: URL
+        if_width:  Width
+        if_height: Height
+        if_scroll: Scrolling
+        if_border: Border
+        if_params: Parameters
+        if_id: CSS id
+        if_class: CSS class        
 
       dc_part:
         tabletitle: Parts of page
@@ -703,6 +713,15 @@ en:
         kats: Categories for this article
         gallery: Gallery pictures are defined in parts of page. Value defines name of parts which hold data about pictures in gallary.
         body: Content of this page
+        if_url: URL adress of page which will be loaded into IFrame
+        if_width:  IFrame area width
+        if_height: IFrame area height
+        if_scroll: Scroll bars visibility
+        if_border: Thickness of border around IFrame area. When 0, no border is shown.
+        if_params: Parameters added to URL address    
+        if_id: CSS id of IFrame object
+        if_class: CSS class of IFrame object
+        
 
       dc_part:
         name: Parts can be searched by name or by id

@@ -1227,4 +1227,36 @@ def dc_iframe_edit(table, opts={})
   ret.html_safe
 end
 
+########################################################################
+# Will return value from internal DRG variables.
+# This objects can be params, session, ...
+# 
+# Parameters:
+# [object] String: Internal object holding variable. Current values can be session, params, site, page
+# [var_name] String[symbol]: Variable name (:user_name, 'user_id', ...)
+# 
+# Example:
+#    # called when constructiong iframe for display
+#    dc_internal_var(session, :user_id)
+#    dc_internal_var(params, :some_external_parameter)
+#    dc_internal_var(site, :name)
+# 
+# Returns:
+# Value of variable or nil when not found
+########################################################################
+def dc_internal_var(object, var_name)
+  begin
+    case
+      when object == 'session' then _origin.session(var_name)
+      when object == 'params' then _origin.params(var_name)
+      when object == 'site' then _origin.dc_get_site.send(var_name)
+      when object == 'page' then _origin.page.send(var_name)
+    else
+      'VARIABLE: UNKNOWN OBJECT'
+    end
+  rescue Exception 
+    'VARIABLE: ERROR'
+  end
+end
+
 end

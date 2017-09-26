@@ -48,16 +48,52 @@ def initialize( parent, opts={} ) #:nodoc:
 end
 
 #########################################################################
+# Render IFrame part if defined on page
+#########################################################################
+def iframe
+  return '' if @page.if_url.blank?
+  html =  "\n<iframe"
+  html << " id=\"#{@page.if_id}\"" unless @page.if_id.blank?
+  html << " class=\"#{@page.if_class}\"" unless @page.if_class.blank?
+  html << " border=\"#{@page.if_border}\""  
+  html << " height=\"#{@page.if_height}\"" unless @page.if_height.blank?
+  html << " width=\"#{@page.if_width}\"" unless @page.if_width.blank?
+  html << " scrolling=\"#{@page.if_scroll}\""
+# Parameters
+  parameters = @page.if_url.match(/\?/) ? '' : '?' 
+  params = YAML.load(@page.if_params) 
+  params = {} unless params.class == Hash
+  params.each do |key, value|
+    val = @parent.dc_internal_var(value['object'], value['variable'])
+    parameters << "&#{key}=#{val}" if val # only when not nil
+  end
+  url = @page.if_url + (parameters.size > 1 ? parameters : '')
+  html << "src=\"#{url}\" ></iframe>\n"
+  html
+end
+
+#########################################################################
 # Default DcPage render method
 #########################################################################
 def default
   can_view, msg = dc_user_can_view(@parent, @page)
   return msg unless can_view
-#  
+# 
   html = ''
   html << dc_page_edit_menu() if @opts[:edit_mode] > 1
   @parent.page_title = @page.title.blank? ? @page.subject : @page.title
   html << @page.body
+# render poll if defined
+  if @page.dc_poll_id
+    @opts.merge!(:poll_id => @page.dc_poll_id, :return_to => @parent.request.url, method: nil)
+    comment = DcPollRenderer.new(@parent, @opts)
+    html << "<div class='wrap row'>#{comment.render_html}</div>"
+    @css << "\n#{comment.render_css}"
+  end
+# also add iframe
+  html << iframe()
+    html
+
 end
 
 #########################################################################

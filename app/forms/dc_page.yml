@@ -34,23 +34,19 @@ form:
       10:
         name: subject
         type: text_field
-        html:
-          size: 50
+        size: 50
       20:
         name: subject_link
         type: text_field
-        html:
-          size: 50
+        size: 50
       30:
         name: title
         type: text_field
-        html:
-          size: 50
+        size: 50
       40:
         name: alt_link
         type: text_field
-        html:
-          size: 50
+        size: 50
         text: Alternative link
       50:
         name: sub_subject
@@ -60,8 +56,7 @@ form:
       60:
         name: author_name
         type: text_field
-        html:
-          size: 30
+        size: 30
 
       70:
         name: publish_date
@@ -70,13 +65,11 @@ form:
       80:
         name: picture
         type: file_select
-        html:
-          size: 50
+        size: 50
       90:
         name: gallery
         type: text_field
-        html:
-          size: 20
+        size: 20
       100:
         name: valid_from
         type: datetime_select
@@ -125,8 +118,7 @@ form:
       30:
         name: params
         type: text_area
-        html:
-          size: 100x10
+        size: 100x10
       40:
         name: dc_site_id
         type: select
@@ -155,8 +147,8 @@ form:
       20:
         name: css
         type: text_area
-        html:
-          size: 100x20
+        size: 100x20
+        
     4parts:
       10:
         name: dc_parts
@@ -164,4 +156,37 @@ form:
         formname: dc_part
         html:
           height: 1000
+          
+    5iframe:
+      10:
+        name: if_url
+        type: text_field
+        size: 80
+      20:
+        name: if_border
+        type: text_field
+        size: 2
+      30:
+        name: if_width
+        type: text_field
+        size: 5
+      40:
+        name: if_height
+        type: text_field
+        size: 5
+      50:
+        name: if_scroll
+        type: select
+      60:
+        name: if_id
+        type: text_field
+        size: 10
+      70:
+        name: if_class
+        type: text_field
+        size: 10
+      80:
+        name: if_params
+        type: text_area
+        size: 80x10
     

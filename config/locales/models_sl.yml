@@ -276,10 +276,12 @@ sl:
       dc_page:
         tabletitle: Strani
         choices4_comments: 'Dovoljeno:1,Ni dovoljeno:0'
+        choices4_if_scroll: 'Avto:Auto,Da:Yes,Ne:No'
         1base: Osnovno
         2advanced: Napredno
         3content: Vsebina
         4parts: Elementi
+        5iframe: IFrame
 
         subject: Zadeva
         subject_link: Povezava
@@ -311,7 +313,15 @@ sl:
         updated_at: Spremenjeno
         picture: Slika
         dc_poll_id: Anketa
-
+        if_url: URL naslov
+        if_width:  Širina
+        if_height: Višina
+        if_scroll: Pomikanje
+        if_border: Okvir
+        if_params: Parametri
+        if_id: CSS id
+        if_class: CSS class        
+        
       dc_part:
         tabletitle: Elementi strani
         1base: Osnovno
@@ -734,7 +744,14 @@ sl:
         gallery: Posamezne slike so definirane v elementih strani. Podatek določa ime elementov, ki pripadajo galeriji.
         picture: Slika uporabljena za prikaz sestavka
         dc_poll_id: Anketa, če sestavek vsebuje tudi anketo
-
+        if_url: URL naslov od koder bo naložena vsebina IFrame-a
+        if_width:  Širina IFrame področja
+        if_height: Višina IFrame področja
+        if_scroll: Prikaz drsnikov za pomikanje okna
+        if_border: Debelina okvira IFrame okna. 0 je brez okvirja.
+        if_params: Pramateri posredovani v URL naslovu
+        if_id: CSS id IFrame objekta
+        if_class: CSS class IFrame objekta
 
       dc_part:
         name: Naziv elementa
@@ -878,4 +895,3 @@ sl:
         filter: Vsebina filtra
         public: Filter je na voljo vsem uporabnikom
         sort: Privzeto sortiranje ob izbiri filtra
-        

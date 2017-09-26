@@ -57,6 +57,15 @@ field :created_by,   type: BSON::ObjectId
 field :updated_by,   type: BSON::ObjectId
 field :kats,         type: Array         # Categories
 
+field :if_url,       type: String
+field :if_border,    type: Integer, default: 0
+field :if_width,     type: Integer
+field :if_height,    type: Integer
+field :if_scroll,    type: String
+field :if_id,        type: String
+field :if_class,        type: String
+field :if_params,    type: String
+
 field :policy_id,    type: BSON::ObjectId
 
 embeds_many :dc_parts
