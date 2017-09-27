@@ -61,7 +61,7 @@ def iframe
   html << " scrolling=\"#{@page.if_scroll}\""
 # Parameters
   parameters = @page.if_url.match(/\?/) ? '' : '?' 
-  params = YAML.load(@page.if_params) 
+  params = YAML.load(@page.if_params) rescue {}
   params = {} unless params.class == Hash
   params.each do |key, value|
     val = @parent.dc_internal_var(value['object'], value['variable'])
