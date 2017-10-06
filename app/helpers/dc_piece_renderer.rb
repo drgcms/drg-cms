@@ -58,6 +58,7 @@ def link_4edit()
   html = ''
   return html if @opts[:edit_mode] < 2
   @opts[:editparams].merge!( { table: 'dc_piece', 
+                               formname: 'dc_piece', 
                                controller: 'cmsedit', 
                                action: 'edit', 
                                id: @piece.id,
