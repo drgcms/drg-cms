@@ -67,6 +67,7 @@ def render_particle(particle, opts)
     html << dc_link_for_edit( opts[:editparams] )
   end
 #
+=begin
   if particle.piece_id
     opts[:id] = particle.piece_id
     piece = DcPieceRenderer.new(@parent, opts)
@@ -76,7 +77,9 @@ def render_particle(particle, opts)
     html << particle.body
     @part_css << particle.css.to_s
   end
-  html
+=end
+  @part_css << particle.css.to_s
+  html << particle.body
 end
 
 ########################################################################
