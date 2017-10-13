@@ -1247,14 +1247,15 @@ end
 def dc_internal_var(object, var_name)
   begin
     case
-      when object == 'session' then _origin.session(var_name)
-      when object == 'params' then _origin.params(var_name)
-      when object == 'site' then _origin.dc_get_site.send(var_name)
-      when object == 'page' then _origin.page.send(var_name)
+      when object == 'session' then _origin.session[var_name]
+      when object == 'params'  then _origin.params[var_name]
+      when object == 'site'    then _origin.dc_get_site.send(var_name)
+      when object == 'page'    then _origin.page.send(var_name)
     else
       'VARIABLE: UNKNOWN OBJECT'
     end
-  rescue Exception 
+  rescue Exception => e
+    Rails.logger.debug "Method dc_internal var. Runtime error. #{e.message}"
     'VARIABLE: ERROR'
   end
 end
