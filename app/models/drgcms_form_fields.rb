@@ -445,7 +445,12 @@ end
 ###########################################################################
 def render 
 # search field name
-  if @yaml['search'].to_s.match(/\./)
+  if @yaml['search'].class == Hash
+    table    = @yaml['search']['table']
+    field_name = @yaml['search']['field']
+    method   = @yaml['search']['method']
+    search = method.nil? ? field_name : "#{field_name}.#{method}"
+  elsif @yaml['search'].to_s.match(/\./)
     table, field_name, method = @yaml['search'].split(/\.|\,/) 
     search = method.nil? ? field_name : "#{field_name}.#{method}"
   else # search and table name are separated
@@ -1124,7 +1129,7 @@ end
 # * +name:+ field name (required)
 # * +type:+ text_autocomplete (required)
 # * +table+ Collection (table) name. When defined search must contain field name
-# * +search:+ Search may consist of three parameters from which are separated either by dot (.) or comma(,)
+# * +search:+ Search may consist of three parameters from which are separated either by dot (.) 
 #   * search_field_name; when table option is defined search must define field name which will be used for search query
 #   * collection_name.search_field_name; Same as above except that table options must be ommited.
 #   * collection_name.search_field_name.method_name; When searching is more complex custom search
@@ -1479,7 +1484,8 @@ def render
 $(function(){
   $("##{@yaml['name']}").jstree( {
     "checkbox" : {"three_state" : false},        
-    "core" : { "themes" : { "icons": false } },
+    "core" : { "themes" : { "icons": false },
+               "multiple" : #{@yaml['multiple'] ? 'true' : 'false'}  },
     "plugins" : ["checkbox"]
   });
 });
