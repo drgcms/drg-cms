@@ -765,7 +765,7 @@ class Comment < DrgcmsField
 # Render comment field html code
 ###########################################################################
 def render
-  @html << t(@yaml['text'], @yaml['text'])
+  @html << t(@yaml['comment'], @yaml['comment'])
   self
 end
 end
