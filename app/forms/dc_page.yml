@@ -93,7 +93,7 @@ form:
         type: tree_select
         eval: "DcCategory.choices4_categories(@parent.dc_get_site)"
         style: 'max-height: 300px'
-          
+        multiple: true       
 
     2advanced:
       10:
@@ -108,7 +108,6 @@ form:
         type: tree_select
         eval: '@parent.dc_menu_class.choices4_menu_as_tree(@record.dc_site_id)'        
         style: 'max-height: 300px'
-        single: true       
 
 #      20:
 #        name: menu_id
