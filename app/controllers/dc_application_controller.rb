@@ -327,6 +327,7 @@ def dc_process_default_request()
   params[:path] = @site.homepage_link if params[:id].nil? and params[:path].nil?
 # some other process request. It shoud fail if not defined
   return eval(@site.request_processor) if !@site.request_processor.blank?
+
 # Search for page 
   pageclass = @site.page_table.classify.constantize
   if params[:id]
@@ -365,20 +366,6 @@ def dc_process_default_request()
     dc_log_visit()
   end
   @page_title = @page.title.blank? ? "#{@site.page_title}-#{@page.subject}" : @page.title
-# define design
-=begin
-  design      = @design ? @design.body : @site.design
-# render view. inline if defined in design
-  view_filename = @design ? @design.rails_view.to_s : ''
-  view_filename = @site.rails_view.to_s if view_filename.blank?
-  if view_filename.size < 5
-    design = "<%= render partial: 'cmsedit/edit_stuff' %>\n" + design if session[:edit_mode] > 0 
-    design << '<style type="text/css"><%= @css.html_safe %></style><%= javascript_tag @js %>'
-    render(inline: design, layout: layout)
-  else
-    render view_filename, layout: layout
-  end
-=end
   get_design_and_render @design
 end
 
@@ -412,16 +399,6 @@ def dc_single_sitedoc_request
 #  
   @page_title = "#{@site.page_title} #{@part.name}"
   @js, @css = '', ''
-=begin  
-  layout = @site.site_layout.blank? ? 'content' : @site.site_layout
-  if @site.rails_view.blank?
-    design = @site.design + '<style type="text/css"><%= @css.html_safe %></style><%= javascript_tag @js %>'
-    design = "<%= render partial: 'cmsedit/edit_stuff' %>\n" + design if session[:edit_mode] > 0 
-    render(inline: design, layout: layout)
-  else
-    render @site.rails_view, layout: layout
-  end
-=end
   get_design_and_render nil
 end
 
