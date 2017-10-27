@@ -671,14 +671,14 @@ def dc_fields_for_tab(fields) #:nodoc:
 # label
     text = if options['text']
       t(options['text'], options['text'])
-    else 
+    elsif options['name']
       t_name(options['name'], options['name'].capitalize.gsub('_',' ') )
     end
 # help text can be defined in form or in translations starting with helpers. or as helpers.help.collection.field
     help = if options['help'] 
       options['help'].match('helpers.') ? t(options['help']) : options['help']
     end
-    help ||= t('helpers.help.' + @form['table'] + '.' + options['name'],' ')    
+    help ||= t('helpers.help.' + @form['table'] + '.' + options['name'],' ') if options['name'] 
 # create field object from class and call its render method
     klas_string = options['type'].camelize
     field_html = if DrgcmsFormFields.const_defined?(klas_string) # check if field type is defined
@@ -735,7 +735,7 @@ def dc_fields_for_form()
         next unless is_on_tab
       end
 # first div is displayed all other are hidden      
-      tdata << "<div id='data_#{tabname}'"
+      tdata << "<div id='data_#{tabname.delete("\s\n")}'"
       tdata << ' class="div-hidden"' unless first
       tdata << " style=\"height: #{@form['form']['height']}px;\"" if @form['form']['height']
       tdata << ">#{dc_fields_for_tab(@form['form']['tabs'][tabname])}</div>"
@@ -746,7 +746,7 @@ def dc_fields_for_form()
     html << '<ul class="dc-form-ul" >'
     first = true # first tab must be selected
     tabs.each do |tab| 
-      html << "<li id='li_#{tab}' data-div='#{tab}' class='dc-form-li #{'dc-form-li-selected' if first }'>#{t_name(tab, tab)}</li>" 
+      html << "<li id='li_#{tab}' data-div='#{tab.delete("\s\n")}' class='dc-form-li #{'dc-form-li-selected' if first }'>#{t_name(tab, tab)}</li>" 
       first = false
     end
     html << '</ul>'
