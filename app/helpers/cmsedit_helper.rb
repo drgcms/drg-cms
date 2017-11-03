@@ -53,7 +53,7 @@ def dc_actions_for_index()
 EOT
 # Remove actions settings and sort
   only_actions = []
-  actions.each { |key, value| only_actions << [key, value] if key.class == Fixnum }
+  actions.each { |key, value| only_actions << [key, value] if key.class == Integer }
   only_actions.sort_by!(&:first)
   only_actions.each do |element|
     k,v = element
@@ -649,10 +649,10 @@ def dc_fields_for_tab(fields) #:nodoc:
   odd_even       = nil
   reset_cycle()
 # options and fields must be separated before sorting  
-  form_options = fields.select {|field| field.class != Fixnum }
+  form_options = fields.select {|field| field.class != Integer }
   columns      = form_options.try(:[],'columns') || 1
 # Select form fields and sort them by key
-  form_fields  = fields.select {|field| field.class == Fixnum }
+  form_fields  = fields.select {|field| field.class == Integer }
   form_fields.to_a.sort.each do |element|
     options = element.last
     session[:form_processing] = "form:fields: #{element.first}=#{options}"

@@ -89,11 +89,11 @@ def self.get_field_form_definition(name, parent) #:nodoc:
   form['form']['tabs'].each do |tab|
 # Array with 2 elements. First is tabname, second is data      
     fields = tab.last
-    fields.each {|k,v| return v if (k.class == Fixnum and v['name'] == name) }
+    fields.each {|k,v| return v if (k.class == Integer and v['name'] == name) }
   end if form['form']['tabs'] #  I know. But nice. 
 #
   form['form']['fields'].each do |field|
-    next unless field.first.class == Fixnum # options
+    next unless field.first.class == Integer # options
     return field.last if field.last['name'] == name
   end if form['form']['fields']
   nil

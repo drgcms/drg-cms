@@ -771,11 +771,11 @@ end
 def fields_on_form() #:nodoc:
   fields = []
   if @form['form']['fields']
-# read only field elements (key is Fixnum)
-    @form['form']['fields'].each {|key,options| fields << options if key.class == Fixnum }
+# read only field elements (key is Integer)
+    @form['form']['fields'].each {|key,options| fields << options if key.class == Integer }
   else
     @form['form']['tabs'].keys.each do |tab|
-      @form['form']['tabs'][tab].each {|key,options| fields << options if key.class == Fixnum }
+      @form['form']['tabs'][tab].each {|key,options| fields << options if key.class == Integer }
     end  
   end
   fields
