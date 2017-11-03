@@ -507,7 +507,7 @@ def dc_link_for_edit(opts)
   icon   = opts.delete('icon') || 'edit lg'
   opts['controller'] ||= 'cmsedit'
   opts['action']     ||= 'edit'
-  opts['formname']   ||= opts['table'].split(';').last
+  opts['formname']   ||= opts['table'].to_s.split(';').last
   js  = "$('##{target}').attr('src', '#{_origin.url_for(opts)}'); return false;"
   dc_link_to(nil, _origin.fa_icon(icon, class: 'dc-inline-link'), '#', 
              { onclick: js, title: title, alt: 'Edit'})
