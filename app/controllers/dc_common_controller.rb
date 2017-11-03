@@ -71,7 +71,7 @@ end
 # Register and record click when ad link is clicked.
 ########################################################################
 def ad_click
-  if (ad = DcAd.find(params[:id]))
+  if params[:id] and (ad = DcAd.find(params[:id]))
     ad.clicked += 1
     ad.save
     DcAdStat.create!(dc_ad_id: params[:id], ip: request.ip, type: 2 ) 
@@ -79,7 +79,7 @@ def ad_click
     logger.error "ERROR ADS: Invalid ad id=#{params[:id]} ip=#{request.ip}."
   end
 
-  render :nothing => true
+  render body: nil
 end
 
 ##########################################################################
