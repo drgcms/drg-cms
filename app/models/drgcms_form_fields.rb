@@ -1508,7 +1508,17 @@ end
 # Return value. Return nil if input field is empty
 ###########################################################################
 def self.get_data(params, name)
-  params['record'][name].blank? ? nil : params['record'][name].split(',')
+  return nil if params['record'][name].blank?
+#
+  result = params['record'][name].split(',')
+  result.delete_if {|e| e.blank? }
+  return nil if result.size == 0
+# convert to BSON objects if is BSON object ID
+  if BSON::ObjectId.legal?(result.first)
+    result.map{ |e| BSON::ObjectId.from_string(e) }
+  else
+    result
+  end
 end
 
 end
