@@ -96,61 +96,69 @@ $(function() {
  *    render json: {'record_name' => "Damjan", 'record_surname' => 'Rems'}.to_json
  *  will replace values of two fields on the form.
  *******************************************************************/
+
 process_json_result = function(json) {
-  var c = '';
+  var i,operation,what, selector;
   $.each(json, function(key, val) {
     i = key.search('_');
     if (i > 1) {
-      oper = key.substring(0,i);
+      operation = key.substring(0,i);
       what = key.substring(i+1,100);
-      switch (oper) {
-      /* update field */
-      case 'record':
-        $('#'+key).val(val);
-        break;
-      /* display message */  
-      case 'msg': 
-        selector = 'dc-form-' + what;
-        if ($('.'+selector).length == 0) {
-          val = '<div class="' + selector + '">' + val + '</div>';
-          $('.dc-title').after(val);
-      } else
-          $('.'+selector).html(val);
-        break;
-      /* update div */
-      case '#div+':
-        $('#'+what).append(val);
-        break;
-      case '#+div':
-        $('#'+what).prepend(val);
-        break;
-      case '#div':
-        $('#'+what).html(val);
-        break;
-      case '.div+':
-        $('.'+what).append(val);
-        break;
-      case '.+div':
-        $('.'+what).prepend(val);
-        break;
-      case '.div':
-        $('.'+what).html(val);
-        break;
-      /* goto url */
-      case 'url':
-        window.location.href = val;
-        break;
-      case 'alert':
-        alert(val);
-        break;
-      case 'window':
-        w = window.open(val, what);
-        w.focus();        
-        break;
-      case 'reload':
-        location.reload(); 
-        break;
+    } else {
+      operation = key;
+      what = '';
+    }
+//    
+    switch (operation) {
+    // update field 
+    case 'record':
+      $('#'+key).val(val);
+      break;
+    // display message   
+    case 'msg': 
+      selector = 'dc-form-' + what;
+      if ( $('.'+selector).length == 0 ) {
+        val = '<div class="' + selector + '">' + val + '</div>';
+        $('.dc-title').after(val);
+      } else {
+        $('.'+selector).html(val);
       }
+      break;
+    // update div 
+    case '#div+':
+      $('#'+what).append(val);
+      break;
+    case '#+div':
+      $('#'+what).prepend(val);
+      break;
+    case '#div':
+      $('#'+what).html(val);
+      break;
+    case '.div+':
+      $('.'+what).append(val);
+      break;
+    case '.+div':
+      $('.'+what).prepend(val);
+      break;
+    case '.div':
+      $('.'+what).html(val);
+      break;
+    // goto url 
+    case 'url':
+      window.location.href = val;
+      break;
+    case 'alert':
+      alert(val);
+      break;
+    case 'window':
+      w = window.open(val, what);
+      w.focus();        
+      break;
+    case 'reload':
+      location.reload(); 
+      break;
+    default: 
+      console.log("DRGCMS: Invalid ajax result operation: " + operation);
     }
   });
 };
