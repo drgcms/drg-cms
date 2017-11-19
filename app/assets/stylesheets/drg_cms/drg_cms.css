@@ -89,9 +89,10 @@ color: #222;
 
 textarea, input, select {
 color: #222;
-padding: 5px 3px;
-border: solid 1px #bbb;
+padding: 6px 4px;
+border: solid 2px #dde;
 border-radius: 2px;
+font: 14px Arial;
 }
 
 input.file {
@@ -99,8 +100,10 @@ border: none;
 }
 
 select {
-padding: 4px 0px;
+padding: 5px 0px;
 background: #fff;  
+border: solid 2px #dde;
+border-radius: 2px;
 }
 
 hr {
@@ -124,9 +127,9 @@ td { vertical-align: middle; }
 th {
 padding: 4px;
 text-align: left;
-border-bottom:1px solid #e8e8e8;
-border-right:1px solid #e8e8e8;
-background: #e8e8e8;
+border-bottom:2px solid #dde;
+border-right:2px solid #dde;
+background: #dde;
 color:#888;
 font-weight: bold;
 }
@@ -176,17 +179,17 @@ padding: 0px;
 border-spacing: 0px;
 border-radius: 1px;  
 background-color: #fafafa;
-border-top: 1px solid #e8e8e8;
-border-left: 1px solid #e8e8e8;
+border-top: 2px solid #dde;
+border-left: 2px solid #dde;
 }
 
 .dc-result tr:hover { background-color: #eee; }
 
 .dc-result td { 
-padding: 3px 4px;
+padding: 4px;
 line-height: 1.5em; 
-border-right: 1px solid #e8e8e8;
-border-bottom: 1px solid #e8e8e8;
+border-right: 2px solid #dde;
+border-bottom: 2px solid #dde;
 }
 
 .dc-result i { 
@@ -405,7 +408,7 @@ background: transparent linear-gradient(to bottom, #eee 0%, #eee 100%) repeat sc
   width: 100%;
   padding: 0px;
   padding-top: 4px;
-  border: 1px solid #eee;
+  border: 1px solid #dde;
   border-radius: 2px; 
   background-color: #fcfcfc;
 }
@@ -475,7 +478,7 @@ background: transparent linear-gradient(to bottom, #eee 0%, #eee 100%) repeat sc
 
 .dc-form-field {
   text-align: left;
-  padding: 2px 2px;
+  padding: 3px 2px;
 /*  
   background-color: #f4f4f4;
   border-bottom: 1px solid #eee;
@@ -484,11 +487,12 @@ background: transparent linear-gradient(to bottom, #eee 0%, #eee 100%) repeat sc
 
 .dc-readonly {
   font-weight: normal;
-  padding: 5px 3px;
-  border: 1px solid #ccc;
-  background-color: #eee;
+  padding: 6px 3px;
+  border: 2px solid #dde;
+  background-color: #f8f8f8;
   border-radius: 2px;
   color: #444;
+  font-size: 14px;
 }
 
 .dc-color-odd {
@@ -522,7 +526,7 @@ border-bottom: 1px solid #eee;
   text-align: center;
   font-weight: bold;
 
-  padding:2px 15px;
+  padding:3px 15px;
   border-radius: 4px 4px 0px 0px;
   background: #eee;
   margin-right: 2px;
@@ -532,6 +536,7 @@ border-bottom: 1px solid #eee;
   cursor: pointer;
   color: #fff;
   background: #888;
+  padding:4px 15px 3px 15px;
 }
 
 .dc-odd {
@@ -540,7 +545,7 @@ border-bottom: 1px solid #eee;
 
 .dc-separator {
 padding: 0px;
-border-top: 2px solid #ccc;
+border-top: 2px solid #dde;
 }
 
 #cmsedit-div {
@@ -926,5 +931,5 @@ padding: 5px;
   max-width: 50%;
   background-color: #fff;
   padding: 10px;
-  border: 1px solid #ccc;
+  border: 2px solid #dde;
 }
