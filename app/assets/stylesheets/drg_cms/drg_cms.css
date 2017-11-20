@@ -90,7 +90,7 @@ color: #222;
 textarea, input, select {
 color: #222;
 padding: 6px 4px;
-border: solid 2px #dde;
+border: solid 2px #ddd;
 border-radius: 2px;
 font: 14px Arial;
 }
@@ -102,7 +102,7 @@ border: none;
 select {
 padding: 5px 0px;
 background: #fff;  
-border: solid 2px #dde;
+border: solid 2px #ddd;
 border-radius: 2px;
 }
 
@@ -127,9 +127,9 @@ td { vertical-align: middle; }
 th {
 padding: 4px;
 text-align: left;
-border-bottom:2px solid #dde;
-border-right:2px solid #dde;
-background: #dde;
+border-bottom:2px solid #ddd;
+border-right:2px solid #ddd;
+background: #ddd;
 color:#888;
 font-weight: bold;
 }
@@ -141,7 +141,7 @@ img { vertical-align:bottom; }
 .dc-link a:link, .dc-link a:active, .dc-link a:visited, 
 .dc-animate a:link, .dc-animate a:active, .dc-animate a:visited, 
 .dc-result a:link, .dc-result a:active, .dc-result a:visited { 
-color: #888;
+color: #666;
 font-weight: bold;
 text-decoration: none; 
 background: transparent;
@@ -150,10 +150,10 @@ background: transparent;
 .dc-link a:hover, .dc-animate a:hover, .dc-result a:hover  { 
 background: #f8f8f8;
 transition: 0.3s;
-color: #555;
+color: #000;
 }
 
-a.dc-animate:hover { color: #555; background: transparent;}
+a.dc-animate:hover { color: #000; background: transparent;}
 
 .dc-link a img { border: none; }
 
@@ -179,17 +179,17 @@ padding: 0px;
 border-spacing: 0px;
 border-radius: 1px;  
 background-color: #fafafa;
-border-top: 2px solid #dde;
-border-left: 2px solid #dde;
+border-top: 2px solid #ddd;
+border-left: 2px solid #ddd;
 }
 
-.dc-result tr:hover { background-color: #eee; }
+.dc-result tr:hover { background-color: #ddd; }
 
 .dc-result td { 
 padding: 4px;
 line-height: 1.5em; 
-border-right: 2px solid #dde;
-border-bottom: 2px solid #dde;
+border-right: 2px solid #ddd;
+border-bottom: 2px solid #ddd;
 }
 
 .dc-result i { 
@@ -219,7 +219,7 @@ border: 1px solid #ddd;
 }
 
 .dc-link:hover a { 
-  color: #555; 
+  color: #000; 
   transition: 0.3s;  
 }
 
@@ -228,7 +228,7 @@ border: 1px solid #ddd;
   font-weight: bold;
   padding: 5px 8px;  
   border-radius: 5px;
-  color: #888;
+  color: #666;
   background-color: #eee;
   background: transparent linear-gradient(to bottom, #FFF 0%, #F2F2F2 100%) repeat scroll 0% 0%;
   border: 1px solid #ddd;
@@ -242,7 +242,7 @@ transition: 0.3s;
 }
 
 .dc-link-ajax:hover a { 
-color: #222; 
+color: #000; 
 cursor: pointer; 
 transition: 0.3s; 
 }
@@ -323,10 +323,10 @@ background: transparent linear-gradient(to bottom, #eee 0%, #eee 100%) repeat sc
 }
 
 .dc-link-submit .fa {
-  color: #888;
+  color: #666;
 }
 .dc-link-submit:hover .fa {
-  color: #555;
+  color: #000;
   transition: 0.3s;
 }
 .dc-link-submit:hover {
@@ -335,13 +335,13 @@ background: transparent linear-gradient(to bottom, #eee 0%, #eee 100%) repeat sc
   transition: 0.3s;
 }
 .dc-link-submit:hover .dc-submit {
-  color: #555;
+  color: #000;
   transition: 0.3s;
 }
 .dc-submit {
   text-decoration: none;
   border: 0px;
-  color: #888;
+  color: #666;
   font-weight: bold;
   box-shadow: none;
 /*  background: none;*/
@@ -354,7 +354,7 @@ background: transparent linear-gradient(to bottom, #eee 0%, #eee 100%) repeat sc
   cursor: pointer;
   text-decoration: none;
   color: #fff;
-  background-color: #888; 
+  background-color: #000; 
 }
 
 /* Pagination */
@@ -371,7 +371,7 @@ background: transparent linear-gradient(to bottom, #eee 0%, #eee 100%) repeat sc
 }
 
 #result .pagination span:hover > a {
-  color: #555;
+  color: #000;
 }
 
 #result .pagination .current {
@@ -408,7 +408,7 @@ background: transparent linear-gradient(to bottom, #eee 0%, #eee 100%) repeat sc
   width: 100%;
   padding: 0px;
   padding-top: 4px;
-  border: 1px solid #dde;
+  border: 1px solid #ddd;
   border-radius: 2px; 
   background-color: #fcfcfc;
 }
@@ -488,7 +488,7 @@ background: transparent linear-gradient(to bottom, #eee 0%, #eee 100%) repeat sc
 .dc-readonly {
   font-weight: normal;
   padding: 6px 3px;
-  border: 2px solid #dde;
+  border: 2px solid #ddd;
   background-color: #f8f8f8;
   border-radius: 2px;
   color: #444;
@@ -545,7 +545,7 @@ border-bottom: 1px solid #eee;
 
 .dc-separator {
 padding: 0px;
-border-top: 2px solid #dde;
+border-top: 2px solid #ddd;
 }
 
 #cmsedit-div {
@@ -789,7 +789,7 @@ overflow-x:hidden;
 #dc-action-menu {
 padding: 2px 0px 2px 0px;
 font-weight: bold;
-color: #888;
+color: #666;
 display: flex;
 }
 
@@ -820,7 +820,7 @@ border: 1px solid #ddd;
 
 .dc-action-menu li:hover {
 border: 1px solid #ccc;
-color: #555;
+color: #000;
 transition: 0.3s;  
 }
 
@@ -931,5 +931,5 @@ padding: 5px;
   max-width: 50%;
   background-color: #fff;
   padding: 10px;
-  border: 2px solid #dde;
+  border: 2px solid #ddd;
 }
