@@ -483,8 +483,9 @@ def render
 # put field to enter search data on form
   @yaml['html'] ||= {}
   @yaml['html']['value'] = ''   # must be. Otherwise it will look into record and return error
+  @yaml['html']['placeholder'] = t('drgcms.search_placeholder')
   _name = '_' + @yaml['name']
-  @html << '<table class="ui-autocomplete-table"><td>'
+  @html << '<table class="ui-autocomplete-table"><td><div class="ui-autocomplete-border">'
   @html << @parent.link_to(@parent.fa_icon('plus-square lg', class: 'dc-animate dc-green'), '#',onclick: 'return false;') # dummy add. But it is usefull.
 
   record = record_text_for(@yaml['name'])    
@@ -506,18 +507,18 @@ def render
         link  = @parent.link_to(@parent.fa_icon('remove lg', class: 'dc-animate dc-red'), '#',
                 onclick: "$('##{rec.id}').hide(); var v = $('##{record}_#{@yaml['name']}_#{rec.id}'); v.val(\"-\" + v.val());return false;")
         field = @parent.hidden_field(record, "#{@yaml['name']}_#{rec.id}", value: element)
-        "<div id=\"#{rec.id}\" style=\"padding:2px;\">#{link} #{rec.send(field_name)}<br>#{field}</div>"
+        "<div id=\"#{rec.id}\" style=\"padding:4px;\">#{link} #{rec.send(field_name)}<br>#{field}</div>"
       else
         '** error **'
       end
     end
   end
-  @html << "</div></td></table>"
+  @html << "</div></div></td></table>"
 # Create text for div to be added when new category is selected  
   link    = @parent.link_to(@parent.fa_icon('remove lg', class: 'dc-animate dc-red'), '#', 
             onclick: "$('#rec_id').hide(); var v = $('##{record}_#{@yaml['name']}_rec_id'); v.val(\"-\" + v.val());return false;")
   field   = @parent.hidden_field(record, "#{@yaml['name']}_rec_id", value: 'rec_id')
-  one_div = "<div id=\"rec_id\" style=\"padding:2px;\">#{link} rec_search<br>#{field}</div>"
+  one_div = "<div id=\"rec_id\" style=\"padding:4px;\">#{link} rec_search<br>#{field}</div>"
     
 # JS stuff    
   @js << <<EOJS
@@ -542,6 +543,7 @@ $(document).ready(function() {
       div = div.replace('rec_search', ui.item.value)
       $("##{record}#{@yaml['name']}").append(div);
       $("##{record}_#{_name}").val('');
+      $("##{record}_#{_name}").focus();
     },
     minLength: 2
   });
@@ -1193,7 +1195,7 @@ def render
   ret_name = "#{ret_name}.#{method}" if method
   @yaml['html'] ||= {}
   @yaml['html']['value'] = value_displayed
-  @yaml['html']['placeholder'] ||= t('drgcms.two_chars') || nil
+  @yaml['html']['placeholder'] ||= t('drgcms.search_placeholder') || nil
 #    
   _name = '_' + @yaml['name']
   record = record_text_for(@yaml['name'])  

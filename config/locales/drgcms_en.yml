@@ -54,6 +54,7 @@ en:
     not_id: Value entered is not ID!
     cms_main: CMS main tables
     cms_advanced: CMS advanced
+    search_placeholder: Start typing to search
 
     edit: Edit
     show: Prikaz

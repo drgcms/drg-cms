@@ -489,9 +489,9 @@ background: transparent linear-gradient(to bottom, #eee 0%, #eee 100%) repeat sc
   font-weight: normal;
   padding: 6px 3px;
   border: 2px solid #ddd;
-  background-color: #f8f8f8;
+  background-color: #eee;
   border-radius: 2px;
-  color: #444;
+  color: #222;
   font-size: 14px;
 }
 
@@ -668,9 +668,9 @@ display: none;
 /****** jquery ui-autocomplete widget ***************/
 .ui-autocomplete-input {
   font-style: italic;
-  padding: 4px;
+  padding: 6px;
   border-radius: 2px;
-  border: solid 1px #396;
+  border: solid 2px #9c9;
 /*  background: linear-gradient(#8d8 0%, #ffe 15%, #fff 80%); */
 }
 
@@ -690,8 +690,17 @@ border: 1px solid #ddd;
 color: #000;
 }
 
-.dc-red { color: red;}
-.dc-green { color: #396;}
+.ui-autocomplete-border {
+  border-radius: 2px;
+  border: solid 2px #ddd;
+  padding: 8px;
+  background-color: #fff;
+}
+
+.dc-red { color: #d99;}
+.dc-red:hover { color: #e66;}
+.dc-green { color: #9c9;}
+.dc-green:hover { color: #6a6;}
 
 .aui-corner-all {
 background-color: lightyellow;

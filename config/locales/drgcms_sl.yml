@@ -53,7 +53,8 @@ sl:
     updated_by_other: Dokument je spremenil drug uporabnik. Prosimo ponovite vpis podatkov.
     not_id: Vsebina polja ni ključ ID! 
     cms_main: CMS tabele
-    cms_advanced: CMS napredne opcije    
+    cms_advanced: CMS napredne opcije   
+    search_placeholder: Vpišite pojem za iskanje
 
     edit: Urejanje
     show: Prikaz
