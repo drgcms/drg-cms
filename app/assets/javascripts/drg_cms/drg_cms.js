@@ -171,20 +171,6 @@ function dc_reload_window() {
 }
 
 /*******************************************************************
- * I would like to resize window to display whole tab. This will
- * be a job for someone with better javascrip knowledge.
- *******************************************************************/
-function dc_resize_to_tab() {
-  dom = $('iframe');
-  if (dom.contentWindow.document.body.offsetHeight > 10) {
-    alert(dom.style.height);
-    dom.style.height = (dom.contentWindow.document.body.offsetHeight + 30) + 'px'; 
-// scroll to top
-//    $('#' + iframe_name).dc_scroll_view();
-  }
-};
-
-/*******************************************************************
  * Will scroll to position on the screen. This is replacement for 
  * location.hash, which doesn't work in Chrome.
  * 
@@ -193,7 +179,7 @@ function dc_resize_to_tab() {
 $.fn.dc_scroll_view = function () { 
   return this.each(function () {
     $('html, body').animate({
-      scrollTop: $(this).offset().top - 20
+      scrollTop: $(this).offset().top - 100
     }, 500);
   });
 };
@@ -243,26 +229,29 @@ $(document).ready( function() {
   * Tab clicked on form. Hide old and show selected div.
   *******************************************************************/
   $('.dc-form-li').on('click', function(e) { 
-/* find li with dc-form-li-selected class and remove it. This will deselect tab */ 
-    var old_id = null;
+// find li with dc-form-li-selected class. This is our old tab
+    var old_tab_id = null;
     $(e.target).parents('ul').find('li').each( function() {
-/*      console.debug( $(this) );  */
       if ($(this).hasClass('dc-form-li-selected')) {
-/* ignore if tab is already selected */        
+// when not already selected toggle dc-form-li-selected class and save old tab
         if ($(this) !== $(e.target)) {
           $(this).toggleClass('dc-form-li-selected');
           $(e.target).toggleClass('dc-form-li-selected');
-          old_id = this.getAttribute("data-div");
+          old_tab_id = this.getAttribute("data-div");
         }
         return false;
       }
         
-    }); /* show selected data div */    
-    if (old_id !== null) {
-      $('#data_' + old_id).toggleClass('div-hidden');
+    }); // show selected data div 
+    if (old_tab_id !== null) {
+      $('#data_' + old_tab_id).toggleClass('div-hidden');
       $('#data_' + e.target.getAttribute("data-div")).toggleClass('div-hidden');
+// resize parent iframe if its size is less then selected div size      
+      var div_height = document.getElementById('data_' + e.target.getAttribute("data-div")).clientHeight + 120;
+//      if (window.frameElement.clientHeight < div_height) {
+        window.frameElement.style.height = div_height.toString() + 'px';
+//      }
     }
-//    dc_resize_to_tab();
   });  
 
 /*******************************************************************
