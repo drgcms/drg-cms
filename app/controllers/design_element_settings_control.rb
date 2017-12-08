@@ -119,6 +119,7 @@ def dc_before_save()
             v['readonly'] # fields with readonly option don't return value and would be wiped
 # return value from form field definition
     value = DrgcmsFormFields.const_get(v['type'].camelize).get_data(params, v['name'])
+    value = value.map {|e| e.to_s} if value.class == Array
 # set to nil if blank
     value = nil if value.blank?
     data['settings'] ||= {}
