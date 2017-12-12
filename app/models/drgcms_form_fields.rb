@@ -1419,7 +1419,7 @@ def make_tree(parent)
   return '' unless @choices[parent.to_s]
   @html << '<ul>'
   choices = if @choices[parent.to_s].first.last != 0
-    @choices[parent.to_s].sort_by {|e| e[3] } # sort by order if first is not 0
+    @choices[parent.to_s].sort_by {|e| e[3].to_i } # sort by order if first is not 0
 #    @choices[parent.to_s].sort_alphabetical_by(&:first) # use UTF-8 sort
   else  
     @choices[parent.to_s].sort_alphabetical_by(&:first) # use UTF-8 sort
