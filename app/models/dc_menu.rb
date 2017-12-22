@@ -117,13 +117,11 @@ end
 def self.choices4_menu_as_tree(site_id=nil)
   qry = where(active: true)
 # 
-  ar = [nil]
   if site_id.class == BSON::ObjectId
-    ar << site_id
+    qry.in( dc_site_id: [nil, site_id] )
   elsif site_id.respond_to?(:id)
-    ar << site_id.id
+    qry.in( dc_site_id: [nil, site_id.id] )
   end
-  qry = qry.in(dc_site_id: ar)
 #
   result = []
   qry.each do |menu|
