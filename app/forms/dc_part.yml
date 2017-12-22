@@ -82,7 +82,7 @@ form:
       10:
         name: body
         type: html_field
-        options: 'height: 600'
+        options: 'height: 800'
 
     3advanced:
       10:

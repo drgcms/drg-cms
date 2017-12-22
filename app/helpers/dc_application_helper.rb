@@ -1049,7 +1049,7 @@ def dc_user_can_view(ctrl, policy_id)
   end
 # permission defined by default policy
   default_policy = Mongoid::QueryCache.cache { policies.find_by(is_default: true) }
-  return false, 'Default accsess policy not found for the site!' unless default_policy
+  return false, 'Default access policy not found for the site!' unless default_policy
 #  
   permissions = {}
   default_policy.dc_policy_rules.to_a.each { |v| permissions[v.dc_policy_role_id] = v.permission }

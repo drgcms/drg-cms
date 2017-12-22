@@ -137,24 +137,24 @@ form:
         html:
           include_blank: true      
 
+      70:
+        name: css
+        type: text_area
+        size: 100x20
+
     3content:
       10:
         name: body
         type: html_field
-        options: 'height: 500'
-
-      20:
-        name: css
-        type: text_area
-        size: 100x20
-        
+        options: 'height: 1000'
+       
     4parts:
       10:
         name: dc_parts
         type: embedded
         formname: dc_part
         html:
-          height: 1000
+          height: 600
           
     5iframe:
       10:
