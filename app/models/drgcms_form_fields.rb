@@ -1418,31 +1418,14 @@ class TreeSelect < Select
 def make_tree(parent)
   return '' unless @choices[parent.to_s]
   @html << '<ul>'
-  choices = if @choices[parent.to_s].first.last != 0
+  choices = if @choices[parent.to_s].first[3] != 0
     @choices[parent.to_s].sort_by {|e| e[3].to_i } # sort by order if first is not 0
 #    @choices[parent.to_s].sort_alphabetical_by(&:first) # use UTF-8 sort
   else  
     @choices[parent.to_s].sort_alphabetical_by(&:first) # use UTF-8 sort
   end
   choices.each do |choice|
-    jstree = %Q[{"selected" : #{choice[4] ? 'true' : 'false'} }]
-# data-jstree must be singe quoted
-    @html << %Q[<li data-id="#{choice[1]}" data-jstree='#{jstree}'>#{choice.first}\n]
-# call recursively for children     
-    make_tree(choice[1]) if @choices[ choice[1].to_s ]
-    @html << "</li>"
-  end
-  @html << '</ul>'  
-end
-
-###########################################################################
-# Prepare choices for tree data rendering.
-###########################################################################
-def _make_tree(parent)
-  @html << '<ul>'
-  choices = @choices[parent.to_s].sort_alphabetical_by(&:first) # use UTF-8 sort
-  choices.each do |choice|
-    jstree = %Q[{"selected" : #{choice[4] ? 'true' : 'false'} }]
+    jstree = %Q[{"selected" : #{choice.last ? 'true' : 'false'} }]
 # data-jstree must be singe quoted
     @html << %Q[<li data-id="#{choice[1]}" data-jstree='#{jstree}'>#{choice.first}\n]
 # call recursively for children     
@@ -1474,13 +1457,15 @@ def render
   @choices.keys.each do |key|
     0.upto( @choices[key].size - 1 ) do |i|
       choice = @choices[key][i]
-      choice[4] = true if current_values[ choice[1].to_s ]
+      choice[choice.size - 1] = true if current_values[ choice[1].to_s ]
     end
   end
   make_tree(nil)
   @html << '</ul></div>'
 # add hidden communication field  
   @html << @parent.hidden_field(record, @yaml['name'], value: current.join(','))
+# save multiple indicator for data processing on return
+  @html << @parent.hidden_field(record, "#{@yaml['name']}_multiple", value: 1) if @yaml['multiple']
 # javascript to update hidden record field when tree looses focus
   @js =<<EOJS
 $(function(){
@@ -1516,11 +1501,9 @@ def self.get_data(params, name)
   result.delete_if {|e| e.blank? }
   return nil if result.size == 0
 # convert to BSON objects if is BSON object ID
-  if BSON::ObjectId.legal?(result.first)
-    result.map{ |e| BSON::ObjectId.from_string(e) }
-  else
-    result
-  end
+  result = result.map{ |e| BSON::ObjectId.from_string(e) } if BSON::ObjectId.legal?(result.first)
+# return only first element if multiple values select was not alowed
+  params['record']["#{name}_multiple"] == '1' ? result : result.first  
 end
 
 end
