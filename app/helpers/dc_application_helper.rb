@@ -919,13 +919,19 @@ def dc_choices4_cmsmenu()
     html << "<li class=\"cmsedit-top-level-menu\">#{fa_icon(menu['icon'])}#{t(menu['caption'])}<ul>"
     menu['items'].to_a.sort.each do |item|          # as above. sort items first 
       value = item[1]
-      opts = { controller: value['controller'], 
-               action: value['action'], 
-               table: value['table'],
-               formname: value['formname'] || value['table'],
-               target: value['target'] || 'iframe_cms'               
-             }
-      html << "<li>#{dc_link_to(t(value['caption']), value['icon'] || '', opts)}</li>"      
+      html << if value['link']
+        opts = { target: value['target'] || 'iframe_cms' }
+        "<li>#{dc_link_to(t(value['caption']), value['icon'] || '', value['link'], opts)}</li>"
+      else
+        opts =        
+        { controller: value['controller'], 
+          action: value['action'], 
+          table: value['table'],
+          formname: value['formname'] || value['table'],
+          target: value['target'] || 'iframe_cms',
+        }
+        "<li>#{dc_link_to(t(value['caption']), value['icon'] || '', opts)}</li>"
+      end
     end   
     html << '</ul></li>'  
   end
