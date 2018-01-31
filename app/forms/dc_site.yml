@@ -103,6 +103,10 @@ form:
         type: text_with_select
         eval: dc_choices4(@record.menu_class,'description','name')
         size: 30
+      70:
+        name: menu_id
+        type: select
+        eval: dc_choices4(@record.menu_class,'description','_id')
       90:
         name: settings
         type: text_area

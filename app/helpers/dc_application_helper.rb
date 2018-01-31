@@ -36,6 +36,8 @@ attr_reader :design
 # site document
 attr_reader :site
 # tables url parameter
+attr_reader :menu
+# tables url parameter
 attr_reader :tables
 # ids url parameter
 attr_reader :ids

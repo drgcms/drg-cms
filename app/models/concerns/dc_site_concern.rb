@@ -50,6 +50,7 @@ included do
   field :created_by,          type: BSON::ObjectId
   field :updated_by,          type: BSON::ObjectId  
   field :menu_name,           type: String
+  field :menu_id,             type: BSON::ObjectId
   field :settings,            type: String
   field :alias_for,           type: String  
   field :rails_view,          type: String,  default: ''

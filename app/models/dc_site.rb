@@ -48,6 +48,7 @@
 #  created_by           BSON::ObjectId       created_by
 #  updated_by           BSON::ObjectId       updated_by
 #  menu_name            String               Menu name for this site
+#  menu_id              BSON::ObjectId       Menu id. Menu name will be deprecated.
 #  settings             String               Various site settings
 #  alias_for            String               Is alias name for entered site name
 #  rails_view           String               Rails view filename used as standard design
