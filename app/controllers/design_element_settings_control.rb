@@ -52,21 +52,16 @@ def get_settings()
   begin
     model = params[:location].classify.constantize    
   rescue 
-    flash[:error] = 'Invalid or undefined model name!'
+    flash[:error] = "Invalid or undefined model name! #{params[:location]}"
     return false    
   end
 # Check fild name 
   begin
     document = model.find(params[:id])
-    params[:field_name] = case
-      when params[:location] == 'dc_page' then 'params'
-      when params[:location] == 'dc_site' then 'options'
-      otherwise params[:field_name]
-    end  
+    params[:field_name] ||= (params[:location] == 'dc_site' ? 'options' : 'params')
 # field not defined on document   
     raise unless document.respond_to?(params[:field_name])
-    yaml = document[params[:field_name]]
-    yaml = '' if yaml.blank?
+    yaml = document[params[:field_name]] || ''
   rescue 
     flash[:error] = 'Invalid or undefined field name!'
     return false    
