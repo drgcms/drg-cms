@@ -35,8 +35,10 @@ attr_reader :page
 attr_reader :design
 # site document
 attr_reader :site
-# tables url parameter
+# menu document
 attr_reader :menu
+# selected menu_item document
+attr_reader :menu_item
 # tables url parameter
 attr_reader :tables
 # ids url parameter
