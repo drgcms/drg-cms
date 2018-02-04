@@ -112,6 +112,13 @@ def self.paths(key)
 end
 
 ###############################################################################
+# Will return name of file relative to drg_cms gem root
+###############################################################################
+def self.from_root(file=nil)
+  File.expand_path("../../#{file}", __FILE__).to_s
+end
+
+###############################################################################
 # All Routes required by DrgCms. 
 # 
 # Usage:
