@@ -567,7 +567,7 @@ def dc_page_edit_menu(opts=@opts)
   page  = opts[:page] || @page
   table = _origin.site.page_table
   kukis = { "#{table}.dc_design_id" => page.dc_design_id,
-            "#{table}.menu_id"      => page.menu_id,
+#            "#{table}.menu_id"      => page.menu_id,
             "#{table}.kats"         => page.kats,
             "#{table}.page_id"      => page.id,
             "#{table}.dc_site_id"   => _origin.site.id
