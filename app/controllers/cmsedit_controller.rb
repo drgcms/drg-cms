@@ -796,7 +796,8 @@ def save_data
             (params[:edit_only] and params[:edit_only] != v['name']) or # otherwise other fields would be wiped
             v['readonly'] or # fields with readonly option don't return value and would be wiped
             !@record.respond_to?(v['name']) # there can be temporary fields on the form
-# return value from form field definition
+    # good to know how to get type of field @record.fields[v['name']].type
+    # return value from form field definition
     value = DrgcmsFormFields.const_get(v['type'].camelize).get_data(params, v['name'])
     @record.send("#{v['name']}=", value)
   end
