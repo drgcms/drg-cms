@@ -136,20 +136,20 @@ end
 # Will update link value of selected menu_item
 # 
 # Parameters: 
-# [path] String. String path to MenuItem document, separated by ;
-# [link] String. New value of the link field
+# [record] Array. Data of saved document.
 #######################################################################
-def self.update_menu_item_link(path, link)
-  return unless path and link
+def self.update_menu_item_link(record)
+  return unless record
 # 
-  ar = path.split(';')
+  ar = record.menu_id.split(';') 
   menu = find(ar.shift)
   while (item = ar.shift) do
     menu = menu.dc_menu_items.find(item)
   end
   return unless menu.respond_to?(:link) # top level selected
 #  
-  menu.link = link
+  menu.page_id = record.id if menu.respond_to?(:page_id)
+  menu.link    = record.subject_link if record.respond_to?(:subject_link)
   menu.save  
 end
 

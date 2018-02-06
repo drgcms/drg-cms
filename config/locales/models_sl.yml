@@ -320,7 +320,8 @@ sl:
         if_border: Okvir
         if_params: Parametri
         if_id: CSS id
-        if_class: CSS class        
+        if_class: CSS class 
+        _update_menu: Spremeni meni
         
       dc_part:
         tabletitle: Elementi strani
@@ -752,6 +753,7 @@ sl:
         if_params: Pramateri posredovani v URL naslovu
         if_id: CSS id IFrame objekta
         if_class: CSS class IFrame objekta
+        _update_menu: Popravi tudi povezavo do dokumenta v menuju
 
       dc_part:
         name: Naziv elementa

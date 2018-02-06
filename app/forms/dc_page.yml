@@ -109,10 +109,9 @@ form:
         eval: '@parent.dc_menu_class.choices4_menu_as_tree(@record.dc_site_id)'        
         style: 'max-height: 300px'
 
-#      20:
-#        name: menu_id
-#        type: select
-#        eval: dc_choices4_menu
+      25:
+        name: _update_menu
+        type: check_box
 
       30:
         name: params

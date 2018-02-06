@@ -288,7 +288,9 @@ en:
         if_border: Border
         if_params: Parameters
         if_id: CSS id
-        if_class: CSS class        
+        if_class: CSS class 
+        _update_menu: Update menu
+
 
       dc_part:
         tabletitle: Parts of page
@@ -721,7 +723,7 @@ en:
         if_params: Parameters added to URL address    
         if_id: CSS id of IFrame object
         if_class: CSS class of IFrame object
-        
+        _update_menu: Update link in selected menu to point to this document        
 
       dc_part:
         name: Parts can be searched by name or by id
