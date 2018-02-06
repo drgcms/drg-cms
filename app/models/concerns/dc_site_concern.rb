@@ -76,10 +76,25 @@ def params(what=nil)
 end
 
 ########################################################################
+# Returns class object of collection name
+########################################################################
+def page_klass()
+  (self.page_table.blank? ? self.page_class : self.page_table).classify.constantize
+end
+
+########################################################################
+# Returns class object of menu collection name
+########################################################################
+def menu_klass()
+  (self.menu_class.blank? ? 'DcMenu' : self.menu_class).classify.constantize
+end
+
+########################################################################
 # Return choices for select for site_id
 ########################################################################
 def self.choices4_site
-  all.inject([]) { |r,site| r << [ (site.active ? '' : t('drgcms.disabled') ) + site.name, site._id] }
+  result = all.inject([]) { |r,site| r << [ (site.active ? '' : t('drgcms.disabled') ) + site.name, site._id] }
+  result.sort {|a,b| a[0] <=> b[0]}
 end
 
 ########################################################################
