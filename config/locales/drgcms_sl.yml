@@ -55,6 +55,10 @@ sl:
     cms_main: CMS tabele
     cms_advanced: CMS napredne opcije   
     search_placeholder: Vpišite pojem za iskanje
+    login: Prijava v CMS
+    username: Uporabnik
+    password: Geslo
+    
 
     edit: Urejanje
     show: Prikaz

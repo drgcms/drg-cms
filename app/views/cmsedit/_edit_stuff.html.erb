@@ -5,22 +5,8 @@
     <div class="cmsedit-table cmsedit-top">
       <div id="menu">
         
-  <% if false %>     
-        <%= link_to(image_tag('drg_cms/view_tile.png', class: 'dc-link-img', title: t('drgcms.menu_plus')), '#', 
-            onclick: "$('#cmsedit-menu-plus').toggleClass('div-hidden');")  %>
-  <% end %> 
-        
-  <% if false %>     
-        <ul><li>
-         <%= fa_icon('bars lg') %>
-         <ul>
-          <%= dc_choices4_cmsmenu.html_safe %>
-         </ul>
-        </li>
-        
-        </ul>
-  <% end %> 
-        
+        <%= link_to( fa_icon('user lg',class: "dc-animate", title: "#{t('drgcms.login')}"), '/cms/login' ) %>
+
         <% if @page %>
           <%= link_to( fa_icon('file-text-o lg', class: "dc-animate", title: "#{t('drgcms.edit_page')}"),
               {controller: 'cmsedit', action: 'edit', table: @site.page_table, id: @page._id}, target: 'iframe_cms') %>

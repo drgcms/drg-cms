@@ -55,6 +55,9 @@ en:
     cms_main: CMS main tables
     cms_advanced: CMS advanced
     search_placeholder: Start typing to search
+    login: Login into CMS
+    username: User name
+    password: Password
 
     edit: Edit
     show: Prikaz
