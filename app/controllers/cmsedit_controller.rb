@@ -584,8 +584,9 @@ def read_drg_cms_form
   ids = params[:ids].to_s.strip.downcase
   @ids = ids.split(';').inject([]) { |r,v| r << v }
 # formname defaults to last table specified
-  formname = params[:formname] || @tables.last[1]
-  @form  = YAML.load_file( dc_find_form_file(formname) )
+  dc_deprecate("Parameter :formname will be deprecated in future. Use :form_name instead") if params[:formname]
+  form_name = params[:formname] || params[:form_name] || @tables.last[1]
+  @form  = YAML.load_file( dc_find_form_file(form_name) )
 # when form extends another form file. 
   if @form['extend']
     form = YAML.load_file( dc_find_form_file(@form['extend']) )
@@ -599,7 +600,7 @@ def read_drg_cms_form
 # add readonly key to form if readonly parameter is passed in url
   @form['readonly'] = 1 if params['readonly'] #and %w(1 yes true).include?(params['readonly'].to_s.downcase.strip)
 # !!!!!! Always use strings for key names since @parms['table'] != @parms[:table]
-  @parms = { 'table' => table_name, 'ids' => params[:ids], 'formname' => formname,
+  @parms = { 'table' => table_name, 'ids' => params[:ids], 'form_name' => form_name,
              'return_to' => params['return_to'], 'edit_only' => params['edit_only'],
              'readonly' => params['readonly'] 
            }
@@ -610,7 +611,7 @@ end
 # load DRG form.
 ############################################################################
 def check_authorization
-  params[:table] ||= params[:formname]
+  params[:table] ||= params[:formname] || params[:form_name]
 # Just show menu
 #  return show if params[:action] == 'show'
   return login if params[:id].in?(%w(login logout))

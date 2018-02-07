@@ -69,7 +69,7 @@ end
 # find where the message is comming from.
 ############################################################################
 def dc_deprecate(msg)
-  logger.info "#{dc_get_site.name}: #{msg}"
+  ActiveSupport::Deprecation.warn("#{dc_get_site.name}: #{msg}")
 end
 
 ############################################################################
@@ -481,7 +481,7 @@ def dc_link_for_create(opts)
   title = opts.delete('title') #
   title = t(title, title) if title
   target = opts.delete('target')  || 'iframe_cms'
-  opts['formname']   ||= opts['table'].split(';').last
+  opts['formname']   ||= opts['form_name'] || opts['table'].to_s.split(';').last
   opts['action']       = 'new'
   opts['controller'] ||= 'cmsedit'
   js = "$('##{target}').attr('src', '#{_origin.url_for(opts)}'); return false;"
@@ -511,7 +511,7 @@ def dc_link_for_edit(opts)
   icon   = opts.delete('icon') || 'edit lg'
   opts['controller'] ||= 'cmsedit'
   opts['action']     ||= 'edit'
-  opts['formname']   ||= opts['table'].to_s.split(';').last
+  opts['formname']   ||= opts['form_name'] || opts['table'].to_s.split(';').last
   js  = "$('##{target}').attr('src', '#{_origin.url_for(opts)}'); return false;"
   dc_link_to(nil, _origin.fa_icon(icon, class: 'dc-inline-link'), '#', 
              { onclick: js, title: title, alt: 'Edit'})

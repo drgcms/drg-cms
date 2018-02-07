@@ -564,6 +564,12 @@ def dc_reload_patches
   end
 end
 
-
+############################################################################
+# Writes out deprication msg. It also adds site_name to message, so it is easier to
+# find where the message is comming from.
+############################################################################
+def dc_deprecate(msg)
+  ActiveSupport::Deprecation.warn("#{dc_get_site.name}: #{msg}")
+end
 
 end
