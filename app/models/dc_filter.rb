@@ -132,7 +132,7 @@ def self.get_filter_field(parent)
 # url for filter ON action
   field['html']['data-url'] = parent.url_for(
     controller: 'cmsedit',action: :index, filter: 'on',
-    table: parent.form['table'], formname: parent.form['formname'])
+    table: parent.form['table'], form_name: parent.form['form_name'])
   url = field['html']['data-url']
 # create input field object
   klas_string = field['type'].camelize
@@ -165,7 +165,7 @@ def self.menu_filter(parent)
     filters = [filters] if filters.class == Hash
     filters.each do |filter| 
       url = parent.dc_link_to(filter['title'], nil,controller: :cmsedit, action: :index, table: table,
-                           formname: parent.params[:formname], 
+                           form_name: parent.params[:form_name], 
                            filter_field: filter['field'],
                            filter_oper: filter['operation'],
                            filter_value: filter['value'],
