@@ -151,7 +151,7 @@ form:
       10:
         name: dc_parts
         type: embedded
-        formname: dc_part
+        form_name: dc_part
         html:
           height: 600
           

@@ -129,4 +129,4 @@ menu:
         controller: cmsedit
         icon: table lg        
         table: dc_memory
-        formname: dc_browse_models
+        form_name: dc_browse_models

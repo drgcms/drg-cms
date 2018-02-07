@@ -128,7 +128,7 @@ form:
       170:
         name: dc_user_roles
         type: embedded
-        formname: dc_user_role
+        form_name: dc_user_role
         html:
           size: 20
 

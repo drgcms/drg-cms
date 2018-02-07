@@ -318,7 +318,7 @@ end
 # ===Form options:
 # * +name:+ field name (required)
 # * +type:+ embedded (required)
-# * +formname:+ name of form which will be used for editing
+# * +form_name:+ name of form which will be used for editing
 # * +html:+ html options (optional)
 #   * +height:+ height of embedded object in pixels (1000)
 #   * +width:+ width of embedded object in pixels (500)
@@ -327,7 +327,7 @@ end
 #    10:
 #      name: dc_parts
 #      type: embedded
-#      formname: dc_part
+#      form_name: dc_part
 #      html:
 #        height: 1000
 ###########################################################################
@@ -342,15 +342,15 @@ def render
   @yaml['html']['height'] ||= 300
   @yaml['html']['width']  ||= '99%'
 # defaults both way 
-  @yaml['table']    ||= @yaml['formname'] if @yaml['formname']
-  @yaml['formname'] ||= @yaml['table'] if @yaml['table']
+  @yaml['table']     ||= @yaml['form_name'] if @yaml['form_name']
+  @yaml['form_name'] ||= @yaml['table'] if @yaml['table']
 # 
   html = ''  
   @yaml['html'].each {|k,v| html << "#{k}=\"#{v}\" "}
 #  
   tables      = @parent.tables.inject('') { |r,v| r << "#{v[1]};" } + @yaml['table']
   ids         = @parent.ids.inject('') { |r,v| r << "#{v};" } + @record._id
-  opts = { controller: 'cmsedit', action: 'index', ids: ids, table: tables, formname: @yaml['formname'], 
+  opts = { controller: 'cmsedit', action: 'index', ids: ids, table: tables, form_name: @yaml['form_name'] || @yaml['form_name'], 
            field_name: @yaml['name'], iframe: "if_#{@yaml['name']}", readonly: @readonly }
   @html << "<iframe class='iframe_embedded' id='if_#{@yaml['name']}' name='if_#{@yaml['name']}' #{html}></iframe>"
   @js = <<EOJS

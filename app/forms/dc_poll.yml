@@ -108,6 +108,6 @@ form:
       20:
         name: dc_poll_items
         type: embedded
-        formname: dc_poll_item
+        form_name: dc_poll_item
         html:
           height: 800      

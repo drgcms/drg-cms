@@ -162,7 +162,7 @@ def default
   html <<  "<div class=\"poll-div\">\n"
 # edit link  
   if @opts[:edit_mode] > 1
-    @opts[:editparams].merge!( controller: 'cmsedit', action: 'edit', id: poll._id, table: 'dc_poll', formname: 'dc_poll' )
+    @opts[:editparams].merge!( controller: 'cmsedit', action: 'edit', id: poll._id, table: 'dc_poll', form_name: 'dc_poll' )
     @opts[:editparams].merge!(title: "#{t('drgcms.edit')}: #{poll.name}")
     @opts[:editparams].delete(:ids) # this is from page, but it gets in a way
     html << dc_link_for_edit( @opts[:editparams] )

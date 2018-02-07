@@ -141,7 +141,7 @@ def default
     parts.sort! {|a,b| a[0].order <=> b[0].order }
   
     parts.each do |part| 
-      @opts[:editparams].merge!( id: part[0], ids: "#{part[1]}", formname: part[2], table: part[3] )
+      @opts[:editparams].merge!( id: part[0], ids: "#{part[1]}", form_name: part[2], table: part[3] )
       html << render_particle(part[0], @opts) 
     end
   end
@@ -174,7 +174,7 @@ def in_page
   return "Error DcPart: Page not found!" if page.nil?
 #  
   if part = page.dc_parts.find_by(name: @opts[:name])
-    @opts[:editparams].merge!(id: part, ids: page._id, formname: 'dc_part', table: "#{@parent.site.page_table};dc_part" )
+    @opts[:editparams].merge!(id: part, ids: page._id, form_name: 'dc_part', table: "#{@parent.site.page_table};dc_part" )
     render_particle(part, @opts) 
   else
     "Part with name #{@opts[:name]} not found in page!"
@@ -195,7 +195,7 @@ def single_sitedoc
 # part not found. Render error message.
   return "Part #{@opts[:div_id]} not found!" if part.nil?
 # prepare edit parameters  
-  @opts[:editparams].merge!(id: part, ids: @parent.site._id, formname: 'dc_part', 
+  @opts[:editparams].merge!(id: part, ids: @parent.site._id, form_name: 'dc_part', 
                             table: "dc_site;dc_part", record_div_id: 'document' )
   render_particle(part, @opts) 
 end

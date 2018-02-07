@@ -33,7 +33,7 @@ index:
       controller: controller_name
       action: action_name
       table: table_name
-      formname: form_name
+      form_name: form_name
     4: 
       type: menu
       eval: ModulClassName.menu_for(self)
@@ -69,7 +69,7 @@ result_set:
       controller: controller_name
       action: action_name
       table: table_name
-      formname: form_name
+      form_name: form_name
       target: target      
       method: (get),put,post      
 
@@ -188,7 +188,7 @@ form:
       20:
         name: dc_poll_items
         type: embedded
-        formname: dc_poll_item
+        form_name: dc_poll_item
         html:
           height: 800      
       20:

@@ -132,7 +132,7 @@ def do_menu_level(menu, options={})
         opts = options.clone
         opts['ids']   = (opts['ids']   ? "#{opts['ids']};" : '')   + menu._id.to_s
         opts['table'] = (opts['table'] ? "#{opts['table']};" : '') + 'dc_menu_item'
-        opts['formname'] = nil # must be
+        opts['form_name'] = nil # must be
       end
       html << do_menu_level(item, opts)
     end

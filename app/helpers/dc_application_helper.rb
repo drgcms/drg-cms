@@ -464,12 +464,12 @@ end
 # Will create HTML code required to create new document.
 # 
 # Parameters: 
-# [opts] Hash. Optional parameters for url_for helper. These options must provide at least table and formname
+# [opts] Hash. Optional parameters for url_for helper. These options must provide at least table and form_name
 # parameters. 
 # 
 # Example:
 #    if @opts[:edit_mode] > 1
-#      opts = {table: 'dc_page;dc_part', formname: 'dc_part', ids: @doc.id }
+#      opts = {table: 'dc_page;dc_part', form_name: 'dc_part', ids: @doc.id }
 #      html << dc_link_for_create( opts.merge!({title: 'Add new part', 'dc_part.name' => 'initial name', 'dc_part.order' => 10}) ) 
 #    end
 # 
@@ -481,7 +481,7 @@ def dc_link_for_create(opts)
   title = opts.delete('title') #
   title = t(title, title) if title
   target = opts.delete('target')  || 'iframe_cms'
-  opts['formname']   ||= opts['form_name'] || opts['table'].to_s.split(';').last
+  opts['form_name']  ||= opts['formname'] || opts['table'].to_s.split(';').last
   opts['action']       = 'new'
   opts['controller'] ||= 'cmsedit'
   js = "$('##{target}').attr('src', '#{_origin.url_for(opts)}'); return false;"
@@ -494,7 +494,7 @@ end
 # 
 # Parameters: 
 # [opts] Hash. Optional parameters for url_for helper. These options must provide 
-# at least table, formname and id parameters. Optional title, target and icon parameters
+# at least table, form_name and id parameters. Optional title, target and icon parameters
 # can be set.
 # 
 # Example:
@@ -511,7 +511,7 @@ def dc_link_for_edit(opts)
   icon   = opts.delete('icon') || 'edit lg'
   opts['controller'] ||= 'cmsedit'
   opts['action']     ||= 'edit'
-  opts['formname']   ||= opts['form_name'] || opts['table'].to_s.split(';').last
+  opts['form_name']  ||= opts['formname'] || opts['table'].to_s.split(';').last
   js  = "$('##{target}').attr('src', '#{_origin.url_for(opts)}'); return false;"
   dc_link_to(nil, _origin.fa_icon(icon, class: 'dc-inline-link'), '#', 
              { onclick: js, title: title, alt: 'Edit'})
@@ -551,7 +551,7 @@ end
 # * New part. Will create new part of document.
 # 
 # Parameters:
-# [opts] Hash. Optional parameters for url_for helper. These options must provide at least table and formname
+# [opts] Hash. Optional parameters for url_for helper. These options must provide at least table and form_name
 # and id parameters. 
 # 
 # Example:
@@ -577,7 +577,7 @@ def dc_page_edit_menu(opts=@opts)
   opts[:editparams] ||= {}
   dc_link_menu_tag(title) do |html|
     opts[:editparams].merge!( controller: 'cmsedit', action: 'edit', 'icon' => 'edit' )
-    opts[:editparams].merge!( :id => page.id, :table => _origin.site.page_table, formname: opts[:formname], edit_only: 'body' )
+    opts[:editparams].merge!( :id => page.id, :table => _origin.site.page_table, form_name: opts[:form_name], edit_only: 'body' )
     html << dc_link_for_edit1( opts[:editparams], t('drgcms.edit_content') )
     
 #    opts[:editparams][:edit_only] = nil
@@ -588,7 +588,7 @@ def dc_page_edit_menu(opts=@opts)
     opts[:editparams].merge!( action: 'new', 'icon' => 'plus' )
     html << dc_link_for_edit1( opts[:editparams], t('drgcms.edit_new_page') )
 
-    opts[:editparams].merge!(ids: page.id, formname: 'dc_part', 'icon' => 'plus-square-o', 
+    opts[:editparams].merge!(ids: page.id, form_name: 'dc_part', 'icon' => 'plus-square-o', 
                              table: "#{_origin.site.page_table};dc_part"  )
     html << dc_link_for_edit1( opts[:editparams], t('drgcms.edit_new_part') )
   end.html_safe
@@ -931,7 +931,7 @@ def dc_choices4_cmsmenu()
         { controller: value['controller'], 
           action: value['action'], 
           table: value['table'],
-          formname: value['formname'] || value['table'],
+          form_name: value['form_name'] || value['formname'] || value['table'],
           target: value['target'] || 'iframe_cms',
         }
         "<li>#{dc_link_to(t(value['caption']), value['icon'] || '', opts)}</li>"
@@ -1206,15 +1206,15 @@ end
 # Parameters:
 # [table] String: Collection (table) name used to load initial form.
 # [opts] Hash: Optional parameters which define url for loading DRG form.
-# These parameters are :action, :oper, :table, :formname, :id, :readonly
+# These parameters are :action, :oper, :table, :form_name, :id, :readonly
 # 
 # Example:
 #    # just iframe code
 #    <%= dc_iframe_edit(nil) %>
 #    # load note form for note collection
 #    <%= dc_iframe_edit('note') %>
-#    # on register collection use reg_adresses formname to display data with id @register.id
-#    <%= dc_iframe_edit('register', action: :show, formname: 'reg_adresses', readonly: 1, id: @register.id ) %>
+#    # on register collection use reg_adresses form_name to display data with id @register.id
+#    <%= dc_iframe_edit('register', action: :show, form_name: 'reg_adresses', readonly: 1, id: @register.id ) %>
 # 
 # Returns:
 # Html code for edit iframe
@@ -1225,7 +1225,7 @@ def dc_iframe_edit(table, opts={})
     params[:action]     = (params[:oper] and (params[:oper] == 'edit')) ? 'edit' : 'index'
     params[:action]     = opts[:action] unless params[:oper]
     params[:table]      ||= table 
-    params[:formname]   ||= opts[:formname] || table 
+    params[:form_name]  ||= opts[:form_name] || opts[:formname] || table 
     params[:id]         ||= params[:idp] || opts[:id]
     params[:readonly]   ||= opts[:readonly]
     params[:path]       = nil

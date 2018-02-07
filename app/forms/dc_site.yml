@@ -145,14 +145,14 @@ form:
       20:
         name: dc_policies
         type: embedded
-        formname: dc_policy
+        form_name: dc_policy
         html:
           height: 800
     6parts:
       10:
         name: dc_parts
         type: embedded
-        formname: dc_part
+        form_name: dc_part
         html:
           height: 1000
           

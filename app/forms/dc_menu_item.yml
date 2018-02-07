@@ -74,7 +74,7 @@ form:
       10:
         name: dc_menu_items
         type: embedded
-        formname: dc_menu_item
+        form_name: dc_menu_item
         html:
           height: 1000
 

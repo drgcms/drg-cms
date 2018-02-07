@@ -12,7 +12,7 @@ result_set:
   dblclick:
     type: link
     table: dc_memory
-    formname: dc_browse_fields
+    form_name: dc_browse_fields
     action: index
 
   columns:

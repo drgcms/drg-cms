@@ -63,7 +63,7 @@ form:
       10:
         name: dc_simple_menu_items
         type: embedded
-        formname: dc_simple_menu_item
+        form_name: dc_simple_menu_item
         html:
           height: 800
 
