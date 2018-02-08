@@ -1,12 +1,12 @@
 # DrgCms
 
-DRG CMS is alternative way of programming application for Ruby on Rails. Instead of creating controllers and views for each collection (table) model, DRG CMS introduces single Cmsedit controller which uses DRG Forms to control CRUD database operations. 
+DRG CMS is advanced way of programming application for Ruby on Rails. Instead of creating controllers and views for each collection (table) model, DRG CMS introduces single Cmsedit controller which uses DRG Forms to control CRUD database operations. 
  
 DRG CMS uses Mongo DB, leading NO-SQL document database, as database back-end with a help of mongoid gem. Mongoid's flexible document model defines all document fields, indexes, dependencies, validations in single model file with no Rails migrations required.
 
 DRG CMS can be used for rapid development of complex, data-entry intensive web sites as well as building your private, in-house, Intranet applications.
 
-DRG CMS has built-in user friendly role based access system and it can be easly extended with help of Ruby on Rails plugin system.
+DRG CMS has built-in user friendly role based database access system and can be easly extended with help of Ruby on Rails plugin system.
 
 Project Tracking
 ----------------
@@ -16,9 +16,9 @@ Project Tracking
 Compatibility
 -------------
 
-DRG CMS is tested against Ruby 2.2 and higher, Rails 5.0 and higher, Mongoid 6, MongoDB 3.0, 3.2
+DRG CMS is tested against Ruby 2.2 and higher, Rails 5.0 and higher, Mongoid 6, MongoDB 3.0, 3.2, 3.4
 
-Version from 0.5.51 and higher require Ruby 2.3 and Rails 5.1
+Version from 0.5.51 and higher requires Ruby 2.4.x and Rails 5.1.x
 
 Documentation
 -------------
@@ -29,7 +29,7 @@ Please see the DRG CMS website for up-to-date documentation:
 License (MIT LICENCE)
 ---------------------
 
-Copyright (c) 2012-2017 Damjan Rems
+Copyright (c) 2012-2018 Damjan Rems
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the

@@ -12,8 +12,8 @@ Gem::Specification.new do |s|
   s.authors     = ["Damjan Rems"]
   s.email       = ["damjan.rems@gmail.com"]
   s.homepage    = "http://www.drgcms.org"
-  s.summary     = "DRG CMS: Rapid web application development tool for Ruby, Rails and MongoDB"
-  s.description = "DRG CMS can be used for rapid building of complex, data-entry intensive web sites as well as building your in-house private cloud applications."
+  s.summary     = "DRG: Rapid web application development tool and CMS for Ruby, Rails and MongoDB"
+  s.description = "DRG, development tool for rapid building of in-house (Intranet, private cloud) applications as well as CMS for creating complex, data-entry intensive web sites."
   s.license     = "MIT"
   s.files = Dir["{app,config,db,lib}/**/*"] + ["MIT-LICENSE", "Rakefile", "README.md", "History.log", "drg_cms.gemspec"]
   s.test_files = Dir["test/**/*"]
