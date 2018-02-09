@@ -103,12 +103,14 @@ def dc_get_site()
   @site
 end
 
-####################################################################
-# Determine and return site record from url. It would be nice but it is not working.
-####################################################################
-#def self.dc_get_site_() #:nodoc:
-#  self.dc_get_site()
-#end
+##########################################################################
+# Will set page title according to data on dc_page or dc_site
+#
+# Sets internal @page_title variable.
+##########################################################################
+def set_page_title()
+  @page_title = @page.title.blank? ? "#{@site.page_title} - #{@page.subject}" : @page.title
+end
 
 ########################################################################
 # Searches forms path for file_name and returns full file name or nil if not found.
@@ -326,7 +328,7 @@ def dc_process_default_request()
 # HOMEPAGE. When no parameters is set
   params[:path] = @site.homepage_link if params[:id].nil? and params[:path].nil?
 # some other process request. It shoud fail if not defined
-  return eval(@site.request_processor) if !@site.request_processor.blank?
+  return send(@site.request_processor) unless @site.request_processor.blank?
 
 # Search for page 
   pageclass = @site.page_table.classify.constantize
@@ -365,7 +367,7 @@ def dc_process_default_request()
 # Log only visits from non-editors
     dc_log_visit()
   end
-  @page_title = @page.title.blank? ? "#{@site.page_title}-#{@page.subject}" : @page.title
+  set_page_title()
   get_design_and_render @design
 end
 
