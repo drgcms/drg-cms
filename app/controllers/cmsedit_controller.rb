@@ -586,7 +586,8 @@ def read_drg_cms_form
 # formname defaults to last table specified
   dc_deprecate("Parameter :formname will be deprecated in future. Use :form_name instead") if params[:formname]
   form_name = params[:formname] || params[:form_name] || @tables.last[1]
-  @form  = YAML.load_file( dc_find_form_file(form_name) )
+  @form  = YAML.load_file( dc_find_form_file(form_name) ) rescue nil
+  return unless @form
 # when form extends another form file. 
   if @form['extend']
     form = YAML.load_file( dc_find_form_file(@form['extend']) )
@@ -622,9 +623,12 @@ def check_authorization
   end
 
   read_drg_cms_form
+  
 # Permissions can be also defined on form
+  if @form.nil?
+    render plain: t('drgcms.form_error')
 #TODO So far only can_view is used. Think about if using other permissions has sense
-  if @form['permissions'].nil? or @form['permissions']['can_view'].nil? or
+  elsif @form['permissions'].nil? or @form['permissions']['can_view'].nil? or
     dc_user_has_role(@form['permissions']['can_view'])
 # Extend class with methods defined in drgcms_controls module. May include embedded forms therefor ; => _ 
     controls_string = (@form['controls'] ? @form['controls'] : params[:table].gsub(';','_')) + '_control'

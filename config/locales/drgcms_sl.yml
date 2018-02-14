@@ -58,7 +58,7 @@ sl:
     login: Prijava v CMS
     username: Uporabnik
     password: Geslo
-    
+    form_error: Napaka pri branju forme #{form_name}
 
     edit: Urejanje
     show: Prikaz

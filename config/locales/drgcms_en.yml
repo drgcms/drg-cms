@@ -58,7 +58,8 @@ en:
     login: Login into CMS
     username: User name
     password: Password
-
+    form_error: Error loading form #{form_name}
+    
     edit: Edit
     show: Prikaz
     new: New
