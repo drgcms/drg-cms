@@ -109,7 +109,7 @@ end
 # Sets internal @page_title variable.
 ##########################################################################
 def set_page_title()
-  @page_title = @page.title.blank? ? "#{@site.page_title} - #{@page.subject}" : @page.title
+  @page_title = @page.title.blank? ? "#{@page.subject} - #{@site.page_title}" : @page.title
 end
 
 ########################################################################
