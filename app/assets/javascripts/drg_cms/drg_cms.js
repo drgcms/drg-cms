@@ -247,7 +247,7 @@ $(document).ready( function() {
       $('#data_' + old_tab_id).toggleClass('div-hidden');
       $('#data_' + e.target.getAttribute("data-div")).toggleClass('div-hidden');
 // resize parent iframe if its size is less then selected div size      
-      var div_height = document.getElementById('data_' + e.target.getAttribute("data-div")).clientHeight + 120;
+      var div_height = document.getElementById('data_' + e.target.getAttribute("data-div")).clientHeight + 130;
 //      if (window.frameElement.clientHeight < div_height) {
         window.frameElement.style.height = div_height.toString() + 'px';
 //      }

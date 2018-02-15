@@ -145,6 +145,7 @@ color: #666;
 font-weight: bold;
 text-decoration: none; 
 background: transparent;
+padding: 8px 0;
 }
 
 .dc-link a:hover, .dc-animate a:hover, .dc-result a:hover  { 
@@ -404,13 +405,18 @@ background: transparent linear-gradient(to bottom, #eee 0%, #eee 100%) repeat sc
   border-bottom:1px solid #ccc;*/
 }
 
-.dc-form-table {
-  width: 100%;
+.dc-form {
+  width: 99.8%;
   padding: 0px;
   padding-top: 4px;
   border: 1px solid #ddd;
   border-radius: 2px; 
   background-color: #fcfcfc;
+}
+
+.dc-form .row-div {
+  display: flex;
+  align-items: center;
 }
 
 .dc-form-info {
@@ -479,6 +485,7 @@ background: transparent linear-gradient(to bottom, #eee 0%, #eee 100%) repeat sc
 .dc-form-field {
   text-align: left;
   padding: 3px 2px;
+  z-index: 10;
 /*  
   background-color: #f4f4f4;
   border-bottom: 1px solid #eee;
@@ -544,7 +551,7 @@ border-bottom: 1px solid #eee;
 }
 
 .dc-separator {
-padding: 0px;
+padding: 5px 0;
 border-top: 2px solid #ddd;
 }
 
@@ -568,7 +575,7 @@ border-radius: 2px;
 font-size: 1.2em;
 }
 
-/*******    TOP MENU    *********/
+/*******   TOP MENU    *********/
 .cmsedit-top {
   width: 100%;
   background-color: #fff; 
@@ -915,6 +922,7 @@ position:absolute;
 background-color: #f8f8f8;
 border: 1px solid #ddd;
 border-radius: 2px;
+z-index: 100;
 }
 
 /************************** info popup *************************/
@@ -937,4 +945,20 @@ padding: 5px;
   background-color: #fff;
   padding: 10px;
   border: 2px solid #ddd;
+}
+
+/****** MOBILE DEVICE *****/
+@media only screen and (max-width: 600px) {
+  .dc-form .row-div {
+    display: block;
+  }
+  .dc-form-field {
+    width: 100%;
+  }
+  .dc-form-label {
+    text-align: left;
+    width: 100%;
+    padding-bottom: 2px;
+    white-space: nowrap;
+  }
 }

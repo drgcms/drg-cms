@@ -121,7 +121,6 @@ form:
       
   tabs:
     tab1:
-      columns: 3 
 
       10:
         name: name
@@ -129,11 +128,11 @@ form:
         type: hidden_field
         type: readonly
         type: file_select
-        
-        colspan: 2
+
         size: 50 or
         html:
           size: 50
+        group: 3
       40:
         name: dc_site_id
         type: select

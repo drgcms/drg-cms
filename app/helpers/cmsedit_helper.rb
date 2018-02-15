@@ -630,25 +630,7 @@ end
 # Creates top or bottom horizontal line on form. 
 ############################################################################
 def top_bottom_line(yaml, columns=2)
-  if  yaml.class == Hash 
-    clas  = yaml['class'] 
-    style = yaml['style'] 
-  end
-  clas ||= 'dc-separator'
-  "<tr><td>&nbsp;</td></tr><tr><td colspan=\"#{columns*2}\" class=\"#{clas}\" style=\"#{style}\"></td></tr><tr><td>&nbsp;</td></tr>"
-end    
-
-############################################################################
-# Creates top or bottom horizontal line on form. 
-############################################################################
-def _top_bottom_line(yaml, columns=2)
-  if  yaml.class == Hash 
-    clas  = yaml['class'] 
-    style = yaml['style'] 
-  end
-  clas ||= 'dc-separator'
   '<div class="dc-separator"></div>'
-#  "<tr><td>&nbsp;</td></tr><tr><td colspan=\"#{columns*2}\" class=\"#{clas}\" style=\"#{style}\"></td></tr><tr><td>&nbsp;</td></tr>"
 end    
 
 ############################################################################
@@ -656,15 +638,15 @@ end
 ############################################################################
 def dc_fields_for_tab(fields) #:nodoc:
   @js      ||= ''
-  html       = '<table class="dc-form-table">'
+  html       = '<div class="dc-form">'
   labels_pos = dc_check_and_default(@form['form']['labels_pos'], 'right', ['top','left','right'])
-  current_column = 0
   hidden_fields  = ''
   odd_even       = nil
+  group_option, group_count = 0, 0
   reset_cycle()
 # options and fields must be separated before sorting  
-  form_options = fields.select {|field| field.class != Integer }
-  columns      = form_options.try(:[],'columns') || 1
+#  form_options = fields.select {|field| field.class != Integer }
+#  columns      = form_options.try(:[],'columns') || 1
 # Select form fields and sort them by key
   form_fields  = fields.select {|field| field.class == Integer }
   form_fields.to_a.sort.each do |element|
@@ -676,11 +658,6 @@ def dc_fields_for_tab(fields) #:nodoc:
     if options['type'] == 'hidden_field'
       hidden_fields << DrgcmsFormFields::HiddenField.new(self, @record, options).render
       next
-    end
-# initialize when column is 0    
-    if current_column == 0 
-      odd_even = cycle('odd','even') 
-      current_column = columns
     end
 # label
     text = if options['text']
@@ -704,86 +681,14 @@ def dc_fields_for_tab(fields) #:nodoc:
       "Error: Code for field type #{options['type']} not defined!"
     end
 # Line separator
-    html << top_bottom_line(options['top-line'], columns) if options['top-line']
-    html << '<tr>' if current_column == columns
-    colspan = options['colspan'] || 1
-#    
-    html << if labels_pos == 'top'
-      %Q[<td class="dc-form-label-top dc-color-#{odd_even} dc-align-left" 
-      title="#{help}" colspan="#{colspan*2}">
-      <div><label for="record_#{options['name']}">#{text} </label></div>
-      <div id="td_record_#{options['name']}">#{field_html}</div></td> ]
-    else  
-      %Q[<td class="dc-form-label dc-color-#{odd_even} dc-align-#{labels_pos}" title="#{help}">
-      <label for="record_#{options['name']}">#{text} </label></td>
-      <td id="td_record_#{options['name']}" class="dc-form-field dc-color-#{odd_even}" 
-       colspan="#{colspan*2 - 1}">#{field_html}
-      </td> ]
+    html << top_bottom_line(options['top-line']) if options['top-line']
+# Begining of new row
+    if group_count == 0
+      html << '<div class="row-div">' 
+      odd_even = cycle('odd','even')
+      group_count  = options['group'] || 1 
+      group_option = options['group'] || 1 
     end
-# check if  must go to next line    
-    current_column -= colspan
-    html << '</tr>' if current_column == 0
-    html << top_bottom_line(options['bottom-line'], columns) if options['bottom-line']
-  end
-  html << '</table>' << hidden_fields
-end
-
-############################################################################
-# Creates input fields for one tab. Subroutine of dc_fields_for_form.
-############################################################################
-def dc_fields_for_tab(fields) #:nodoc:
-  @js      ||= ''
-  html       = '<div class="dc-form-table">'
-  labels_pos = dc_check_and_default(@form['form']['labels_pos'], 'right', ['top','left','right'])
-  current_column = 0
-  hidden_fields  = ''
-  odd_even       = nil
-  reset_cycle()
-# options and fields must be separated before sorting  
-  form_options = fields.select {|field| field.class != Integer }
-  columns      = form_options.try(:[],'columns') || 1
-# Select form fields and sort them by key
-  form_fields  = fields.select {|field| field.class == Integer }
-  form_fields.to_a.sort.each do |element|
-    options = element.last
-    session[:form_processing] = "form:fields: #{element.first}=#{options}"
-# ignore if edit_only singe field is required
-    next if params[:edit_only] and params[:edit_only] != options['name'] 
-# hidden_fields. Add them at the end
-    if options['type'] == 'hidden_field'
-      hidden_fields << DrgcmsFormFields::HiddenField.new(self, @record, options).render
-      next
-    end
-# initialize when column is 0    
-    if current_column == 0 
-      odd_even = cycle('odd','even') 
-      current_column = columns
-    end
-# label
-    text = if options['text']
-      t(options['text'], options['text'])
-    elsif options['name']
-      t_name(options['name'], options['name'].capitalize.gsub('_',' ') )
-    end
-# help text can be defined in form or in translations starting with helpers. or as helpers.help.collection.field
-    help = if options['help'] 
-      options['help'].match('helpers.') ? t(options['help']) : options['help']
-    end
-    help ||= t('helpers.help.' + @form['table'] + '.' + options['name'],' ') if options['name'] 
-# create field object from class and call its render method
-    klas_string = options['type'].camelize
-    field_html = if DrgcmsFormFields.const_defined?(klas_string) # check if field type is defined
-      klas = DrgcmsFormFields.const_get(klas_string)
-      field = klas.new(self, @record, options).render
-      @js << field.js
-      field.html 
-    else # litle error string
-      "Error: Code for field type #{options['type']} not defined!"
-    end
-# Line separator
-    html << _top_bottom_line(options['top-line'], columns) if options['top-line']
-    html << '<div class="tr-div">' if current_column == columns
-    colspan = options['colspan'] || 1
 #    
     html << if labels_pos == 'top'
 %Q[
@@ -792,11 +697,10 @@ def dc_fields_for_tab(fields) #:nodoc:
   <div id="td_record_#{options['name']}">#{field_html}</div>
 </div> ]
     else
-      label_width = 15*columns 
-      label_width = label_width/colspan
-      
-      data_width  = 99 - label_width
-      
+      label_width = 14
+      # less place for label when more then 1 field per row
+      label_width = 10 if group_option > 1 and group_option != group_count
+      data_width  = (94 - 10*group_option)/group_option
 %Q[
 <div class="dc-form-label dc-color-#{odd_even} dc-align-#{labels_pos}" style="width:#{label_width}%;" title="#{help}">
   <label for="record_#{options['name']}">#{text} </label>
@@ -804,10 +708,10 @@ def dc_fields_for_tab(fields) #:nodoc:
 <div id="td_record_#{options['name']}" class="dc-form-field dc-color-#{odd_even}" style="width:#{data_width}%;">#{field_html}</div>
 ]
     end
-# check if  must go to next line    
-    current_column -= colspan
-    html << '</div>' if current_column == 0
-    html << _top_bottom_line(options['bottom-line'], columns) if options['bottom-line']
+# check if must go to next row
+    group_count -= 1
+    html << '</div>' if group_count == 0
+    html << top_bottom_line(options['bottom-line']) if options['bottom-line']
   end
   html << '</div>' << hidden_fields
 end
