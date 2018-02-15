@@ -246,11 +246,10 @@ $(document).ready( function() {
     if (old_tab_id !== null) {
       $('#data_' + old_tab_id).toggleClass('div-hidden');
       $('#data_' + e.target.getAttribute("data-div")).toggleClass('div-hidden');
-// resize parent iframe if its size is less then selected div size      
+// resize parent iframe to fit selected tab size
       var div_height = document.getElementById('data_' + e.target.getAttribute("data-div")).clientHeight + 130;
-//      if (window.frameElement.clientHeight < div_height) {
         window.frameElement.style.height = div_height.toString() + 'px';
-//      }
+// it would be too easy      $('#cmsform :input:enabled:visible:first').focus();
     }
   });  
 
