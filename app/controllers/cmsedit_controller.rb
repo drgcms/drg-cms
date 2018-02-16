@@ -585,7 +585,7 @@ def read_drg_cms_form
   @ids = ids.split(';').inject([]) { |r,v| r << v }
 # formname defaults to last table specified
   dc_deprecate("Parameter :formname will be deprecated in future. Use :form_name instead") if params[:formname]
-  form_name = params[:formname] || params[:form_name] || @tables.last[1]
+  form_name = params[:form_name] || @tables.last[1]
   @form  = YAML.load_file( dc_find_form_file(form_name) ) rescue nil
   return unless @form
 # when form extends another form file. 
@@ -612,7 +612,7 @@ end
 # load DRG form.
 ############################################################################
 def check_authorization
-  params[:table] ||= params[:formname] || params[:form_name]
+  params[:table] ||= params[:form_name]
 # Just show menu
 #  return show if params[:action] == 'show'
   return login if params[:id].in?(%w(login logout))

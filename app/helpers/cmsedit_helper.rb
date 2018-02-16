@@ -74,7 +74,6 @@ EOT
       url['action']     = yaml['action'] || action
       url['table']      = yaml['table']  if yaml['table']
       url['form_name']  = yaml['form_name'] if yaml['form_name']
-      url['form_name']  = yaml['formname']  if yaml['formname']
     end
 # html link options
     yhtml = yaml['html'] || {}
@@ -254,7 +253,6 @@ def dc_actions_for_result(document)
       parms['action']     = yaml['action']     if yaml['action']
       parms['table']      = yaml['table']      if yaml['table']
       parms['form_name']  = yaml['form_name']  if yaml['form_name']
-      parms['form_name']  = yaml['formname']   if yaml['formname']
       parms['target']     = yaml['target']     if yaml['target']
       dc_link_or_ajax(yaml, parms)
     else # error. 
@@ -313,7 +311,7 @@ def dc_clicks_for_result(document)
     opts[:controller] = yaml['controller'] || 'cmsedit'
     opts[:action]     = yaml['action']
     opts[:table]      = yaml['table']
-    opts[:form_name]  = yaml['form_name'] || yaml['formname']
+    opts[:form_name]  = yaml['form_name']
     opts[:method]     = yaml['method'] || 'get'
     opts[:id]         = document['id']
     html << ' data-dblclick=' + url_for(opts) 
@@ -551,7 +549,7 @@ def dc_actions_for_form()
           parms['controller'] = v['controller'] 
           parms['action']     = v['action'] 
           parms['table']      = v['table'] 
-          parms['form_name']  = v['form_name'] || v['formname'] 
+          parms['form_name']  = v['form_name']
           parms['id']         = @record.id
   # additional parameters          
           v['params'].each { |k,v| parms[k] = v } if v['params']

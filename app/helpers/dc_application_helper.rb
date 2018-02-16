@@ -481,7 +481,7 @@ def dc_link_for_create(opts)
   title = opts.delete('title') #
   title = t(title, title) if title
   target = opts.delete('target')  || 'iframe_cms'
-  opts['form_name']  ||= opts['formname'] || opts['table'].to_s.split(';').last
+  opts['form_name']  ||= opts['table'].to_s.split(';').last
   opts['action']       = 'new'
   opts['controller'] ||= 'cmsedit'
   js = "$('##{target}').attr('src', '#{_origin.url_for(opts)}'); return false;"
@@ -511,7 +511,7 @@ def dc_link_for_edit(opts)
   icon   = opts.delete('icon') || 'edit lg'
   opts['controller'] ||= 'cmsedit'
   opts['action']     ||= 'edit'
-  opts['form_name']  ||= opts['formname'] || opts['table'].to_s.split(';').last
+  opts['form_name']  ||= opts['table'].to_s.split(';').last
   js  = "$('##{target}').attr('src', '#{_origin.url_for(opts)}'); return false;"
   dc_link_to(nil, _origin.fa_icon(icon, class: 'dc-inline-link'), '#', 
              { onclick: js, title: title, alt: 'Edit'})
@@ -931,7 +931,7 @@ def dc_choices4_cmsmenu()
         { controller: value['controller'], 
           action: value['action'], 
           table: value['table'],
-          form_name: value['form_name'] || value['formname'] || value['table'],
+          form_name: value['form_name'] || value['table'],
           target: value['target'] || 'iframe_cms',
         }
         "<li>#{dc_link_to(t(value['caption']), value['icon'] || '', opts)}</li>"
@@ -1225,7 +1225,7 @@ def dc_iframe_edit(table, opts={})
     params[:action]     = (params[:oper] and (params[:oper] == 'edit')) ? 'edit' : 'index'
     params[:action]     = opts[:action] unless params[:oper]
     params[:table]      ||= table 
-    params[:form_name]  ||= opts[:form_name] || opts[:formname] || table 
+    params[:form_name]  ||= opts[:form_name] || table 
     params[:id]         ||= params[:idp] || opts[:id]
     params[:readonly]   ||= opts[:readonly]
     params[:path]       = nil

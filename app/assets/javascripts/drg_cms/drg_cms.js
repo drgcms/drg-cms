@@ -171,6 +171,17 @@ function dc_reload_window() {
 }
 
 /*******************************************************************
+ * Will select first editable input field on form. Works only when tab
+ * is selected. Still have to find out, what to do on initial display.
+ *******************************************************************/
+function select_first_input_field(div_name) {
+  $(div_name + " :input:first").each( function() {
+    this.focus();
+    return true;
+  });
+}
+
+/*******************************************************************
  * Will scroll to position on the screen. This is replacement for 
  * location.hash, which doesn't work in Chrome.
  * 
@@ -188,6 +199,7 @@ $.fn.dc_scroll_view = function () {
  * 
  *******************************************************************/
 $(document).ready( function() {
+  
  /*******************************************************************
   * Register ad clicks
   *******************************************************************/
@@ -250,6 +262,7 @@ $(document).ready( function() {
       var div_height = document.getElementById('data_' + e.target.getAttribute("data-div")).clientHeight + 130;
         window.frameElement.style.height = div_height.toString() + 'px';
 // it would be too easy      $('#cmsform :input:enabled:visible:first').focus();
+      select_first_input_field('#data_' + e.target.getAttribute("data-div"));
     }
   });  
 
@@ -285,11 +298,7 @@ $(document).ready( function() {
  *******************************************************************/
   $('.dc-link-ajax').on('click', function(e) {
     var target = e.target;
-//    if (e.target.src !== undefined) {
-//      target = e.target.parent(); // picture
-//    };
-//    dumpAttributes(target);
-    req = target.getAttribute("data-request");
+    var req    = target.getAttribute("data-request");
 /* Get some values from elements on the page: */
     if (req == "script") {
       eval (target.getAttribute("data-script"));

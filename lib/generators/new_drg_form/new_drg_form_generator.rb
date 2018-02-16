@@ -2,7 +2,7 @@ class NewDrgFormGenerator < Rails::Generators::NamedBase
   
 source_root File.expand_path('../templates', __FILE__)
 #desc "This generator creates form for model at app/forms"
-#argument :formname, :type => :string, :default => ''
+#argument :form_name, :type => :string, :default => ''
 class_option :tabs, :type => :boolean, :default => false, :description => "Create form with tabulators" 
 
 ###########################################################################
@@ -11,12 +11,12 @@ class_option :tabs, :type => :boolean, :default => false, :description => "Creat
 def create_form_file
 #:TODO: find out how to prevent error when model class is not defined
   @file_name = file_name
-  formname = file_name #if formname.size == 0
+  form_name = file_name #if formname.size == 0
   @model = file_name.classify.constantize rescue nil
   return (p "Model #{file_name.classify} not found! Aborting.") if @model.nil?
 #  
   yml = top_level_options + index_options + result_set_options + form_top_options + form_fields_options + localize_options
-  create_file "app/forms/#{formname}.yml", yml
+  create_file "app/forms/#{form_name}.yml", yml
 end
 
 private
@@ -52,7 +52,7 @@ index:
 #      controller: controller_name
 #      action: action_name
 #      table: table_name
-#      formname: form_name
+#      form_name: form_name
 
 EOT
 end
@@ -75,7 +75,7 @@ result_set:
 #      controller: controller_name
 #      action: action_name
 #      table: table_name
-#      formname: form_name
+#      form_name: form_name
 #      target: target      
 #      method: (get),put,post      
 # 
@@ -172,7 +172,7 @@ def embedded_form_field(offset)
     yml << ' '*offset + "#{field_index}:\n"
     yml << ' '*(offset+2) + "name: #{embedded_name}\n"
     yml << ' '*(offset+2) + "type: embedded\n"
-    yml << ' '*(offset+2) + "formname: #{embedded_name[0,embedded_name.size - 1]}\n"
+    yml << ' '*(offset+2) + "form_name: #{embedded_name[0,embedded_name.size - 1]}\n"
     yml << '#' + ' '*(offset+2) + "html:\n"
     yml << '#' + ' '*(offset+4) + "height: 500\n"
     field_index += 10      

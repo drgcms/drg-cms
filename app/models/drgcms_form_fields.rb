@@ -342,7 +342,6 @@ def render
   @yaml['html']['height'] ||= 300
   @yaml['html']['width']  ||= '99%'
 # defaults both way 
-  @yaml['form_name'] ||= @yaml['formname']
   @yaml['table']     ||= @yaml['form_name'] if @yaml['form_name']
   @yaml['form_name'] ||= @yaml['table'] if @yaml['table']
 # 
