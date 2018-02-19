@@ -267,7 +267,7 @@ $(document).ready( function() {
   });  
 
 /*******************************************************************
- * Resize iframe_cms to the size of its contents. Make at least 500 px hight
+ * Resize iframe_cms to the size of its contents. Make at least 500 px high
  * unless on initial display.
  *******************************************************************/
   $('#iframe_cms').load( function() {
@@ -275,7 +275,7 @@ $(document).ready( function() {
     new_height = this.contentWindow.document.body.offsetHeight + 50;
     if (new_height < 500 & new_height > 60) new_height = 500;
     this.style.height = new_height + 'px'; 
-//    remove_background_from_iframe(this.contentWindow.document);
+// scroll to top
     $('#iframe_cms').dc_scroll_view();
   });
 
@@ -287,10 +287,9 @@ $(document).ready( function() {
 //    console.log(this.contentWindow.document.body.offsetHeight);
     if (this.contentWindow.document.body.offsetHeight > 10) {
       this.style.height = (this.contentWindow.document.body.offsetHeight + 30) + 'px'; 
-// scroll to it
+// scroll to top
       $('#iframe_edit').dc_scroll_view();
     }
-//    remove_background_from_iframe(this.contentWindow.document);
   });
   
 /*******************************************************************
