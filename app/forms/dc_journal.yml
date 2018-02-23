@@ -47,39 +47,42 @@ form:
       5:
         name: operation
         type: text_field
+        readonly: yes
         html:
           size: 10
       10:
         name: time
         type: datetime_select
+        readonly: yes
       20:
         name: site_id
         type: select
         eval: DcSite.choices4_site
+        readonly: yes
       30:
         name: user_id
         type: text_autocomplete
         search: dc_user.name
-        html:
-          size: 30 
+        readonly: yes
+        size: 30 
       40:
         name: tables
         type: text_field
-        html:
-          size: 50
+        readonly: yes
+        size: 50
       50:
         name: doc_id
         type: text_field
-        html:
-          size: 25
+        readonly: yes
+        size: 25
       60:
         name: ids
         type: text_field
-        html:
-          size: 70
+        readonly: yes
+        size: 70
 
       70:
         name: ip
         type: text_field
-        html:
-          size: 15
+        readonly: yes
+        size: 15

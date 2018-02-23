@@ -493,13 +493,14 @@ background: transparent linear-gradient(to bottom, #eee 0%, #eee 100%) repeat sc
 }
 
 .dc-readonly {
+  display: inline-block;
+  font-size: 14px;
   font-weight: normal;
+  color: #222;
   padding: 6px 3px;
   border: 2px solid #ddd;
   background-color: #eee;
   border-radius: 2px;
-  color: #222;
-  font-size: 14px;
 }
 
 .dc-color-odd {
@@ -672,6 +673,10 @@ display: none;
   text-align: left;
 }
 
+/*** JOURNAL  **/
+.dc-journal {width: 99%; }
+.dc-journal div { padding: 4px;}
+
 /****** jquery ui-autocomplete widget ***************/
 .ui-autocomplete-input {
   font-style: italic;
@@ -698,6 +703,7 @@ color: #000;
 }
 
 .ui-autocomplete-border {
+  display: inline-block;
   border-radius: 2px;
   border: solid 2px #ddd;
   padding: 8px;

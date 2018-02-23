@@ -118,7 +118,7 @@ end
 ####################################################################
 def ro_standard(value=nil)
   value = @record[@yaml['name']] if value.nil? and @record.respond_to?(@yaml['name']) 
-  @html << (value.blank? ? '' : "<table class='dc-readonly'><td>#{value}</td></table>")
+  @html << (value.blank? ? '' : "<div class='dc-readonly'>#{value}</div>")
   self
 end
 
@@ -261,7 +261,7 @@ class Readonly < DrgcmsField
 ###########################################################################
 def render 
   @html << @parent.hidden_field('record', @yaml['name']) # retain field as hidden field
-  @html << '<table class="dc-readonly"><td>'
+  @html << '<div class="dc-readonly">'
   
   @html << if @yaml['eval']
     if @yaml['eval'].match('dc_name4_id')
@@ -279,7 +279,7 @@ def render
   else
     @parent.dc_format_value(@record[@yaml['name']],@yaml['format'])    
   end  
-  @html << '</td></table>'
+  @html << '</div>'
   self
 end
 end
@@ -384,15 +384,15 @@ class JournalDiff < DrgcmsField
 ###########################################################################
 def render 
   @yaml['name'] = 'old' if @record[@yaml['name']].nil?
-  @html << '<table width="99%">'
+  @html << '<div class="dc-journal">'
   JSON.parse(@record[@yaml['name']]).each do |k,v|
     old_value = v.class == Array ? v[0] : v
     new_value = v.class == Array ? v[1] : v
-    @html << "<tr><td style='background-color: #654ddd;'>#{@parent.check_box('select', k)} #{k}:</td></tr>
-             <tr><td style='background-color: #ffe;'>- #{old_value}</td></tr>
-             <tr><td style='background-color: #eff;'>+ #{new_value}</td></tr>"
+    @html << "<div style='background-color: #eee;'>#{@parent.check_box('select', k)} #{k}</div>
+              <div style='background-color: #fcc;'>-<br>#{old_value}</div>
+              <div style='background-color: #cfc;'>+<br>#{new_value}</div><br>"
   end
-  @html << '</table>'
+  @html << '</div>'
   self
 end
 end
@@ -485,7 +485,7 @@ def render
   @yaml['html']['value'] = ''   # must be. Otherwise it will look into record and return error
   @yaml['html']['placeholder'] = t('drgcms.search_placeholder')
   _name = '_' + @yaml['name']
-  @html << '<table class="ui-autocomplete-table"><td><div class="ui-autocomplete-border">'
+  @html << '<div class="ui-autocomplete-border">'
   @html << @parent.link_to(@parent.fa_icon('plus-square lg', class: 'dc-animate dc-green'), '#',onclick: 'return false;') # dummy add. But it is usefull.
 
   record = record_text_for(@yaml['name'])    
@@ -513,7 +513,7 @@ def render
       end
     end
   end
-  @html << "</div></div></td></table>"
+  @html << "</div></div>"
 # Create text for div to be added when new category is selected  
   link    = @parent.link_to(@parent.fa_icon('remove lg', class: 'dc-animate dc-red'), '#', 
             onclick: "$('#rec_id').hide(); var v = $('##{record}_#{@yaml['name']}_rec_id'); v.val(\"-\" + v.val());return false;")
@@ -1264,7 +1264,7 @@ class TextArea < DrgcmsField
 ###########################################################################
 def ro_standard
   value = @record[@yaml['name']]
-  @html << "<table class='dc-readonly'><td>#{value.gsub("\n",'<br>')}</td></table>" unless value.blank?
+  @html << "<div class='dc-readonly'>#{value.gsub("\n",'<br>')}</div>" unless value.blank?
   self
 end
 
