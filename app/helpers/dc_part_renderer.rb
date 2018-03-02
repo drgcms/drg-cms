@@ -126,7 +126,7 @@ end
 #     </div>
 ########################################################################
 def default
-  html = ''
+  html = "<div class=\"#{@opts[:div_class]}\">"
 # Load all parts only once per call  
   load_parts if @parent.parts.nil?
   dc_deprecate 'DcPart: Parameter location will be deprecated! Please use position keyword.' if @opts['location']
@@ -145,7 +145,7 @@ def default
       html << render_particle(part[0], @opts) 
     end
   end
-  html
+  html << "</div>"
 end
 
 ########################################################################
