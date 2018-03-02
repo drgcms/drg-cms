@@ -1184,10 +1184,10 @@ def render
   elsif @record and @record[@yaml['name']]
     @record[@yaml['name']]
   end
-# Found value to be written in field  
+# Found value to be written in field. If field is not found write out value.
   if value
     record = t.find(value)
-    value_displayed = record.send(ret_name) if record      
+    value_displayed = record ? record.send(ret_name) : value
   end
 # return if readonly
   return ro_standard(value_displayed) if @readonly
