@@ -328,7 +328,7 @@ def fill_login_data(user, remember_me)
 # This was previously in dc_user_can. I belive it should be here. 
 #TODO This might not be the best idea. Check in the future.
   if session[:user_roles].size == 0
-    guest = DcUserRole.find_by(:system_name => 'guest')
+    guest = DcPolicyRole.find_by(:system_name => 'guest')
     session[:user_roles] << guest.id if guest
   end
 # Save remember me cookie if not CMS user and remember me is selected
