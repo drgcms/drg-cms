@@ -776,29 +776,22 @@ end
 ############################################################################
 def dc_document_statistics
   return '' if @record.new_record? or dc_dont?(@form['form']['info'])
-  html =  "<div id='dc-document-info'>#{t('drgcms.doc_info')}</div>"
-#  html =  "<div id='dc-document-info'>#{fa_icon 'info-circle 2x'}</div>"
-  html =  '<div id="dc-document-info">' + fa_icon('info-circle lg') + '</div>'
+  html =  %Q[<div id="dc-document-info">#{fa_icon('info-circle lg')}</div> <div id="dc-document-info-popup" class="div-hidden"> ]
 #
-  html << "<div id='dc-document-info-popup' class='div-hidden'><table>"
   u = _get_user_for('created_by')
-  html << "<tr><td>#{t('drgcms.created_by', 'Created by')}: </td><td><b>#{u}</td></tr>" if u
+  html << %Q[<div><span>#{t('drgcms.created_by', 'Created by')}: </span><span>#{u}</span></div>] if u
   u = _get_user_for('updated_by')
-  html << "<tr><td>#{t('drgcms.updated_by', 'Updated by')}: </td><td><b>#{u}</td></tr>" if u
-  html << "<tr><td>#{t('drgcms.created_at', 'Created at')}: </td><td><b>#{dc_format_value(@record.created_at)}</td></tr>" if @record['created_at']
-  html << "<tr><td>#{t('drgcms.updated_at', 'Updated at')}: </td><td><b>#{dc_format_value(@record.updated_at)}</td></tr>" if @record['updated_at']
-  html << '</table>'
-# Copy to clipboard icon
+  html << %Q[<div><span>#{t('drgcms.updated_by', 'Updated by')}: </span><span>#{u}</span></div>] if u
+  html << %Q[<div><span>#{t('drgcms.created_at', 'Created at')}: </span><span>#{dc_format_value(@record.created_at)}</span></div>] if @record['created_at']
+  html << %Q[<div><span>#{t('drgcms.updated_at', 'Updated at')}: </span><span>#{dc_format_value(@record.updated_at)}</span></div>] if @record['updated_at']
+# copy to clipboard icon
   parms = params.clone
   parms[:controller] = 'dc_common'
   parms[:action]     = 'copy_clipboard'
   url = url_for(parms.permit!)
-#  caption = image_tag('drg_cms/copy.png', title: t('drgcms.doc_copy_clipboard'))
-#  html << %Q[<hr><img class="dc-link-img dc-link-ajax dc-animate" data-url="#{url}" data-request="get" #{caption}]
   html << fa_icon('copy 2x', class: 'dc-link-img dc-link-ajax dc-animate', 
                   'data-url' => url, 'data-request' => 'get', title: t('drgcms.doc_copy_clipboard') )
-  (html << '</div>').html_safe
-#  html.html_safe
+  (html << '</div></div>').html_safe
 end
 
 end

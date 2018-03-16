@@ -918,9 +918,8 @@ font-size: 11px;
 }
 
 #dc-document-info:hover {
-color: #222;
+color: darkred;
 cursor: pointer;
-text-decoration: underline;
 }
 
 #dc-document-info-popup {
@@ -932,6 +931,15 @@ border: 1px solid #ddd;
 border-radius: 2px;
 z-index: 100;
 }
+
+#dc-document-info-popup div span:first-child {
+  display: inline-block;
+  text-align: right;
+  width: 80px;
+  padding: 1px;
+}
+#dc-document-info-popup div span:last-child {font-weight: bold;}
+
 
 /************************** info popup *************************/
 #drgcms_filter {
