@@ -557,6 +557,19 @@ element = $(this).find(':first').attr('id');
     });      
   });
   
+  /*******************************************************************
+  * Click on preview selected image
+  *******************************************************************/
+  $('.dc-image-preview').on('click', function(e) {
+//      var img = $('.img1 img').attr('src');
+      var img = $(this).children(":first").attr('src');
+      $('#dc-image-preview').bPopup({
+            content:'image', //'ajax', 'iframe' or 'image'
+            contentContainer:'#dc-image-preview',
+            loadUrl: img
+        });
+  });
+  
  /*******************************************************************
   * 
   *******************************************************************/

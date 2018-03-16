@@ -59,6 +59,7 @@ en:
     username: User name
     password: Password
     form_error: Error loading form #{form_name}
+    img_large: Click for larger image
     
     edit: Edit
     show: Prikaz

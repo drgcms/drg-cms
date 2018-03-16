@@ -129,6 +129,7 @@ form:
         type: hidden_field
         type: readonly
         type: file_select
+        preview: no
 
         size: 50 or
         html:

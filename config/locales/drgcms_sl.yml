@@ -59,6 +59,7 @@ sl:
     username: Uporabnik
     password: Geslo
     form_error: Napaka pri branju forme #{form_name}
+    img_large: Klik za večjo sliko
 
     edit: Urejanje
     show: Prikaz

@@ -158,6 +158,8 @@ a.dc-animate:hover { color: #000; background: transparent;}
 
 .dc-link a img { border: none; }
 
+.dc-image-preview img { max-height: 2rem; padding-left: 0.5rem;}
+.dc-image-preview img:hover { cursor: zoom-in;}
 
 .text-with-select {
 width: 24px;
