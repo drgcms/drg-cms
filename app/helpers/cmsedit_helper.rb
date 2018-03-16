@@ -264,6 +264,67 @@ def dc_actions_for_result(document)
 end
 
 ############################################################################
+# Creates actions that could be performed on single row of result set.
+############################################################################
+def dc_actions_for_result(document)
+  actions = @form['result_set']['actions']
+  return '' if actions.nil? or @form['readonly']
+# standard actions  
+  actions = {'standard' => true} if actions.class == String && actions == 'standard'
+  std_actions = {' 2' => 'edit', ' 3' => 'delete'}
+  actions.merge!(std_actions) if actions['standard']
+#  
+  width = @form['result_set']['actions_width'] || 20*actions.size
+  html = "<div class=\"td\" style=\"width: #{width}px;\">"
+  actions.each do |k,v|
+    session[:form_processing] = "result_set:actions: #{k}=#{v}"
+    next if k == 'standard' # ignore standard definition
+    parms = @parms.clone   
+    yaml = v.class == String ? {'type' => v} : v # if single definition simulate type parameter
+    html << case
+    when yaml['type'] == 'edit' then
+      parms['action'] = 'edit'
+      parms['id']     = document.id
+      dc_link_to( nil, 'pencil lg', parms )
+    when yaml['type'] == 'duplicate' then
+      parms['id']     = document.id
+# duplicate string will be added to these fields.
+      parms['dup_fields'] = yaml['dup_fields'] 
+      parms['action'] = 'create'
+      dc_link_to( nil, 'copy lg', parms, data: { confirm: t('drgcms.confirm_dup') }, method: :post )
+    when yaml['type'] == 'delete' then
+      parms['action'] = 'destroy'
+      parms['id']     = document.id
+      dc_link_to( nil, 'remove lg', parms, data: { confirm: t('drgcms.confirm_delete') }, method: :delete )
+# undocumented so far
+    when yaml['type'] == 'edit_embedded'
+      parms['controller'] = 'cmsedit'
+      parms['table'] +=  ";#{yaml['table']}"
+      parms['ids']   ||= ''
+      parms['ids']   +=  "#{document.id};"
+      dc_link_to( nil, 'table lg', parms, method: :get )
+    when yaml['type'] == 'link' || yaml['type'] == 'ajax' then
+      if yaml['url']
+        parms['controller'] = yaml['url']
+        parms['idr']        = document.id
+      else
+        parms['id']         = document.id
+      end
+      parms['controller'] = yaml['controller'] if yaml['controller']
+      parms['action']     = yaml['action']     if yaml['action']
+      parms['table']      = yaml['table']      if yaml['table']
+      parms['form_name']  = yaml['form_name']  if yaml['form_name']
+      parms['target']     = yaml['target']     if yaml['target']
+      dc_link_or_ajax(yaml, parms)
+    else # error. 
+      yaml['type'].to_s
+    end
+  end
+  html << '</div>'
+  html.html_safe
+end
+
+############################################################################
 # Creates header div for result set.
 ############################################################################
 def dc_header_for_result()
@@ -298,6 +359,43 @@ def dc_header_for_result()
     end
   end
   c.html_safe
+end
+
+############################################################################
+# Creates header div for result set.
+############################################################################
+def dc_header_for_result()
+  html = '<div class="dc-result-header">'
+  actions = @form['result_set']['actions']
+  html << '<div class="th">&nbsp;</div>' unless actions.nil?  or @form['readonly']
+# preparation for sort icon  
+  sort_field, sort_direction = nil, nil
+  if session[@form['table']]
+    sort_field, sort_direction = session[@form['table']][:sort].to_s.split(' ')
+  end
+#  
+  if (columns = @form['result_set']['columns'])
+    columns.each do |k,v|
+      session[:form_processing] = "result_set:columns: #{k}=#{v}"
+      th = '<div class="th" '
+      v = {'name' => v} if v.class == String      
+      caption = v['caption'] || t("helpers.label.#{@form['table']}.#{v['name']}")
+# no sorting when embedded documents or custom filter is active 
+      sort_ok = @form['result_set'].nil? || (@form['result_set'] && @form['result_set']['filter'].nil?)
+      sort_ok = sort_ok || (@form['index'] && @form['index']['sort'])
+      if @tables.size == 1 and sort_ok
+        icon = 'sort lg'
+        if v['name'] == sort_field
+          icon = sort_direction == '1' ? 'sort-alpha-asc lg' : 'sort-alpha-desc lg'
+        end        
+        th << ">#{dc_link_to(caption, icon, sort: v['name'], table: params[:table], form_name: params[:form_name], action: :index )}</div>"
+      else
+        th << ">#{caption}</div>"
+      end
+      html << th
+    end
+  end
+  (html << '</div>').html_safe
 end
 
 ############################################################################
@@ -370,6 +468,15 @@ def dc_row_for_result(document)
 end
 
 ############################################################################
+# Creates tr code for each row of result set.
+############################################################################
+def dc_row_for_result(document)
+  clas  = "dc-#{cycle('odd','even')} " + dc_style_or_class(nil,@form['result_set']['tr_class'],nil,document)
+  style = dc_style_or_class('style',@form['result_set']['tr_style'],nil,document)
+  "<div class=\"dc-result-data #{clas}\" #{dc_clicks_for_result(document)} #{style}>".html_safe
+end
+
+############################################################################
 # Creates column for each field of result set document.
 ############################################################################
 def dc_columns_for_result(document)
@@ -423,6 +530,63 @@ def dc_columns_for_result(document)
     td << dc_style_or_class('class',v['td_class'],value,document)
     td << dc_style_or_class('style',v['td_style'] || v['style'],value,document)
     html << "#{td}>#{value}</td>"
+  end
+  html.html_safe
+end
+############################################################################
+# Creates column for each field of result set document.
+############################################################################
+def dc_columns_for_result(document)
+  html = ''  
+  return html unless @form['result_set']['columns']
+#  
+  @form['result_set']['columns'].each do |k,v|
+    session[:form_processing] = "result_set:columns: #{k}=#{v}"
+# convert shortcut to hash 
+    v = {'name' => v} if v.class == String
+# eval
+    value = if v['eval']
+      if v['eval'].match('dc_name4_id')
+        a = v['eval'].split(',')
+        if a.size == 3
+          dc_name4_id(a[1], a[2], nil, document[ v['name'] ])
+        else
+          dc_name4_id(a[1], a[2], a[3], document[ v['name'] ])
+        end
+      elsif v['eval'].match('dc_name4_value')
+        dc_name4_value( @form['table'], v['name'], document[ v['name'] ] )
+      elsif v['eval'].match('eval ')
+# evaluate with specified parameters
+      else
+        if v['params']
+          if v['params'] == 'document'     # pass document as parameter when all
+            eval( "#{v['eval']} document") 
+          else                        # list of fields delimeted by ,
+            params = v['params'].chomp.split(',').inject('') do |result,e| 
+              result << (e.match(/\.|\:|\(/) ? e : "document['#{e.strip}']") + ','
+            end
+            params.chomp!(',')
+            eval( "#{v['eval']} #{params}") 
+          end
+        else
+          eval( "#{v['eval']} '#{document[ v['name'] ]}'") 
+        end
+      end
+# as field        
+    elsif document.respond_to?(v['name'])
+      dc_format_value(document.send( v['name'] ), v['format']) 
+# as hash (dc_memory)
+    elsif document.class == Hash 
+      document[ v['name'] ]
+# error
+    else
+      "!!! #{v['name']}"
+    end
+#
+    td = '<div class="td" '
+    td << dc_style_or_class('class',v['td_class'],value,document)
+    td << dc_style_or_class('style',v['td_style'] || v['style'],value,document)
+    html << "#{td}>#{value}</div>"
   end
   html.html_safe
 end
@@ -592,12 +756,27 @@ def dc_background_for_result(start)
   if start == :start
     html = '<div class="dc-result-div" ' 
     html << (@form['result_set']['table_style'] ? "style=\"overflow-x: scroll;\" >" : '>')
-    html << "\n"  
   #
-    html << "<table class=\"dc-result #{@form['result_set']['table_class']}\" "
+    html << "\n<table class=\"dc-result #{@form['result_set']['table_class']}\" "
     html << (@form['result_set']['table_style'] ? "style=\"#{@form['result_set']['table_style']}\" >" : '>')
   else
     html = '</table></div>'
+  end
+  html.html_safe
+end
+
+############################################################################
+# Create background div and table definitions for result set.
+############################################################################
+def dc_background_for_result(start)
+  if start == :start
+    html = '<div class="dc-result-div" ' 
+    html << (@form['result_set']['table_style'] ? 'style="overflow-x: scroll;" >' : '>')
+  #
+    html << "\n<div class=\"dc-result #{@form['result_set']['table_class']}\" "
+    html << (@form['result_set']['table_style'] ? "style=\"#{@form['result_set']['table_style']}\" >" : '>')
+  else
+    html = '</div></div>'
   end
   html.html_safe
 end

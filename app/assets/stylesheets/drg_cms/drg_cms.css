@@ -199,6 +199,18 @@ border-bottom: 2px solid #ddd;
 padding: 2px;
 }
 
+.dc-result-header, .dc-result-data {
+  display: flex;
+}
+
+.dc-result-header .th {
+  width: 10%;
+}
+.dc-result-data .td {
+  width: 10%;
+}
+
+
 .dc-menu {
 border-spacing: 4px;
 padding: 0px;
