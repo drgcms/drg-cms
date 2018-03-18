@@ -15,8 +15,10 @@ result_set:
   columns:
     0:  
       name: position
+      width: 10%
     2: 
       name: description
+      width: 30%      
     3: 
       name: displayed
     4: 

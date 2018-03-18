@@ -19,6 +19,7 @@ result_set:
       name: name
     2: 
       name: description
+      width: 80%
 
 form:
   title: 

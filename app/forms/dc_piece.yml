@@ -19,6 +19,7 @@ result_set:
       name: name
     1:  
       name: description
+      width: 30%      
     2: 
       name: div_id
     4: 

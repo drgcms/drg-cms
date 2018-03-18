@@ -17,6 +17,7 @@ result_set:
   columns:
     1:  
       name: subject
+      width: 40%
     2: 
       name: alt_link
     3: 

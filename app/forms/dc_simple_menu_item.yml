@@ -17,15 +17,14 @@ result_set:
 #      style: "text-align: left;"
     1:  
       name: caption
-      style: "text-align: left;"
+      width: 30%
     2: 
       name: link
-      style: "text-align: left;"
-
+      width: 30%
     3: 
       name: order
       style: "text-align: right;"
-
+      width: 5%
 form:
   title: 
     field: caption

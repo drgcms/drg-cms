@@ -17,6 +17,7 @@ result_set:
     1:  
       name: name
       style: "text-align: left;"
+      width: 40%
     2: 
       name: params
       style: "text-align: left;"

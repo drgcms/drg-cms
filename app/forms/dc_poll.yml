@@ -20,6 +20,7 @@ result_set:
       name: name
     2:  
       name: title
+      width: 40%
     3: 
       name: valid_from
     4: 

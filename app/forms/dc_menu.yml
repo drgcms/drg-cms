@@ -17,10 +17,9 @@ result_set:
   columns:
     10:  
       name: name
-      style: "text-align: left;"
     20: 
       name: description
-      style: "text-align: left;"
+      width: 50%      
 
 form:
   title: 
