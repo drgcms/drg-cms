@@ -356,6 +356,10 @@ def dc_link_to(caption, icon, parms, rest={})
     rest['class'] = rest['class'].to_s + ' dc-animate'
     rest['target'] ||=  parms.delete('target')
   end
+  p parms
+  p rest
+  p parms['icon']
+  icon_pos = parms.delete('icon') || 'first'
 #  
   if icon
     icon_image = if icon.match(/\./)
@@ -371,7 +375,9 @@ def dc_link_to(caption, icon, parms, rest={})
     caption = t(caption, caption)
     icon_image << ' ' if icon_image
   end
-  _origin.link_to("#{icon_image}#{caption}".html_safe, parms, rest)  
+  icon_pos == 'first' ?
+    _origin.link_to("#{icon_image}#{caption}".html_safe, parms, rest) :
+    _origin.link_to("#{caption} #{icon_image}".html_safe, parms, rest)
 end
 
 ####################################################################

@@ -264,18 +264,27 @@ def dc_actions_for_result(document)
 end
 
 ############################################################################
-# Creates actions that could be performed on single row of result set.
+# Determines actions and width of actions column
 ############################################################################
-def dc_actions_for_result(document)
+def dc_actions_column()
   actions = @form['result_set']['actions']
-  return '' if actions.nil? or @form['readonly']
 # standard actions  
   actions = {'standard' => true} if actions.class == String && actions == 'standard'
   std_actions = {' 2' => 'edit', ' 3' => 'delete'}
   actions.merge!(std_actions) if actions['standard']
 #  
   width = @form['result_set']['actions_width'] || 20*actions.size
-  html = "<div class=\"td\" style=\"width: #{width}px;\">"
+  [ actions, "<div class=\"actions\" style=\"width: #{width}px;\">" ] 
+end
+
+############################################################################
+# Creates actions that could be performed on single row of result set.
+############################################################################
+def dc_actions_for_result(document)
+  actions = @form['result_set']['actions']
+  return '' if actions.nil? or @form['readonly']
+#  
+  actions, html = dc_actions_column()
   actions.each do |k,v|
     session[:form_processing] = "result_set:actions: #{k}=#{v}"
     next if k == 'standard' # ignore standard definition
@@ -366,8 +375,10 @@ end
 ############################################################################
 def dc_header_for_result()
   html = '<div class="dc-result-header">'
-  actions = @form['result_set']['actions']
-  html << '<div class="th">&nbsp;</div>' unless actions.nil?  or @form['readonly']
+  if @form['result_set']['actions'] and !@form['readonly']
+    ignore, code = dc_actions_column()
+    html << code + '</div>'
+  end
 # preparation for sort icon  
   sort_field, sort_direction = nil, nil
   if session[@form['table']]
@@ -377,7 +388,8 @@ def dc_header_for_result()
   if (columns = @form['result_set']['columns'])
     columns.each do |k,v|
       session[:form_processing] = "result_set:columns: #{k}=#{v}"
-      th = '<div class="th" '
+      width = " style=\"width: #{v['width'] || '15%'};\" "
+      th = '<div class="th" ' + width
       v = {'name' => v} if v.class == String      
       caption = v['caption'] || t("helpers.label.#{@form['table']}.#{v['name']}")
 # no sorting when embedded documents or custom filter is active 
@@ -388,11 +400,11 @@ def dc_header_for_result()
         if v['name'] == sort_field
           icon = sort_direction == '1' ? 'sort-alpha-asc lg' : 'sort-alpha-desc lg'
         end        
-        th << ">#{dc_link_to(caption, icon, sort: v['name'], table: params[:table], form_name: params[:form_name], action: :index )}</div>"
+        th << ">#{dc_link_to(caption, icon, sort: v['name'], table: params[:table], form_name: params[:form_name], action: :index, icon: :last )}</div>"
       else
         th << ">#{caption}</div>"
       end
-      html << th
+      html << "<div class=\"spacer\"></div>" + th
     end
   end
   (html << '</div>').html_safe
@@ -583,9 +595,11 @@ def dc_columns_for_result(document)
       "!!! #{v['name']}"
     end
 #
-    td = '<div class="td" '
+    width = " style=\"width: #{v['width'] || '15%'};\" "
+
+    td = '<div class="spacer"></div><div class="td" '
     td << dc_style_or_class('class',v['td_class'],value,document)
-    td << dc_style_or_class('style',v['td_style'] || v['style'],value,document)
+    td << dc_style_or_class('style',"width: #{v['width'] || '15%'};" + (v['td_style'] || v['style']).to_s,value,document)
     html << "#{td}>#{value}</div>"
   end
   html.html_safe

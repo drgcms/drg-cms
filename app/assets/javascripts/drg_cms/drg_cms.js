@@ -21,6 +21,8 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
+  mouseDown = false;
+
 /*******************************************************************
  * Find and extract parameters value from url
  *******************************************************************/
@@ -498,6 +500,18 @@ element = $(this).find(':first').attr('id');
       location.href = url;
     } 
   });
+  
+  /*******************************************************************
+  * Fire action (by default show document) when doubleclicked on result row
+  *******************************************************************/
+  $('.dc-result-data').on('dblclick', function(e) {
+    url = String( this.getAttribute("data-dblclick") );
+// prevent when data-dblclick not set
+    if (url.length > 5) { 
+      e.preventDefault();
+      location.href = url;
+    } 
+  });
 
  /*******************************************************************
   * Fire action clicked on result row. 
@@ -592,6 +606,18 @@ element = $(this).find(':first').attr('id');
    $('.cmsedit-top-level-menu').on('click', function(e) {
      $(e.target).find('ul').toggle('fast');
    });
+   
+/*******************************************************************
+  * Resize result table columns
+  *******************************************************************/
+   $( ".dc-result-header .spacer" )
+  .mouseenter(function() {
+    console.log("enter");
+  })
+  .mouseleave(function() {
+    console.log("leave");
+  });
+
   
 });
 
@@ -609,3 +635,20 @@ $(document).keydown( function(e) {
   }
   return true;
 });
+
+/*******************************************************************
+ * Catch ctrl+s key pressed and fire save form event. I press ctrl+s
+ * almost every minute. That was a lesson learned years ago when I lost
+ * few hours of work on computer lockup ;-(
+ *******************************************************************
+$(document).onmousedown( function(e) {
+  mouseDown = true;
+  console.log("mouse down");  
+});
+
+$(document).onmouseup( function(e) {
+  mouseDown = false;
+  console.log("mouse up");  
+});
+
+**/
