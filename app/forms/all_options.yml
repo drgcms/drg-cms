@@ -47,17 +47,17 @@ result_set:
   table_class: tclass
   tr_style: 'color: green;'
   tr_class: trclass
+  tr_class: 
+    eval: "document['result'] < 0 ? 'color: red;' : 'color: #000;'"
   
   actions: standard
 
   actions: 
+    
     1: edit
     2: 
       type: duplicate
       dup_fields: name,another_field
-      td_class: class-name
-      td_style:
-        eval: "document['field'] == document['description'] ? 'color: gold;' : 'color: #000;'"
 
     3: 
       type: delete
@@ -77,7 +77,12 @@ result_set:
     1:  
       name: name
       eval: dc_name4_id,dc_site,name
-      style: 'align: left; width: 100px'
+      width: 10%
+      align: right (center)
+      style: 'color: red;'
+      td_class: class-name
+      td_style:
+        eval: "document['field'] == document['description'] ? 'color: gold;' : 'color: #000;'"
     2:  
       name: title
     3: 

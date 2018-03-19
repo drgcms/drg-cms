@@ -253,11 +253,11 @@ end
 # String. HTML code for title.
 ############################################################################
 def dc_table_title(text, result_set=nil)
-  c = "<table width='100%' class='dc-title'><tr><td>#{text}</td>"
+  c = %Q[<div class="dc-title"><h2>#{text}</h2>]
   if result_set and result_set.respond_to?(:current_page)
-    c << "<td align='right' style='font-size: 0.8em;'> #{paginate(result_set, :params => {:action => 'index'})}</td>" 
+    c << %Q[<div class="dc-paginate">#{paginate(result_set, :params => {:action => 'index'})}</div>]
   end
-  c << '<tr></table>'
+  c << '<div style="clear: both;"></div></div></div>'
   c.html_safe
 end
 
@@ -356,10 +356,8 @@ def dc_link_to(caption, icon, parms, rest={})
     rest['class'] = rest['class'].to_s + ' dc-animate'
     rest['target'] ||=  parms.delete('target')
   end
-  p parms
-  p rest
-  p parms['icon']
   icon_pos = parms.delete('icon') || 'first'
+  parms['controller'] ||= 'cmsedit'
 #  
   if icon
     icon_image = if icon.match(/\./)

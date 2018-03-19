@@ -388,9 +388,9 @@ def dc_header_for_result()
   if (columns = @form['result_set']['columns'])
     columns.each do |k,v|
       session[:form_processing] = "result_set:columns: #{k}=#{v}"
-      width = " style=\"width: #{v['width'] || '15%'};\" "
-      th = '<div class="th" ' + width
-      v = {'name' => v} if v.class == String      
+#      
+      th = %Q[<div class="th" style="width: #{v['width'] || '15%'};text-align: #{v['align'] || 'left'};"]
+      v  = {'name' => v} if v.class == String      
       caption = v['caption'] || t("helpers.label.#{@form['table']}.#{v['name']}")
 # no sorting when embedded documents or custom filter is active 
       sort_ok = @form['result_set'].nil? || (@form['result_set'] && @form['result_set']['filter'].nil?)
@@ -483,8 +483,8 @@ end
 # Creates tr code for each row of result set.
 ############################################################################
 def dc_row_for_result(document)
-  clas  = "dc-#{cycle('odd','even')} " + dc_style_or_class(nil,@form['result_set']['tr_class'],nil,document)
-  style = dc_style_or_class('style',@form['result_set']['tr_style'],nil,document)
+  clas  = "dc-#{cycle('odd','even')} " + dc_style_or_class(nil, @form['result_set']['tr_class'], nil, document)
+  style = dc_style_or_class('style', @form['result_set']['tr_style'], nil, document)
   "<div class=\"dc-result-data #{clas}\" #{dc_clicks_for_result(document)} #{style}>".html_safe
 end
 
@@ -595,12 +595,19 @@ def dc_columns_for_result(document)
       "!!! #{v['name']}"
     end
 #
-    width = " style=\"width: #{v['width'] || '15%'};\" "
-
     td = '<div class="spacer"></div><div class="td" '
-    td << dc_style_or_class('class',v['td_class'],value,document)
-    td << dc_style_or_class('style',"width: #{v['width'] || '15%'};" + (v['td_style'] || v['style']).to_s,value,document)
-    html << "#{td}>#{value}</div>"
+    td << dc_style_or_class('class', v['td_class'], value, document)
+
+    width_align = %Q[width: #{v['width'] || '15%'};text-align: #{v['align'] || 'left'};]
+    style = dc_style_or_class('style', v['td_style'] || v['style'], value, document)
+    style = if style.size > 1
+      # remove trailing " add width and end with "
+      style.slice(0..-1) + width_align + '"'
+    else
+      # create style string
+      "style=\"#{width_align}\""
+    end
+    html << "#{td} #{style}>#{value}</div>"
   end
   html.html_safe
 end

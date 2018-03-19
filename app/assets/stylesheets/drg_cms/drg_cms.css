@@ -145,7 +145,7 @@ color: #666;
 font-weight: bold;
 text-decoration: none; 
 background: transparent;
-padding: 8px 0;
+padding: 6px 0;
 }
 
 .dc-link a:hover, .dc-animate a:hover, .dc-result a:hover  { 
@@ -177,55 +177,51 @@ width: 24px;
 }
 
 .dc-result {
-width: 99.5%;
+width: 99.9%;
 padding: 0px;
 border-spacing: 0px;
 border-radius: 1px;  
-background-color: #fafafa;
+background-color: #f9f9f9;
 /*border: 2px solid #ddd;
 border-left: 2px solid #ddd;
 border-bottom: none;*/
 }
 
-.dc-result tr:hover { background-color: #ddd; }
-
-.dc-result td { 
-padding: 4px;
-line-height: 1.5em;
-/*
-nborder-right: 2px solid #ddd;
-border-bottom: 2px solid #ddd;
-*/
-}
-
 .dc-result i { 
 padding: 2px;
+font-size: 0.9rem;
 }
 
 .dc-result-header {
   display: flex;
-  border-bottom: 3px solid #ddd;
-  background-color: #fafafa;
+  border-bottom: 2px solid #eee;
+  border-top: 2px solid #eee;
+  background-color: #f9f9f9;
+  background-color: #eee;
 }
 .dc-result-data {
   display: flex;
 }
 
 .dc-result-data i {
-  padding-top: 5px;
+  padding: 6px 1px;
+
+  font-size: 1rem;
 }
 
 .dc-result-header .th {
   padding: 6px 2px;
   white-space: nowrap;
   overflow: hidden;
+  font-weight: bold;
+  color: #666;
 }
 
 .dc-result-header .spacer, .dc-result-data .spacer {
-  width: 3px;
+  width: 1px;
   font-size: 1.5em;
-  margin: 0 2px;
-  padding: 4px 2px;
+  margin: 0 0px;
+  padding: 4px 0px;
   resize: both;
 }
 
@@ -236,6 +232,7 @@ padding: 2px;
   padding: 5px 2px;
   white-space: nowrap;
   overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .dc-result-data .actions, .dc-result-header .actions {
@@ -244,7 +241,10 @@ padding: 2px;
   white-space: nowrap;
 }
 
-.dc-result-data:hover { background-color: #ddd; }
+.dc-result-data:hover { 
+  background-color: rgba(255,127,0, 0.1); 
+  background-color: rgba(0,0,255, 0.1); 
+}
 
 .dc-menu {
 border-spacing: 4px;
@@ -437,9 +437,18 @@ background: transparent linear-gradient(to bottom, #eee 0%, #eee 100%) repeat sc
   font-size: 1.2em;
   padding: 5px 1px;
   border-spacing: 0px;
-  width: 100%;
   margin: 0px;
   background-color: #fff;
+}
+
+.dc-title h2 {
+  float:left;
+  font-size: 1.3em;
+  padding-top: 0.5em;
+}
+.dc-title .dc-paginate {
+  float:right; 
+  padding-top: 1em;
 }
 
 .dc-form-frame {
@@ -597,7 +606,7 @@ border-bottom: 1px solid #eee;
 }
 
 .dc-odd {
- background-color: #fcfcfc;
+ background-color: #fff;
 }
 
 .dc-separator {
