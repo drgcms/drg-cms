@@ -314,7 +314,7 @@ $(document).ready( function() {
       req = 'get'; // by default
     }
     
-    $('#dc-spinner').toggleClass('div-hidden');   
+    $('.dc-spinner').toggleClass('div-hidden');   
     $.ajax({
       url: target.getAttribute("data-url"),
       type: req,
@@ -325,7 +325,7 @@ $(document).ready( function() {
 //      }
       success: function(data) {
         process_json_result(data);
-        $('#dc-spinner').toggleClass('div-hidden');
+        $('.dc-spinner').toggleClass('div-hidden');
       }
       
     });  
@@ -380,11 +380,11 @@ $(document).ready( function() {
  * Display spinner on link with spinner, submit link
  *******************************************************************/
   $('.dc-link-spinner').on('click', function(e) {
-    $('#dc-spinner').toggleClass('div-hidden');
+    $('.dc-spinner').toggleClass('div-hidden');
   });  
   
   $('.dc-link-submit').on('click', function(e) {
-    $('#dc-spinner').toggleClass('div-hidden');
+    $('.dc-spinner').toggleClass('div-hidden');
   });  
 
 /*******************************************************************

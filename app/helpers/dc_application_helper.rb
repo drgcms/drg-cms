@@ -355,9 +355,9 @@ def dc_link_to(caption, icon, parms, rest={})
     rest.stringify_keys!
     rest['class'] = rest['class'].to_s + ' dc-animate'
     rest['target'] ||=  parms.delete('target')
+    parms['controller'] ||= 'cmsedit'
   end
   icon_pos = parms.delete('icon') || 'first'
-  parms['controller'] ||= 'cmsedit'
 #  
   if icon
     icon_image = if icon.match(/\./)

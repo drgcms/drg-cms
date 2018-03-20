@@ -48,7 +48,7 @@ def dc_actions_for_index()
 # start div with hidden spinner image 
   html = <<EOT
 <div id="dc-action-menu">
-  <span id="dc-spinner" class="div-hidden">#{fa_icon('spinner lg spin')}</span>
+  <span class="dc-spinner div-hidden">#{fa_icon('spinner lg spin')}</span>
   <ul class="dc-action-menu">
 EOT
 # Remove actions settings and sort
@@ -155,15 +155,14 @@ def dc_div_filter()
   html =<<EOT
   <div id="drgcms_filter" class="div-hidden">
     <h1>#{t('drgcms.filter_set')}</h1>
-    <table class="dc-menu"><td>
+    
     #{ select(nil, 'filter_field1', options_for_select(choices, field_name), { include_blank: true }) }
     #{ select(nil, 'filter_oper', options_for_select(choices4_operators, operators_value)) }
-
-      </td>
-      <td class="dc-link dc-animate drgcms_popup_submit" data-url="#{url}">#{fa_icon('check-square-o')} #{t('drgcms.filter_on')}</td>
-      <td class="dc-link dc-animate">#{dc_link_to('drgcms.filter_off','close', {action: :index, filter: 'off', table: @form['table'], form_name: params['form_name']}) }</td>
-    </table>
-</div>
+    <div class="dc-menu">
+      <div class="dc-link dc-animate drgcms_popup_submit" data-url="#{url}">#{fa_icon('check-square-o')} #{t('drgcms.filter_on')}</div>
+      <div class="dc-link dc-animate">#{dc_link_to('drgcms.filter_off','close', {action: :index, filter: 'off', table: @form['table'], form_name: params['form_name']}) }</div>
+    </div>
+  </div>
 EOT
   html.html_safe
 end
@@ -200,67 +199,6 @@ def dc_link_or_ajax(yaml, parms) #:nodoc:
     rest['class'] << " fa fa-#{yaml['icon']}"
     fa_icon(yaml['icon'], rest ) 
   end
-end
-
-############################################################################
-# Creates actions that could be performed on single row of result set.
-############################################################################
-def dc_actions_for_result(document)
-  actions = @form['result_set']['actions']
-  return '' if actions.nil? or @form['readonly']
-# standard actions  
-  actions = {'standard' => true} if actions.class == String && actions == 'standard'
-  std_actions = {' 2' => 'edit', ' 3' => 'delete'}
-  actions.merge!(std_actions) if actions['standard']
-#  
-  width = @form['result_set']['actions_width'] || 20*actions.size
-  html = "<td style=\"width: #{width}px;\">"
-  actions.each do |k,v|
-    session[:form_processing] = "result_set:actions: #{k}=#{v}"
-    next if k == 'standard' # ignore standard definition
-    parms = @parms.clone   
-    yaml = v.class == String ? {'type' => v} : v # if single definition simulate type parameter
-    html << case
-    when yaml['type'] == 'edit' then
-      parms['action'] = 'edit'
-      parms['id']     = document.id
-      dc_link_to( nil, 'pencil lg', parms )
-    when yaml['type'] == 'duplicate' then
-      parms['id']     = document.id
-# duplicate string will be added to these fields.
-      parms['dup_fields'] = yaml['dup_fields'] 
-      parms['action'] = 'create'
-      dc_link_to( nil, 'copy lg', parms, data: { confirm: t('drgcms.confirm_dup') }, method: :post )
-    when yaml['type'] == 'delete' then
-      parms['action'] = 'destroy'
-      parms['id']     = document.id
-      dc_link_to( nil, 'remove lg', parms, data: { confirm: t('drgcms.confirm_delete') }, method: :delete )
-# undocumented so far
-    when yaml['type'] == 'edit_embedded'
-      parms['controller'] = 'cmsedit'
-      parms['table'] +=  ";#{yaml['table']}"
-      parms['ids']   ||= ''
-      parms['ids']   +=  "#{document.id};"
-      dc_link_to( nil, 'table lg', parms, method: :get )
-    when yaml['type'] == 'link' || yaml['type'] == 'ajax' then
-      if yaml['url']
-        parms['controller'] = yaml['url']
-        parms['idr']        = document.id
-      else
-        parms['id']         = document.id
-      end
-      parms['controller'] = yaml['controller'] if yaml['controller']
-      parms['action']     = yaml['action']     if yaml['action']
-      parms['table']      = yaml['table']      if yaml['table']
-      parms['form_name']  = yaml['form_name']  if yaml['form_name']
-      parms['target']     = yaml['target']     if yaml['target']
-      dc_link_or_ajax(yaml, parms)
-    else # error. 
-      yaml['type'].to_s
-    end
-  end
-  html << '</td>'
-  html.html_safe
 end
 
 ############################################################################
@@ -331,43 +269,6 @@ def dc_actions_for_result(document)
   end
   html << '</div>'
   html.html_safe
-end
-
-############################################################################
-# Creates header div for result set.
-############################################################################
-def dc_header_for_result()
-  c = ''
-  actions = @form['result_set']['actions']
-  c = '<th>&nbsp;</th>' unless actions.nil?  or @form['readonly']
-# preparation for sort icon  
-  sort_field, sort_direction = nil, nil
-  if session[@form['table']]
-    sort_field, sort_direction = session[@form['table']][:sort].to_s.split(' ')
-  end
-#  
-  if (columns = @form['result_set']['columns'])
-    columns.each do |k,v|
-      session[:form_processing] = "result_set:columns: #{k}=#{v}"
-      th = '<th '
-      v = {'name' => v} if v.class == String      
-      caption = v['caption'] || t("helpers.label.#{@form['table']}.#{v['name']}")
-# no sorting when embedded documents or custom filter is active 
-      sort_ok = @form['result_set'].nil? || (@form['result_set'] && @form['result_set']['filter'].nil?)
-      sort_ok = sort_ok || (@form['index'] && @form['index']['sort'])
-      if @tables.size == 1 and sort_ok
-        icon = 'sort lg'
-        if v['name'] == sort_field
-          icon = sort_direction == '1' ? 'sort-alpha-asc lg' : 'sort-alpha-desc lg'
-        end        
-        th << ">#{dc_link_to(caption, icon, sort: v['name'], table: params[:table], form_name: params[:form_name], action: :index )}</th>"
-      else
-        th << ">#{caption}</th>"
-      end
-      c << th
-    end
-  end
-  c.html_safe
 end
 
 ############################################################################
@@ -457,7 +358,7 @@ end
 ############################################################################
 def dc_style_or_class(selector, yaml, value, record)
   return '' if yaml.nil?
-# alias record and value so both names can be used  
+# alias record and value so both names can be used in eval
   field = value
   document = record
   html = selector ? "#{selector}=\"" : ''
@@ -469,15 +370,6 @@ def dc_style_or_class(selector, yaml, value, record)
   html << '"' if selector 
   html
 end 
-
-############################################################################
-# Creates tr code for each row of result set.
-############################################################################
-def dc_row_for_result(document)
-  clas  = "dc-#{cycle('odd','even')} " + dc_style_or_class(nil,@form['result_set']['tr_class'],nil,document)
-  style = dc_style_or_class('style',@form['result_set']['tr_style'],nil,document)
-  "<tr class=\"#{clas}\" #{dc_clicks_for_result(document)} #{style}>".html_safe
-end
 
 ############################################################################
 # Creates tr code for each row of result set.
@@ -538,70 +430,13 @@ def dc_columns_for_result(document)
       "!!! #{v['name']}"
     end
 #
-    td = '<td '
-    td << dc_style_or_class('class',v['td_class'],value,document)
-    td << dc_style_or_class('style',v['td_style'] || v['style'],value,document)
-    html << "#{td}>#{value}</td>"
-  end
-  html.html_safe
-end
-############################################################################
-# Creates column for each field of result set document.
-############################################################################
-def dc_columns_for_result(document)
-  html = ''  
-  return html unless @form['result_set']['columns']
-#  
-  @form['result_set']['columns'].each do |k,v|
-    session[:form_processing] = "result_set:columns: #{k}=#{v}"
-# convert shortcut to hash 
-    v = {'name' => v} if v.class == String
-# eval
-    value = if v['eval']
-      if v['eval'].match('dc_name4_id')
-        a = v['eval'].split(',')
-        if a.size == 3
-          dc_name4_id(a[1], a[2], nil, document[ v['name'] ])
-        else
-          dc_name4_id(a[1], a[2], a[3], document[ v['name'] ])
-        end
-      elsif v['eval'].match('dc_name4_value')
-        dc_name4_value( @form['table'], v['name'], document[ v['name'] ] )
-      elsif v['eval'].match('eval ')
-# evaluate with specified parameters
-      else
-        if v['params']
-          if v['params'] == 'document'     # pass document as parameter when all
-            eval( "#{v['eval']} document") 
-          else                        # list of fields delimeted by ,
-            params = v['params'].chomp.split(',').inject('') do |result,e| 
-              result << (e.match(/\.|\:|\(/) ? e : "document['#{e.strip}']") + ','
-            end
-            params.chomp!(',')
-            eval( "#{v['eval']} #{params}") 
-          end
-        else
-          eval( "#{v['eval']} '#{document[ v['name'] ]}'") 
-        end
-      end
-# as field        
-    elsif document.respond_to?(v['name'])
-      dc_format_value(document.send( v['name'] ), v['format']) 
-# as hash (dc_memory)
-    elsif document.class == Hash 
-      document[ v['name'] ]
-# error
-    else
-      "!!! #{v['name']}"
-    end
-#
     td = '<div class="spacer"></div><div class="td" '
     td << dc_style_or_class('class', v['td_class'], value, document)
 
     width_align = %Q[width: #{v['width'] || '15%'};text-align: #{v['align'] || 'left'};]
     style = dc_style_or_class('style', v['td_style'] || v['style'], value, document)
     style = if style.size > 1
-      # remove trailing " add width and end with "
+      # remove trailing " add width and add trailing " back
       style.slice(0..-1) + width_align + '"'
     else
       # create style string
@@ -655,7 +490,7 @@ def dc_actions_for_form()
 # Sort so that standard actions come first
   actions = actions.to_a.sort {|x,y| x[0].to_s <=> y[0].to_s} 
 # Add spinner to the beginning
-  c = %Q[<td id="dc-spinner" class="div-hidden">#{fa_icon('spinner lg spin')}</td>]
+  c = %Q[<span class="dc-spinner div-hidden">#{fa_icon('spinner lg spin')}</span><ul class="dc-menu">]
   
   actions.each do |element|
     session[:form_processing] = "form:actions: #{element}"
@@ -672,7 +507,7 @@ def dc_actions_for_form()
     if v.class == String
       next if params[:readonly] and !(v == 'back')
       
-      c << '<td class="dc-link dc-animate">'
+      c << '<li class="dc-link dc-animate">'
       c << case 
         when (v == 'back' or v == 'cancle') then
 # If return_to is present link directly to URL        
@@ -710,18 +545,18 @@ def dc_actions_for_form()
       when v['type'] == 'submit'
         caption = v['caption'] || 'drgcms.save'
         icon    = v['icon'] || 'save'
-        '<td class="dc-link-submit dc-animate">' + 
+        '<li class="dc-link-submit dc-animate">' + 
           dc_submit_tag(caption, icon, {:data => v['params'], :title => v['title']}) + 
-        '</td>'
+        '</li>'
 # delete with some sugar added
       when v['type'] == 'delete'
         parms['id']   = @record.id
         parms.merge!(v['params'])
         caption = v['caption'] || 'drgcms.delete'
         icon = v['icon'] || 'remove'
-        '<td class="dc-link dc-animate">' + 
+        '<li class="dc-link dc-animate">' + 
           dc_link_to( caption, icon, parms, data: t('drgcms.confirm_delete'), method: :delete ) +
-        '</td>'
+        '</li>'
 # ajax or link button
       when v['type'] == 'ajax' || v['type'] == 'link'
         parms = {}
@@ -741,7 +576,7 @@ def dc_actions_for_form()
         end
   # Error if controller param is missing
         if parms['controller'].nil?
-          "<td>#{t('drgcms.error')}</td>"
+          "<li>#{t('drgcms.error')}</li>"
         else
           v['caption'] ||= v['text'] 
           caption = t("#{v['caption'].downcase}", v['caption'])
@@ -749,11 +584,11 @@ def dc_actions_for_form()
           request = v['request'] || v['method'] || 'get'
           icon    = v['icon'] ? "#{fa_icon(v['icon'])} " : ''
           if v['type'] == 'ajax' # ajax button
-            %Q[<td class="dc-link-ajax dc-animate" id="dc-submit-ajax" data-url="#{url}" 
-               data-request="#{request}" title="#{v['title']}">#{icon}#{caption}</td>]
+            %Q[<li class="dc-link-ajax dc-animate" id="dc-submit-ajax" data-url="#{url}" 
+               data-request="#{request}" title="#{v['title']}">#{icon}#{caption}</li>]
           else                   # link button
 #            %Q[<td class="dc-link dc-animate" title="#{v['title']}><a href="#{url}">#{icon}#{caption}</a></td>]
-            %Q[<td class="dc-link dc-animate">#{dc_link_to(v['caption'],v['icon'], parms)}</td>]
+            %Q[<li class="dc-link dc-animate">#{dc_link_to(v['caption'],v['icon'], parms)}</li>]
           end
         end
 # Javascript action        
@@ -761,29 +596,13 @@ def dc_actions_for_form()
 #          v['caption'] ||= 'Caption missing!'
 #          caption = t("#{v['caption'].downcase}", v['caption'])
           data = {'request' => 'script', 'script' => v['js']}
-         %Q[<td class="dc-link-ajax dc-animate">#{ dc_link_to(v['caption'],v['icon'], '#', data: data ) }</td>]
+         %Q[<li class="dc-link-ajax dc-animate">#{ dc_link_to(v['caption'],v['icon'], '#', data: data ) }</li>]
       else
-        '<td>err2</td>'
+        '<li>err2</li>'
       end
     end
   end
-  c.html_safe
-end
-
-############################################################################
-# Create background div and table definitions for result set.
-############################################################################
-def dc_background_for_result(start)
-  if start == :start
-    html = '<div class="dc-result-div" ' 
-    html << (@form['result_set']['table_style'] ? "style=\"overflow-x: scroll;\" >" : '>')
-  #
-    html << "\n<table class=\"dc-result #{@form['result_set']['table_class']}\" "
-    html << (@form['result_set']['table_style'] ? "style=\"#{@form['result_set']['table_style']}\" >" : '>')
-  else
-    html = '</table></div>'
-  end
-  html.html_safe
+  (c << '</ul>').html_safe
 end
 
 ############################################################################
