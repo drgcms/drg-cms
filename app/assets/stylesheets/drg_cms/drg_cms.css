@@ -194,7 +194,8 @@ font-size: 0.9rem;
 
 .dc-result-header {
   display: flex;
-  background-color: #eee;
+/*  background-color: #eee;*/
+  background: linear-gradient(to bottom, #eee 0%, #ddd 100%); 
 }
 .dc-result-data {
   display: flex;
