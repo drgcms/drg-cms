@@ -253,6 +253,7 @@ def index
     end
   end
 #
+  call_callback_method('dc_footer')
   respond_to do |format|
     format.html { render action:  :index }
     format.js   { render partial: :result }

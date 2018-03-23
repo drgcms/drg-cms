@@ -55,6 +55,7 @@ attr_accessor :page_title
 # all parts read from page, design, ...
 attr_accessor :parts
 
+attr_accessor :record_footer
 
 ############################################################################
 # When @parent is present then helper methods are called from parent class otherwise 
@@ -253,11 +254,11 @@ end
 # String. HTML code for title.
 ############################################################################
 def dc_table_title(text, result_set=nil)
-  c = %Q[<div class="dc-title"><h2>#{text}</h2>]
+  c = %Q[<div class="dc-title">#{text}]
   if result_set and result_set.respond_to?(:current_page)
     c << %Q[<div class="dc-paginate">#{paginate(result_set, :params => {:action => 'index'})}</div>]
   end
-  c << '<div style="clear: both;"></div></div></div>'
+  c << '<div style="clear: both;"></div></div>'
   c.html_safe
 end
 

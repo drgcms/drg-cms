@@ -32,6 +32,7 @@ form:
       name: dc_policy_role_id
       type: select
       eval: DcPolicyRole.choices4_roles
+      width: 30%;
 
     20:
       name: permission

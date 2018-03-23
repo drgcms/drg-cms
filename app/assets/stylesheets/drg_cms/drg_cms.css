@@ -244,6 +244,13 @@ font-size: 0.9rem;
   background-color: rgba(0,0,255, 0.1); 
 }
 
+.dc-result-data.footer {
+  border-top: 2px solid #222;
+/*  border-bottom: 2px solid #222; */
+  color: #000;
+  font-weight: bold;
+}
+
 .dc-menu {
 padding: 0px;
 padding: 10px 0;
@@ -258,18 +265,17 @@ display: inline-table;
 #data-fields {margin: 5px;}
 
 .dc-link {
-padding: 5px 6px; 
+padding: 6px; 
 
 text-align: center;
-border-radius: 3px;
-background-color: #eee;
+border-radius: 2px;
 background: transparent linear-gradient(to bottom, #FFF 0%, #F2F2F2 100%) repeat scroll 0% 0%;
-border: 1px solid #ddd;
+border: 1px solid #eee;
 }
 
 .dc-link:hover {
-  background-color: #f8f8f8;
-  border: 1px solid #ccc;
+  background: #ddd;
+  border: 1px solid #ddd;
   transition: 0.3s;  
 }
 
@@ -281,18 +287,17 @@ border: 1px solid #ddd;
 .dc-link-ajax {
   text-align: left;
   font-weight: bold;
-  padding: 5px 8px;  
-  border-radius: 3px;
+  padding: 6px;  
+  border-radius: 2px;
   color: #666;
-  background-color: #eee;
   background: transparent linear-gradient(to bottom, #FFF 0%, #F2F2F2 100%) repeat scroll 0% 0%;
-  border: 1px solid #ddd;
+  border: 1px solid #eee;
 }
 
 .dc-link-ajax:hover {
 cursor: pointer;
-/*background-color: #888;  */
-border: 1px solid #aaa;
+background: #ddd;
+border: 1px solid #ddd;
 transition: 0.3s; 
 }
 
@@ -310,12 +315,12 @@ transition: 0.3s;
 
 .dc-link-img:hover {
   cursor: pointer;
-  background-color: #eee; 
+  background-color: #ddd; 
 }
 
 .dc-link-icon {
 padding: 3px;
-border-radius: 3px;
+border-radius: 2px;
 background: transparent linear-gradient(to bottom, #FFF 0%, #F2F2F2 100%) repeat scroll 0% 0%;
 border: 1px solid #ddd;
 }
@@ -368,12 +373,12 @@ border: 1px solid #ddd;
 
 .dc-link-submit {
   text-align: left;
-  padding: 5px 6px;  
+  padding: 6px;  
 
-  border-radius: 3px;
+  border-radius: 2px;
   background-color: #eee;
   background: transparent linear-gradient(to bottom, #FFF 0%, #F2F2F2 100%) repeat scroll 0% 0%;
-  border: 1px solid #ddd;
+  border: 1px solid #eee;
 }
 
 .dc-link-submit .fa {
@@ -385,12 +390,14 @@ border: 1px solid #ddd;
 }
 .dc-link-submit:hover {
   color: #000;
-  border: 1px solid #ccc;
+  background: #ddd;
   transition: 0.3s;
 }
 .dc-link-submit:hover .dc-submit {
   color: #000;
   transition: 0.3s;
+   background: #ddd;
+
 }
 .dc-submit {
   text-decoration: none;
@@ -437,23 +444,18 @@ border: 1px solid #ddd;
 
 .dc-title {
   font-weight: bold;
-  color: #333;
-  font-size: 1.2em;
+  font-size: 1.4em;
+  color: #66a;
   padding: 5px 1px;
   border-spacing: 0px;
   margin: 0px;
   background-color: #fff;
 }
 
-.dc-title h2 {
-  float:left;
-  font-size: 1.2em;
-  color: #66a;
-  
-}
 .dc-title .dc-paginate {
   float:right; 
   padding-top: 4px;
+  font-size: 0.8em;
 }
 
 .dc-form-frame {
@@ -612,6 +614,9 @@ border-bottom: 1px solid #eee;
 }
 
 .dc-odd {
+ background-color: #f8f8f8;
+}
+.dc-even {
  background-color: #fff;
 }
 
@@ -874,25 +879,23 @@ list-style:none;
 display:inline; 
 position:relative;
 list-style:none;
-padding: 5px 8px;
+padding: 6px;
 margin-right: 4px;
-background: #eee;
-border-radius:3px;
+border-radius:2px;
 z-index: 1;
 
 background: transparent linear-gradient(to bottom, #FFF 0%, #F2F2F2 100%) repeat scroll 0% 0%;
-border: 1px solid #ddd;
+border: 1px solid #eee;
 }
 
 
 .dc-action-menu li:hover {
-border: 1px solid #ccc;
+background: #ddd;
+border: 1px solid #ddd;
 color: #000;
 transition: 0.3s;  
 }
 
-.dc-action-menu li:hover a {
-}
 
 .dc-action-menu ul {
 margin-top: 1px;
@@ -905,12 +908,11 @@ border-radius: 2px;
 .dc-action-menu ul li {
 display: block; 
 float: none;
-padding: 4px 10px;
-
+padding: 6px 10px;
 margin-right: 0px;
 white-space: nowrap;
-background: #FFF;
-border: 0px;
+background: #fff;
+border: 0;
 color: #888;
 /*background: transparent linear-gradient(to bottom, #FFF 0%, #F2F2F2 100%) repeat scroll 0% 0%;*/
 }
@@ -920,10 +922,10 @@ white-space:nowrap;
 }
 
 .dc-action-menu li:hover ul { 
-left:0; 
+left:-3px;
 margin-top:3px;
 background-color: #fff;
-border: 1px solid #ccc;
+border: 1px solid #ddd;
 /*box-shadow: 1px 1px 2px #ccc;*/
 }
 
@@ -936,7 +938,7 @@ color: #222;
 }
 .dc-action-menu li:hover ul li:hover {
 border: 0px;
-background: #eee;
+background: #ddd;
 border-radius: 2px;
 }
 
@@ -949,7 +951,8 @@ max-width: 400px;
 color: #888 !important;
 }
 .menu-filter a:hover {
-color: #222 !important;
+color: #000 !important;
+background-color: transparent;
 }
 
 .menu-filter hr {margin: 0px;}

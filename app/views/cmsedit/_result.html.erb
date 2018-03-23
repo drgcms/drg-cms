@@ -13,6 +13,12 @@
         <%= dc_columns_for_result(document) %>
         </div>
       <% end %>
+      <% if @record_footer %>
+        <div class="dc-result-data footer">
+        <%= ignore, code = dc_actions_column(); code.html_safe %></div>
+        <%= dc_columns_for_result(@record_footer) %>
+        </div>
+      <% end %>
         
       <%= dc_background_for_result(:end) %>
   <% end %>
