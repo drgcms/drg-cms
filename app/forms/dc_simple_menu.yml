@@ -17,10 +17,9 @@ result_set:
   columns:
     10:  
       name: name
-      style: "text-align: left;"
     20: 
       name: description
-      style: "text-align: left;"
+      width: 50%
 
 form:  
   title: 
@@ -33,25 +32,23 @@ form:
       10:
         name: name
         type: text_field
-        html:
-          size: 20
+        size: 20
 
       20:
         name: description
         type: text_field
-        html:
-          size: 20
+        size: 20
 
       30:
         name: div_name
         type: text_field
-        html:
-          size: 20
+        size: 20
+        
       40:
         name: link_prepend
         type: text_field
-        html:
-          size: 20
+        size: 20
+        
       50:
         name: dc_site_id
         type: select
@@ -71,7 +68,6 @@ form:
       20:
         name: css
         type: text_area
-        html:
-          size: 100x50
+        size: 100x50
 
   

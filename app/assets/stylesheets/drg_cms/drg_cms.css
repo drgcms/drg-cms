@@ -92,7 +92,12 @@ color: #222;
 padding: 6px 4px;
 border: solid 2px #ddd;
 border-radius: 2px;
-font: 14px Arial;
+font: 14px helvetica;
+}
+
+textarea:focus, input:focus, select:focus {
+  background-color: rgba(64,93,162, 0.05); 
+  border: 2px solid rgba(64,93,162, 0.9);  
 }
 
 input.file {
@@ -303,6 +308,7 @@ transition: 0.3s;
 
 .dc-link-ajax:hover a { 
 color: #000; 
+background: transparent;
 cursor: pointer; 
 transition: 0.3s; 
 }

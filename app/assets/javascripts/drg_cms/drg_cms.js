@@ -201,6 +201,14 @@ $.fn.dc_scroll_view = function () {
  * 
  *******************************************************************/
 $(document).ready( function() {
+/* This could be the way to focus on first input field on document open
+  if ( $('.dc-form')[0] ) {
+// resize parent iframe to fit selected tab size
+    var div_height = $('.dc-form')[0].clientHeight + 130;
+    window.frameElement.style.height = div_height.toString() + 'px';
+//    select_first_input_field('.dc-form');
+  }
+*/
   
  /*******************************************************************
   * Register ad clicks

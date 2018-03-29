@@ -408,7 +408,7 @@ en:
         parent: Parent
         active: Active
         dc_site_id: Valid for site
-        updated_at: Spremenjen
+        updated_at: Last update
 
       dc_mail:
         tabletitle: Mails
@@ -456,7 +456,7 @@ en:
         tabletitle: Big Table
 
         key: Key
-        active: Description       
+        Description: Description       
         site_id: Site
         dc_big_table_values: Values
         active: Active       

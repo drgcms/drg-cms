@@ -1,4 +1,4 @@
-## YAML Template for dc_simple_menu_items
+## dc_menu_items
 ---
 table: dc_menu_item
 
@@ -14,15 +14,11 @@ result_set:
   columns:
     1:  
       name: caption
-      style: "text-align: left;"
     2: 
       name: link
-      style: "text-align: left;"
-
     3: 
       name: order
-      style: "text-align: right;"
-
+      align: right
 
 form:
   title: 
@@ -35,35 +31,32 @@ form:
       10:
         name: caption
         type: text_field
-        html:
-          size: 30
+        size: 30
       20:
         name: picture
         type: file_select
-        html:
-          size: 50
+        size: 50
       30:
         name: link
         type: text_with_select
         eval: '@parent.dc_page_class.all_pages_for_site(@parent.dc_get_site)'
-        html:
-          size: 50
+        size: 50
+        
       40:
         name: link_prepend
         type: text_field
-        html:
-          size: 20
+        size: 20
          
       50:
         name: target
         type: text_field
-        html:
-          size: 10
+        size: 10
+
       60:
         name: order
         type: text_field
-        html:
-          size: 2
+        size: 2
+
       80:
         name: policy_id
         type: select

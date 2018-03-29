@@ -13,10 +13,10 @@ result_set:
   columns:
     1:  
       name: name
-      style: "text-align: left;"
+      width: 20%
     2: 
       name: description
-      style: "text-align: left;"
+      width: 50%
 
 form:
   title: 

@@ -24,7 +24,7 @@ end
 #
 #########################################################################
 def read_input(message, default='')
-  print "#{message} "
+  p "#{message} "
   response = STDIN.gets.chomp
   response.blank? ? default : response
  end
@@ -33,15 +33,14 @@ def read_input(message, default='')
 #
 ########################################################################
 def create_superadmin
-  username = read_input('Enter username for superadmin role:')
-  return p 'Username should be at least 6 character long' unless username.size >=6
-#
-  password1 = read_input("Enter password for #{username} user :")
-  return p 'Password should be at least 8 character long' unless password1.size >=8
-#
-  password2 = read_input("Please repeat password for #{username} user :")
-  return p 'Passwords are not equal' unless password2 == password1
-#  
+  begin
+    username = read_input('Enter username for superadmin role:')
+    p 'Username should be at least 6 character long' if username.size < 6
+  end while username.size < 6
+  begin
+    password = read_input("Enter password for #{username} user :")
+    p 'Password should be at least 8 character long' if password.size < 8
+  end while password.size < 8
 # Guest role first
   role = DcPolicyRole.new
   role.name = 'guest'
@@ -55,17 +54,14 @@ def create_superadmin
 # Superadmin user
   usr = DcUser.new
   usr.username    = username
-  usr.password    = password1
-  usr.password_confirmation = password2
+  usr.password    = password
+  usr.password_confirmation = password
   usr.first_name  = 'superadmin'
   usr.save
 # user role 
-#  r = usr.dc_user_roles.new
-#  r.dc_policy_role_id = role._id
-#  r.save
-  r = DcUserRole.new
-  r.dc_policy_role_id = sa._id
-  usr.dc_user_roles << r
+  user_role = DcUserRole.new
+  user_role.dc_policy_role_id = sa._id
+  usr.dc_user_roles << user_role
 # cmsedit permission
   permission = DcPermission.new
   permission.table_name = 'Default permission'
@@ -105,8 +101,8 @@ def create_superadmin
   i.type = 'submit_tag'
   i.save
 #
-  p "Superadmin user created. Please remember login data #{username}/#{password1}"
-end  
+  p "Superadmin user created. Remember login data #{username}/#{password}"
+end 
 
 ########################################################################
 # Initial database seed
