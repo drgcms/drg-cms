@@ -301,7 +301,7 @@ def dc_header_for_result()
         if v['name'] == sort_field
           icon = sort_direction == '1' ? 'sort-alpha-asc lg' : 'sort-alpha-desc lg'
         end        
-        th << ">#{dc_link_to(caption, icon, sort: v['name'], table: params[:table], form_name: params[:form_name], action: :index, icon: :last )}</div>"
+        th << ">#{dc_link_to(caption, icon, sort: v['name'], table: params[:table], form_name: params[:form_name], action: :index, icon_pos: :last )}</div>"
       else
         th << ">#{caption}</div>"
       end
