@@ -96,8 +96,7 @@ font: 14px helvetica;
 }
 
 textarea:focus, input:focus, select:focus {
-  background-color: rgba(64,93,162, 0.05); 
-  border: 2px solid rgba(64,93,162, 0.9);  
+  border: 2px solid rgba(76,154,255, 1);
 }
 
 input.file {
