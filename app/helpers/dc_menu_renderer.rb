@@ -40,8 +40,9 @@ include DcApplicationHelper
 ########################################################################
 def initialize( parent, opts ) #:nodoc:
   @parent = parent
-  opts[:name] ||= parent.site.menu_name # default in site
-  @menu = DcMenu.find_by(name: opts[:name].to_s)
+  @menu = opts[:name] ?
+    DcMenu.find_by(name: opts[:name].to_s) :
+    DcMenu.find(@parent.site.menu_id)
   @opts = opts
   self
 end
@@ -108,7 +109,7 @@ end
 # Creates HTML code required for submenu on single level. Subroutine of default.
 ########################################################################
 def do_menu_level(menu, options={})
-  html = '<ul>' 
+  html = "<ul id=\"#{menu.name}\">"
   if @opts[:edit_mode] > 1
     options[:title] = menu.respond_to?('name') ? menu.name : menu.caption # 1. level or submenus
     options[:id] = menu._id
@@ -152,6 +153,7 @@ def default
   html << "<div id='#{@menu.div_name}'>" unless @menu.div_name.blank?  
   html << do_menu_level(@menu, table: 'dc_menu')
   html << "</div>" unless @menu.div_name.blank? 
+  html
 end
 
 ########################################################################
