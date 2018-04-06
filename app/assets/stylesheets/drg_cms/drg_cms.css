@@ -253,6 +253,7 @@ font-size: 0.9rem;
 /*  border-bottom: 2px solid #222; */
   color: #000;
   font-weight: bold;
+  background-color: #ddd;
 }
 
 .dc-menu {
