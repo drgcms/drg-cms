@@ -52,4 +52,13 @@ class DcUserRole
   field   :updated_by,        type: BSON::ObjectId
 
   embedded_in :dc_user
+  
+###############################################################################
+# Determine of role is still active
+###############################################################################
+def active?
+  now = Time.zone.local
+  self.active and (self.valid_from.nil? or now > self.valid_from) and (self.valid_to.nil? or now < self.valid_to)
+end
+
 end

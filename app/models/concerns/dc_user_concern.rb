@@ -88,7 +88,21 @@ def do_before_save
   self.name  = "#{self.title} #{self.first_name} #{self.middle_name + ' ' unless self.middle_name.blank?}#{self.last_name}".strip
 # to ensure unique e-mail            
   self.email = "unknown@#{self.id}" if self.email.to_s.strip.size < 5
-end  
+end
+
+##########################################################################
+# Checks if user has role 'role_id' defined in his roles
+##########################################################################
+def has_role?(role_id)
+  return false unless role_id
+#
+  unless BSON::ObjectId.legal?(role_id)
+    role    = DcPolicyRole.get_role(role_id)
+    role_id = role.id if role
+  end
+  role = self.dc_user_roles.where(dc_policy_role_id: role_id)
+  (role && role.active?)
+end
 
 ##########################################################################
 # Will return all possible values for country field ready for input in select field. 
