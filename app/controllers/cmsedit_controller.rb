@@ -239,7 +239,7 @@ def index
         @records = @records.page(params[:page]).per(per_page) if per_page > 0
       end
     else
-      p "Error: result_set:filter: #{@form['result_set']['filter']} not found in controls!"
+      Rails.logger.error "Error: result_set:filter: #{@form['result_set']['filter']} not found in controls!"
     end
   else
     if @tables.size > 1 
@@ -412,12 +412,14 @@ def create
     create_new_empty_record
     params[:return_to] = 'index' if params[:commit] == t('drgcms.save&back') # save & back
     if save_data
-      @parms['action'] = 'update'
-      @parms['id'] = @record.id     # must be set, for proper update link
-      flash[:info] = t('drgcms.doc_saved')
+      flash[:info]    = t('drgcms.doc_saved')
       return process_return_to(params[:return_to]) if params[:return_to]
-      render action: :edit
-    else
+      
+      @parms['id']     = @record.id     # must be set, for proper update link
+      params[:id]      = @record.id     # must be set, for find_record
+      edit
+      #      render action: :edit
+    else # error
       render action: :new
     end
   else # duplicate record
@@ -443,6 +445,7 @@ def edit
     return index if ret.class == FalseClass
   end  
   @parms['action'] = 'update'
+  render action: :edit
 end
 
 ########################################################################
@@ -472,7 +475,7 @@ def update
   else
     flash[:error] = t('drgcms.not_authorized')
   end
-  render action: :edit
+  edit
 end
 
 ########################################################################
