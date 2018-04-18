@@ -347,10 +347,15 @@ def render
 # 
   html = ''  
   @yaml['html'].each {|k,v| html << "#{k}=\"#{v}\" "}
-#  
-  tables      = @parent.tables.inject('') { |r,v| r << "#{v[1]};" } + @yaml['table']
-  ids         = @parent.ids.inject('') { |r,v| r << "#{v};" } + @record._id
-  opts = { controller: 'cmsedit', action: 'index', ids: ids, table: tables, form_name: @yaml['form_name'] || @yaml['form_name'], 
+# 
+  if @yaml['name'] == @yaml['table']
+    tables = @yaml['table']
+    ids = @record._id
+  else
+    tables      = @parent.tables.inject('') { |r,v| r << "#{v[1]};" } + @yaml['table']
+    ids         = @parent.ids.inject('') { |r,v| r << "#{v};" } + @record._id
+  end
+  opts = { controller: 'cmsedit', action: 'index', ids: ids, table: tables, form_name: @yaml['form_name'], 
            field_name: @yaml['name'], iframe: "if_#{@yaml['name']}", readonly: @readonly }
   @html << "<iframe class='iframe_embedded' id='if_#{@yaml['name']}' name='if_#{@yaml['name']}' #{html}></iframe>"
   @js = <<EOJS
