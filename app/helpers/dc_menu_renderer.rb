@@ -109,7 +109,7 @@ end
 # Creates HTML code required for submenu on single level. Subroutine of default.
 ########################################################################
 def do_menu_level(menu, options={})
-  html = "<ul id=\"#{menu.name}\">"
+  html = "<ul>"
   if @opts[:edit_mode] > 1
     options[:title] = menu.respond_to?('name') ? menu.name : menu.caption # 1. level or submenus
     options[:id] = menu._id
