@@ -17,9 +17,10 @@ result_set:
   columns:
     1:  
       name: name
+      width: 30%
     2: 
       name: description
-      width: 80%
+      width: 70%
 
 form:
   title: 

@@ -17,10 +17,13 @@ result_set:
       name: username
     2:  
       name: first_name
+      width: 40%
     3: 
       name: last_name
+      width: 20%
     4: 
       name: last_visit
+      width: 10%
 
 form:
   title: 
@@ -34,66 +37,55 @@ form:
       10:
         name: username
         type: text_field
-        html:
-          size: 10
+        size: 10
       20:
         name: title
         type: text_field
-        html:
-          size: 5
+        size: 5
       30:
         name: first_name
         type: text_field
-        html:
-          size: 20
+        size: 20
 
       40:
         name: middle_name
         type: text_field
-        html:
-          size: 20
+        size: 20
 
       50:
         name: last_name
         type: text_field
-        html:
-          size: 20
+        size: 20
 
       60:
         name: company
         type: text_field
-        html:
-          size: 50
+        size: 50
 
       70:
         name: address
         type: text_field
-        html:
-          size: 50
+        size: 50
 
       80:
         name: post
         type: text_field
-        html:
-          size: 50
+        size: 50
 
       90:
         name: country
         type: text_field
-        html:
-          size: 20
+        size: 20
 
       100:
         name: email
         type: text_field
-        html:
-          size: 30
+        size: 30
 
       110:
         name: phone
         type: text_field
-        html:
-          size: 30
+        size: 30
 
       120:
         name: birthdate
@@ -104,36 +96,30 @@ form:
       130:
         name: picture
         type: text_field
-        html:
-          size: 50
+        size: 50
 
       140:
         name: about
         type: text_area
-        html:
-          size: 100x10
+        size: 100x10
 
       150:
         name: password
         type: password_field
-        html:
-          size: 20
+        size: 20
 
       160:
         name: password_confirmation
         type: password_field
-        html:
-          size: 20
+        size: 20
 
       170:
         name: dc_user_roles
         type: embedded
         form_name: dc_user_role
-        html:
-          size: 20
+        size: 20
 
       180:
         name: signature
         type: text_area
-        html:
-          size: 100x5
+        size: 100x5

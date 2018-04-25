@@ -113,6 +113,8 @@ form:
       25:
         name: _update_menu
         type: check_box
+        help: helpers.help.dc_page._update_menu
+        caption: helpers.label.dc_page._update_menu
 
       30:
         name: params

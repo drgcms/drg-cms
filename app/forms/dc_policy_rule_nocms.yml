@@ -15,6 +15,7 @@ result_set:
     1:  
       name: dc_policy_role_id
       eval: dc_name4_id,dc_policy_role,name
+      width: 30%
 
     2: 
       name: permission

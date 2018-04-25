@@ -14,11 +14,14 @@ result_set:
   columns:
     1:  
       name: name
+      width: 30%
     2: 
       name: updated_at
+      width: 10%
     3: 
       name: active
       eval: dc_icon4_boolean      
+      width: 10%
 
 form:
   title: 
