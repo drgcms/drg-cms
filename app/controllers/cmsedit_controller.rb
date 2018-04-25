@@ -185,6 +185,7 @@ def check_filter_options() #:nodoc:
   site_id = dc_get_site._id if dc_get_site
 # dont't filter site if no dc_site_id field or user is ADMIN
   site_id = nil if !model.method_defined?('dc_site_id') or dc_user_can(DcPermission::CAN_ADMIN)
+  site_id = nil if session[table_name][:filter].to_s.match('dc_site_id')
 #  
   if @records = DcFilter.get_filter(session[table_name][:filter])
     @records = @records.and(dc_site_id: site_id) if site_id
