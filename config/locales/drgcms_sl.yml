@@ -60,6 +60,7 @@ sl:
     password: Geslo
     form_error: Napaka pri branju forme #{form_name}
     img_large: Klik za večjo sliko
+    no_class: Class %{class} ni definiran!
 
     edit: Urejanje
     show: Prikaz

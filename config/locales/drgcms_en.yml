@@ -60,6 +60,7 @@ en:
     password: Password
     form_error: Error loading form #{form_name}
     img_large: Click for larger image
+    no_class: Class %{class} not defined!
     
     edit: Edit
     show: Prikaz

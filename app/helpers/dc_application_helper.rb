@@ -106,7 +106,7 @@ def dc_render(renderer, opts={})
     @css  << obj.render_css.to_s
     html.nil? ? '' : html.html_safe # nil can happened  
   else
-    "Class #{klass} not defined!"
+    I18n.t 'drgcms.no_class', class: klass
   end
 end
 
@@ -647,13 +647,13 @@ end
 # Returns: 
 # String. Translated text. 
 ####################################################################
-def t(key, default='')
+def t(key, default=nil)
   c = I18n.t(key)
   if c.class == Hash or c.match( 'translation missing' )
     c = I18n.t(key, locale: 'en') 
 # Still not found. Return default if set
     if c.class == Hash or c.match( 'translation missing' )
-      c = default.blank? ? key : default
+      c = default.nil? ? key : default
     end
   end
   c
@@ -923,12 +923,11 @@ def dc_choices4_cmsmenu()
  end
 #
   html = '<ul>'
-  menus.to_a.sort.each do |one_menu|    # sort menus, result is array of sorted hashes
-    menu = one_menu[1]                  # value is the second (1) element of array
+  menus.to_a.sort.each do |index, menu|    # sort menus, result is array of sorted hashes
     next unless menu['caption']
-    html << "<li class=\"cmsedit-top-level-menu\">#{fa_icon(menu['icon'])}#{t(menu['caption'])}<ul>"
-    menu['items'].to_a.sort.each do |item|          # as above. sort items first 
-      value = item[1]
+    icon = menu['icon'].match('/') ? image_tag(menu['icon']) : fa_icon(menu['icon']) #external or fa- image
+    html << "<li class=\"cmsedit-top-level-menu\">#{icon}#{t(menu['caption'])}<ul>"
+    menu['items'].to_a.sort.each do |index1, value|   # again, sort menu items first 
       html << if value['link']
         opts = { target: value['target'] || 'iframe_cms' }
         "<li>#{dc_link_to(t(value['caption']), value['icon'] || '', value['link'], opts)}</li>"
