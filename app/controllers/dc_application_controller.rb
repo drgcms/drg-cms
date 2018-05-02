@@ -322,12 +322,14 @@ def dc_process_default_request()
   @js, @css = '', ''
 # find domain name in sites
   @site = dc_get_site
-# site is not defined. render 404 error
+# site not defined. render 404 error
   return dc_render_404('Site!') if @site.nil?
   dc_set_options(@site.settings)
 # HOMEPAGE. When no parameters is set
-  params[:path] = @site.homepage_link if params[:id].nil? and params[:path].nil?
-# some other process request. It shoud fail if not defined
+  params[:path]   = @site.homepage_link if params[:id].nil? and params[:path].nil?
+  @options[:path] = params[:path].split('/')
+  params[:path]   = @options[:path].first if @options[:path].size > 1
+# some other process request. It should fail if not defined
   return send(@site.request_processor) unless @site.request_processor.blank?
 
 # Search for page 
