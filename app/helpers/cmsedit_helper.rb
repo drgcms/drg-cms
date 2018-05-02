@@ -30,6 +30,27 @@
 module CmseditHelper
   # javascript part created by form helpers
   attr_reader :js 
+  
+############################################################################
+# Get standard actions when actions directive contains single line.
+# Subroutine of dc_actions_for_index
+# 
+# Allows for actions: new, filter, standard syntax
+############################################################################
+def define_standard_actions(actions_params, standard)
+  actions = {}
+  actions_params.split(',').each do |an_action|
+    an_action.strip!
+    if an_action == 'standard'
+      actions.merge!(standard)
+    else
+      standard.each do |index, action| 
+        (actions[index] = action; break) if action == an_action
+      end
+    end
+  end 
+  actions
+end
 
 ############################################################################
 # Creates action div for cmsedit index action. 
@@ -38,13 +59,14 @@ def dc_actions_for_index()
   return '' if @form['index'].nil? or @form['readonly']
   actions = @form['index']['actions']
   return '' if actions.nil? or actions.size == 0
-# Simulate standard actions  
-  actions = {'standard' => true} if actions.class == String && actions == 'standard'
   std_actions = {2 => 'new', 3 => 'sort', 4 => 'filter' }
-  if actions['standard']
+  if actions.class == String
+    actions = define_standard_actions(actions, std_actions)
+  elsif actions['standard']
     actions.merge!(std_actions)
     actions['standard'] = nil
   end
+  
 # start div with hidden spinner image 
   html = <<EOT
 <div id="dc-action-menu">
