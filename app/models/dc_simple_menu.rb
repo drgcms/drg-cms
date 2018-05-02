@@ -119,7 +119,7 @@ end
 # 
 # Do nothing. The method is defined only for compatibility.
 #######################################################################
-def self.update_menu_item_link(path, link)
+def self.update_menu_item_link(document)
 end
 
 end
