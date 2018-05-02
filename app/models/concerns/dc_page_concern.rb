@@ -82,6 +82,13 @@ before_save :do_before_save
 validates :publish_date, presence: true
   
 ######################################################################
+# Will return subject_link. Field name link should be common for all documents
+# which can be found with links.
+######################################################################
+def link
+  subject_link
+end
+    
 protected
 
 ######################################################################
