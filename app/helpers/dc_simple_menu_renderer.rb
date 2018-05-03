@@ -102,8 +102,10 @@ def link_4menu(item)
   unless item.picture.blank? 
     caption = case
       when item.picture[0] == '@' then # call method
-        method = item.picture.sub('@','')
-        return eval(method) rescue 'ERROR!'
+        method = item.picture[1,100]   # remove leading @
+        return send(method) if respond_to?(method)
+        return @parent.send(method) if @parent.respond_to?(method)
+        return 'ERROR!'
       when item.picture.match(/\./) then @parent.image_tag(item.picture)
       when item.picture.match('<i') then item.picture
       else

@@ -40,9 +40,7 @@ include DcApplicationHelper
 ########################################################################
 def initialize( parent, opts ) #:nodoc:
   @parent = parent
-  @menu = opts[:name] ?
-    DcMenu.find_by(name: opts[:name].to_s) :
-    DcMenu.find(@parent.site.menu_id)
+  @menu = opts[:name] ? DcMenu.find_by(name: opts[:name].to_s) : DcMenu.find(@parent.site.menu_id)
   @opts = opts
   self
 end
@@ -103,6 +101,51 @@ def link_4menu(item)
     @parent.link_to( @parent.image_tag(item.picture), link, {title: img_title, target: target} )) +
   (caption.blank? ? '' : 
     @parent.link_to(caption, link, {target: target}) )
+end
+
+########################################################################
+# Returns html code required for creating one link in a menu.
+# 
+# Parameters:
+# [item] MenuItem.
+########################################################################
+def link_4menu(item)
+# prepand to link  
+  link = if !item.link_prepend.blank?
+    item.link_prepend
+  elsif !@menu.link_prepend.blank?
+    @menu.link_prepend
+  else
+    ''
+  end
+
+  if item.link.match('http')
+    link = item.link
+  else
+    link += (item.link[0] == '/' ? '' : '/') + item.link
+    link  = '/' + link unless link[0] == '/'   # link should start with '/'
+  end
+
+  caption = ''
+  unless item.picture.blank? 
+    caption = case
+      when item.picture[0] == '@' then # call method
+        method = item.picture[1,100]   # remove leading @
+        return send(method) if respond_to?(method)
+        return @parent.send(method) if @parent.respond_to?(method)
+        return 'ERROR!'
+      when item.picture.match(/\./) then @parent.image_tag(item.picture)
+      when item.picture.match('<i') then item.picture
+      else
+        @parent.fa_icon(item.picture)
+    end
+    caption << ' '
+   end
+  # - in first place won't write caption text
+  caption = caption.html_safe + (item.caption[0] == '-' ? '' : item.caption.html_safe )
+  
+  target = item.target.blank? ? nil : item.target
+  @parent.link_to(caption, link, {target: target})
 end
 
 ########################################################################
