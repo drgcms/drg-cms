@@ -121,10 +121,11 @@ def self.get_filter_field(parent)
     end
   end
 # field redefined with input keyword. Name must start with _
-  field['name'] = '_filter_field'
-  field['type'] = filter['input'] if filter['input'].to_s.size > 5
-  field['type'] ||= 'text_field'
-  field['html'] ||= {} 
+  field['name']     = '_filter_field'
+  field['type']     = filter['input'] if filter['input'].to_s.size > 5
+  field['type']   ||= 'text_field'
+  field['readonly'] = false   # must be
+  field['html']   ||= {} 
   field['html']['size']  = 20
 # Start with last entered value
   field['html']['value'] = filter['value'] unless filter['value'] == '#NIL'
