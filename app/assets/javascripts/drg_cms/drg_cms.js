@@ -306,9 +306,14 @@ $(document).ready( function() {
  * Process Ajax call on cmsedit form actions
  *******************************************************************/
   $('.dc-link-ajax').on('click', function(e) {
+// check HTML5 validations
+    if (!$("form")[0].checkValidity() ) {
+      $("form")[0].reportValidity();
+      return false;
+    }
     var target = e.target;
     var req    = target.getAttribute("data-request");
-/* Get some values from elements on the page: */
+// Get values from elements on the page:
     if (req == "script") {
       eval (target.getAttribute("data-script"));
       return false;
