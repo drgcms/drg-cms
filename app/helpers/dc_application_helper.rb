@@ -1056,7 +1056,6 @@ def dc_user_can_view(ctrl, policy_id)
   policy_id = nil unless policy_id.class == BSON::ObjectId
 #
   site = ctrl.site
-  policies = site.dc_policies
   policies = if site.inherit_policy.blank? 
     site.dc_policies
   else
@@ -1075,7 +1074,7 @@ def dc_user_can_view(ctrl, policy_id)
     return false, 'Access policy not found for part!' unless part_policy
     part_policy.dc_policy_rules.to_a.each { |v| permissions[v.dc_policy_role_id] = v.permission }
   end
-# apply guest role if user has no roles defined
+# apply guest role if no roles defined
   if ctrl.session[:user_roles].nil?
     role = Mongoid::QueryCache.cache { DcPolicyRole.find_by(system_name: 'guest', active: true) }
     return false, 'System guest role not defined!' unless role

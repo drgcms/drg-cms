@@ -299,10 +299,11 @@ end
 # Fills session with data related to successful login.
 ####################################################################
 def fill_login_data(user, remember_me)
-  session[:user_id]   = user.id
-  session[:user_name] = user.name
-  session[:edit_mode] = 0 
+  session[:user_id]    = user.id
+  session[:user_name]  = user.name
+  session[:edit_mode]  = 0 
   session[:user_roles] = []
+  
 # special for SUPERADMIN
   sa = DcPolicyRole.find_by(system_name: 'superadmin')
   if sa and (role = user.dc_user_roles.find_by(dc_policy_role_id: sa.id))
@@ -310,6 +311,9 @@ def fill_login_data(user, remember_me)
     session[:edit_mode]  = 2
     return
   end
+# Every user has guest role
+  guest = DcPolicyRole.find_by(system_name: 'guest')
+  session[:user_roles] << guest.id if guest
 # read default policy from site  
   default_policy = dc_get_site().dc_policies.find_by(is_default: true)
 # load user roles      
@@ -323,13 +327,6 @@ def fill_login_data(user, remember_me)
 # set edit_mode      
     session[:edit_mode] = 1 if policy_role.permission > 1
     session[:user_roles] << role.dc_policy_role_id
-  end
-# Add default guest role if no role set
-# This was previously in dc_user_can. I belive it should be here. 
-#TODO This might not be the best idea. Check in the future.
-  if session[:user_roles].size == 0
-    guest = DcPolicyRole.find_by(:system_name => 'guest')
-    session[:user_roles] << guest.id if guest
   end
 # Save remember me cookie if not CMS user and remember me is selected
   if session[:edit_mode] == 0 and remember_me
