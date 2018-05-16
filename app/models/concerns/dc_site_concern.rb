@@ -93,7 +93,7 @@ end
 # Return choices for select for site_id
 ########################################################################
 def self.choices4_site
-  result = all.inject([]) { |r,site| r << [ (site.active ? '' : t('drgcms.disabled') ) + site.name, site._id] }
+  result = all.inject([]) { |r,site| r << [ (site.active ? '' : I18n.t('drgcms.disabled') ) + site.name, site._id] }
   result.sort {|a,b| a[0] <=> b[0]}
 end
 
