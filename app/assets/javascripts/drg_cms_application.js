@@ -8,4 +8,5 @@
 //= require drg_cms/jquery-migrate
 //= require jquery_ujs
 //= require drg_cms/drg_cms
+//= require drg_cms/jquery.bpopup.min
 //= #require_tree .
