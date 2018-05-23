@@ -80,6 +80,8 @@ $(function() {
  *  msg_warn: will display warning message.
  *  msg_info: will display informational message.
  *  
+ *  popup: will display popup message
+ *  
  *  #div_divname : will replace divname with value
  *  #div+_divname : will append value to divname
  *  #+div_divname : will prepend value to divname 
@@ -126,6 +128,11 @@ process_json_result = function(json) {
         $('.'+selector).html(val);
       }
       break;
+    // display popup message
+    case 'popup':
+      $('#popup').html(val);
+      $('#popup').bPopup({ speed: 650, transition: 'slideDown' });            
+
     // update div 
     case '#div+':
       $('#'+what).append(val);
