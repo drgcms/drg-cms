@@ -61,7 +61,7 @@ module DrgcmsFormFields
 # most of the common code for custom form field already implemented.
 ###########################################################################
 class DrgcmsField
-attr_reader :html, :js
+attr_reader :js
 
 ####################################################################
 # DrgcmsField initialization code.
@@ -86,7 +86,15 @@ def initialize( parent, record, yaml )
   end
   @html   = ''  
   @js     = ''
+  @css    = @yaml['css']
   self
+end
+
+####################################################################
+# Returns html code together with CSS code.
+####################################################################
+def html
+  @html + (@css ? "\n<style type=\"text/css\">#{@css}</style>" : '')
 end
 
 ####################################################################
