@@ -82,15 +82,20 @@ result_set:
 # Choose from
 # #{@model.attribute_names.join(',')}
   columns:
-    1:  
+    10:  
       name: #{@model.attribute_names[1]}
-      style: 'align: left; width: 100px'
-    2:  
+      style: 'color: red'
+      width: 10%
+      align: right
+    20:  
       name: #{@model.attribute_names[2]}
-    3: 
+    30: 
       name: created_at
       format: '%d.%m.%Y'
-    4: 
+    40: 
+      name: created_by
+      eval: dc_name4_id,dc_user,name
+    50: 
       name: active
       eval: dc_icon4_boolean
 
