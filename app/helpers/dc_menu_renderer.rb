@@ -110,6 +110,8 @@ end
 # [item] MenuItem.
 ########################################################################
 def link_4menu(item)
+# just horizontal line
+  return item.caption if item.caption == '<hr>'
 # prepand to link  
   link = if !item.link_prepend.blank?
     item.link_prepend
