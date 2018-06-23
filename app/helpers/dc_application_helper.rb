@@ -766,10 +766,10 @@ end
 ############################################################################
 def dc_name4_id(model, field, field_name, id=nil)
   return '' if id.nil?
-  field_name = 'id' if field_name.nil?
+  field_name ||= 'id'
   model = model.strip.classify.constantize if model.class == String
   rec = Mongoid::QueryCache.cache { model.find_by(field_name.strip.to_sym => id) }
-  rec.nil? ? '' : rec[field]
+  rec.nil? ? '' : (rec.send(field) rescue 'not defined')
 end
 
 ############################################################################
