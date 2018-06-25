@@ -51,6 +51,38 @@ remove_background_from_iframe = function(obj) {
             '</style>';
   $(head).append(css);    
 };
+
+format_number_field = function(e) {
+  var decimals  = e.attr("data-decimal") || 2;
+  var delimiter = e.attr("data-delimiter") || '.';
+  var separator = e.attr("data-separator") || ',';
+  var currency  = e.attr("data-currency") || '';
+  var whole = e.val().split(separator)[0];
+  var dec   = e.val().split(separator)[1];
+// save value to hidden field which will be used for return 
+  var field = '#' + e.attr("id").slice(0,-1);
+  var value = e.val().replace(delimiter,'.');
+  console.log(value, e.val(),parseFloat(value) );
+  $(field).val( parseFloat(value).toFixed(decimals) );
+
+// decimal part
+  if (dec == null) dec = '';
+  dec = dec.substring(0, decimals, dec);
+  while (dec.length < decimals) dec = dec + '0';
+// whole part 
+  if (whole == null || whole == '') whole = '0';
+  var ar = [];
+
+  while (whole.length > 0) { 
+    var pos1 = whole.length - 3
+    if (pos1 < 0) pos1 = 0;
+    ar.unshift(whole.substr(pos1,3)); 
+    whole = whole.slice(0, -3); 
+  };
+
+  if (delimiter !== '') whole = ar.join(delimiter);
+  e.val(whole + separator + dec + currency);
+};
   
 /*******************************************************************
  * Activate jquery UI tooltip. This needs jquery.ui >= 1.9
@@ -637,8 +669,74 @@ element = $(this).find(':first').attr('id');
   .mouseleave(function() {
     console.log("leave");
   });
-
   
+ /*******************************************************************
+  * number_field type entered
+  *******************************************************************/
+   $('.dc-number').on('focus', function(e) {
+    var separator = $(this).attr("data-separator") || ',';
+    var field = '#' + $(this).attr("id").slice(0,-1);
+    var value = $(field).val().replace('.',separator);
+    $(this).val( value );
+    $(this).select();
+   });
+
+  /*******************************************************************
+  * number_field type leaved
+  *******************************************************************/
+   $('.dc-number').on('focusout', function(e) {
+//     format_number_field($(this));
+     
+     var decimals  = $(this).attr("data-decimal") || 2;
+     var delimiter = $(this).attr("data-delimiter") || '.';
+     var separator = $(this).attr("data-separator") || ',';
+     var currency  = $(this).attr("data-currency") || '';
+     var whole = this.value.split(separator)[0];
+     var dec   = this.value.split(separator)[1];
+// save value to hidden field which will be used for return 
+     var field = '#' + $(this).attr("id").slice(0,-1);
+     var value = this.value.replace(separator,'.');
+// remove negative sign and add at the end
+     var sign = whole.substr(0,1);
+     if (sign == '-') { 
+       whole = whole.substr(1,20);
+     } else { 
+       sign = '';
+     }
+    
+     $(field).val( parseFloat(value).toFixed(decimals) );
+     
+// decimal part
+     if (dec == null) dec = '';
+     dec = dec.substring(0, decimals, dec);
+     while (dec.length < decimals) dec = dec + '0';
+// whole part 
+     if (whole == null || whole == '') whole = '0';
+     var ar = [];
+     while (whole.length > 0) { 
+       var pos1 = whole.length - 3
+       if (pos1 < 0) pos1 = 0;
+       ar.unshift(whole.substr(pos1,3)); 
+       whole = whole.slice(0, -3); 
+     };
+          
+     if (delimiter !== '') whole = ar.join(delimiter);
+     $(this).val(sign + whole + separator + dec + currency);
+   });
+   
+ /*******************************************************************
+  * number_field type keypressed
+  *******************************************************************/
+   $('.dc-number').on('keydown', function(e) {
+     if (e.which == 109) {
+       if($(this).val().substr(0,1) == '-') {
+         $(this).val( $(this).val().substr(1,20));
+       } else {
+         $(this).val( '-' + $(this).val());
+       }
+       e.preventDefault();
+     }
+   });
 });
 
 /*******************************************************************

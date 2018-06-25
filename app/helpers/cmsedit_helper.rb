@@ -364,12 +364,18 @@ def dc_format_value(value, format=nil)
 # :TODO: Enable formating numbers.
   return '' if value.nil?
   klass = value.class.to_s
-  if klass.match('Time')
+  case when klass.match('Time') then
     format ||= t('time.formats.default')
     value.strftime(format)  
-  elsif klass.match('Date')
+  when klass.match('Date') then
     format ||= t('date.formats.default')
     value.strftime(format)  
+  when format.to_s[0] == 'N' then
+    dec = format[1].blank? ? nil : format[1].to_i
+    sep = format[2].blank? ? nil : format[2]
+    del = format[3].blank? ? nil : format[3]
+    cur = format[4].blank? ? nil : format[4]
+    dc_format_number(value, dec, sep, del, cur)
   else
     value.to_s
   end

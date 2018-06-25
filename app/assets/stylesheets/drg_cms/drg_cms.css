@@ -557,6 +557,10 @@ border: 1px solid #ddd;
 */
 }
 
+.dc-number {
+  text-align: right;
+}
+
 .dc-readonly {
   display: inline-block;
   font-size: 14px;
