@@ -826,27 +826,29 @@ end
 def dc_format_number(value=0, decimals=nil, separator=nil, delimiter=nil, currency=nil)
   decimals  ||=  I18n.t('number.currency.format.precision')
   separator ||= I18n.t('number.currency.format.separator')
+  separator = '' if decimals == 0
   delimiter ||= I18n.t('number.currency.format.delimiter')
   whole,dec = value.to_s.split('.')
+  whole = '0' if whole.blank?
+# remove and remember sign  
   sign = whole[0,1]
   if sign == '-'
     whole = whole[1,20]
   else
     sign = ''
   end
-#
+# format decimals
   dec ||= '0'
   dec = dec[0,decimals]
   while dec.size < decimals do dec += '0' end
-#
-  whole = '0' if whole.blank?
+# slice whole on chunks of 3
   ar = []
-
   while whole.size > 0 do 
     n = whole.size >=3 ? 3 : whole.size 
     ar << whole.slice!(n*-1,n)
   end
-  "#{sign}#{ar.reverse.join('.')}#{separator}#{dec}" 
+# put it all back and format
+  "#{sign}#{ar.reverse.join(delimiter)}#{separator}#{dec}" 
 end
 
 ####################################################################

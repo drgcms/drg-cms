@@ -62,7 +62,7 @@ format_number_field = function(e) {
 // save value to hidden field which will be used for return 
   var field = '#' + e.attr("id").slice(0,-1);
   var value = e.val().replace(delimiter,'.');
-  console.log(value, e.val(),parseFloat(value) );
+
   $(field).val( parseFloat(value).toFixed(decimals) );
 
 // decimal part
@@ -728,6 +728,7 @@ element = $(this).find(':first').attr('id');
   * number_field type keypressed
   *******************************************************************/
    $('.dc-number').on('keydown', function(e) {
+// Minus sign. Put it on first place     
      if (e.which == 109) {
        if($(this).val().substr(0,1) == '-') {
          $(this).val( $(this).val().substr(1,20));
@@ -736,6 +737,15 @@ element = $(this).find(':first').attr('id');
        }
        e.preventDefault();
      }
+// Enter. Save value before Enter is processed
+      if (e.which == 13) {
+        var delimiter = $(this).attr("data-delimiter") || '.';
+        var decimals  = $(this).attr("data-decimal") || 2;        
+        var value = $(this).val().replace(delimiter,'.');
+        var field = '#' + $(this).attr("id").slice(0,-1);
+        
+        $(field).val( parseFloat(value).toFixed(decimals) );
+      }
    });
 });
 
