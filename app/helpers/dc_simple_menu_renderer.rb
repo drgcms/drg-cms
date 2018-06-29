@@ -226,35 +226,31 @@ end
 def as_dropdown
   html = link_4edit
   return "#{html}#{@opts[:name]}<br>Menu not found!" if @menu.nil?
-  # 
-  items = @menu.dc_simple_menu_items.sort {|a,b| a.order <=> b.order}
-  @selected = find_selected
-
-  html << "<div id='#{@menu.div_name}'>" unless @menu.div_name.blank?
-  html << '<table><tr>'
   # sort items acording to :order 
+  items = @menu.dc_simple_menu_items.where(active: true).order_by(sort: 1)
+  @selected = find_selected
+  div_name  = (@menu.div_name.blank? ? @menu.name : @menu.div_name ).downcase
+  
+  html << "<div id='#{div_name}'><ul>"
   items.each do |item|
-    next unless item.active
     # menu can be hidden from user    
     can_view, msg = dc_user_can_view(@parent, item)
     next unless can_view
 #
-    selector = item.id == @selected.id ? 'th' : 'td'
-    html << "<#{selector}>#{ link_4menu(item) }"
+    selected = item.id == @selected.id ? 'selected' : ''
+    html << "<li class=\"#{selected}\">#{ link_4menu(item) }"
     y = YAML.load(item.submenu) || {}
     if y.size > 0
       html << '<ul>'
       y.each do |k,v|
+        v ||= k # defined as array
         html << "<li>#{@parent.link_to(v['title'], v['link'], {target: v['target']})}</li>"
       end
       html << '</ul>'
     end
-    html << "</#{selector}>"
-
+    html << "</li>"
   end
-  html << '</tr></table>'
-  html << '</div>' unless @menu.div_name.blank?
-  html
+  html << '</ul></div>'
 end
 
 ########################################################################
@@ -286,15 +282,16 @@ def default
   end
   html << "</ul></div>"
 # submenu
-  html << "<div class=\"sub-#{div_name}\">
-        <ul class=\"ul-sub-#{div_name}\">"
-  y = YAML.load(@selected.submenu) rescue []
-  if y.class == Hash
+  y = YAML.load(@selected.submenu) rescue {}
+  if y.size > 0
+    html << "\n<div class=\"sub-#{div_name}\"><ul class=\"ul-sub-#{div_name}\">"
     y.each do |k,v|
-      html << "<li class=\"li-sub-#{div_name}\">#{@parent.link_to(v['title'], v['link'])}</li>"
+      v ||= k # defined as array
+      html << "<li class=\"li-sub-#{div_name}\">#{@parent.link_to(v['title'], v['link'])}</li>\n"
     end
+    html << "</ul></div>\n"
   end
-  html << '</ul></div>'
+  html
 end
 
 
