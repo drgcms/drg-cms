@@ -244,7 +244,7 @@ def as_dropdown
       html << '<ul>'
       y.each do |k,v|
         v ||= k # defined as array
-        html << "<li>#{@parent.link_to(v['title'], v['link'], {target: v['target']})}</li>"
+        html << (v['title'] == '<hr>' ? '<hr>' : "<li>#{@parent.link_to(v['title'], v['link'], {target: v['target']})}</li>" )
       end
       html << '</ul>'
     end
