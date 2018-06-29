@@ -227,7 +227,7 @@ def as_dropdown
   html = link_4edit
   return "#{html}#{@opts[:name]}<br>Menu not found!" if @menu.nil?
   # sort items acording to :order 
-  items = @menu.dc_simple_menu_items.where(active: true).order_by(sort: 1)
+  items = @menu.dc_simple_menu_items.where(active: true).order_by(order: 1)
   @selected = find_selected
   div_name  = (@menu.div_name.blank? ? @menu.name : @menu.div_name ).downcase
   
@@ -239,8 +239,8 @@ def as_dropdown
 #
     selected = item.id == @selected.id ? 'selected' : ''
     html << "<li class=\"#{selected}\">#{ link_4menu(item) }"
-    y = YAML.load(item.submenu) || {}
-    if y.size > 0
+    y = YAML.load(item.submenu) rescue {}
+    if y and y.size > 0
       html << '<ul>'
       y.each do |k,v|
         v ||= k # defined as array
@@ -269,10 +269,9 @@ def default
   div_name  = (@menu.div_name.to_s.size > 2 ? @menu.div_name : @menu.name).downcase
   html << "<div class=\"#{div_name}\">"
   html << "<ul class=\"ul-#{div_name}\">"
-# sort items acording to :order  
-  items = @menu.dc_simple_menu_items.sort {|a,b| a.order <=> b.order}
+# 
+  items = @menu.dc_simple_menu_items.where(active: true).order_by(order: 1)  
   items.each do |item|
-    next unless item.active
 # menu can be hidden from user 
     can_view, msg = dc_user_can_view(@parent, item)
     next unless can_view
@@ -283,7 +282,7 @@ def default
   html << "</ul></div>"
 # submenu
   y = YAML.load(@selected.submenu) rescue {}
-  if y.size > 0
+  if y and y.size > 0
     html << "\n<div class=\"sub-#{div_name}\"><ul class=\"ul-sub-#{div_name}\">"
     y.each do |k,v|
       v ||= k # defined as array
