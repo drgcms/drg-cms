@@ -187,7 +187,7 @@ end
 ########################################################################
 def copy_clipboard
 # Only administrators can perform this operation  
-  return render(plain: t('drgcms.not_authorized') )  unless dc_user_can(DcPermission::CAN_ADMIN)
+  return render(plain: t('drgcms.not_authorized') )  unless dc_user_can(DcPermission::CAN_ADMIN,'dc_site')
   respond_to do |format|
 # just open new window to same url and come back with html request    
     format.json { dc_render_ajax(operation: 'window', url: request.url ) }
@@ -208,7 +208,7 @@ end
 ########################################################################
 def paste_clipboard
 # Only administrators can perform this operation  
-  return render(plain: t('drgcms.not_authorized') )  unless dc_user_can(DcPermission::CAN_ADMIN)
+  return render(plain: t('drgcms.not_authorized') )  unless dc_user_can(DcPermission::CAN_ADMIN,'dc_site')
   result = ''
   respond_to do |format|
 # just open new window to same url and come back with html request    
