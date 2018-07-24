@@ -681,7 +681,7 @@ end
 ############################################################################
 # Creates input fields for one tab. Subroutine of dc_fields_for_form.
 ############################################################################
-def dc_fields_for_tab(fields) #:nodoc:
+def dc_fields_for_tab(fields_on_tab) #:nodoc:
   @js      ||= ''
   html       = '<div class="dc-form">'
   labels_pos = dc_check_and_default(@form['form']['labels_pos'], 'right', ['top','left','right'])
@@ -693,7 +693,7 @@ def dc_fields_for_tab(fields) #:nodoc:
 #  form_options = fields.select {|field| field.class != Integer }
 #  columns      = form_options.try(:[],'columns') || 1
 # Select form fields and sort them by key
-  form_fields  = fields.select {|field| field.class == Integer }
+  form_fields  = fields_on_tab.select {|field| field.class == Integer }
   form_fields.to_a.sort.each do |element|
     options = element.last
     session[:form_processing] = "form:fields: #{element.first}=#{options}"
@@ -767,9 +767,9 @@ end
 def dc_fields_for_form()
   html, tabs, tdata = '',[], ''
 # Only fields defined  
-  if (fields = @form['form']['fields'])
+  if (form_fields = @form['form']['fields'])
     html << "<div id='data_fields' " + (@form['form']['height'] ? "style=\"height: #{@form['form']['height']}px;\">" : '>')  
-    html << dc_fields_for_tab(fields) + '</div>'
+    html << dc_fields_for_tab(form_fields) + '</div>'
   else
 # there are multiple tabs on form 
     first = true # first tab 

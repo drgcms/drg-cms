@@ -70,7 +70,7 @@ end
 ######################################################################
 # List field definition for single model
 ######################################################################
-def fields()
+def all_fields()
   @records = []
   model = params[:id].classify.constantize
   document = model.new

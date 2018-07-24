@@ -53,7 +53,7 @@ def collections(what)
     next if model.nil?
     next unless model.respond_to?(:mongo_client)
     record = {'id' =>  collection, 'description' => I18n.t("helpers.label.#{collection}.tabletitle") } 
-    list << [record, fields(collection)]
+    list << [record, model_fields(collection)]
   end
   list
 end
@@ -61,7 +61,7 @@ end
 ######################################################################
 # List field definition for single model
 ######################################################################
-def fields(collection)
+def model_fields(collection)
   records = []
   model = collection.classify.constantize
   document = model.new
@@ -112,11 +112,11 @@ def create_output(descriptions)
   body = ''
   descriptions.each do |description|
     collection = description.first
-    fields = description.last 
+    all_fields = description.last 
     body << "#\n# == Schema information\n#\n"
     body << "# Collection name: #{collection['id']} : #{collection['description']}\n#\n"
     
-    fields.each do |field|
+    all_fields.each do |field|
       body << "#  #{field['field'].ljust(20)} #{field['type'].to_s.ljust(20)} #{field['description']}\n"
     end
     body << "\n\n"

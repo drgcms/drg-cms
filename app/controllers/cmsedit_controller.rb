@@ -779,16 +779,16 @@ end
 # to get all edit fields on form. This method does it. Subroutine of save_data.
 ########################################################################
 def fields_on_form() #:nodoc:
-  fields = []
+  form_fields = []
   if @form['form']['fields']
 # read only field elements (key is Integer)
-    @form['form']['fields'].each {|key,options| fields << options if key.class == Integer }
+    @form['form']['fields'].each {|key,options| form_fields << options if key.class == Integer }
   else
     @form['form']['tabs'].keys.each do |tab|
-      @form['form']['tabs'][tab].each {|key,options| fields << options if key.class == Integer }
+      @form['form']['tabs'][tab].each {|key,options| form_fields << options if key.class == Integer }
     end  
   end
-  fields
+  form_fields
 end
 
 ########################################################################
@@ -796,17 +796,17 @@ end
 # It also saves journal data and calls before_save and after_save callbacks.
 ########################################################################
 def save_data
-  fields = fields_on_form()
-  return true if fields.size == 0
+  form_fields = fields_on_form()
+  return true if form_fields.size == 0
 #
-  fields.each do |v|
+  form_fields.each do |v|
     session[:form_processing] = v['name'] # for debuging
     next if v['type'].nil? or
             v['type'].match('embedded') or # don't wipe embedded types
             (params[:edit_only] and params[:edit_only] != v['name']) or # otherwise other fields would be wiped
             v['readonly'] or # fields with readonly option don't return value and would be wiped
             !@record.respond_to?(v['name']) # there can be temporary fields on the form
-    # good to know how to get type of field @record.fields[v['name']].type
+    # good to know! How to get type of field @record.fields[v['name']].type
     # return value from form field definition
     value = DrgcmsFormFields.const_get(v['type'].camelize).get_data(params, v['name'])
     @record.send("#{v['name']}=", value)
