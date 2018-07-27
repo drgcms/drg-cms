@@ -74,10 +74,11 @@ has_secure_password
 index( { username: 1 }, { unique: true } )
 index( { email: 1 }, { unique: true } )
 index 'dc_user_roles.dc_policy_role_id' => 1  
-
 index 'members' => 1  
 
 validates_length_of :username, minimum: 4
+validates           :username, uniqueness: true  
+validates           :email,    uniqueness: true  
 before_save :do_before_save
 
 ##########################################################################
