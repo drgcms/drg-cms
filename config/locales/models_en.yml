@@ -276,6 +276,7 @@ en:
         active: Active
         dc_parts: Parts
         policy_id: Access policy
+        dc_site_id: Site
         dc_design_id: Design
         dc_poll_id: Poll
         kats: Categories
@@ -466,7 +467,7 @@ en:
 
         value: Value
         description: Value description
-        dc_big_table_values: Locales
+        dc_big_table_locales: Locales
         active: Active       
 
       dc_big_table_locale:
@@ -710,6 +711,7 @@ en:
         active: Page is active
         dc_parts: Parts of the article
         policy_id: Access policy for the page
+        dc_site_id: The page belongs to one site only
         dc_design_id: Design used for rendering page
         dc_poll_id: Select poll, if poll is to be used with page
         kats: Categories for this article
