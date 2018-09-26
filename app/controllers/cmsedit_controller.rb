@@ -729,7 +729,7 @@ def callback_method(key) #:nodoc:
     when params['data'] && params['data'][data_key] then params['data'][data_key]
 # if dc_ + key method is present in model then it will be called automatically     
     when respond_to?('dc_' + key) then 'dc_' + key
-    when params[key] then params[key]
+    when params[data_key] then params[data_key]
     else nil
   end
 #  
