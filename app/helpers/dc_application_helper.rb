@@ -527,13 +527,15 @@ end
 # Create edit link with edit picture. Subroutine of dc_page_edit_menu.
 ####################################################################
 def dc_link_menu_tag(title) #:nodoc:
-  html =<<EOT
-  <dl>
+  html = %Q[
+<dl>
   <dt><div class='drgcms_popmenu' href="#">
-   #{_origin.fa_icon('edit lg', class: 'dc-inline-link', title: title)}</div></dt>
-    <dd>
-    <ul class=' div-hidden drgcms_popmenu_class'> 
-EOT
+    #{_origin.fa_icon('file-text-o lg', class: 'dc-inline-link', title: title)}
+  </div></dt>
+  <dd>
+    <ul class=' div-hidden drgcms_popmenu_class'>
+]
+
   yield html
   html << "</ul></dd></dl>"
 end
