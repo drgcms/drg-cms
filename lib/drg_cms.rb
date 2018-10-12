@@ -129,7 +129,7 @@ def self.routes
     #  match '/dc_common/:action' => 'dc_common#:action', via: [:get, :put, :post]
     controller :dc_common do
       post 'dc_common/autocomplete'     => :autocomplete
-      get 'dc_common/ad_click'          => :ad_click
+      post 'dc_common/ad_click'         => :ad_click
       get 'dc_common/toggle_edit_mode'  => :toggle_edit_mode
       match 'dc_common/process_login'   => :process_login, via: [:put, :post]
       get 'dc_common/logout'            => :logout
