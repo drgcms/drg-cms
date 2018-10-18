@@ -322,7 +322,7 @@ $(document).ready( function() {
   $('#iframe_cms').load( function() {
 //    alert('bla 1');
     new_height = this.contentWindow.document.body.offsetHeight + 50;
-    if (new_height < 500 & new_height > 60) new_height = 500;
+    if (new_height < 500 && new_height > 60) new_height = 500;
     this.style.height = new_height + 'px'; 
 // scroll to top
     $('#iframe_cms').dc_scroll_view();
@@ -346,7 +346,7 @@ $(document).ready( function() {
  *******************************************************************/
   $('.dc-link-ajax').on('click', function(e) {
 // check HTML5 validations
-    if (!$("form")[0].checkValidity() ) {
+    if ($("form")[0] && !$("form")[0].checkValidity() ) {
       $("form")[0].reportValidity();
       return false;
     }
