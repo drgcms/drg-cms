@@ -19,6 +19,11 @@ result_set:
     3: 
       name: order
       align: right
+      width: 10%
+    4: 
+      name: active
+      eval: dc_icon4_boolean      
+      width: 10%
 
 form:
   title: 
