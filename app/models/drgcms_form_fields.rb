@@ -344,7 +344,7 @@ class Embedded < DrgcmsField
 # Render embedded field html code
 ###########################################################################
 def render 
-  return self if @record.new_record?  # would be in error otherwise
+  #return self if @record.new_record?  # would be in error otherwise
 # HTML defaults. Some must be set    
   @yaml['html'] ||= {}
   @yaml['html']['height'] ||= 300
@@ -366,11 +366,12 @@ def render
   opts = { controller: 'cmsedit', action: 'index', ids: ids, table: tables, form_name: @yaml['form_name'], 
            field_name: @yaml['name'], iframe: "if_#{@yaml['name']}", readonly: @readonly }
   @html << "<iframe class='iframe_embedded' id='if_#{@yaml['name']}' name='if_#{@yaml['name']}' #{html}></iframe>"
-  @js = <<EOJS
+  unless @record.new_record?
+    @js << %Q[
 $(document).ready( function() {
   $('#if_#{@yaml['name']}').attr('src', '#{@parent.url_for(opts)}');
-});
-EOJS
+});]
+  end
   self
 end
 

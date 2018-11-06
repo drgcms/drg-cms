@@ -75,7 +75,7 @@ def respond_to?(m)
 end
 
 ########################################################################
-# Redefine send method. Send is used to assign value by cmsedit controller.
+# Redefine send method. Send is used to assign or access value by cmsedit controller.
 ########################################################################
 def send(field,value=nil)
   field = field.to_s
@@ -83,6 +83,8 @@ def send(field,value=nil)
     field.chomp!('=')
     @internals ||= {}
     @internals[field] = value
+  else
+    @internals[field]
   end
 end
 
@@ -106,7 +108,7 @@ end
 # For debugging purposes
 ########################################################################
 def to_s
-  "DcMemory: @internals=#{@internals}"
+  "DcMemory: @internals=#{@internals.size} #{@internals}"
 end
   
 ########################################################################
