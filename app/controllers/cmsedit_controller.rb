@@ -471,7 +471,9 @@ def update
       params[:return_to] = 'index' if params[:commit] == t('drgcms.save&back') # save & back
       @parms['action'] = 'update'
 # Process return_to link
-      return process_return_to(params[:return_to]) if params[:return_to]      
+      return process_return_to(params[:return_to]) if params[:return_to]
+    else
+      return render action: :edit
     end
   else
     flash[:error] = t('drgcms.not_authorized')
