@@ -520,6 +520,14 @@ sl:
         fields: Splošno
         ztab: Napredno
         dc_element: Ime elementa
+        
+      dc_removed_url:
+        tabletitle: Nektivni URL naslovi
+
+        url: URL naslov
+        description: Razlog umika
+        dc_site_id: Spletišče
+        updated_at: Spremenjeno
 
 # help pomoč na obrazcih ####################################################
 
@@ -897,3 +905,8 @@ sl:
         filter: Vsebina filtra
         public: Filter je na voljo vsem uporabnikom
         sort: Privzeto sortiranje ob izbiri filtra
+        
+      dc_removed_url:
+        url: URL naslov, ki je bil umaknjen iz spletišča
+        description: OPis razloga umika
+        dc_site_id: Spletišče, ki mu URL pripada

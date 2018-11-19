@@ -517,6 +517,15 @@ en:
         fields: General
         ztab: Advanced
         dc_element: Element name
+        
+      dc_removed_url:
+        tabletitle: URLs removed from site
+
+        url: URL
+        description: Description
+        dc_site_id: Site
+        updated_at: Updated
+        
 
 # help for forms #####################################################
 
@@ -889,3 +898,7 @@ en:
         public: Filter is available to all users
         sort: Default sort when selecting filter
                 
+      dc_removed_url:
+        url: URL which was removed from site
+        description: Reason why was URL removed
+        dc_site_id: Site that URL belongs to

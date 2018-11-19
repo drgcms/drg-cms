@@ -1,0 +1,42 @@
+# Form for dc_removed_url
+table: dc_removed_url
+
+index:
+  filter: url, dc_site_id
+  actions: standard
+
+result_set:
+  actions: standard
+
+  columns:
+    10: 
+      name: dc_site_id
+      eval: dc_name4_id,dc_site,name
+    20:
+      name: url
+      width: 40%
+    30: 
+      name: updated_at
+      format: '%d.%m.%Y'
+
+form:
+  title:
+    field: url
+
+  actions: standard
+
+  fields:
+    10:
+      name: url
+      type: text_field
+      size: 50
+    20:
+      name: description
+      type: text_field
+      size: 50
+    30:
+      name: dc_site_id
+      type: select
+      eval: dc_choices4('dc_site','name','_id')
+      html:
+        include_blank: true

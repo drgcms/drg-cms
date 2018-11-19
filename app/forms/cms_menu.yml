@@ -118,6 +118,11 @@ menu:
         controller: cmsedit
         icon: filter lg        
         table: dc_filter
+      90: 
+        caption: helpers.label.dc_removed_url.tabletitle
+        controller: cmsedit
+        icon: trash-o lg        
+        table: dc_removed_url
       500: 
         caption: helpers.label.dc_journal.tabletitle
         controller: cmsedit
