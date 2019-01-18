@@ -14,13 +14,14 @@ result_set:
     3: delete
 
   columns:
-    1:  
+    10:  
       name: name
-      style: "text-align: left;"
-      width: 40%
-    2: 
+      width: 20%
+    20: 
+      name: redirect
+      width: 20%
+    30: 
       name: params
-      style: "text-align: left;"
 
 form:
   title: 
@@ -32,24 +33,29 @@ form:
     10:
       name: name
       type: text_field
-      html:
-        size: 30
+      size: 40
 
     20:
       name: dc_site_id
       type: select
       eval: DcSite.choices4_site
+      html:
+        include_blank: true      
 
     30:
+      name: redirect
+      type: text_field
+      size: 40
+     
+    40:
       name: page_id
       type: text_autocomplete
       table: 
         eval: '@parent.session[:site_page_table]'
       search: subject
-      html:
-        size: 80
+      size: 60
      
-    40:
+    50:
       name: params
       type: text_area
       html:

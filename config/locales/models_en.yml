@@ -394,6 +394,7 @@ en:
 
         name: Link name
         params: Parameters
+        redirect: Redirect
         dc_site_id: Valid for site
         page_id: Link to page
         active: Active
@@ -812,6 +813,7 @@ en:
       dc_link:
         name: Link name ex. homepage
         params: Aditional parameters passed to document renderer
+        redirect: Redirect to another link
         page_id: Page redirected to by this shortcut link
         dc_site_id: Link is valid for site
         active: Link is active

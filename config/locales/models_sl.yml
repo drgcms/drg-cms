@@ -397,6 +397,7 @@ sl:
 
         name: Ime povezave
         params: Parametri
+        redirect: prevezava
         page_id: Stran za prikaz
         dc_site_id: Spletišče
         active: Aktiven
@@ -820,6 +821,7 @@ sl:
       dc_link:
         name: Ime povezave ali bližnjice npr. domov
         params: Dodatni parametri za program
+        redirect: Prevezava na drugo povezavo
         dc_site_id: Velja za spletno stran
         page_id: Stran na katero se bo preusmerila povezava
         active: Povezava je aktivna

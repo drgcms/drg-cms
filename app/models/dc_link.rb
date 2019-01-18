@@ -47,6 +47,7 @@ class DcLink
   field :name,        type: String
   field :params,      type: String
   field :active,      type: Boolean, default: true 
+  field :redirect,    type: String
   field :page_id,     type: BSON::ObjectId
   field :created_by,  type: BSON::ObjectId
   field :updated_by,  type: BSON::ObjectId
