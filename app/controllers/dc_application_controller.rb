@@ -609,8 +609,10 @@ def fill_login_data(user, remember_me=false)
 # Every user has guest role
   guest = DcPolicyRole.find_by(system_name: 'guest')
   session[:user_roles] << guest.id if guest
-# read default policy from site  
-  default_policy = dc_get_site().dc_policies.find_by(is_default: true)
+# read default policy from site. Policy might be inherited
+  policy_site = dc_get_site()
+  policy_site = DcSite.find(policy_site.inherit_policy) if policy_site.inherit_policy
+  default_policy = policy_site.dc_policies.find_by(is_default: true)
 # load user roles      
   user.dc_user_roles.each do |role|
     next unless role.active
