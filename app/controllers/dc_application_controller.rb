@@ -643,7 +643,8 @@ def dc_check_user_still_valid(repeat_after=1.day)
   if (session[:user_chk] ||= Time.now) < repeat_after.ago
     clear_login_data
     # reload user roles
-    fill_login_data( DcUser.find( session[:user_id] ) )
+    user = DcUser.find( session[:user_id] ) rescue nil
+    fill_login_data(user)
     session[:user_chk] = Time.now
   end  
 end
