@@ -594,38 +594,38 @@ end
 # @param [Boolean] remember_me : false by default
 ####################################################################
 def fill_login_data(user, remember_me=false)
-  session[:user_id]    = user.id
-  session[:user_name]  = user.name
+  session[:user_id]    = user.id if user
+  session[:user_name]  = user.name if user
   session[:edit_mode]  = 0 
   session[:user_roles] = []
-  
-# special for SUPERADMIN
+  # Every user has guest role
+  guest = DcPolicyRole.find_by(system_name: 'guest')
+  session[:user_roles] << guest.id if guest
+  return unless user and user.active  
+  # special for SUPERADMIN
   sa = DcPolicyRole.find_by(system_name: 'superadmin')
   if sa and (role = user.dc_user_roles.find_by(dc_policy_role_id: sa.id))
     session[:user_roles] << role.dc_policy_role_id
     session[:edit_mode]  = 2
     return
   end
-# Every user has guest role
-  guest = DcPolicyRole.find_by(system_name: 'guest')
-  session[:user_roles] << guest.id if guest
-# read default policy from site. Policy might be inherited
+  # read default policy from site. Policy might be inherited
   policy_site = dc_get_site()
   policy_site = DcSite.find(policy_site.inherit_policy) if policy_site.inherit_policy
   default_policy = policy_site.dc_policies.find_by(is_default: true)
-# load user roles      
+  # load user roles      
   user.dc_user_roles.each do |role|
     next unless role.active
     next if role.valid_from and role.valid_from > Time.now.end_of_day.to_date
     next if role.valid_to   and role.valid_to < Time.now.to_date
-# check if role is active in this site
+    # check if role is active in this site
     policy_role = default_policy.dc_policy_rules.find_by(dc_policy_role_id: role.dc_policy_role_id)
     next unless policy_role
-# set edit_mode      
+    # set edit_mode      
     session[:edit_mode] = 1 if policy_role.permission > 1
     session[:user_roles] << role.dc_policy_role_id
   end
-# Save remember me cookie if not CMS user and remember me is selected
+  # Save remember me cookie if not CMS user and remember me is selected
   if session[:edit_mode] == 0 and remember_me
     cookies.signed[:remember_me] = { :value => user.id, :expires => 180.days.from_now}
   end
@@ -641,11 +641,9 @@ def dc_check_user_still_valid(repeat_after=1.day)
   return if session[:user_id].nil? 
   # last check more than a day ago
   if (session[:user_chk] ||= Time.now) < repeat_after.ago
-    if user = DcUser.find( session[:user_id] )
-      clear_login_data
-      # reload user roles when user active
-      fill_login_data(user) if user.active
-    end    
+    clear_login_data
+    # reload user roles
+    fill_login_data( DcUser.find( session[:user_id] ) )
     session[:user_chk] = Time.now
   end  
 end
