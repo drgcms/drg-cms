@@ -20,11 +20,39 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #++
+module DrgcmsFormFields
 
-##############################################################
-# Require all files in drgcms_form_fields directory.
-###############################################################
+###########################################################################
+# Create submit_tag form field. submit_tag form field is mostly used by polls but can
+# be also incorporated in the middle of form.
+# 
+# ===Form options:
+# * +type:+ submit_tag (required)
+# * +caption:+ Submit field caption 
+# * +icon:+ Icon
+# * +html:+ html options which apply to link_to (optional)
+#      
+# Form example:
+#    40:
+#      type: submit_tag
+#      caption: translate.this
+#      icon: check
+###########################################################################
+class SubmitTag < DrgcmsField
+  
+###########################################################################
+# Render submit_tag field html code
+###########################################################################
+def render
+  @yaml['html'] ||= {}
+  @yaml['html']['class'] ||= 'dc-submit'
+  @yaml['html'].symbolize_keys!
+  text = @yaml['caption'] || @yaml['text']
+  text = t(@yaml['text']) if text.match(/\./)
+  
+  @html << @parent.submit_tag(text, @yaml['html'])
+  self
+end
+end
 
-Dir[File.join(__dir__, "drgcms_form_fields/*.rb")].each do |file|
-  require file
 end

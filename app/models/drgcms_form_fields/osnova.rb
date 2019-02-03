@@ -20,11 +20,7 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #++
+module DrgcmsFormFields
 
-##############################################################
-# Require all files in drgcms_form_fields directory.
-###############################################################
 
-Dir[File.join(__dir__, "drgcms_form_fields/*.rb")].each do |file|
-  require file
 end

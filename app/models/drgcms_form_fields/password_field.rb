@@ -20,11 +20,43 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #++
+module DrgcmsFormFields
 
-##############################################################
-# Require all files in drgcms_form_fields directory.
-###############################################################
+###########################################################################
+# Implementation of password DRG CMS form field.
+# 
+# ===Form options:
+# * +type:+ password_field (required)
+# * +name:+ Field name (required) 
+# * +html:+ html options which apply to password field (optional)
+# 
+# Form example:
+#    20:
+#      name: password
+#      type: pasword_field
+#      html:
+#        size: 20
+#        
+#    30:
+#      name: password_confirmation
+#      type: pasword_field
+#      html:
+#        size: 20
+#        
+###########################################################################
+class PasswordField < DrgcmsField
+  
+###########################################################################
+# Render password field html code
+# 
+###########################################################################
+def render
+  return self if @readonly
+  @yaml['html'] ||= {}
+  record = record_text_for(@yaml['name'])  
+  @html << @parent.password_field(record, @yaml['name'], @yaml['html'])
+  self
+end
+end
 
-Dir[File.join(__dir__, "drgcms_form_fields/*.rb")].each do |file|
-  require file
 end

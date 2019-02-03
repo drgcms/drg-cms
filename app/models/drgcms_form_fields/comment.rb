@@ -20,11 +20,30 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #++
+module DrgcmsFormFields
 
-##############################################################
-# Require all files in drgcms_form_fields directory.
-###############################################################
+###########################################################################
+# Implementation of comment DRG CMS form field. Comments may also be written
+# on the place of form field.
+# 
+# ===Form options:
+# * +text:+ any text. Text will be translated if key is found in translations. (required)
+# * +type:+ comment (required)
+#
+# Form example:
+#    30:
+#      name: active
+#      type: check_box
+###########################################################################
+class Comment < DrgcmsField
+  
+###########################################################################
+# Render comment field html code
+###########################################################################
+def render
+  @html << t(@yaml['comment'], @yaml['comment'])
+  self
+end
+end
 
-Dir[File.join(__dir__, "drgcms_form_fields/*.rb")].each do |file|
-  require file
 end

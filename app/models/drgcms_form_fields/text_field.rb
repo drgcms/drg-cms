@@ -20,11 +20,37 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #++
+module DrgcmsFormFields
 
-##############################################################
-# Require all files in drgcms_form_fields directory.
-###############################################################
+###########################################################################
+# Implementation of text_field DRG CMS form field.
+# 
+# ===Form options:
+# * +type:+ text_field (required)
+# * +name:+ Field name (required) 
+# * +html:+ html options which apply to text_field field (optional)
+# 
+# Form example:
+#    10:
+#      name: title
+#      type: text_field
+#      size: 30
+#      html:
+#        required: yes
+###########################################################################
+class TextField < DrgcmsField
+  
+###########################################################################
+# Render text_field field html code
+###########################################################################
+def render
+  return ro_standard if @readonly
+  set_initial_value
+#
+  record = record_text_for(@yaml['name'])
+  @html << @parent.text_field( record, @yaml['name'], @yaml['html']) 
+  self
+end
 
-Dir[File.join(__dir__, "drgcms_form_fields/*.rb")].each do |file|
-  require file
+end
 end

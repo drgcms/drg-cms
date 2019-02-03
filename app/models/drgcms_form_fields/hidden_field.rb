@@ -20,11 +20,33 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #++
+module DrgcmsFormFields
 
-##############################################################
-# Require all files in drgcms_form_fields directory.
-###############################################################
+###########################################################################
+# Implementation of hidden DRG CMS form field.
+# 
+# Will create hidden_field on form.
+# 
+# ===Form options:
+# * +name:+ field name
+# * +type:+ hidden_field
+# 
+# Form example:
+#    10:
+#      name: im_hidden
+#      type: hidden_field
+###########################################################################
+class HiddenField < DrgcmsField
+###########################################################################
+# Render hidden_field field html code
+###########################################################################
+def render 
+  set_initial_value
+  value = @yaml['html']['value'] ? @yaml['html']['value'] : @record[@yaml['name']]
+  record = record_text_for(@yaml['name'])  
+  @parent.hidden_field(record, @yaml['name'], value: value)
+end
+end
 
-Dir[File.join(__dir__, "drgcms_form_fields/*.rb")].each do |file|
-  require file
+
 end
