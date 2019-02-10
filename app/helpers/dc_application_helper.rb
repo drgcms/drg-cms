@@ -283,7 +283,7 @@ def dc_edit_title()
     dc_deprecate('form:edit_title will be deprecated. Use form:title:field instead.') if @form['form']['edit_title']
 #
     c << "#{@record[ title ]} : " if title and @record.respond_to?(title)
-    c << @record._id if @record
+    c << @record.id if @record
   end
   c
 end
