@@ -173,7 +173,7 @@ def dc_div_filter()
     field_name, operators_value = nil, nil
   end
   #{ form_tag :table => @form['table'], filter: :on, filter_input: 1, action: :index, method: :post }
-  url = url_for(:table => @form['table'], filter: :on, filter_input: 1, action: :index, controller: :cmsedit)  
+  url = url_for(table: @form['table'],form_name: params['form_name'], filter: :on, filter_input: 1, action: :index, controller: :cmsedit)  
   html =<<EOT
   <div id="drgcms_filter" class="div-hidden">
     <h1>#{t('drgcms.filter_set')}</h1>
@@ -350,7 +350,7 @@ def dc_clicks_for_result(document)
     html << ' data-dblclick=' + url_for(opts) 
   else
      html << (' data-dblclick=' +
-       url_for(action: 'show', controller: 'cmsedit', id: document, 
+       url_for(action: 'show', controller: 'cmsedit', id: document.id, 
        readonly: (params[:readonly] ? 2 : 1), table: params[:table],
        form_name: params[:form_name], ids: params[:ids])  ) if @form['form'] 
   end

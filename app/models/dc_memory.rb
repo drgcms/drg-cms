@@ -25,8 +25,6 @@
 # == Schema information
 #
 # Collection name: dc_memory : Collection name used when form does not belong to database model.
-#
-#  _id                  BSON::ObjectId       _id 
 # 
 # Which is not collection at all. DcMemory model is used for entering data on forms 
 # where data will not be saved to database but will instead be saved only to memory as 
@@ -67,6 +65,21 @@
 class DcMemory
   include Mongoid::Document
   
+########################################################################
+# Initilize object
+########################################################################
+def initialize(parms = {})
+  @internals = {}
+  parms.each { |key, value| @internals[key.to_s] = value }
+end
+
+########################################################################
+# Respond_to should always return true.
+########################################################################
+def id()
+  @internals['id']
+end
+
 ########################################################################
 # Respond_to should always return true.
 ########################################################################

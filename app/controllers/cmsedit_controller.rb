@@ -213,12 +213,13 @@ def check_filter_options() #:nodoc:
 end
 
 ########################################################################
-# Index action.
+# Process index action for normal collections.
 ########################################################################
-def index
+def process_collections #:nodoc
 # If result_set is not defined on form, then it will fail. :return_to should know where to go
   if @form['result_set'].nil?
-    return process_return_to(params[:return_to] || 'reload') 
+    process_return_to(params[:return_to] || 'reload') 
+    return true
   end
 # for now enable only filtering of top level documents
   if @tables.size == 1 
@@ -232,7 +233,8 @@ def index
 # something iz wrong. flash[] should have explanation.
       if @records.class == FalseClass
         @records = []
-        return render(action: :index)
+        render(action: :index)
+        return true
       end
 # pagination but only if not already set
       unless (@form['table'] == 'dc_memory' or @records.options[:limit])
@@ -253,8 +255,35 @@ def index
       end
     end
   end
-#
-  call_callback_method('dc_footer')
+  false
+end
+
+########################################################################
+# Process index action for in memory data.
+########################################################################
+def process_in_memory #:nodoc
+  @records = []
+  # result set is defined by filter method in control object
+  if (method = @form['result_set']['filter'])
+    send(method) if respond_to?(method)    
+  end
+  # result set is defined by class method
+  if (klass_method = @form['result_set']['filter_method'])
+    _klass, method = klass_method.split('.')
+    klass = _klass.classify.constantize
+    @records = klass.send(method) if klass.respond_to?(method)
+  end 
+  false
+end
+
+########################################################################
+# Indx action 
+########################################################################
+def index
+  redirected = (@form['table'] == 'dc_memory' ? process_in_memory : process_collections)
+  return if redirected
+#  
+  call_callback_method(@form['result_set']['footer'] || 'dc_footer')
   respond_to do |format|
     format.html { render action:  :index }
     format.js   { render partial: :result }
@@ -594,8 +623,7 @@ def read_drg_cms_form
 # split ids passed when embedded document
   ids = params[:ids].to_s.strip.downcase
   @ids = ids.split(';').inject([]) { |r,v| r << v }
-# formname defaults to last table specified
-  dc_deprecate("Parameter :formname will be deprecated in future. Use :form_name instead") if params[:formname]
+# form_name defaults to last table specified
   form_name = params[:form_name] || @tables.last[1]
   @form  = YAML.load_file( dc_find_form_file(form_name) ) rescue nil
   return unless @form
@@ -627,9 +655,10 @@ def check_authorization
 # Just show menu
 #  return show if params[:action] == 'show'
   return login if params[:id].in?(%w(login logout))
+  table = params[:table].to_s.strip.downcase
 # request shouldn't pass
-  if session[:user_roles].nil? or params[:table].to_s.strip.downcase.size < 3 or 
-     !dc_user_can(DcPermission::CAN_VIEW)
+  if table != 'dc_memory' and 
+     (session[:user_roles].nil? or table.size < 3 or !dc_user_can(DcPermission::CAN_VIEW))
     return render(action: 'error', locals: { error: t('drgcms.not_authorized')} )
   end
 
