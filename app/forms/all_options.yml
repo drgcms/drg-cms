@@ -116,7 +116,7 @@ form:
     6: 
       type: script
       caption: Cancle 
-      js: parent.reload();
+      js: parent.location.reload();
     7:
       type: submit
       caption: Send
