@@ -70,7 +70,7 @@ class DcMemory
 ########################################################################
 def initialize(parms = {})
   @internals = {}
-  parms.each { |key, value| @internals[key.to_s] = value }
+  parms.each { |key, value| @internals[key.to_s] = value } if parms
 end
 
 ########################################################################
