@@ -1290,7 +1290,7 @@ end
 # [var_name] String[symbol]: Variable name (:user_name, 'user_id', ...)
 # 
 # Example:
-#    # called when constructiong iframe for display
+#    # called when constructing iframe for display
 #    dc_internal_var(session, :user_id)
 #    dc_internal_var(params, :some_external_parameter)
 #    dc_internal_var(site, :name)
@@ -1309,7 +1309,7 @@ def dc_internal_var(object, var_name)
       'VARIABLE: UNKNOWN OBJECT'
     end
   rescue Exception => e
-    Rails.logger.debug "Method dc_internal var. Runtime error. #{e.message}"
+    Rails.logger.error "Method dc_internal var. Runtime error. #{e.message}"
     'VARIABLE: ERROR'
   end
 end

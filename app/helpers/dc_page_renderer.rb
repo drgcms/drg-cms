@@ -49,6 +49,25 @@ end
 
 #########################################################################
 # Render IFrame part if defined on page
+# 
+# Parameters forwarded to iframe are defined in if_params field as yaml as:
+#   param_name:
+#     object: internal object name (params, session, site, page)
+#     method: method name (variable) holding the value of parameter
+#     
+#   example: Forward id parameter to iframe 
+#   id:
+#     object: params
+#     method: id
+#     
+#   example: Forward user id and edit_mode to iframe
+#   user_id:
+#     object: session
+#     method: user_id
+#   edit:
+#     object: session
+#     method: edit_mode
+#     
 #########################################################################
 def iframe
   return '' if @page.if_url.blank?
@@ -64,7 +83,7 @@ def iframe
   params = YAML.load(@page.if_params) rescue {}
   params = {} unless params.class == Hash
   params.each do |key, value|
-    val = @parent.dc_internal_var(value['object'], value['variable'])
+    val = @parent.dc_internal_var(value['object'], value['method'])
     parameters << "&#{key}=#{val}" if val # only when not nil
   end
   url = @page.if_url + (parameters.size > 1 ? parameters : '')
@@ -92,8 +111,6 @@ def default
   end
 # also add iframe
   html << iframe()
-    html
-
 end
 
 #########################################################################
