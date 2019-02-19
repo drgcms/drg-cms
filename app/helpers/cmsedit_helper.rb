@@ -531,6 +531,8 @@ def dc_actions_for_form()
       next
     end    
 #    
+    action_active = !(dc_dont?(v['when_new']) and @record.new_record?)
+#    p [v['caption'], action_active]
     parms = @parms.clone
     if v.class == String
       next if params[:readonly] and !(v == 'back')
@@ -566,17 +568,22 @@ def dc_actions_for_form()
         "err1 #{element[0]}=>#{v}"
       end
       c << '</td>'
-# non standard actions      
+    # non standard actions      
     else
       c << case 
-# submit button
+      # submit button
       when v['type'] == 'submit'
         caption = v['caption'] || 'drgcms.save'
         icon    = v['icon'] || 'save'
-        '<li class="dc-link-submit dc-animate">' + 
-          dc_submit_tag(caption, icon, {:data => v['params'], :title => v['title']}) + 
-        '</li>'
-# delete with some sugar added
+        if action_active 
+          '<li class="dc-link-submit dc-animate">' + 
+             dc_submit_tag(caption, icon, {:data => v['params'], :title => v['title'] }) +
+          '</li>'
+        else
+          "<li class=\"dc-link-no\">#{fa_icon(icon)} #{caption}</li>"
+        end
+      
+      # delete with some sugar added
       when v['type'] == 'delete'
         parms['id']   = @record.id
         parms.merge!(v['params'])
@@ -585,40 +592,47 @@ def dc_actions_for_form()
         '<li class="dc-link dc-animate">' + 
           dc_link_to( caption, icon, parms, data: t('drgcms.confirm_delete'), method: :delete ) +
         '</li>'
-# ajax or link button
+      
+      # ajax or link button
       when v['type'] == 'ajax' || v['type'] == 'link'
         parms = {}
-  # direct url        
+        # direct url        
         if v['url']
           parms['controller'] = v['url'] 
-          parms['idr']        = @record.id
-  # make url          
+          parms['idr']        = dc_document_path(@record)
+        # make url from action controller
         else
           parms['controller'] = v['controller'] 
           parms['action']     = v['action'] 
           parms['table']      = v['table'] 
           parms['form_name']  = v['form_name']
-          parms['id']         = @record.id
-  # additional parameters          
-          v['params'].each { |k,v| parms[k] = v } if v['params']
         end
-  # Error if controller param is missing
+        # additional parameters          
+        if v['params']
+          v['params'].each { |k,v| parms[k] = v }
+        else # just use current id
+          parms['id'] = dc_document_path(@record)
+        end            
+        # Error if controller param is missing
         if parms['controller'].nil?
           "<li>#{t('drgcms.error')}</li>"
         else
           v['caption'] ||= v['text'] 
           caption = t("#{v['caption'].downcase}", v['caption'])
+          #don't run on new document
           url     = url_for(parms)
           request = v['request'] || v['method'] || 'get'
           icon    = v['icon'] ? "#{fa_icon(v['icon'])} " : ''
           if v['type'] == 'ajax' # ajax button
-            %Q[<li class="dc-link-ajax dc-animate" id="dc-submit-ajax" data-url="#{url}" 
+            clas = action_active ? "dc-link-ajax dc-animate" : "dc-link-no"
+            %Q[<li class="#{clas}" data-url="#{url}" 
                data-request="#{request}" title="#{v['title']}">#{icon}#{caption}</li>]
           else                   # link button
-#            %Q[<td class="dc-link dc-animate" title="#{v['title']}><a href="#{url}">#{icon}#{caption}</a></td>]
-            %Q[<li class="dc-link dc-animate">#{dc_link_to(v['caption'],v['icon'], parms)}</li>]
+            clas = action_active ? "dc-link dc-animate" : "dc-link-no"
+            %Q[<li class="#{clas}">#{action_active ? dc_link_to(v['caption'],v['icon'], parms) : caption}</li>]
           end
         end
+        
 # Javascript action        
       when v['type'] == 'script'
 #          v['caption'] ||= 'Caption missing!'

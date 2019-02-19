@@ -1314,4 +1314,23 @@ def dc_internal_var(object, var_name)
   end
 end
 
+
+########################################################################
+# Will return whole path to document if document is embedded in another document.
+# 
+# Parameters:
+# [document] Object: Document object
+# 
+# Returns:
+# String of ID-s separated by semicolon.
+#######################################################################
+def dc_document_path(document)
+  path, parent = [document.id], document._parent
+  while parent
+    path << parent.id
+    parent = parent._parent
+  end 
+  path.reverse.join(';')
+end
+
 end

@@ -117,6 +117,7 @@ form:
       action: priprava_odlocbe
       method: (get),put,post
       caption: Priprava odločbe
+      when_new: false
     6: 
       type: script
       caption: Cancle 
@@ -124,6 +125,7 @@ form:
     7:
       type: submit
       caption: Send
+      when_new: false
       params:
         before-save: send_mail
         after-save: return_to parent.reload
