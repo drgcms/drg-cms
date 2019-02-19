@@ -27,6 +27,9 @@ index:
       url: some_url
       caption: Some caption
       title: Text for mouse over
+      html:
+        class: dc-link-spinner
+        data-confirm: Confirm dialog text.
 
     3: 
       type: link

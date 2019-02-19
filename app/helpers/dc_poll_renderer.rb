@@ -67,7 +67,7 @@ def do_one_item(poll, yaml)
 # Just add text if comment and go to next one    
   if yaml['type'] == 'comment'
     html << if poll.display == 'lr'
-      "<tr><td colspan='2' class='poll-data-text'>#{text}</td></tr>"
+      "<div class='row-div'><div class='dc-form-label poll-data-text'>#{text}</div></div>"
     else
       "<div class='poll-data-text'>#{text}</div>"
     end    
@@ -98,7 +98,7 @@ def do_one_item(poll, yaml)
 # There can be more than one links on form. End the data at first link or submit.
     if !@end_of_data 
       html << if poll.display == 'lr'
-        "</table><br>\n"
+        "</div><br>\n"
       else
         "</div>\n"
       end
@@ -117,9 +117,9 @@ def do_one_item(poll, yaml)
 # other elements
   else
     html << if poll.display == 'lr'
-      "<tr><td class='poll-data-text'>#{text}</td><td class='poll-data-field #{yaml['class']}'>#{field_html}</td></tr>\n"
+      "<div class='row-div'><div class='dc-form-label poll-data-text #{yaml['class']}'>#{text}</div><div class='dc-form-field poll-data-field #{yaml['class']}'>#{field_html}</div></div>\n"
     else
-      "<div class='poll-data-text'>#{text}</div><div class='poll-data-field #{yaml['class']}'>#{field_html}#{yaml['separator']}</div>\n"
+      "<div class='poll-data-text #{yaml['class']}'>#{text}</div><div class='poll-data-field #{yaml['class']}'>#{field_html}#{yaml['separator']}</div>\n"
     end    
   end
 end
@@ -178,7 +178,7 @@ def default
   html << "<div class='poll-title'>#{poll.title}</div>" unless poll.title[0] == '-' # - on first position will not display title
   html << poll.sub_text.to_s # if poll.sub_text.to_s.size > 5
   html << if poll.display == 'lr'
-    "\n" + '<table class="poll-data-table">'
+    "\n" + '<div class="poll-data-table">'
   else
     '<div class="poll-data-div">' + "\n"
   end
