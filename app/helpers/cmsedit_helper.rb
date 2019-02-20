@@ -476,6 +476,17 @@ def dc_columns_for_result(document)
 end
 
 ############################################################################
+# Will return value for parameter required on form
+############################################################################
+def dc_value_for_parameter(param)
+  if param.class == Hash
+    dc_internal_var(param['object'] || 'record', param['method'])
+  else
+    param    
+  end
+end
+
+############################################################################
 # Creates actions div for edit form.
 # 
 # Displaying readonly form turned out to be challenge. For now when readonly parameter
@@ -490,6 +501,7 @@ def dc_actions_for_form()
   unless @record.id.nil?
     std_actions.merge!({' 6' => 'new'} )
     std_actions.merge!(@record.active ? {' 5' => 'disable'} : {' 5' => 'enable'} ) if @record.respond_to?('active')
+    std_actions.merge!({' 7' => 'refresh'} )
   end
   actions = @form['form']['actions']
 # shortcut for actions: standard 
@@ -564,6 +576,8 @@ def dc_actions_for_form()
           parms['operation'] = v
           parms['id']        = @record.id
           dc_link_to( "drgcms.#{v}",v, parms )
+        when v == 'refresh' then
+          "<span onclick='window.location.href=window.location.href;'>#{fa_icon('refresh')} #{t('drgcms.refresh')}</span></li>"
       else 
         "err1 #{element[0]}=>#{v}"
       end
@@ -594,7 +608,7 @@ def dc_actions_for_form()
         '</li>'
       
       # ajax or link button
-      when v['type'] == 'ajax' || v['type'] == 'link'
+      when v['type'] == 'ajax' || v['type'] == 'link' || v['type'] == 'window'
         parms = {}
         # direct url        
         if v['url']
@@ -607,29 +621,32 @@ def dc_actions_for_form()
           parms['table']      = v['table'] 
           parms['form_name']  = v['form_name']
         end
+        # add current id to parameters
+        parms['id'] = dc_document_path(@record)
         # additional parameters          
-        if v['params']
-          v['params'].each { |k,v| parms[k] = v }
-        else # just use current id
-          parms['id'] = dc_document_path(@record)
-        end            
-        # Error if controller param is missing
+        v['params'].each { |k,v| parms[k] = dc_value_for_parameter(v) } if v['params']
+        # Error if controller parameter is missing
         if parms['controller'].nil?
           "<li>#{t('drgcms.error')}</li>"
         else
           v['caption'] ||= v['text'] 
           caption = t("#{v['caption'].downcase}", v['caption'])
-          #don't run on new document
-          url     = url_for(parms)
+          #
+          url = url_for(parms) rescue ''
           request = v['request'] || v['method'] || 'get'
           icon    = v['icon'] ? "#{fa_icon(v['icon'])} " : ''
           if v['type'] == 'ajax' # ajax button
             clas = action_active ? "dc-link-ajax dc-animate" : "dc-link-no"
-            %Q[<li class="#{clas}" data-url="#{url}" 
+            %Q[<li class="#{clas}" data-url="#{action_active ? url : ''}" 
                data-request="#{request}" title="#{v['title']}">#{icon}#{caption}</li>]
-          else                   # link button
+          elsif v['type'] == 'link'  # link button
             clas = action_active ? "dc-link dc-animate" : "dc-link-no"
-            %Q[<li class="#{clas}">#{action_active ? dc_link_to(v['caption'],v['icon'], parms) : caption}</li>]
+            %Q[<li class="#{clas}">#{action_active ? dc_link_to(v['caption'],v['icon'], parms, {target: v['target']} ) : caption}</li>]
+          elsif v['type'] == 'window' 
+            clas = action_active ? "dc-link dc-animate dc-window-open" : "dc-link-no"
+            %Q[<li class="#{clas}" data-url="#{action_active ? url : ''}">#{icon}#{caption}</li>]
+          else 
+            'Action Type error'
           end
         end
         

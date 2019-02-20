@@ -270,9 +270,10 @@ display: inline-table;
 #data-fields {margin: 5px;}
 
 .dc-link {
-padding: 6px; 
-
+font-weight: bold;
+color: #666;
 text-align: center;
+padding: 6px; 
 border-radius: 2px;
 background: transparent linear-gradient(to bottom, #FFF 0%, #F2F2F2 100%) repeat scroll 0% 0%;
 border: 1px solid #eee;
@@ -281,7 +282,9 @@ border: 1px solid #eee;
 .dc-link:hover {
   background: #ddd;
   border: 1px solid #ddd;
-  transition: 0.3s;  
+  transition: 0.3s; 
+  color: #000;
+  cursor: pointer;
 }
 
 .dc-link:hover a { 

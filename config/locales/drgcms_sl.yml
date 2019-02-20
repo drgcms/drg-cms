@@ -67,6 +67,7 @@ sl:
     new: Dodaj
     sort: Razvrsti
     filter: Filter
+    refresh: Osveži
     back: Nazaj
     delete: Izbris
     enable: Omogoči

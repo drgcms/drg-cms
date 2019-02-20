@@ -54,7 +54,9 @@ attr_reader :part
 attr_accessor :page_title
 # all parts read from page, design, ...
 attr_accessor :parts
-
+#
+attr_accessor :record
+#
 attr_accessor :record_footer
 
 ############################################################################
@@ -1305,6 +1307,7 @@ def dc_internal_var(object, var_name)
       when object == 'params'  then _origin.params[var_name]
       when object == 'site'    then _origin.dc_get_site.send(var_name)
       when object == 'page'    then _origin.page.send(var_name)
+      when object == 'record'  then _origin.record.send(var_name)
     else
       'VARIABLE: UNKNOWN OBJECT'
     end

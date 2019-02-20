@@ -113,11 +113,26 @@ form:
   actions: 
     5: 
       type: ajax
-      controller: ppk
-      action: priprava_odlocbe
+      controller: ctrl
+      action: action
       method: (get),put,post
-      caption: Priprava odločbe
+      caption: ajax_call
       when_new: false
+    5: 
+      type: window
+      controller: cmsedit
+      form_name: form
+      table: table
+      action: edit
+      method: (get),put,post
+      caption: Edit linked document
+      when_new: false
+      params:
+        id:
+          object: record (can be omitted)
+          method: page_id
+      when_new: false      
+      
     6: 
       type: script
       caption: Cancle 

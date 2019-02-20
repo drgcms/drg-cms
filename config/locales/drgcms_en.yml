@@ -67,6 +67,7 @@ en:
     new: New
     sort: Sort
     filter: Filter
+    refresh: Refresh
     back: Back
     delete: Delete
     enable: Enable

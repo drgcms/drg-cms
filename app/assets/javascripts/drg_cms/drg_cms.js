@@ -381,6 +381,21 @@ $(document).ready( function() {
       }
       
     });  
+  }); 
+    
+/*******************************************************************
+  will open a new window with URL specified. 
+********************************************************************/
+  $('.dc-window-open').on('click', function(e) { 
+    var url   = this.getAttribute("data-url");
+    var title = this.getAttribute("title");
+    var w     = 1000;
+    var h     = 800;
+    var left  = (screen.width/2)-(w/2);
+    var top   = (screen.height/2)-(h/2);
+    var win   = window.open(url, title, 'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=no, copyhistory=no, width='+w+', height='+h+', top='+top+', left='+left);
+    win.focus();
+//    $('#bpopup').bPopup({ loadUrl: url, speed: 650, transition: 'slideDown' });  
   });  
 
  /*******************************************************************
