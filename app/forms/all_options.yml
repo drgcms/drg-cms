@@ -131,7 +131,9 @@ form:
         id:
           object: record (can be omitted)
           method: page_id
-      when_new: false      
+        user:
+          object: session
+          method: user_id          
       
     6: 
       type: script
