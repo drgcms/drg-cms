@@ -93,6 +93,7 @@ padding: 6px 4px;
 border: solid 2px #ddd;
 border-radius: 2px;
 font: 14px helvetica;
+max-width: 100%;
 }
 
 textarea:focus, input:focus, select:focus {
