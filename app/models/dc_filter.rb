@@ -55,10 +55,14 @@ def self.get_filter(filter)
   yaml = YAML.load(filter) rescue nil
   return yaml if yaml.nil?
   return nil if yaml['table'].nil? # old data
-#
+#  
   model = yaml['table'].classify.constantize
   field = yaml['field'] == 'id' ? '_id' : yaml['field'] # must be
-# if empty required 
+# evaluate
+  if yaml['operation'] == 'eval' and model.respond_to?(yaml['field'])
+    return model.send( yaml['field'] )
+  end
+# if empty
   if yaml['operation'] == 'empty'
     return model.in(field => [nil,''])
   end
@@ -155,7 +159,8 @@ def self.menu_filter(parent)
   table = parent.form['table']
   documents = self.where(table: table, active: true).to_a
   documents.each do |document|
-    html << "<li data-filter=\"\">#{document.description}</li>"
+    description = document.description.match('.') ? I18n.t(document.description) : document.description
+    html << "<li data-filter=\"#{document.id}\">#{description}</li>"
   end
 
 # add filters defined in model
@@ -176,7 +181,6 @@ def self.menu_filter(parent)
   end
 # divide standard and custom filter options  
   html << '<hr>' if html.size > 30 # 
-#  html << '<li onclick="$(\'#drgcms_filter\').toggle(300);">' + I18n.t('drgcms.filter_set') + '</li>'
   html << '<li id="open_drgcms_filter">' + I18n.t('drgcms.filter_set') + '</li>'
   html << '</ul>'
 end
@@ -189,10 +193,14 @@ def self.title4_filter_off(filter_yaml)
   filter = YAML.load(filter_yaml)
   operations = I18n.t('drgcms.choices4_filter_operators').chomp.split(',').inject([]) {|r,v| r << v.split(':') }
   operation = ''
-  operations.each{|a| (operation = a.first; break) if a.last == filter['operation']}
+  if filter['operation'] == 'eval'
+   filter['field']
+  else
+    operations.each{|a| (operation = a.first; break) if a.last == filter['operation']}
 #
-  '[ ' + I18n.t("helpers.label.#{filter['table']}.#{filter['field']}") + 
-  " ] #{operation} [ #{filter['value'].to_s} ] : #{I18n.t('drgcms.filter_off')}"
+    '[ ' + I18n.t("helpers.label.#{filter['table']}.#{filter['field']}") + 
+    " ] #{operation} [ #{filter['value'].to_s} ] : #{I18n.t('drgcms.filter_off')}"
+  end
 end
 
 end

@@ -207,9 +207,7 @@ def check_filter_options() #:nodoc:
 =end  
 # pagination if required
   per_page = (@form['result_set']['per_page'] || 30).to_i
-  if per_page > 0
-    @records = @records.page(session[table_name][:page]).per(per_page)
-  end
+  @records = @records.page(session[table_name][:page]).per(per_page) if per_page > 0
 end
 
 ########################################################################
