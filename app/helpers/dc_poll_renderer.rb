@@ -149,9 +149,8 @@ def default
     return message unless continue
     html << message if message
   end
-
 # there might be more than one poll displayed on page. Check if messages and values are for me
-  if @parent.flash[:poll_id].nil? or @parent.flash[:poll_id] == poll_id
+  if @parent.flash[:poll_id].nil? or @parent.flash[:poll_id].to_s == poll_id.to_s
 # If flash[:record] is present copy content to params record hash
     @parent.flash[:record].each {|k,v| @parent.params["p_#{k}"] = v } if @parent.flash[:record]  
 # Error during procesing request
