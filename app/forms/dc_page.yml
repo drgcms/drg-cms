@@ -69,8 +69,7 @@ form:
         size: 50
       90:
         name: gallery
-        type: text_field
-        size: 20
+        type: check_box
       100:
         name: valid_from
         type: datetime_select

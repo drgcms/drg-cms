@@ -288,7 +288,6 @@ sl:
         title: Naslov za brskalnik
         sub_subject: Povzetek
         picture: Slika
-        gallery: Id galerije
         alt_link: Alt povezava
         css: CSS
         script: Skript
@@ -529,6 +528,18 @@ sl:
         description: Razlog umika
         dc_site_id: Spletišče
         updated_at: Spremenjeno
+        
+      dc_gallery:
+        tabletitle: Tabela slikovne galerije
+
+        title: Naslov
+        description: OPis
+        picture: Velika slika
+        thumbnail: Mala slika
+        doc_id: Dokument
+        order: Zaporedje
+        active: Aktiven
+
 
 # help pomoč na obrazcih ####################################################
 
@@ -731,7 +742,7 @@ sl:
         title: Naslov, ki se izpiše v gornji vrstici brskalnika. Optimiziraj za SEO.
         alt_link: Alternativna povezava do sestavka
         picture: Slika v povezavi s stranjo
-        gallery: Id sestavnih elementov, ki sestavljajo slikovno galerijo te strani.
+        gallery: Dokument vsebuje slikovno galerijo.
         css: CSS
         script: Skript
         params: Dodatni parametri za prikaz strani.
@@ -751,7 +762,6 @@ sl:
         dc_design_id: Dizajn, mu pripada sestavek
         dc_site_id: Spletišče. ki mu pripada stran
         kats: Kategorije, ki jim pripada članek
-        gallery: Posamezne slike so definirane v elementih strani. Podatek določa ime elementov, ki pripadajo galeriji.
         picture: Slika uporabljena za prikaz sestavka
         dc_poll_id: Anketa, če sestavek vsebuje tudi anketo
         if_url: URL naslov od koder bo naložena vsebina IFrame-a
@@ -912,3 +922,12 @@ sl:
         url: URL naslov, ki je bil umaknjen iz spletišča
         description: OPis razloga umika
         dc_site_id: Spletišče, ki mu URL pripada
+
+      dc_gallery:
+        title: Naslov slike
+        description: Kratek opis slike
+        picture: Datoteka uporabljena za veliko sliko
+        thumbnail: Datozeka uporabljena za malo sliko
+        doc_id: Dokument povezan z galerijo
+        order: Vrstni red slike v galeriji
+        active: Dokument je aktiven

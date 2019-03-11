@@ -38,7 +38,7 @@ field :subject_link, type: String,  default: ''
 field :alt_link,     type: String,  default: ''
 field :sub_subject,  type: String,  default: ''
 field :picture,      type: String   
-field :gallery,      type: String   
+field :gallery,      type: Boolean, default: false   
 field :body,         type: String,  default: ''
 field :css,          type: String,  default: ''
 field :script,       type: String,  default: ''

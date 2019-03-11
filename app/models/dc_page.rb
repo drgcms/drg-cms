@@ -36,7 +36,7 @@
 #  alt_link             String               Alternative link, by which page could be found
 #  sub_subject          String               Sub subject, short description of text
 #  picture              String               Picture used in conjunction with page
-#  gallery              String               Gallery pictures are defined in parts of page. Value defines name of parts which hold data about pictures in gallary.
+#  gallery              Boolean              Picture gallery defined on page. Picture data is saved to document parts with id gallery.
 #  body                 String               Content of this page
 #  css                  String               CSS only for this menu page
 #  script               String               Javascript only for this page

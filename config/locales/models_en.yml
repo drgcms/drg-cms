@@ -260,7 +260,7 @@ en:
         title: Browser title
         sub_subject: Sub subject
         picture: Picture
-        gallery: Gallery id
+        gallery: Gallery
         alt_link: Alt link
         css: CSS
         script: Skript
@@ -280,7 +280,6 @@ en:
         dc_design_id: Design
         dc_poll_id: Poll
         kats: Categories
-        gallery: Gallery name
         updated_at: Updated
         if_url: URL
         if_width:  Width
@@ -526,7 +525,17 @@ en:
         description: Description
         dc_site_id: Site
         updated_at: Updated
-        
+
+      dc_gallery:
+        tabletitle: Picture gallery documents
+
+        title: Title
+        description: Description 
+        picture: Big picture
+        thumbnail: Small picture
+        doc_id: Document
+        order: Order
+        active: Active
 
 # help for forms #####################################################
 
@@ -706,7 +715,7 @@ en:
         title: Browser title. Optimization for SEO.
         sub_subject: Sub subject, short description of text
         picture: Picture used in conjunction with page
-        gallery: Picture gallery id used with page. Id defines id's of parts which consist gallery
+        gallery: Picture gallery id used with page
         alt_link: Alternative link, by which page could be found
         css: CSS only for this menu page
         script: Javascript only for this page
@@ -725,7 +734,6 @@ en:
         dc_design_id: Design used for rendering page
         dc_poll_id: Select poll, if poll is to be used with page
         kats: Categories for this article
-        gallery: Gallery pictures are defined in parts of page. Value defines name of parts which hold data about pictures in gallary.
         body: Content of this page
         if_url: URL adress of page which will be loaded into IFrame
         if_width:  IFrame area width
@@ -904,3 +912,12 @@ en:
         url: URL which was removed from site
         description: Reason why was URL removed
         dc_site_id: Site that URL belongs to
+
+      dc_gallery:
+        title: Picture title
+        description: Description of picture
+        picture: Big picture file name
+        thumbnail: Small picture file name
+        doc_id: Document associated with gallery
+        order: Order
+        active: Document is active

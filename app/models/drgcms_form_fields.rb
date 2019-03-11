@@ -21,6 +21,9 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #++
 
+module DrgcmsFormFields
+end
+
 ##############################################################
 # Require all files in drgcms_form_fields directory.
 ###############################################################

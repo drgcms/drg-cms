@@ -1,0 +1,74 @@
+# Form for dc_gallery
+table: dc_gallery
+index:
+  filter: id as text_field, doc_id as text_field
+  actions: standard
+
+result_set:
+  actions: standard
+
+# Choose from
+# _id,created_at,updated_at,title,description,picture,thumbnail,doc_id,order,active,created_by,updated_by
+  columns:
+    10: 
+      name: doc_id
+    20: 
+      name: title
+    30:  
+      name: created_at
+      width: 10%
+    40:  
+      name: updated_at
+      width: 10%
+    50: 
+      name: active
+      eval: dc_icon4_boolean
+
+form:
+  actions: standard
+
+  fields:
+    10:
+      name: title
+      type: text_field
+      size: 50
+    20:
+      name: description
+      type: text_area
+      size: 80x10
+    30:
+      name: picture
+      type: file_select
+      size: 50
+    40:
+      name: thumbnail
+      type: file_select
+      size: 50
+    50:
+      name: doc_id
+      type: readonly
+    60:
+      name: order
+      type: text_field
+      size: 3
+    70:
+      name: active
+      type: text_field
+      size: 50
+  
+#################################################################
+# Localization
+en:
+  helpers:
+    label:
+      dc_gallery:
+        tabletitle: 
+        choices4_ : 
+
+        title: 
+        description: 
+        picture: 
+        thumbnail: 
+        doc_id: 
+        order: 
+        active: 
