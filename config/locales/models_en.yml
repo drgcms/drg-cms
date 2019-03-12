@@ -536,6 +536,8 @@ en:
         doc_id: Document
         order: Order
         active: Active
+        created_at: Created
+
 
 # help for forms #####################################################
 

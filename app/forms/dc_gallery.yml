@@ -17,9 +17,6 @@ result_set:
     30:  
       name: created_at
       width: 10%
-    40:  
-      name: updated_at
-      width: 10%
     50: 
       name: active
       eval: dc_icon4_boolean
@@ -29,46 +26,28 @@ form:
 
   fields:
     10:
+      name: doc_id
+      type: readonly
+    20:
       name: title
       type: text_field
       size: 50
-    20:
+    30:
       name: description
       type: text_area
       size: 80x10
-    30:
+    40:
       name: picture
       type: file_select
       size: 50
-    40:
+    50:
       name: thumbnail
       type: file_select
       size: 50
-    50:
-      name: doc_id
-      type: readonly
     60:
       name: order
       type: text_field
       size: 3
     70:
       name: active
-      type: text_field
-      size: 50
-  
-#################################################################
-# Localization
-en:
-  helpers:
-    label:
-      dc_gallery:
-        tabletitle: 
-        choices4_ : 
-
-        title: 
-        description: 
-        picture: 
-        thumbnail: 
-        doc_id: 
-        order: 
-        active: 
+      type: check_box

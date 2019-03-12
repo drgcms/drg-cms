@@ -515,6 +515,7 @@ sl:
         filter: Vsebina filtra
         public: Je javen
         sort: Privzeto razvrsti
+        
 
       dc_memory:
         fields: Splošno
@@ -533,13 +534,13 @@ sl:
         tabletitle: Tabela slikovne galerije
 
         title: Naslov
-        description: OPis
+        description: Opis
         picture: Velika slika
         thumbnail: Mala slika
         doc_id: Dokument
         order: Zaporedje
         active: Aktiven
-
+        created_at: Ustvarjeno
 
 # help pomoč na obrazcih ####################################################
 

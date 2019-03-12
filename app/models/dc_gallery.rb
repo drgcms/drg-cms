@@ -51,7 +51,7 @@ class DcGallery
   field :picture,     type: String
   field :thumbnail,   type: String
   field :doc_id,      type: BSON::ObjectId
-  field :order,       type: Integer
+  field :order,       type: Integer, default: 10
   
   field :active,      type: Boolean, default: true 
   field :created_by,  type: BSON::ObjectId
