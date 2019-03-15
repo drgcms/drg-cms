@@ -134,6 +134,16 @@ EOT
     when action == 'menu' then  
       caption = t(v['caption'], v['caption']) + '&nbsp;' + fa_icon('caret-down lg')
       caption + eval(v['eval'])      
+=begin
+# reorder      
+    when action == 'reorder' then  
+      caption = t('drgcms.reorder')
+      parms = @parms.clone
+      parms['operation'] = v
+      parms['id']       = params[:ids]
+      parms['table']     = @form['table']
+      dc_link_to( caption, 'reorder', parms, method: :delete )              
+=end      
     else 
       caption = yaml['caption'] || yaml['text']
       icon    = yaml['icon'] ? yaml['icon'] : action

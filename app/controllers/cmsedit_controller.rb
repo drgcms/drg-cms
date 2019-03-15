@@ -534,6 +534,7 @@ def destroy
   when !ok2delete then
     flash[:error] = t('drgcms.not_authorized')
     return index
+    
   when params['operation'].nil? then
 # Process before delete callback
     if (m = callback_method('before_delete') )
@@ -557,6 +558,7 @@ def destroy
       flash[:error] = dc_error_messages_for(@record)
     end
     return index
+    
 # deaktivate document    
   when params['operation'] == 'disable' then
     if @record.respond_to?('active')
@@ -566,6 +568,7 @@ def destroy
       @record.save
       flash[:info] = t('drgcms.doc_disabled')
     end
+    
 # reaktivate document
   when params['operation'] == 'enable' then
     if @record.respond_to?('active')
@@ -575,6 +578,10 @@ def destroy
       @record.save
       flash[:info] = t('drgcms.doc_enabled')
     end
+
+# reorder documents
+  when params['operation'] == 'reorder' then
+
   end
 #
   @parms['action'] = 'update'
