@@ -53,7 +53,7 @@ namespace :drg_cms do
 # ActionDispatch::Session::MongoidStore::Session.where('$where' => 'this.created_at == this.updated_at').limit(1000).each do |doc|
     n = 0
     ActionDispatch::Session::MongoidStore::Session.batch_size(1000).all.each do |doc|
-      if (doc.created_at == doc.updated_at)
+      if (doc.created_at + 2 > doc.updated_at or doc.updated_at < 1.year.ago)
         doc.delete 
         p "Deleted #{n}" if (n+=1)%1000 == 0
       end
