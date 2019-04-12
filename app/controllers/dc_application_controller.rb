@@ -65,11 +65,7 @@ end
 #    if dc_user_has_role('Site editors') ...
 ####################################################################
 def dc_user_has_role(role)
-  if role.class == String
-    rol = role
-    role = DcPolicyRole.find_by(name: rol)
-    role = DcPolicyRole.find_by(system_name: rol) if role.nil?
-  end
+  role = DcPolicyRole.get_role(role)
   return false if role.nil? or session[:user_roles].nil?
 # role is found in user_roles
   session[:user_roles].include?(role._id)
