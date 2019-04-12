@@ -448,6 +448,7 @@ def create
       edit
       #      render action: :edit
     else # error
+      return process_return_to(params[:return_to]) if params[:return_to]
       render action: :new
     end
   else # duplicate record
@@ -809,6 +810,8 @@ def process_return_to(return_to)
     when return_to == 'index' then return index
     when return_to.match(/parent\.reload/i) then 'parent.location.href=parent.location.href;'
     when return_to.match(/reload/i) then 'location.href=location.href;'
+    when return_to.match(/close/i) then 'window.close();'
+    when return_to.match(/none/i) then return
     else "location.href='#{return_to}'"
   end
   render html: js_tag(script).html_safe, layout: false
