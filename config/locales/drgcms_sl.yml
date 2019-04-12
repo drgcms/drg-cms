@@ -69,6 +69,7 @@ sl:
     filter: Filter
     refresh: Osveži
     back: Nazaj
+    close: Zapri
     delete: Izbris
     enable: Omogoči
     disable: Onemogoči
