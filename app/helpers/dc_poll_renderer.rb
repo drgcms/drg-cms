@@ -67,9 +67,9 @@ def do_one_item(poll, yaml)
 # Just add text if comment and go to next one    
   if yaml['type'] == 'comment'
     html << if poll.display == 'lr'
-      "<div class='row-div'><div class='dc-form-label poll-data-text'>#{text}</div></div>"
+      "<div class='row-div'><div class='dc-form-label poll-data-text comment'>#{text}</div></div>"
     else
-      "<div class='poll-data-text'>#{text}</div>"
+      "<div class='poll-data-text comment'>#{text}</div>"
     end    
     return html
   end
