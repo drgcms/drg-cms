@@ -190,6 +190,7 @@ def default
       next unless item.active # disabled items
   # convert options to yaml
       yaml = YAML.load(item.options) || {}
+      yaml = {} if yaml.class == String
       yaml['name'] = item.name
       yaml['html'] ||= {}
       yaml['html']['size'] = item.size
