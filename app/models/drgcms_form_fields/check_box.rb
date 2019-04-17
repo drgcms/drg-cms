@@ -30,6 +30,7 @@ module DrgcmsFormFields
 # * +type:+ check_box (required)
 # * +choices:+ Values check_box separated by comma (1,0) (yes,no)
 # * +checked_value:+ 1 or yes or approved
+# * +label:+ displayed right to square field
 # * +unchecked_value:+ 0 or no or not approved
 # * +html:+ html options which apply to check_box field (optional)
 #      
@@ -41,6 +42,7 @@ module DrgcmsFormFields
 #      name: status
 #      type: check_box
 #      choices: yes,no
+#      label: label
 ###########################################################################
 class CheckBox < DrgcmsField
   
@@ -62,6 +64,7 @@ def render
   else
     @parent.check_box(record, @yaml['name'], @yaml['html'])
   end
+  @html << "<label for=\"record_#{@yaml['name']}\">#{@yaml['label']}</label>" if @yaml['label']
   self
 end
 end
