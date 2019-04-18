@@ -61,14 +61,14 @@ form:
         type: select
 
       50:
-        name: display
-        type: select
-
-      60:
         name: parameters
         type: text_field
         html:
           size: 50
+
+      60:
+        name: display
+        type: select
 
       70:
         name: captcha_type

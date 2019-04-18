@@ -150,7 +150,7 @@ en:
         name: Name
         text: Caption
         type: Type
-        Size: Size
+        size: Size
         mandatory: Mandatory
         separator: Separator
         options: Options

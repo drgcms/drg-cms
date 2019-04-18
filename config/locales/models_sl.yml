@@ -153,12 +153,12 @@ sl:
         name: Naziv
         text: Napis
         type: Vrsta
-        Size: Velikost
+        size: Velikost
         mandatory: Obvezen
         separator: Ločilo
         options: Opcije
         order: Zaporedje
-        active: Active
+        active: Aktivna
 
       dc_policy:
         tabletitle: Politike za dostop
