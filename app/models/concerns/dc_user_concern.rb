@@ -92,7 +92,9 @@ def do_before_save
 end
 
 ##########################################################################
-# Checks if user has role 'role_id' defined in his roles
+# Checks if user has role 'role_id' defined in his roles.
+# 
+# Role may be passed as BSON id or as String like role name. 
 ##########################################################################
 def has_role?(role_id)
   return false unless role_id
@@ -101,8 +103,8 @@ def has_role?(role_id)
     role    = DcPolicyRole.get_role(role_id)
     role_id = role.id if role
   end
-  role = self.dc_user_roles.where(dc_policy_role_id: role_id)
-  (role && role.active?)
+  role = self.dc_user_roles.where(dc_policy_role_id: role_id).first
+  (role && role.active)
 end
 
 ##########################################################################
