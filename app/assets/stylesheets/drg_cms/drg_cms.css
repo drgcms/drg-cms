@@ -257,6 +257,11 @@ font-size: 0.9rem;
   background-color: #ddd;
 }
 
+.dc-result-data a:hover { 
+  background-color: transparent;
+}
+  
+
 .dc-menu {
 padding: 0px;
 padding: 10px 0;
