@@ -320,8 +320,12 @@ end
 # Login can be called directly with url http://site.com/cmsedit/login
 ########################################################################
 def login
-  session[:edit_mode] = 0 unless params[:ok]
-  render action: 'login', layout: 'cms'
+  if params[:ok]
+    redirect_to '/'
+  else
+    session[:edit_mode] = 0
+    render action: 'login', layout: 'cms'
+  end
 end
 
 ########################################################################
