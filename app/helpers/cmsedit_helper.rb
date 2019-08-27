@@ -475,7 +475,7 @@ def dc_columns_for_result(document)
     style = dc_style_or_class('style', v['td_style'] || v['style'], value, document)
     style = if style.size > 1
       # remove trailing " add width and add trailing " back
-      style.slice(0..-1) + width_align + '"'
+      style.delete_suffix('"') + width_align + '"'
     else
       # create style string
       "style=\"#{width_align}\""
