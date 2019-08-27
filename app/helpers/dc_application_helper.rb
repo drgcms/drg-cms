@@ -830,16 +830,15 @@ end
 def dc_format_number(value=0, decimals=nil, separator=nil, delimiter=nil, currency=nil)
   decimals  ||=  I18n.t('number.currency.format.precision')
   separator ||= I18n.t('number.currency.format.separator')
-  separator = '' if decimals == 0
+  separator   = '' if decimals == 0
   delimiter ||= I18n.t('number.currency.format.delimiter')
-  whole,dec = value.to_s.split('.')
+  whole, dec = value.to_s.split('.')
   whole = '0' if whole.blank?
 # remove and remember sign  
-  sign = whole[0,1]
-  if sign == '-'
-    whole = whole[1,20]
-  else
-    sign = ''
+  sign = ''
+  if whole[0] == '-'
+    whole.delete_prefix!('-')
+    sign  << '-'
   end
 # format decimals
   dec ||= '0'

@@ -100,9 +100,7 @@ EOT
 # html link options
     yhtml = yaml['html'] || {}
     yhtml['title'] = yaml['title'] if yaml['title']
-    html << '<li class="dc-animate">' 
-# 
-    html << case 
+    code = case 
 # sort
     when action == 'sort' then 
       choices = [['id','id']]
@@ -143,13 +141,16 @@ EOT
       parms['id']       = params[:ids]
       parms['table']     = @form['table']
       dc_link_to( caption, 'reorder', parms, method: :delete )              
-=end      
+=end     
+    when action == 'script'
+      html << dc_script_action(v)
+      next
     else 
       caption = yaml['caption'] || yaml['text']
       icon    = yaml['icon'] ? yaml['icon'] : action
       dc_link_to(caption, icon, url, yhtml)
     end
-    html << '</li>'
+    html << "<li class=\"dc-animate\">#{code}</li>"
   end
   html << '</ul>'
   html << DcFilter.get_filter_field(self)
@@ -215,15 +216,13 @@ end
 ############################################################################
 # Creates code for link or ajax action type. Subroutine of dc_actions_for_result.
 ############################################################################
-def dc_link_or_ajax(yaml, parms) #:nodoc:
+def dc_link_or_ajax_action(yaml, parms) #:nodoc:
   rest = {}
   rest['method']  = yaml['method'] || yaml['request'] || 'get'
   rest['caption'] = yaml['caption'] || yaml['text']
-#  rest['class']   = (yaml['type'] == 'link' ? 'dc-link' : 'dc-link-ajax') + ' dc-animate'
   rest['class']   = 'dc-animate'
   rest['title']   = yaml['title']
   
-  dc_deprecate "Form: result_set:action:text directive will be deprecated. Use caption instead of text." if yaml['text']
   if yaml['type'] == 'link'
     dc_link_to(yaml['caption'], yaml['icon'], parms, rest ) 
   else
@@ -232,6 +231,14 @@ def dc_link_or_ajax(yaml, parms) #:nodoc:
     fa_icon(yaml['icon'], rest ) 
   end
 end
+
+############################################################################
+# Creates code for script action type.
+############################################################################
+def dc_script_action(yaml)
+  data = {'request' => 'script', 'script' => yaml['js']}
+  %Q[<li class="dc-link-ajax dc-animate">#{ dc_link_to(yaml['caption'], yaml['icon'], '#', data: data ) }</li>]
+end 
 
 ############################################################################
 # Determines actions and width of actions column
@@ -294,7 +301,7 @@ def dc_actions_for_result(document)
       parms['table']      = yaml['table']      if yaml['table']
       parms['form_name']  = yaml['form_name']  if yaml['form_name']
       parms['target']     = yaml['target']     if yaml['target']
-      dc_link_or_ajax(yaml, parms)
+      dc_link_or_ajax_action(yaml, parms)
     else # error. 
       yaml['type'].to_s
     end
@@ -371,7 +378,6 @@ end
 # Formats value according to format supplied or data type. There is lots of things missing here.
 ############################################################################
 def dc_format_value(value, format=nil)
-# :TODO: Enable formating numbers.
   return '' if value.nil?
   klass = value.class.to_s
   case when klass.match('Time') then
@@ -462,7 +468,7 @@ def dc_columns_for_result(document)
       dc_format_value(document.send( v['name'] ), v['format']) 
 # as hash (dc_memory)
     elsif document.class == Hash 
-      document[ v['name'] ]
+      dc_format_value(document[ v['name'] ], v['format'])
 # error
     else
       "!!! #{v['name']}"
@@ -662,10 +668,7 @@ def dc_actions_for_form()
         
 # Javascript action        
       when v['type'] == 'script'
-#          v['caption'] ||= 'Caption missing!'
-#          caption = t("#{v['caption'].downcase}", v['caption'])
-          data = {'request' => 'script', 'script' => v['js']}
-         %Q[<li class="dc-link-ajax dc-animate">#{ dc_link_to(v['caption'],v['icon'], '#', data: data ) }</li>]
+        dc_script_action(v)
       else
         '<li>err2</li>'
       end

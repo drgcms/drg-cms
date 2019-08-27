@@ -67,6 +67,8 @@ result_set:
       type: delete
       title: Delete it
       icon: delete.png
+      icon: arrow-left
+      icon: home
     4:
       type: link
       caption: Caption
@@ -92,6 +94,7 @@ result_set:
     3: 
       name: valid_from
       format: '%d.%m.%Y'
+      format: N2
     4: 
       name: active
       eval: dc_icon4_boolean
