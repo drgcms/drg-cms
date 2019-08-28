@@ -30,4 +30,3 @@ end
 Dir[File.join(__dir__, "drgcms_form_fields/*.rb")].each do |file|
   require file
 end
-

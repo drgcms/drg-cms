@@ -145,3 +145,5 @@ def self.routes
 end
 
 end
+
+DrgCms.add_patches_path(File.dirname(__FILE__) + '../app/models/drgcms_form_fields/patches')
