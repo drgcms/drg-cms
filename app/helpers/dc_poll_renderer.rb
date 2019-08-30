@@ -135,6 +135,10 @@ def default
   poll = DcPoll.find(poll_id)
   poll = DcPoll.find_by(name: poll_id) if poll.nil? # name instead of id
   return "<div class=\"dc-form-error\">Invalid Poll id #{poll_id}</div>" if poll.nil?
+# If parent cant be seen. so cant be polls
+  can_view, message = dc_user_can_view(@parent, @page)
+  return "<div class=\"dc-form-error\">#{message}</div>" unless can_view
+  
   html = @opts[:div] ? "<div id='#{@opts[:div]}'>" : ''
   html << '<a name="poll-top"></a>'
 
