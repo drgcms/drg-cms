@@ -76,7 +76,7 @@
 # If filter method returns false user will be presented with flash error.
 ########################################################################
 class CmseditController < DcApplicationController
-before_action :check_authorization, :except => [:login, :logout]
+before_action :check_authorization, :except => [:login, :logout, :test]
 before_action :dc_reload_patches if Rails.env.development?
   
 layout 'cms'
@@ -320,8 +320,8 @@ end
 # Login can be called directly with url http://site.com/cmsedit/login
 ########################################################################
 def login
-  if params[:ok]
-    redirect_to '/'
+  if    params[:id] == 'test' then set_test_site
+  elsif params[:ok]           then redirect_to '/'
   else
     session[:edit_mode] = 0
     render action: 'login', layout: 'cms'
@@ -337,6 +337,24 @@ def logout
   session[:edit_mode] = 0
   session[:user_id]   = nil
   render action: 'login', layout: 'cms'
+end
+
+########################################################################
+# Logout action. Used to logout direct from CMS.
+# 
+# Logout can be called directly with url http://site.com/cmsedit/logout
+########################################################################
+def set_test_site 
+  # only in development
+  return dc_render_404 if !Rails.env.development?
+  alias_site = DcSite.find_by(:name => params[:site])
+  return dc_render_404 unless alias_site
+  # update alias for  
+  site           = DcSite.find_by(:name => 'test')
+  site.alias_for = params[:site]
+  site.save
+  # redirect to root  
+  redirect_to '/'
 end
 
 ########################################################################
@@ -664,7 +682,8 @@ def check_authorization
   params[:table] ||= params[:form_name]
 # Just show menu
 #  return show if params[:action] == 'show'
-  return login if params[:id].in?(%w(login logout))
+ p '**********',params[:id]
+  return login if params[:id].in?(%w(login logout test))
   table = params[:table].to_s.strip.downcase
 # request shouldn't pass
   if table != 'dc_memory' and 
