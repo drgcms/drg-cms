@@ -21,7 +21,7 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #++
 
+# drg_cms gem version
 module DrgCms #:nodoc:
-  # drg_cms gem version
-  VERSION = '0.5.52.16'
+  VERSION = '0.6.0.0.1'
 end

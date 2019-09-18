@@ -47,6 +47,8 @@ module DrgcmsFormFields
 #      name: categories
 #      type: tree_select
 #      eval: 'Categories.all_categories'
+#      multiple: true
+#      select_parent: false
 #      html:
 #        size: 50x10
 ###########################################################################
@@ -60,15 +62,21 @@ def make_tree(parent)
   @html << '<ul>'
   choices = if @choices[parent.to_s].first[3] != 0
     @choices[parent.to_s].sort_by {|e| e[3].to_i } # sort by order if first is not 0
-#    @choices[parent.to_s].sort_alphabetical_by(&:first) # use UTF-8 sort
   else  
     @choices[parent.to_s].sort_alphabetical_by(&:first) # use UTF-8 sort
   end
   choices.each do |choice|
-    jstree = %Q[{"selected" : #{choice.last ? 'true' : 'false'} }]
-# data-jstree must be singe quoted
-    @html << %Q[<li data-id="#{choice[1]}" data-jstree='#{jstree}'>#{choice.first}\n]
-# call recursively for children     
+    data = [ %Q["selected" : #{choice.last ? 'true' : 'false'} ] ]
+    # only for parent objects
+    if @choices[ choice[1].to_s ]
+    # parent is not selectable
+      data << '"disabled" : true' unless @parent.dc_dont?(@yaml['parent_disabled'], true)
+    # parents are opened on start
+      data << '"opened" : true' unless @parent.dc_dont?(@yaml['parent_opened'], true)
+    end
+    # data-jstree must be singe quoted
+    @html << %Q[<li data-id="#{choice[1]}" data-jstree='{#{data.join(' , ')}}'>#{choice.first}\n]
+    # call recursively for children     
     make_tree(choice[1]) if @choices[ choice[1].to_s ]
     @html << "</li>"
   end
@@ -101,7 +109,7 @@ def render
     end
   end
   make_tree(nil)
-  @html << '</ul></div>'
+  @html << '</div>'
 # add hidden communication field  
   @html << @parent.hidden_field(record, @yaml['name'], value: current.join(','))
 # save multiple indicator for data processing on return
