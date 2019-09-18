@@ -142,7 +142,7 @@ end
 ########################################################################
 def dc_render_404(where_the_error_is=nil)
   logger.info("Error 404;#{request.env['REQUEST_URI']};#{request.referer};#{where_the_error_is}")
-  render(file: "#{Rails.root}/public/404", :status => 404, :layout => false, :formats => [:html])
+  render(file: Rails.root.join('public/404.html'), status: 404)
 end
 
 ########################################################################
