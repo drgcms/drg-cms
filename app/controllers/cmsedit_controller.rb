@@ -682,7 +682,6 @@ def check_authorization
   params[:table] ||= params[:form_name]
 # Just show menu
 #  return show if params[:action] == 'show'
- p '**********',params[:id]
   return login if params[:id].in?(%w(login logout test))
   table = params[:table].to_s.strip.downcase
 # request shouldn't pass
