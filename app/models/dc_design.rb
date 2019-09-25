@@ -31,6 +31,7 @@
 #  updated_at           Time                 updated_at
 #  description          String               Short description of design
 #  body                 String               Body of design which will be rendered like any Rails view
+#  params               String               Parameters used by design
 #  css                  String               CSS for design
 #  rails_view           String               Rails view (file) name which will be used to render design
 #  author               String               Creater if design
@@ -94,6 +95,7 @@ class DcDesign
   field   :css,         type: String,  default: ''
   field   :rails_view,  type: String,  default: ''
   field   :control,     type: String,  default: ''
+  field   :params,      type: String,  default: ''
   field   :control_method,  type: String,  default: ''
   field   :author,      type: String
   field   :active,      type: Boolean, default: true 

@@ -33,8 +33,7 @@ form:
       10:
         name: description
         type: text_field
-        html:
-          size: 50
+        size: 50
       20:
         name: site_id
         type: select
@@ -44,32 +43,33 @@ form:
       30:
         name: control
         type: text_field
-        html:
-          size: 50
+        size: 50
           
       40:
         name: control_method
         type: text_field
-        html:
-          size: 50
+        size: 50
           
       50:
         name: rails_view
         type: text_field
-        html:
-          size: 50
+        size: 50
           
       60:
+        name: params
+        type: text_area
+        size: 100x10
+          
+      70:
         name: body
         type: text_area
-        html:
-          size: 120x25
+        size: 120x25
 
-      70:
+      80:
         name: css
         type: text_area
-        html:
-          size: 100x10
+        size: 100x10
+        
     tab2:
       10:
         name: dc_parts
