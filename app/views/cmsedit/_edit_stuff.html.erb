@@ -9,7 +9,7 @@
 
         <% if @page %>
           <%= link_to( fa_icon('file-text-o lg', class: "dc-animate", title: "#{t('drgcms.edit_page')}"),
-              {controller: 'cmsedit', action: 'edit', table: @site.page_table, id: @page._id}, target: 'iframe_cms') %>
+              {controller: 'cmsedit', action: 'edit', table: @site.page_class, id: @page._id}, target: 'iframe_cms') %>
         <% end %>
 
         <% if @design %>
