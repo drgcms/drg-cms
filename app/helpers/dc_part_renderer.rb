@@ -98,7 +98,7 @@ def load_parts #:nodoc:
 # add parts in page
   @parent.page.dc_parts.where(active: true).each do |part|
     type = decamelize_type(part._type) || 'dc_part'
-    @parent.parts << [part, @parent.page.id, type, "#{@parent.site.page_table};#{type}"]
+    @parent.parts << [part, @parent.page.id, type, "#{@parent.site.page_class.underscore};#{type}"]
   end
 # add parts in site
   @parent.site.dc_parts.where(active: true).each do |part|
@@ -161,11 +161,11 @@ end
 def in_page
 # Part is in page with id  
   page = if @opts[:page_id]
-    pageclass = @parent.site.page_table.classify.constantize
+    pageclass = @parent.site.page_klass
     pageclass.find(@opts[:page_id])
 # Part is in page with subject link
   elsif @opts[:page_link]
-    pageclass = @parent.site.page_table.classify.constantize
+    pageclass = @parent.site.page_klass
     @page = pageclass.find_by(dc_site_id: @parent.site._id, subject_link: @opts[:page_link])
 # Part is in current page
   else
@@ -174,7 +174,7 @@ def in_page
   return "Error DcPart: Page not found!" if page.nil?
 #  
   if part = page.dc_parts.find_by(name: @opts[:name])
-    @opts[:editparams].merge!(id: part, ids: page._id, form_name: 'dc_part', table: "#{@parent.site.page_table};dc_part" )
+    @opts[:editparams].merge!(id: part, ids: page._id, form_name: 'dc_part', table: "#{@parent.site.page_class.underscore};dc_part" )
     render_particle(part, @opts) 
   else
     "Part with name #{@opts[:name]} not found in page!"

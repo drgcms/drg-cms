@@ -341,7 +341,7 @@ def dc_process_default_request()
   return send(@site.request_processor) unless @site.request_processor.blank?
 
 # Search for page 
-  pageclass = @site.page_table.classify.constantize
+  pageclass = @site.page_klass
   if params[:id]
     #Page.where(id: params[:id]).or(subject_link: params[:id]).first    
     @page = pageclass.find_by(:dc_site_id.in => [@site._id, nil], subject_link: params[:id], active: true)
@@ -372,7 +372,7 @@ def dc_process_default_request()
 # Add edit menu
   if session[:edit_mode] > 0
     session[:site_id]         = @site.id
-    session[:site_page_table] = @site.page_table
+    session[:site_page_class] = @site.page_class
     session[:page_id]         = @page.id
   else 
 # Log only visits from non-editors
@@ -538,7 +538,7 @@ def dc_render_ajax(opts)
     key = "#{opts[:operation]}_"
   end
   result[key] = opts[:value] || opts[:url] || ''
-  render inline: result.to_json, formats: 'js'
+  render plain: result.to_json
 end
 
 ########################################################################
