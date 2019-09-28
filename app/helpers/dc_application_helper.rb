@@ -575,7 +575,7 @@ def dc_page_edit_menu(opts=@opts)
   return '' if opts[:edit_mode] < 2
 # save some data to cookie. This can not go to session.
   page  = opts[:page] || @page
-  table = _origin.site.page_table
+  table = _origin.site.page_class.underscore
   kukis = { "#{table}.dc_design_id" => page.dc_design_id,
 #            "#{table}.menu_id"      => page.menu_id,
             "#{table}.kats"         => page.kats,
@@ -587,7 +587,7 @@ def dc_page_edit_menu(opts=@opts)
   opts[:editparams] ||= {}
   dc_link_menu_tag(title) do |html|
     opts[:editparams].merge!( controller: 'cmsedit', action: 'edit', 'icon' => 'edit' )
-    opts[:editparams].merge!( :id => page.id, :table => _origin.site.page_table, form_name: opts[:form_name], edit_only: 'body' )
+    opts[:editparams].merge!( :id => page.id, :table => _origin.site.page_class.underscore, form_name: opts[:form_name], edit_only: 'body' )
     html << dc_link_for_edit1( opts[:editparams], t('drgcms.edit_content') )
     
 #    opts[:editparams][:edit_only] = nil
@@ -599,7 +599,7 @@ def dc_page_edit_menu(opts=@opts)
     html << dc_link_for_edit1( opts[:editparams], t('drgcms.edit_new_page') )
 
     opts[:editparams].merge!(ids: page.id, form_name: 'dc_part', 'icon' => 'plus-square-o', 
-                             table: "#{_origin.site.page_table};dc_part"  )
+                             table: "#{_origin.site.page_class.underscore};dc_part"  )
     html << dc_link_for_edit1( opts[:editparams], t('drgcms.edit_new_part') )
   end.html_safe
 end
@@ -618,7 +618,7 @@ end
 ########################################################################
 def dc_page_class()
 #  dc_get_site.page_class.classify.constantize  
-  dc_get_site.page_table.classify.constantize
+  dc_get_site.page_klass
 end
 
 ########################################################################

@@ -73,6 +73,7 @@ en:
         body: Body
         css: CSS
         author: Author
+        params: Parameters        
         updated_by: Updated by
         active: Active
         dc_parts: Parts
@@ -608,6 +609,7 @@ en:
         name: Unique design name
         description: Short description of design
         body: Body of design which will be rendered like any Rails view
+        params: Parameters specific to design
         css: CSS for design
         author: Creater if design
         updated_by: Last updated by

@@ -72,6 +72,7 @@ sl:
         name: Ime
         description: Opis
         body: Vsebina
+        params: Parametri
         css: CSS
         author: Avtor
         updated_by: Spremenil
@@ -580,14 +581,14 @@ sl:
         body: Vsebina dizajna, ki se bo izvedla kot vsaka Rails view datoteka
         css: CSS za dizajn
         author: Ime avtorja
+        params: Parametri povezani z dizajnom strani
         updated_by: Zadnji spreminjal
         active: Ali je dizajn aktiven
         dc_parts: Elementi, sestavni deli dizajna
         rails_view: Ime Rails view datoteke, ki bo uporabljena za izris strani
         site_id: Izberite spletišče, če dizajn pripada samo enemu spletišču
         control: Izvorna datoteka z akcijami za izris dizajna
-        control_method: Kontrolna metoda (akcija), ki se bo klicala v izvorni datoteki
-        
+        control_method: Kontrolna metoda (akcija), ki se bo klicala v izvorni datoteki        
 
       dc_user:
         username: Uporabniško ime

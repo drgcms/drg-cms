@@ -286,23 +286,27 @@ def get_design_and_render(design_doc)
     extend controller if controller
     return send @options[:action] if respond_to?(@options[:action])
   end
-#  
+# design doc present 
   if design_doc
-    if !design_doc.rails_view.blank? 
-      if design_doc.rails_view.downcase != 'site'
-        return render design_doc.rails_view, layout: layout
-      end
-    elsif !design_doc.body.blank?
-      design = site_top + design_doc.body + site_bottom
-      return render(inline: design, layout: layout)
+    # defined as rails view
+    design = if design_doc.rails_view.blank? or design_doc.rails_view == 'site'
+      @site.rails_view
+    else
+      design_doc.rails_view
     end
+    return render design, layout: layout unless design.blank?
+    # defined as inline code
+    design = design_doc.body.blank? ? @site.design : design_doc.body
+    design = site_top + design + site_bottom
+    return render(inline: design, layout: layout) unless design.blank?
   end
-# 
+# Design doc not defined
   if @site.rails_view.blank? 
     design = site_top + @site.design + site_bottom
-    return render(inline: design, layout: layout)
-  end
-  render @site.rails_view, layout: layout
+    render(inline: design, layout: layout)
+  else
+    render @site.rails_view, layout: layout
+  end  
 end
 
 ##########################################################################
@@ -337,7 +341,7 @@ def dc_process_default_request()
   return send(@site.request_processor) unless @site.request_processor.blank?
 
 # Search for page 
-  pageclass = @site.page_table.classify.constantize
+  pageclass = @site.page_klass
   if params[:id]
     #Page.where(id: params[:id]).or(subject_link: params[:id]).first    
     @page = pageclass.find_by(:dc_site_id.in => [@site._id, nil], subject_link: params[:id], active: true)
@@ -357,17 +361,18 @@ def dc_process_default_request()
   end
 # if @page is not found render 404 error
   return dc_render_404('Page!') unless @page
-  dc_set_options @page.params
   dc_set_is_mobile unless session[:is_mobile] # do it only once per session
 # find design if defined. Otherwise design MUST be declared in site
   if @page.dc_design_id
     @design = DcDesign.find(@page.dc_design_id)
     return dc_render_404('Design!') unless @design
   end
+  dc_set_options @design.params if @design
+  dc_set_options @page.params
 # Add edit menu
   if session[:edit_mode] > 0
     session[:site_id]         = @site.id
-    session[:site_page_table] = @site.page_table
+    session[:site_page_class] = @site.page_class
     session[:page_id]         = @page.id
   else 
 # Log only visits from non-editors
@@ -533,7 +538,7 @@ def dc_render_ajax(opts)
     key = "#{opts[:operation]}_"
   end
   result[key] = opts[:value] || opts[:url] || ''
-  render inline: result.to_json, formats: 'js'
+  render plain: result.to_json
 end
 
 ########################################################################
