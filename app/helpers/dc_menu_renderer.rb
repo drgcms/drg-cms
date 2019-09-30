@@ -97,10 +97,16 @@ def link_4menu(item)
   caption   = item.caption[0] == '-' ? '' : item.caption.to_s
   img_title = item.caption.to_s.sub('-','')
 # add picture if picture is not blank
-  (item.picture.blank? ? '' : 
-    @parent.link_to( @parent.image_tag(item.picture), link, {title: img_title, target: target} )) +
-  (caption.blank? ? '' : 
-    @parent.link_to(caption, link, {target: target}) )
+  html = ''
+  if !item.picture.blank?
+    if item.picture[0,3] == 'fa-' 
+      caption << @parent.fa_icon(item.picture[3,20])
+    else
+      html = @parent.link_to( @parent.image_tag(item.picture), link, {title: img_title, target: target} ) rescue ''
+    end
+  end
+  html << @parent.link_to(caption.html_safe, link, {target: target}) unless caption.blank?
+  html
 end
 
 ########################################################################

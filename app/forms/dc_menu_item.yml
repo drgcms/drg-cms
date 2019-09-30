@@ -41,7 +41,7 @@ form:
         name: picture
         type: file_select
         size: 50
-        preview: False
+        preview: false
       30:
         name: link
         type: text_with_select
