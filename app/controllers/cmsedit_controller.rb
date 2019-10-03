@@ -460,15 +460,14 @@ def create
     session[:form_time_stamp] = params[:form_time_stamp]
 #    
     create_new_empty_record
-    params[:return_to] = 'index' if params[:commit] == t('drgcms.save&back') # save & back
     if save_data
-      flash[:info]    = t('drgcms.doc_saved')
+      flash[:info] = t('drgcms.doc_saved')
+      params[:return_to] = 'index' if params[:commit] == t('drgcms.save&back') # save & back
       return process_return_to(params[:return_to]) if params[:return_to]
       
       @parms['id']     = @record.id     # must be set, for proper update link
       params[:id]      = @record.id     # must be set, for find_record
       edit
-      #      render action: :edit
     else # error
       return process_return_to(params[:return_to]) if params[:return_to]
       render action: :new
