@@ -70,21 +70,42 @@ def do_eval(e)
 # eval whatever it is
   eval e
 end
-  
+
+###########################################################################
+# Choices are defined in helper as:
+# helper.label.table_name.choices_for_fieldname or
+# choices4_tablename_fieldname
+###########################################################################
+def choices_in_helper(all)
+  helper = "helpers.label.#{@form['table']}.choices4_#{@yaml['name']}"
+  c = t(helper)
+  if c.match( 'translation missing' )
+    helper = "choices_for_#{@form['table']}_#{@yaml['name']}"
+    return "Error. #{helper} not defined" if c.match( 'translation missing' )
+  end
+  c
+end
+
+###########################################################################
+# Choices are defined by evaluating an exspression. This is most common class
+# method defined in a class. SomeClass.get_choices4.
+###########################################################################
+def choices_in_eval(all)
+  do_eval(@yaml['eval'])
+end
+
 ###########################################################################
 # Create choices array for select field.
 ###########################################################################
-def get_choices
+def get_choices(all=false)
   begin
     choices = case 
     when @yaml['choices'] then 
-      (@yaml['choices'].match('helpers.') ) ? t(@yaml['choices']) : @yaml['choices']
+      @yaml['choices']
     when @yaml['eval']    then
-      do_eval(@yaml['eval'])
-    else 
-      c = t('helpers.label.' + @form['table'] + '.choices4_' + @yaml['name'] )
-      c = 'Error' if c.match( 'translation missing' )
-      c
+      choices_in_eval(all)
+    else
+      choices_in_helper(all)
     end
   # Convert string to Array
     choices.class == String ?
