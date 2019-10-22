@@ -246,7 +246,9 @@ def process_collections #:nodoc
     if @tables.size > 1 
       rec = @tables.first[0].find(@ids.first)          # top most document.id
       1.upto(@tables.size - 2) { |i| rec = rec.send(@tables[i][1].pluralize).find(@ids[i]) }  # find embedded childrens by ids
-      @records = rec.send(@tables.last[1].pluralize)   # current embedded set
+# TO DO. When field name is different then pluralized class name. Not working yet.
+      embedded_field_name = @tables.last[0] ? @tables.last[1].pluralize : @tables.last[1]
+      @records = rec.send(embedded_field_name)   # current embedded set
 # sort by order if order field is present in model
       if @tables.last[1].classify.constantize.respond_to?(:order)
         @records = @records.order_by('order asc')
@@ -646,7 +648,7 @@ end
 ########################################################################
 def read_drg_cms_form
   table_name = decamelize_type(params[:table].strip)
-  @tables = table_name.split(';').inject([]) { |r,v| r << [v.classify.constantize, v] }
+  @tables = table_name.split(';').inject([]) { |r,v| r << [(v.classify.constantize rescue nil), v] }
 # split ids passed when embedded document
   ids = params[:ids].to_s.strip.downcase
   @ids = ids.split(';').inject([]) { |r,v| r << v }

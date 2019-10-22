@@ -1,0 +1,32 @@
+## YAML Template for dc_key_value_store
+---
+table: dc_key_value
+
+index:
+  actions: standard
+
+result_set:
+  actions: 
+    1: edit
+    2: delete
+
+  columns:
+    1:  
+      name: key
+    2: 
+      name: value
+
+form:
+  title: 
+    field: key  
+
+  fields:
+    10:
+      name: key
+      type: text_field
+      size: 30
+
+    20:
+      name: value
+      type: text_field
+      size: 50
