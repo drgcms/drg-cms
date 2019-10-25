@@ -1,0 +1,45 @@
+## YAML Template for Link
+---
+table: dc_json_ld
+
+index:
+  actions: standard
+
+result_set:
+  actions: 
+    1: edit
+    2: delete
+
+  columns:
+    10:  
+      name: type
+      width: 20%
+    20: 
+      name: updated_at
+      width: 20%
+    30: 
+      name: active
+      eval: dc_icon4_boolean
+
+form:
+  title: 
+    field: type
+    
+  actions: standard
+    
+  fields:
+    10:
+      name: type
+      type: text_with_select
+
+    20:
+      name: data
+      type: text_area
+      size: 100x10
+    30:
+      name: dc_json_lds
+      type: embedded
+      table: dc_json_ld
+      html:
+        height: 300
+      

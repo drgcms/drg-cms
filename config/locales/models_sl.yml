@@ -283,6 +283,7 @@ sl:
         3content: Vsebina
         4parts: Elementi
         5iframe: IFrame
+        6seo: SEO
 
         subject: Zadeva
         subject_link: Povezava
@@ -322,6 +323,10 @@ sl:
         if_id: CSS id
         if_class: CSS class 
         _update_menu: Spremeni meni
+        meta_title: Meta naslov
+        meta_description: Meta opis
+        canonical_link: Canonical link
+        dc_json_lds: Strukturni podatki
         
       dc_part:
         tabletitle: Elementi strani
@@ -542,6 +547,17 @@ sl:
         order: Zaporedje
         active: Aktiven
         created_at: Ustvarjeno
+
+      dc_json_ld:
+        tabletitle: Struktirirani podatki za stran
+        choices4_type: Organizacija:Organization,Kontakt:ContactPoint
+
+        type: Tip
+        data: Podatki
+        created_at: Narejeno
+        updated_at: Spremenjeno
+        active: Aktiven
+        dc_json_lds: Podelement strukture
 
 # help pomoč na obrazcih ####################################################
 
@@ -775,6 +791,10 @@ sl:
         if_id: CSS id IFrame objekta
         if_class: CSS class IFrame objekta
         _update_menu: Popravi tudi povezavo do dokumenta v menuju
+        meta_title: SEO optimiziran naslov strani
+        meta_description: SEO optimiziran opis strani
+        canonical_link: Canonical link, kadar je stran uporabljena z različnimi parametri
+        dc_json_lds: Dodatni strukturni podatki, ki opisujejo stran
 
       dc_part:
         name: Naziv elementa
@@ -933,3 +953,9 @@ sl:
         doc_id: Dokument povezan z galerijo
         order: Vrstni red slike v galeriji
         active: Dokument je aktiven
+
+      dc_json_ld:
+        type: Tip podatkovne strukture
+        data: Podatki v YAML formatu
+        active: Podatki so aktivni
+        

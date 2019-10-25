@@ -33,7 +33,6 @@ include Mongoid::Document
 include Mongoid::Timestamps
 
 field :subject,      type: String,  default: ''
-field :title,        type: String
 field :subject_link, type: String,  default: ''
 field :alt_link,     type: String,  default: ''
 field :sub_subject,  type: String,  default: ''
@@ -56,15 +55,20 @@ field :active,       type: Boolean, default: true
 field :created_by,   type: BSON::ObjectId
 field :updated_by,   type: BSON::ObjectId
 field :kats,         type: Array         # Categories
-
+# IFRAME
 field :if_url,       type: String
 field :if_border,    type: Integer, default: 0
 field :if_width,     type: Integer
 field :if_height,    type: Integer
 field :if_scroll,    type: String
 field :if_id,        type: String
-field :if_class,        type: String
+field :if_class,     type: String
 field :if_params,    type: String
+# SEO
+field :title,            type: String
+field :meta_description, type: String
+field :canonical_link,   type: String
+embeds_many :dc_json_lds # JSON-LD structure
 
 field :policy_id,    type: BSON::ObjectId
 
@@ -88,7 +92,25 @@ validates :publish_date, presence: true
 def link
   subject_link
 end
-    
+   
+######################################################################
+# Will return JSON LD data if defined for the page
+######################################################################
+def get_json_ld()
+  parent_data = {created_at: self.created_at, updated_at: self.updated_at}
+  data = []
+  if dc_json_lds.size > 0
+    dc_json_lds.each do |element|
+      dta = element.get_json_ld(parent_data)
+      if dta.size > 0
+        dta['@context'] = 'http://schema.org'
+        data << dta 
+      end
+    end
+  end
+  data  
+end
+
 protected
 
 ######################################################################

@@ -44,6 +44,8 @@ module DrgcmsFormFields
 #   your local language then select choices will be localized.
 #    en.helpers.model_name.choices4_status: 'OK:0,Ready:1,Error:2'
 #    sl.helpers.model_name.choices4_status: 'V redu:0,Pripravljen:1,Napaka:2'
+# * +depend:+ Select options may depend on a value in some other field. If depend option is specified
+#   then chices must be provided by class method and defined in eval option.
 # * +html:+ html options which apply to select field (optional)
 #      
 # Form example:
@@ -56,21 +58,18 @@ module DrgcmsFormFields
 #      eval: DcCategory.values_for_parent
 #      html:
 #        include_blank: true      
+#    50:
+#      name: company
+#      type: select
+#      choices: Audi,BMW,Mercedes
+#    60:
+#      name: type
+#      type: select
+#      eval: Cars.choices4_type
+#      depend: company
 ###########################################################################
 class Select < DrgcmsField
   
-###########################################################################
-# Return values, when choices options will be returned by evaluating expression
-###########################################################################
-def do_eval(e)
-  e.strip!
-  method = e.split(/\ |\(/).first
-  return eval(e) if respond_to?(method) # id method defined here
-  return eval('@parent.'+e) if @parent.respond_to?(method) # is method defined in helpers
-# eval whatever it is
-  eval e
-end
-
 ###########################################################################
 # Choices are defined in helper as:
 # helper.label.table_name.choices_for_fieldname or
@@ -90,8 +89,21 @@ end
 # Choices are defined by evaluating an exspression. This is most common class
 # method defined in a class. SomeClass.get_choices4.
 ###########################################################################
-def choices_in_eval(all)
-  do_eval(@yaml['eval'])
+def choices_in_eval(e, all=false)
+  e.strip!
+  if @yaml['depend'].nil?
+    method = e.split(/\ |\(/).first
+    return eval(e) if respond_to?(method) # id method defined here
+    return eval('@parent.'+e) if @parent.respond_to?(method) # is method defined in helpers
+    # eval whatever it is there
+    eval e
+  else
+    # add event listener to depend field
+    @js << "$('#record_#{@yaml['depend']}').change( function(e) { update_select_depend('#{@yaml['name']}', '#{@yaml['depend']}','#{e}');})\n"
+    depend_value = @record[@yaml['depend']]
+    e << " '#{depend_value}'"
+    eval e
+  end
 end
 
 ###########################################################################
@@ -103,7 +115,7 @@ def get_choices(all=false)
     when @yaml['choices'] then 
       @yaml['choices']
     when @yaml['eval']    then
-      choices_in_eval(all)
+      choices_in_eval(@yaml['eval'], all)
     else
       choices_in_helper(all)
     end

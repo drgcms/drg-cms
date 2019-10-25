@@ -95,7 +95,10 @@ def render
   @html << "<div id=\"#{@yaml['name']}\" class=\"tree-select\" #{set_style()} >"
 # Fill @choices hash. The key is parent object id
   @choices = {}
-  do_eval(@yaml['eval']).each {|data| @choices[ data[2].to_s ] ||= []; @choices[ data[2].to_s ] << (data << false)}
+  choices_in_eval(@yaml['eval']).each do |data| 
+    @choices[ data[2].to_s ] ||= [] 
+    @choices[ data[2].to_s ] << (data << false)
+  end
 # put current values hash with. To speed up selection when there is a lot of categories
   current_values = {}
   current = @record[@yaml['name']] || []

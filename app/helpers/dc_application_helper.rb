@@ -58,6 +58,8 @@ attr_accessor :parts
 attr_accessor :record
 #
 attr_accessor :record_footer
+# json_ld
+attr_reader :json_ld
 
 ############################################################################
 # When @parent is present then helper methods are called from parent class otherwise 
@@ -1333,6 +1335,70 @@ def dc_document_path(document)
     parent = parent._parent
   end 
   path.reverse.join(';')
+end
+
+########################################################################
+# Will return formated code for embedding json+ld data into page
+# 
+# Returns:
+# HTML data to be embedded into page header
+#######################################################################
+def dc_get_json_ld()
+  return '' if @json_ld.nil? or @json_ld.size == 0
+#  
+  html = %Q[
+<script type="application/ld+json">
+#{JSON.pretty_generate(@json_ld)}
+</script>
+].html_safe
+end
+
+########################################################################
+# Will add new element to json_ld structure
+# 
+# Parameters:
+# [element] Hash or Array of hashes: json+ld element
+#######################################################################
+def dc_add_json_ld(element)
+  @json_ld ||= []
+  if element.class == Array
+    @json_ld += element
+  else
+    @json_ld << element
+  end
+end
+
+########################################################################
+# Will return meta data for SEO optimizations
+# 
+# Returns:
+# HTML data to be embedded into page header
+#######################################################################
+def dc_get_seo_meta_tags()
+  html = ''
+  html << "<link rel=\"canonical\" href=\"#{@page.canonical_link}\">\n" if @page and !@page.canonical_link.blank?
+  if  @meta_tags
+    html << @meta_tags.inject('') do |r, hash|
+      r << "<meta #{hash.first} content=\"#{hash.last}\">\n"
+    end
+  end
+  html.html_safe
+end
+
+########################################################################
+# Will add a meta tag to internal hash structure. If meta tag already exists it
+# will be overwritten.
+# 
+# Parameters:
+# [name] String: meta name
+# [content] String: meta content
+# 
+########################################################################
+def dc_add_meta_tag(type, name, content)
+  return if content.blank?
+  @meta_tags ||= {}
+  key = "#{type}=\"#{name}\""
+  @meta_tags[key] = content
 end
 
 end

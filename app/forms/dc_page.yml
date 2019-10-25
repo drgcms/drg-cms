@@ -40,10 +40,6 @@ form:
         name: subject_link
         type: text_field
         size: 50
-      30:
-        name: title
-        type: text_field
-        size: 50
       40:
         name: alt_link
         type: text_field
@@ -189,4 +185,22 @@ form:
         name: if_params
         type: text_area
         size: 80x10
-    
+    6seo:
+      10:
+        name: title
+        type: text_field
+        size: 70
+      20:
+        name: meta_description
+        type: text_area
+        size: 100x2
+      30:
+        name: canonical_link
+        type: text_field
+        size: 100
+      40:
+        name: dc_json_lds
+        type: embedded
+        table: dc_json_ld
+        html:
+          height: 400

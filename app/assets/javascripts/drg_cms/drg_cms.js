@@ -52,6 +52,31 @@ remove_background_from_iframe = function(obj) {
   $(head).append(css);    
 };
 
+/*******************************************************************
+ * Will update select field on the form which select options are dependend on other field
+ *******************************************************************/
+update_select_depend = function(select_name, depend_name, method) {
+  var select_field = $('#'+select_name);
+  var depend_field = $('#'+depend_name);
+ /* 
+  $.ajax({
+    url: "/dc_common/autocomplete",
+    type: "POST",
+    dataType: "json",
+    data: { input: request.term, table: "#{table}", search: "#{search}" #{(',id: "'+@yaml['id'] + '"') if @yaml['id']} },
+    success: function(data) {
+      response( $.map( data, function(key) {
+        return key;
+      }));
+    }
+  });  
+*/  
+  
+};
+
+/*******************************************************************
+ * Format number input field according to data
+ *******************************************************************/
 format_number_field = function(e) {
   var decimals  = e.attr("data-decimal") || 2;
   var delimiter = e.attr("data-delimiter") || '.';
@@ -319,7 +344,7 @@ $(document).ready( function() {
  * Resize iframe_cms to the size of its contents. Make at least 500 px high
  * unless on initial display.
  *******************************************************************/
-  $('#iframe_cms').load( function() {
+  $('#iframe_cms').on('load', function() {
 //    alert('bla 1');
     new_height = this.contentWindow.document.body.offsetHeight + 50;
     if (new_height < 500 && new_height > 60) new_height = 500;
@@ -332,7 +357,7 @@ $(document).ready( function() {
  * Same goes for editiframe. Resize it + 30px
  * unless on initial display with no data 
  *******************************************************************/
-  $('#iframe_edit').load( function() {
+  $('#iframe_edit').on('load', function() {
 //    console.log(this.contentWindow.document.body.offsetHeight);
     if (this.contentWindow.document.body.offsetHeight > 10) {
       this.style.height = (this.contentWindow.document.body.offsetHeight + 30) + 'px'; 
@@ -534,7 +559,7 @@ element = $(this).find(':first').attr('id');
 /*******************************************************************
  * Experimental. Force reload of parent page if this div appears. 
  *******************************************************************/
-  $('#div-reload-parent').load( function() {
+  $('#div-reload-parent').on('load', function() {
 //    alert('div-reload-parent 1');
     parent.location.href = parent.location.href;
   });
@@ -544,7 +569,7 @@ element = $(this).find(':first').attr('id');
  * 
  * Just an Idea. Not needed yet.
  *******************************************************************/
-  $('#div-reload').load( function() {
+  $('#div-reload').on('load', function() {
     alert('div-reload 1');
 //    location.href = location.href;
   });

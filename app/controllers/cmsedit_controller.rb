@@ -277,9 +277,10 @@ def process_in_memory #:nodoc
 end
 
 ########################################################################
-# Indx action 
+# Index action 
 ########################################################################
 def index
+  @form['result_set'] ||= {}
   redirected = (@form['table'] == 'dc_memory' ? process_in_memory : process_collections)
   return if redirected
 #  
@@ -654,8 +655,12 @@ def read_drg_cms_form
   @ids = ids.split(';').inject([]) { |r,v| r << v }
 # form_name defaults to last table specified
   form_name = params[:form_name] || @tables.last[1]
-  @form  = YAML.load_file( dc_find_form_file(form_name) ) rescue nil
-  return unless @form
+# dynamicaly generated form  
+  @form = if params[:form_name] == 'method'
+    dc_eval_class_method(params[:form_method], params)
+  else
+    YAML.load_file( dc_find_form_file(form_name) ) rescue nil
+  end
 # when form extends another form file. 
   if @form['extend']
     form = YAML.load_file( dc_find_form_file(@form['extend']) )

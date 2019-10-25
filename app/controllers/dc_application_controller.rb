@@ -105,7 +105,7 @@ end
 # Sets internal @page_title variable.
 ##########################################################################
 def set_page_title()
-  @page_title = @page.title.blank? ? "#{@page.subject} - #{@site.page_title}" : @page.title
+  @page_title = @page.title.blank? ? @page.subject : @page.title
 end
 
 ########################################################################
@@ -657,6 +657,60 @@ def dc_check_user_still_valid(repeat_after=1.day)
     fill_login_data(user)
     session[:user_chk] = Time.now
   end  
+end
+
+##########################################################################
+# Evaluates Class.method in more predictable context then just calling eval
+# 
+# @param [String] class_method defined as MyClass.method_name
+# @param [Object] optional parameters send to class_method
+##########################################################################
+def dc_eval_class_method(class_method, params=nil)
+  klass, method = class_method.split('.')
+  # check if class exists
+  klass = klass.classify.constantize rescue nil
+  if klass.nil?
+    logger.error " Class in #{class_method} not defined!"
+    return nil
+  end
+  # call method
+  if klass.respond_to?(method)
+    klass.send(method, params)
+  else
+    logger.error "Method in #{class_method} not defined!"
+    nil
+  end
+end
+
+##########################################################################
+# Will add new element to json_ld structure
+# 
+# Parameters:
+# [element] Hash or Array of hashes: 
+##########################################################################
+def dc_add_json_ld(element)
+  @json_ld ||= []
+  if element.class == Array
+    @json_ld += element
+  else
+    @json_ld << element
+  end
+end
+
+########################################################################
+# Will add a meta tag to internal hash structure. If meta tag already exists it
+# will be overwritten.
+# 
+# Parameters:
+# [name] String: meta name
+# [content] String: meta content
+# 
+########################################################################
+def dc_add_meta_tag(type, name, content)
+  return if content.blank?
+  @meta_tags ||= {}
+  key = "#{type}=\"#{name}\""
+  @meta_tags[key] = content
 end
 
 end

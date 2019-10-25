@@ -58,6 +58,10 @@
 #  dc_site_id           Object               dc_site_id
 #  dc_design_id         Object               Design used for rendering page
 #  dc_parts             Embedded:DcPart      Parts of the article
+#  meta_title           String               SEO optimised page title
+#  meta_description     String               SEO optimised page description
+#  meta_additional      String               Additional meta page data. Enter as meta_name=meta data
+#  dc_json_lds          Embedded:DcJsonLd    Page structure data
 # 
 # DcPage documents are anchors for urls. Default DcApplicationController::dc_process_default_request() 
 # method searches for DcPage document by subject_link, id or alt_link. When found it loads 

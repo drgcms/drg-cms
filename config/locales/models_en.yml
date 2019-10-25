@@ -255,6 +255,7 @@ en:
         3content: Content
         4parts: Parts
         5iframe: IFrame
+        6seo: SEO
 
         subject: Subject
         subject_link: Subject link
@@ -291,7 +292,11 @@ en:
         if_id: CSS id
         if_class: CSS class 
         _update_menu: Update menu
-
+        meta_title: Meta title
+        meta_description: Meta description
+        meta_additional: Additional meta data
+        canonical_link: Canonical link
+        dc_json_lds: Structured data
 
       dc_part:
         tabletitle: Parts of page
@@ -539,6 +544,16 @@ en:
         active: Active
         created_at: Created
 
+      dc_json_ld:
+        tabletitle: Page structure data
+        choices4_type: Corporate contact:Organization,Contact:ContactPoint
+
+        type: Type
+        data: Data
+        created_at: Created
+        updated_at: Updated
+        dc_json_lds: Sub element
+        active: Active
 
 # help for forms #####################################################
 
@@ -748,6 +763,10 @@ en:
         if_id: CSS id of IFrame object
         if_class: CSS class of IFrame object
         _update_menu: Update link in selected menu to point to this document        
+        meta_title: SEO optimised page title
+        meta_description: SEO optimised page description
+        canonical_link: Canonical link if this page is used with aditional parameters
+        dc_json_lds: Structured data available for this page
 
       dc_part:
         name: Parts can be searched by name or by id
@@ -924,4 +943,9 @@ en:
         thumbnail: Small picture file name
         doc_id: Document associated with gallery
         order: Order
+        active: Document is active
+
+      dc_json_ld:
+        type: Type of data structure
+        data: Data in YAML format
         active: Document is active
