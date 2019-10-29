@@ -1392,7 +1392,6 @@ end
 # Parameters:
 # [name] String: meta name
 # [content] String: meta content
-# 
 ########################################################################
 def dc_add_meta_tag(type, name, content)
   return if content.blank?
@@ -1400,5 +1399,42 @@ def dc_add_meta_tag(type, name, content)
   key = "#{type}=\"#{name}\""
   @meta_tags[key] = content
 end
+
+#######################################################################
+# Will return alt image option when text is provided. When text is blank
+# it will extract alt name from picture file_name. This method returns
+# together with alt="image-tag" tag.
+# 
+# Parameters:
+# [file_name] String: Filename of a picture
+# [text] String: Alt text name
+# 
+# Returns:
+# [String] alt="image-tag"
+#######################################################################
+def dc_img_alt_tag(file_name, text=nil)
+  " alt=\"#{dc_img_alt(file_name, text)}\" ".html_safe
+end
+
+#######################################################################
+# Will return alt image option when text is provided. When text is blank
+# it will extract alt name from picture file_name. This method returns just 
+# alt name.
+# 
+# Parameters:
+# [file_name] String: Filename of a picture
+# [text] String: Alt text name
+#
+# Returns:
+# [String] alt_image_name
+#######################################################################
+def dc_img_alt(file_name, text=nil)
+  if text.blank?
+    name = File.basename(file_name.to_s)
+    text = name[0,name.index('.')].downcase rescue name
+  end
+  text
+end
+
 
 end

@@ -84,6 +84,7 @@ index  alt_link:  1
 before_save :do_before_save
 
 validates :publish_date, presence: true
+validate  :validate_images_alt_present
   
 ######################################################################
 # Will return subject_link. Field name link should be common for all documents
@@ -111,6 +112,14 @@ def get_json_ld()
   data  
 end
 
+######################################################################
+# Will return validation error if all images in body field do not have 
+# alt attribute pressent.
+######################################################################
+def validate_images_alt_present
+  errors.add('body', 'drgcms.img_alt_not_present') unless DcPage.images_alt_present?(self.body)
+end
+
 protected
 
 ######################################################################
@@ -131,7 +140,7 @@ end
 # than link size is not larger than 100 chars.
 ######################################################################
 def self.clear_link(link)
-  link.gsub!(/\.|\?|\!\&|»|«|\,|\"|\'|\:/,'')
+  link.gsub!(/\.|\?|\!\&|\||»|«|\,|\"|\'|\:/,'')
   link.gsub!('<br>','')
   link.gsub!('–','-')
   link.gsub!(' ','-')
@@ -164,6 +173,20 @@ end
 def self.dc_filters
   {'title' => 'drgcms.filters.this_site_only', 'operation' => 'eq', 
    'field' => 'dc_site_id', 'value' => '@current_site'}
+end
+
+######################################################################
+# Clears subject link of chars that shouldn't be there and also takes care 
+# than link size is not larger than 100 chars.
+######################################################################
+def self.images_alt_present?(text)
+  return true if text.blank?
+#  
+  document = Nokogiri::HTML.parse(text)
+  document.xpath('//img').each do |image|
+    return false if !image.attributes['alt'] or image.attributes['alt'].text.blank?
+  end
+  true
 end
 
 end
