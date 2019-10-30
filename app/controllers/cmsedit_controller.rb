@@ -324,7 +324,7 @@ end
 ########################################################################
 def login
   if    params[:id] == 'test' then set_test_site
-  elsif params[:ok]           then redirect_to '/'
+  elsif params[:ok]           then render action: 'login', layout: 'cms' 
   else
     session[:edit_mode] = 0
     render action: 'login', layout: 'cms'
