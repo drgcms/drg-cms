@@ -552,7 +552,6 @@ def dc_actions_for_form()
     session[:form_processing] = "form:actions: #{element}"
     v = element[1]
     next if v.nil?  # yes it happends
-    p "Using text option in actions_for form is replaced with caption. Table #{@form['table']}" if v['text']
 # on_save_ok should't go inside td tags
     if (element[0] == 'on_save_ok') then
       c << hidden_field_tag(:on_save_ok, v)
@@ -639,9 +638,10 @@ def dc_actions_for_form()
         end
         # add current id to parameters
         parms['id'] = dc_document_path(@record)
-        # additional parameters          
+        # overwrite with or add additional parameters when params defined
         v['params'].each { |k,v| parms[k] = dc_value_for_parameter(v) } if v['params']
-        # Error if controller parameter is missing
+        parms['table'] = parms['table'].underscore if parms['table'] # might be CamelCase
+        # error if controller parameter is missing
         if parms['controller'].nil?
           "<li>#{t('drgcms.error')}</li>"
         else
