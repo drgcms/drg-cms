@@ -335,7 +335,7 @@ def dc_process_default_request()
   dc_set_options(@site.settings)
 # HOMEPAGE. When no parameters is set
   params[:path]   = @site.homepage_link if params[:id].nil? and params[:path].nil?
-  @options[:path] = params[:path].to_s.split('/')
+  @options[:path] = params[:path].to_s.downcase.split('/')
   params[:path]   = @options[:path].first if @options[:path].size > 1
 # some other process request. It should fail if not defined
   return send(@site.request_processor) unless @site.request_processor.blank?
