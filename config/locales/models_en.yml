@@ -255,11 +255,9 @@ en:
         3content: Content
         4parts: Parts
         5iframe: IFrame
-        6seo: SEO
 
         subject: Subject
         subject_link: Subject link
-        title: Browser title
         sub_subject: Sub subject
         picture: Picture
         gallery: Gallery
@@ -292,11 +290,14 @@ en:
         if_id: CSS id
         if_class: CSS class 
         _update_menu: Update menu
-        meta_title: Meta title
+
+      dc_seo:
+        seo: SEO
+        title: Browser title
         meta_description: Meta description
         meta_additional: Additional meta data
         canonical_link: Canonical link
-        dc_json_lds: Structured data
+        dc_json_lds: Schema data
 
       dc_part:
         tabletitle: Parts of page
@@ -731,7 +732,6 @@ en:
       dc_page:
         subject: Articles subject
         subject_link: Friendly link defined
-        title: Browser title. Optimization for SEO.
         sub_subject: Sub subject, short description of text
         picture: Picture used in conjunction with page
         gallery: Picture gallery id used with page
@@ -762,11 +762,13 @@ en:
         if_params: Parameters added to URL address    
         if_id: CSS id of IFrame object
         if_class: CSS class of IFrame object
-        _update_menu: Update link in selected menu to point to this document        
-        meta_title: SEO optimised page title
+        _update_menu: Update link in selected menu to point to this document
+
+      dc_seo:
+        title: SEO optimised page title
         meta_description: SEO optimised page description
-        canonical_link: Canonical link if this page is used with aditional parameters
-        dc_json_lds: Structured data available for this page
+        canonical_link: Canonical link the, when page uses aditional parameters
+        dc_json_lds: Schema data available for this page
 
       dc_part:
         name: Parts can be searched by name or by id

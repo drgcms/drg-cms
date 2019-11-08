@@ -152,6 +152,8 @@ form:
       
   tabs:
     tab1:
+      caption: my_caption
+      caption: helpers.label.table.tab1
 
       10:
         name: name

@@ -1,0 +1,33 @@
+form:
+  tabs:
+    seo:
+      caption: helpers.label.dc_seo.seo
+      10:
+        name: title
+        text: helpers.label.dc_seo.title
+        help: helpers.help.dc_seo.title
+        type: text_field
+        size: 70
+        
+      20:
+        name: meta_description
+        text: helpers.label.dc_seo.meta_description
+        help: helpers.help.dc_seo.meta_description
+        type: text_area
+        size: 100x2
+        
+      30:
+        name: canonical_link
+        text: helpers.label.dc_seo.canonical_link
+        help: helpers.help.dc_seo.canonical_link
+        type: text_field
+        size: 100
+        
+      40:
+        name: dc_json_lds
+        text: helpers.label.dc_seo.dc_json_lds
+        help: helpers.help.dc_seo.dc_json_lds
+        type: embedded
+        table: dc_json_ld
+        html:
+          height: 500

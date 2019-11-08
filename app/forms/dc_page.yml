@@ -1,6 +1,7 @@
 ## YAML Template for page
 ---
 table: dc_page
+include: dc_seo
 
 index:
   filter: subject, sub_subject as text_field, subject_link, alt_link, author_name, dc_site_id, body as text_field
@@ -185,22 +186,3 @@ form:
         name: if_params
         type: text_area
         size: 80x10
-    6seo:
-      10:
-        name: title
-        type: text_field
-        size: 70
-      20:
-        name: meta_description
-        type: text_area
-        size: 100x2
-      30:
-        name: canonical_link
-        type: text_field
-        size: 100
-      40:
-        name: dc_json_lds
-        type: embedded
-        table: dc_json_ld
-        html:
-          height: 400

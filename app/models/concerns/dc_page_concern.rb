@@ -64,11 +64,9 @@ field :if_scroll,    type: String
 field :if_id,        type: String
 field :if_class,     type: String
 field :if_params,    type: String
+
 # SEO
-field :title,            type: String
-field :meta_description, type: String
-field :canonical_link,   type: String
-embeds_many :dc_json_lds # JSON-LD structure
+include DcSeoConcern
 
 field :policy_id,    type: BSON::ObjectId
 

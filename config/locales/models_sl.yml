@@ -283,11 +283,9 @@ sl:
         3content: Vsebina
         4parts: Elementi
         5iframe: IFrame
-        6seo: SEO
 
         subject: Zadeva
         subject_link: Povezava
-        title: Naslov za brskalnik
         sub_subject: Povzetek
         picture: Slika
         alt_link: Alt povezava
@@ -323,7 +321,10 @@ sl:
         if_id: CSS id
         if_class: CSS class 
         _update_menu: Spremeni meni
-        meta_title: Meta naslov
+        
+      dc_seo:
+        seo: SEO
+        title: Naslov za brskalnik
         meta_description: Meta opis
         canonical_link: Canonical link
         dc_json_lds: Strukturni podatki
@@ -757,7 +758,6 @@ sl:
         subject: Zadeva (kratek naslov) sestavka
         subject_link: Povezava (link) do sestavka
         sub_subject: Povzetek, kratek opis vsebine
-        title: Naslov, ki se izpiše v gornji vrstici brskalnika. Optimiziraj za SEO.
         alt_link: Alternativna povezava do sestavka
         picture: Slika v povezavi s stranjo
         gallery: Dokument vsebuje slikovno galerijo.
@@ -791,10 +791,12 @@ sl:
         if_id: CSS id IFrame objekta
         if_class: CSS class IFrame objekta
         _update_menu: Popravi tudi povezavo do dokumenta v menuju
-        meta_title: SEO optimiziran naslov strani
+        
+      dc_seo:
+        title: Naslov, ki se izpiše v gornji vrstici brskalnika. Optimiziraj za SEO.
         meta_description: SEO optimiziran opis strani
         canonical_link: Canonical link, kadar je stran uporabljena z različnimi parametri
-        dc_json_lds: Dodatni strukturni podatki, ki opisujejo stran
+        dc_json_lds: Schema strukturni podatki, ki dodatno opisujejo stran
 
       dc_part:
         name: Naziv elementa
