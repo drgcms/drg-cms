@@ -22,17 +22,14 @@
 #++
 
 ##########################################################################
-# == Schema information
-#
-# dc_seo_concern
+# dc_seo_concern, ads SEO optimization fields to any model.
 #
 # title                String               Browser title. Optimization for SEO.
 # meta_description     String               SEO optimised page description
 # meta_additional      String               Additional meta page data. Enter as meta_name=meta data
 # dc_json_lds          Embedded:DcJsonLd    Page structure data
 # 
-# Ads SEO optimization fields to any model. If you want to add SEO optimization
-# data to your document add:
+# If you want to add SEO optimization data to your document add:
 # 
 # "include DcSeoConcern" to your model definition
 # 

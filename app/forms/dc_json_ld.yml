@@ -3,7 +3,12 @@
 table: dc_json_ld
 
 index:
-  actions: standard
+  actions:
+    1: new
+    10: 
+      type: menu
+      eval: DcJsonLd.add_schema_menu(self)
+      caption: helpers.help.dc_json_ld.add_schema
 
 result_set:
   actions: 
@@ -31,11 +36,12 @@ form:
     10:
       name: type
       type: text_with_select
+      eval: DcJsonLd.choices4_type
 
     20:
       name: data
       type: text_area
-      size: 100x10
+      size: 100x8
     30:
       name: dc_json_lds
       type: embedded

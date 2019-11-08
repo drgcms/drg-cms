@@ -1,0 +1,137 @@
+## JSON/LD schema description
+---
+# Organization
+Organization:
+  name: 
+    type: String
+    text: Organization name
+   
+  legalName: 
+    type: String
+    text: Organization legal name
+
+  url: 
+    type: String
+    text: http://www.example.com
+
+  logo: 
+    type: String
+    text: http://www.example.com/logo.jpg
+
+  foundingDate: 
+    type: String
+    text: Year
+
+  founders: 
+    type: Person
+
+  address: 
+    type: PostalAddress
+
+  contactPoint: 
+    type: ContactPoint
+
+  sameAs:
+    type: Array
+
+# Person
+Person:
+  name: 
+    type: String
+    text: Name
+
+  address: 
+    type: PostalAddress
+
+  collegue:
+    type: Array
+
+  email: 
+    type: String
+    text: eMail address
+
+  image: 
+    type: String
+    text: Image filename
+
+  jobTitle: 
+    type: String
+    text: Job title
+
+  alumniOf: 
+    type: String
+    text: School name
+
+  birthPlace: 
+    type: String
+    text: City of birth
+
+  birthDate: 
+    type: String
+    text: 1999-31-12
+
+  jobTitle: 
+    type: String
+    text: Job title
+
+  gender: 
+    type: String
+    text: male/female
+
+  telephone: 
+    type: String
+    text: (123) 456-6789
+
+  url: 
+    type: String
+    text: http://www.example.com
+
+  sameAs:
+    type: Array
+      
+#PostalAddress  
+PostalAddress:
+      
+  streetAddress: 
+    type: String
+    text: address
+    
+  postalCode: 
+    type: String
+    text: 1234  
+    
+  addressLocality: 
+    type: String
+    text: CityName
+    
+  addressRegion: 
+    type: String
+    text: CA 
+    
+  addressCountry: 
+    type: String
+    text: SI or Slovenia
+    
+#ContactPoint
+ContactPoint:
+  
+  telephone: 
+    type: String
+    text: +1-877-453-1304
+    
+  contactType: 
+    type: String
+    text: technical support
+    
+  contactOption: 
+    type: String
+    text: TollFree
+    
+  areaServed: 
+    type: Array
+    text: [US,CA]
+    
+  availableLanguage: 
+    type: String
+    text: [English,French]
+    
