@@ -645,6 +645,38 @@ def forms_merge(hash1, hash2)
 end
 
 ########################################################################
+# Extends DRGCMS form file. Extended file is processed first and then merged
+# with code in this form file. Form can extend only single form file.
+# 
+# [Parameters:]
+# [extend_option] : Value of @form['extend'] option
+########################################################################
+def extend_drg_cms_form(extend_option)
+  form = YAML.load_file( dc_find_form_file(extend_option) )
+  @form = forms_merge(form, @form)
+# If combined form contains tabs and fields options, merge fields into tabs
+  if @form['form']['tabs'] and @form['form']['fields']
+    @form['form']['tabs']['fields'] = @form['form']['fields']
+    @form['form']['fields'] = nil
+  end
+end
+
+########################################################################
+# Include code from another DRGCMS form file. Included code is merged
+# with current form file code. Form can include more than one other DRGCMS forms.
+# 
+# [Parameters:]
+# [include_option] : Value of @form['include'] option
+########################################################################
+def include_drg_cms_form(include_option)
+  includes = include_option.class == Array ? include_option : include_option.split(/\,|\;/)
+  includes.each do |include_file|
+    form = YAML.load_file( dc_find_form_file(include_file) )
+    @form = forms_merge(@form, form)
+  end
+end
+
+########################################################################
 # Read drgcms form into yaml object. Subroutine of check_authorization.
 ########################################################################
 def read_drg_cms_form
@@ -661,16 +693,9 @@ def read_drg_cms_form
   else
     YAML.load_file( dc_find_form_file(form_name) ) rescue nil
   end
-# when form extends another form file. 
-  if @form['extend']
-    form = YAML.load_file( dc_find_form_file(@form['extend']) )
-    @form = forms_merge(form, @form)
-# If combined form contains tabs and fields options, merge fields into tabs
-    if @form['form']['tabs'] and @form['form']['fields']
-      @form['form']['tabs']['fields'] = @form['form']['fields']
-      @form['form']['fields'] = nil
-    end
-  end
+# form includes or extends another form file
+  include_drg_cms_form(@form['include']) if @form['include']
+  extend_drg_cms_form(@form['extend'])   if @form['extend']
 # add readonly key to form if readonly parameter is passed in url
   @form['readonly'] = 1 if params['readonly'] #and %w(1 yes true).include?(params['readonly'].to_s.downcase.strip)
 # !!!!!! Always use strings for key names since @parms['table'] != @parms[:table]

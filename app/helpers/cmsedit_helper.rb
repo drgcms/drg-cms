@@ -206,9 +206,9 @@ end
 ############################################################################
 def dc_table_title_for_result(result=nil)
   title = if @form['title'] # form has title section
-    t(@form['title'],@form['title'])
+    t(@form['title'], @form['title'])
   else # get name from translations
-    t('helpers.label.' + @form['table'] + '.tabletitle', @form['table'])
+    t("helpers.label.#{@form['table']}.tabletitle", @form['table'])
   end
   dc_table_title(title, result)
 end
@@ -718,7 +718,7 @@ end
 ############################################################################
 # Creates top or bottom horizontal line on form. 
 ############################################################################
-def top_bottom_line(yaml, columns=2)
+def top_bottom_line()
   '<div class="dc-separator"></div>'
 end    
 
@@ -749,8 +749,9 @@ def dc_fields_for_tab(fields_on_tab) #:nodoc:
       next
     end
 # label
-    text = if options['text']
-      t(options['text'], options['text'])
+    caption = options['caption'] || options['text']
+    label = if !caption.blank?    
+      t(caption, caption)
     elsif options['name']
       t_name(options['name'], options['name'].capitalize.gsub('_',' ') )
     end
@@ -782,7 +783,7 @@ def dc_fields_for_tab(fields_on_tab) #:nodoc:
     html << if labels_pos == 'top'
 %Q[
 <div class="dc-form-label-top dc-color-#{odd_even} dc-align-left" title="#{help}">
-  <label for="record_#{options['name']}">#{text} </label>
+  <label for="record_#{options['name']}">#{label} </label>
   <div id="td_record_#{options['name']}">#{field_html}</div>
 </div> ]
     else
@@ -792,7 +793,7 @@ def dc_fields_for_tab(fields_on_tab) #:nodoc:
       data_width  = (94 - 10*group_option)/group_option
 %Q[
 <div class="dc-form-label dc-color-#{odd_even} dc-align-#{labels_pos}" style="width:#{label_width}%;" title="#{help}">
-  <label for="record_#{options['name']}">#{text} </label>
+  <label for="record_#{options['name']}">#{label} </label>
 </div>
 <div id="td_record_#{options['name']}" class="dc-form-field dc-color-#{odd_even}" style="width:#{data_width}%;">#{field_html}</div>
 ]
@@ -809,7 +810,7 @@ end
 # Creates edit form div. 
 ############################################################################
 def dc_fields_for_form()
-  html, tabs, tdata = '',[], ''
+  html, tabs, tab_data = '',[], ''
 # Only fields defined  
   if (form_fields = @form['form']['fields'])
     html << "<div id='data_fields' " + (@form['form']['height'] ? "style=\"height: #{@form['form']['height']}px;\">" : '>')  
@@ -817,33 +818,36 @@ def dc_fields_for_form()
   else
 # there are multiple tabs on form 
     first = true # first tab 
-    @form['form']['tabs'].keys.sort.each do |tabname|
-      next if tabname.match('actions')
+    @form['form']['tabs'].keys.sort.each do |tab_name|
+      next if tab_name.match('actions')
 # Tricky. If field name is not on the tab skip to next tab
       if params[:edit_only]
         is_on_tab = false
-        @form['form']['tabs'][tabname].each {|k,v| is_on_tab = true if params[:edit_only] == v['name'] }
+        @form['form']['tabs'][tab_name].each {|k,v| is_on_tab = true if params[:edit_only] == v['name'] }
         next unless is_on_tab
       end
-# first div is displayed all other are hidden      
-      tdata << "<div id='data_#{tabname.delete("\s\n")}'"
-      tdata << ' class="div-hidden"' unless first
-      tdata << " style=\"height: #{@form['form']['height']}px;\"" if @form['form']['height']
-      tdata << ">#{dc_fields_for_tab(@form['form']['tabs'][tabname])}</div>"
-      tabs << tabname
+# first div is displayed, all others are hidden      
+      tab_data << "<div id=\"data_#{tab_name.delete("\s\n")}\""
+      tab_data << ' class="div-hidden"' unless first
+      tab_data << " style=\"height: #{@form['form']['height']}px;\"" if @form['form']['height']
+      tab_data << ">#{dc_fields_for_tab(@form['form']['tabs'][tab_name])}</div>"
+      tab_label = @form['form']['tabs'][tab_name]['caption'] || tab_name 
+      tabs << [tab_name, tab_label]
       first = false      
     end
 # make it all work together
     html << '<ul class="dc-form-ul" >'
     first = true # first tab must be selected
-    tabs.each do |tab| 
-      html << "<li id='li_#{tab}' data-div='#{tab.delete("\s\n")}' class='dc-form-li #{'dc-form-li-selected' if first }'>#{t_name(tab, tab)}</li>" 
+    tabs.each do |tab_name, tab_label| 
+      html << "<li id=\"li_#{tab_name}\" data-div=\"#{tab_name.delete("\s\n")}\" class=\"dc-form-li"
+      html << ' dc-form-li-selected' if first 
+      html << "\">#{t(tab_label, t_name(tab_label))}</li>" 
       first = false
     end
     html << '</ul>'
-    html << tdata
+    html << tab_data
   end
-  # add last_updated_at hidden field so controller can check if record was updated in during editing
+  # add last_updated_at hidden field so controller can check if record was updated in db during editing
   html << hidden_field(nil, :last_updated_at, value: @record.updated_at.to_i) if @record.respond_to?(:updated_at)
   # add form time stamp to prevent double form submit
   html << hidden_field(nil, :form_time_stamp, value: Time.now.to_i)
