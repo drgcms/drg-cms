@@ -281,6 +281,7 @@ def dc_actions_for_result(document)
     when yaml['type'] == 'delete' then
       parms['action'] = 'destroy'
       parms['id']     = document.id
+      parms['return_to'] = request.url
       dc_link_to( nil, 'remove lg', parms, data: { confirm: t('drgcms.confirm_delete') }, method: :delete )
 # undocumented so far
     when yaml['type'] == 'edit_embedded'
@@ -718,7 +719,7 @@ end
 ############################################################################
 # Creates top or bottom horizontal line on form. 
 ############################################################################
-def top_bottom_line()
+def top_bottom_line(options)
   '<div class="dc-separator"></div>'
 end    
 
