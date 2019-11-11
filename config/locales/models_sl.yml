@@ -550,7 +550,7 @@ sl:
         created_at: Ustvarjeno
 
       dc_json_ld:
-        tabletitle: Struktirirani podatki za stran
+        tabletitle: Struktirirani podatki za spletno stran
         choices4_type: Organizacija:Organization,Kontakt:ContactPoint
 
         type: Tip
@@ -796,7 +796,7 @@ sl:
         title: Naslov, ki se izpiše v gornji vrstici brskalnika. Optimiziraj za SEO.
         meta_description: SEO optimiziran opis strani
         canonical_link: Canonical link, kadar je stran uporabljena z različnimi parametri
-        dc_json_lds: Schema strukturni podatki, ki dodatno opisujejo stran
+        dc_json_lds: Schema strukturni podatki, ki dodatno opisujejo spletno stran
 
       dc_part:
         name: Naziv elementa
@@ -960,4 +960,5 @@ sl:
         type: Tip podatkovne strukture
         data: Podatki v YAML formatu
         active: Podatki so aktivni
-        
+        add_schema: Dodaj strukturo
+        add_error: Element %{schema} že obstaja!

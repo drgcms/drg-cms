@@ -97,66 +97,22 @@ end
 def self.choices4_type()
   yaml = YAML.load_file( dc_find_form_file('json_ld_schema') )
   
-  yaml.inject([]) {|result, schema_name| p '1', schema_name;  result << schema_name.first }
+  yaml.inject([]) {|result, schema_name| result << schema_name.first }
 end
 
 #########################################################################
 # Create menu to add schema element.
 #########################################################################
 def self.add_schema_menu(parent)
-  collection = parent.params['table'].split(';').first.classify.constantize
-  pp parent.params
-  document = collection.find(parent.params['ids'])
-  
   yaml = YAML.load_file( dc_find_form_file('json_ld_schema') )
-  pp yaml
   
   html = '<ul>'
   yaml.each do |schema_name, schema_data|
-    html << "<li>#{schema_name}</li>"
+    url = "/dc_common/add_json_ld_schema?table=#{parent.params['table']}&ids=#{parent.params['ids']}&schema=#{schema_name}&url=#{parent.request.url}"
+#    url = parent.link_to(controller: 'dc_common', action: 'add_json_ld_schema', table: parent.params['table'], ids: parent.params['ids']  )
+    html << %Q[<li class="dc-link-ajax dc-animate" data-url="#{url}">#{schema_name}</li>]    
   end
-  html << '</ul>'
-  
-=begin
-#  
-  postopek = find_by(naziv: dokument.naziv_postopka)
-  koraki = postopek.postopki_koraks.all.order_by('order asc').to_a
-# ugotavljanje možnih korakov, ki izhajajo iz trenutnega stanja
-  mozni_koraki = []
-  koraki.each do |korak|
-    (mozni_koraki << korak; next) if korak.stanje_postopka == '*'
-    korak.stanje_postopka.split(',').each do |stanje|
-      if dokument.stanje_postopka == stanje
-        mozni_koraki << korak
-        break
-      end
-    end
-  end
-  return '<ul><li>Ni več postopkov!</li></ul>' if mozni_koraki.size == 0
-#
-  html = '<ul class="menu-filter">'  
-  mozni_koraki.each do |korak|
-    parms = YAML.load(korak.parametri) rescue {}
-    parms ||= {} # je lahko tudi false, če ni nič vpisano
-    parms = parms['action'] || {}
-#    
-    parms['controller'] ||= 'cmsedit'
-    parms['action']     ||= 'new'
-    parms['table']      ||= "#{dokument.class};postopek" 
-    parms['ids']          = parent.params['ids'] 
-    parms['postopek']     = "#{postopek.id};#{korak.id}"
-    parms['formname']     = parent.params['formname']
-    html << if parms['type'] and parms['type'] == 'ajax' # ajax klic
-      url = parent.url_for(parms)
-      request = parms['request'] || 'get'
-      %Q[<li class="dc-link-ajax dc-animate" id="dc-submit-ajax" data-url="#{url}" data-request="#{request}">#{korak.naziv}</li>]
-    else
-      '<li>' + parent.link_to(korak.naziv, parms, title: korak.opis) + '</li>'
-    end
-  end
-  html << '</ul>'
-=end
-  
+  html << '</ul>' 
 end
   
 end

@@ -124,10 +124,10 @@ $(function() {
  * 
  * Protocol consists of operation and value which are returned as json by
  * called controller. Controller will return an ajax call usually like this:
- *    render json: {operation: value}.to_json
+ *    render json: {operation: value}
  *    
  * Operation is further divided into source and determinator which are divided by underline char.
- *    render json: {#div_status: 'OK!'}.to_json
+ *    render json: {#div_status: 'OK!'}
  * will replace html in div="status" with value 'OK!'. Source is '#div' determinator is 'status'.
  * 
  * Possible operators are:

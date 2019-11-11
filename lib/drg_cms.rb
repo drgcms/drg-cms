@@ -135,8 +135,9 @@ def self.routes
       get 'dc_common/logout'            => :logout
       get 'dc_common/login'             => :login
       get 'dc_common/copy_clipboard'    => :copy_clipboard
-      match 'dc_common/paste_clipboard'  => :paste_clipboard, via: [:get, :post]
+      match 'dc_common/paste_clipboard' => :paste_clipboard, via: [:get, :post]
       put 'dc_common/restore_from_journal'  => :restore_from_journal
+      get 'dc_common/add_json_ld_schema'    => :add_json_ld_schema
     end
     match 'elfinder' => 'dc_elfinder#connector', via: [:get, :post]
     resources :cmsedit

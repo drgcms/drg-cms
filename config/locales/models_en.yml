@@ -546,14 +546,14 @@ en:
         created_at: Created
 
       dc_json_ld:
-        tabletitle: Page structure data
+        tabletitle: Schema data
         choices4_type: Corporate contact:Organization,Contact:ContactPoint
 
         type: Type
         data: Data
         created_at: Created
         updated_at: Updated
-        dc_json_lds: Sub element
+        dc_json_lds: Schema sub element
         active: Active
 
 # help for forms #####################################################
@@ -768,7 +768,7 @@ en:
         title: SEO optimised page title
         meta_description: SEO optimised page description
         canonical_link: Canonical link the, when page uses aditional parameters
-        dc_json_lds: Schema data available for this page
+        dc_json_lds: Schema data available for this web page
 
       dc_part:
         name: Parts can be searched by name or by id
@@ -948,6 +948,8 @@ en:
         active: Document is active
 
       dc_json_ld:
-        type: Type of data structure
+        type: Type of schema structure
         data: Data in YAML format
         active: Document is active
+        add_schema: Add new schema
+        add_error: Schema element %{schema} already exists!

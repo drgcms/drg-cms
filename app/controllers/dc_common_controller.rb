@@ -236,7 +236,44 @@ def paste_clipboard
   dc_render_ajax(div: 'result', value: result )
 end
 
+########################################################################
+# Will add new json_ld element with blank structure into dc_json_ld field on a 
+# document.
+########################################################################
+def add_json_ld_schema
+  collection = params[:table].split(';').first.classify.constantize
+  edited_document = collection.find(params[:ids])
+  yaml = YAML.load_file( dc_find_form_file('json_ld_schema') )
+  schema_data = yaml[params[:schema]]
+# Existing document  
+  if doc = edited_document.dc_json_lds.find_by(type: "@#{params[:schema]}")
+    return render json: {'msg_error' => t('helpers.help.dc_json_ld.add_error', schema: params[:schema] ) }
+  else
+    add_empty_json_ld_schema(edited_document, schema_data, params[:schema], yaml)
+  end
+  render json: {'reload_' => 1}
+end
+
 protected
+
+########################################################################
+# Update some anomalies in json data on paste_clipboard action.
+########################################################################
+def add_empty_json_ld_schema(edited_document, schema, schema_name, yaml)
+  data = {}
+  doc = DcJsonLd.new
+  doc.type = "@#{schema_name}"
+  edited_document.dc_json_lds << doc
+  schema.each do |element_name, element|
+    if yaml[element['type']]
+      add_empty_json_ld_schema(doc, yaml[element['type']], element_name, yaml)
+    else
+      data[element_name] = element['text']
+    end
+  end
+  doc.data = data.to_yaml
+  doc.save
+end
 
 ########################################################################
 # Update some anomalies in json data on paste_clipboard action.
