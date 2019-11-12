@@ -30,4 +30,4 @@ form:
         type: embedded
         table: dc_json_ld
         html:
-          height: 500
+          height: 600

@@ -40,6 +40,7 @@ class DcJsonLd
   include Mongoid::Document
   include Mongoid::Timestamps
 
+  field :name,        type: String
   field :type,        type: String
   field :data,        type: String
   field :active,      type: Boolean,      default: true
@@ -48,7 +49,9 @@ class DcJsonLd
 
   field :created_by,  type: BSON::ObjectId
   field :updated_by,  type: BSON::ObjectId
-
+  
+  validates :name, presence: true
+  validates :type, presence: true
   
 ##########################################################################
 # Returns JSON LD data as YAML
@@ -60,8 +63,8 @@ def get_json_ld(parent_data)
     dc_json_lds.each do |element|
       yml = element.get_json_ld(parent_data)
       if yml.size > 0
-        yaml[element.type] ||= []
-        yaml[element.type] << yml 
+        yaml[element.name] ||= []
+        yaml[element.name] << yml 
       end
     end
   end

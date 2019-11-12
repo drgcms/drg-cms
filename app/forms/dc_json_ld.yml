@@ -17,12 +17,15 @@ result_set:
 
   columns:
     10:  
+      name: name
+      width: 20%
+    20:  
       name: type
       width: 20%
-    20: 
+    30: 
       name: updated_at
       width: 20%
-    30: 
+    40: 
       name: active
       eval: dc_icon4_boolean
 
@@ -34,18 +37,23 @@ form:
     
   fields:
     10:
+      name: name
+      type: text_field
+      size: 20
+
+    20:
       name: type
       type: text_with_select
       eval: DcJsonLd.choices4_type
 
-    20:
+    30:
       name: data
       type: text_area
       size: 100x8
-    30:
+    40:
       name: dc_json_lds
       type: embedded
       table: dc_json_ld
       html:
-        height: 300
+        height: 400
       

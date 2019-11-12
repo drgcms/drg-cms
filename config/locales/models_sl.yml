@@ -553,6 +553,7 @@ sl:
         tabletitle: Struktirirani podatki za spletno stran
         choices4_type: Organizacija:Organization,Kontakt:ContactPoint
 
+        name: Ime
         type: Tip
         data: Podatki
         created_at: Narejeno
@@ -957,6 +958,7 @@ sl:
         active: Dokument je aktiven
 
       dc_json_ld:
+        name: Naziv elementa podatkovne strukture
         type: Tip podatkovne strukture
         data: Podatki v YAML formatu
         active: Podatki so aktivni

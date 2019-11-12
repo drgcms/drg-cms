@@ -549,6 +549,7 @@ en:
         tabletitle: Schema data
         choices4_type: Corporate contact:Organization,Contact:ContactPoint
 
+        name: Name
         type: Type
         data: Data
         created_at: Created
@@ -948,6 +949,7 @@ en:
         active: Document is active
 
       dc_json_ld:
+        name: Name of schema element
         type: Type of schema structure
         data: Data in YAML format
         active: Document is active
