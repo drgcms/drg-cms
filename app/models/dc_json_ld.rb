@@ -57,10 +57,10 @@ class DcJsonLd
 # Returns JSON LD data as YAML
 ##########################################################################
 def get_json_ld(parent_data)
-  yaml = YAML.load(self.data) rescue {}
+  yaml = (YAML.load(self.data) rescue nil) || {}
   yaml['@type'] = self.type if yaml.size > 0
   if dc_json_lds.size > 0
-    dc_json_lds.each do |element|
+    dc_json_lds.where(active: true).each do |element|
       yml = element.get_json_ld(parent_data)
       if yml.size > 0
         yaml[element.name] ||= []
@@ -94,8 +94,26 @@ def self.dc_find_form_file(form_file)
   nil
 end
 
+########################################################################
+# Find document by ids when document are embedded into main d even if embedded
+# 
+# @param [tables] Tables parameter as send in url. Tables are separated by ;
+# @param [ids] ids as send in url. ids are separated by ;
+# 
+# @return [Document] 
+########################################################################
+def self.find_document_by_ids(tables, ids)
+  collection = tables.split(';').first.classify.constantize
+  ar_ids = ids.split(';')
+# Find top document  
+  document = collection.find(ar_ids.shift)
+# Search for embedded document
+  ar_ids.each {|id| document = document.dc_json_lds.find(id) }
+  document
+end
+
 #########################################################################
-# Create menu to add schema element.
+# Returns possible options for type select field on form.
 #########################################################################
 def self.choices4_type()
   yaml = YAML.load_file( dc_find_form_file('json_ld_schema') )
@@ -104,15 +122,28 @@ def self.choices4_type()
 end
 
 #########################################################################
-# Create menu to add schema element.
+# Create menu to add schema element. Called from DRGCMS Form action.
 #########################################################################
 def self.add_schema_menu(parent)
   yaml = YAML.load_file( dc_find_form_file('json_ld_schema') )
-  
+  if (level = parent.params['ids'].split(';').size) == 1
+    # select only top level elements
+    yaml.delete_if { |schema_name, schema_data| schema_data['level'].nil? }
+  else
+    # select only elemets which are subelements of type
+    parent_type = self.find_document_by_ids(parent.params['table'],parent.params['ids']).type
+    _yaml = []
+    yaml[parent_type].each do |name, data|
+      next unless data.class == Hash
+      _yaml << [data['type'], yaml[data['type']] ] if data['type'] and yaml[data['type']]
+    end
+    yaml = _yaml
+  end
+# create menu code
   html = '<ul>'
   yaml.each do |schema_name, schema_data|
+    next if level == 1 and schema_data['level'].nil?
     url = "/dc_common/add_json_ld_schema?table=#{parent.params['table']}&ids=#{parent.params['ids']}&schema=#{schema_name}&url=#{parent.request.url}"
-#    url = parent.link_to(controller: 'dc_common', action: 'add_json_ld_schema', table: parent.params['table'], ids: parent.params['ids']  )
     html << %Q[<li class="dc-link-ajax dc-animate" data-url="#{url}">#{schema_name}</li>]    
   end
   html << '</ul>' 

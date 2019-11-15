@@ -93,24 +93,6 @@ def link
 end
    
 ######################################################################
-# Will return JSON LD data if defined for the page
-######################################################################
-def get_json_ld()
-  parent_data = {created_at: self.created_at, updated_at: self.updated_at}
-  data = []
-  if dc_json_lds.size > 0
-    dc_json_lds.each do |element|
-      dta = element.get_json_ld(parent_data)
-      if dta.size > 0
-        dta['@context'] = 'http://schema.org'
-        data << dta 
-      end
-    end
-  end
-  data  
-end
-
-######################################################################
 # Will return validation error if all images in body field do not have 
 # alt attribute pressent.
 ######################################################################

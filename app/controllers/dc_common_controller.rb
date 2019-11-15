@@ -241,8 +241,7 @@ end
 # document.
 ########################################################################
 def add_json_ld_schema
-  collection = params[:table].split(';').first.classify.constantize
-  edited_document = collection.find(params[:ids])
+  edited_document = DcJsonLd.find_document_by_ids(params[:table], params[:ids])
   yaml = YAML.load_file( dc_find_form_file('json_ld_schema') )
   schema_data = yaml[params[:schema]]
 # Existing document  
@@ -257,9 +256,9 @@ end
 protected
 
 ########################################################################
-# Update some anomalies in json data on paste_clipboard action.
+# Subroutine of add_json_ld_schema for adding one element
 ########################################################################
-def add_empty_json_ld_schema(edited_document, schema, schema_name, schema_type, yaml)
+def add_empty_json_ld_schema(edited_document, schema, schema_name, schema_type, yaml) #:nodoc
   data = {}
   doc = DcJsonLd.new
   doc.name = schema_name
@@ -267,8 +266,16 @@ def add_empty_json_ld_schema(edited_document, schema, schema_name, schema_type, 
  
   edited_document.dc_json_lds << doc
   schema.each do |element_name, element|
+    next if element_name == 'level' # skip level element
     if yaml[element['type']]
-      add_empty_json_ld_schema(doc, yaml[element['type']], element_name, element['type'], yaml)
+      if element['n'].to_s == '1'
+        # single element
+        doc_1 = yaml[element['type'] ]
+        data[element_name] = doc_1
+      else
+        # array
+        add_empty_json_ld_schema(doc, yaml[element['type']], element_name, element['type'], yaml)
+      end
     else
       data[element_name] = element['text']
     end

@@ -1345,10 +1345,10 @@ end
 #######################################################################
 def dc_get_json_ld()
   return '' if @json_ld.nil? or @json_ld.size == 0
-#  
-  html = %Q[
+
+  %Q[
 <script type="application/ld+json">
-#{JSON.pretty_generate(@json_ld)}
+#{JSON.pretty_generate({'@context' => 'http://schema.org', '@graph' => @json_ld})}
 </script>
 ].html_safe
 end

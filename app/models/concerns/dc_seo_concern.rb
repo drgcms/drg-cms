@@ -45,6 +45,22 @@ included do
   field :meta_description, type: String
   field :canonical_link,   type: String
   embeds_many :dc_json_lds # JSON-LD structure
+  
+  ######################################################################
+  # Will return JSON LD data if defined for the page
+  ######################################################################
+  def get_json_ld()
+    parent_data = {'datePublished' => self.created_at, 'dateModified' => self.updated_at}
+    data = []
+    if dc_json_lds.size > 0
+      dc_json_lds.where(active: true).each do |element|
+        dta = element.get_json_ld(parent_data)
+        data << dta if dta.size > 0
+      end
+    end
+    data  
+  end
 end
+
 
 end

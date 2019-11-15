@@ -2,6 +2,7 @@
 ---
 # Organization
 Organization:
+  level: 1
   name: 
     type: String
     text: Organization name
@@ -36,6 +37,7 @@ Organization:
 
 # Person
 Person:
+  
   name: 
     type: String
     text: Name
@@ -91,6 +93,7 @@ Person:
       
 #PostalAddress  
 PostalAddress:
+  
       
   streetAddress: 
     type: String
@@ -134,4 +137,28 @@ ContactPoint:
   availableLanguage: 
     type: String
     text: [English,French]
+    
+FAQPage:
+  level: 1
+  
+  dummy:
+    type: String
+    text: yes
+  
+  mainEntity:  
+    type: Question
+      
+Question:
+  
+  name: 
+    type: String
+    text: Question?
+    
+  acceptedAnswer:
+    type: Answer
+    n: 1
+
+Answer:
+  '@type': Answer
+  text: Your answer
     
