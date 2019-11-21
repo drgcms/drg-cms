@@ -4,7 +4,7 @@
 // It's not advisable to add code directly here, but if you do, it'll appear at the bottom of the
 // the compiled file.
 //
-//= require jquery2
+//= require jquery3
 //= require drg_cms/jquery-migrate
 //= require jquery_ujs
 //= require drg_cms/drg_cms
