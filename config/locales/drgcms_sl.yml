@@ -61,7 +61,7 @@ sl:
     form_error: Napaka pri branju forme #{form_name}
     img_large: Klik za večjo sliko
     no_class: Class %{class} ni definiran!
-    img_alt_not_present: Vse slike morajo imeti vpisano nadomestno besedilo    
+    img_alt_not_present: Vse slike v vsebini morajo imeti vpisano nadomestno besedilo    
 
     edit: Urejanje
     show: Prikaz

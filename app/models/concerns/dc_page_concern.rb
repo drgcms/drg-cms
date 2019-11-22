@@ -97,7 +97,7 @@ end
 # alt attribute pressent.
 ######################################################################
 def validate_images_alt_present
-  errors.add('body', 'drgcms.img_alt_not_present') unless DcPage.images_alt_present?(self.body)
+  errors.add('body', I18n.t('drgcms.img_alt_not_present')) unless DcPage.images_alt_present?(self.body)
 end
 
 protected

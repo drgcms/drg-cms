@@ -61,7 +61,7 @@ en:
     form_error: Error loading form #{form_name}
     img_large: Click for larger image
     no_class: Class %{class} not defined!
-    img_alt_not_present: All images must have alternative text entered
+    img_alt_not_present: All images in body must have alternative text entered
     
     edit: Edit
     show: Prikaz
