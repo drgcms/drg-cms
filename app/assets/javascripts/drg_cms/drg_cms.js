@@ -169,7 +169,7 @@ process_json_result = function(json) {
       operation = key;
       what = '';
     }
-//    
+//  
     switch (operation) {
     // update field 
     case 'record':
@@ -219,6 +219,9 @@ process_json_result = function(json) {
     case 'window':
       w = window.open(val, what);
       w.focus();        
+      break;
+    case 'eval':
+      eval (val);
       break;
     case 'reload':
       location.reload(); 
