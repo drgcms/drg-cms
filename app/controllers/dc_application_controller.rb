@@ -534,11 +534,11 @@ def dc_render_ajax(opts)
     end
     key << "_#{opts[:div]}#{opts[:class]}"
   else
-    p 'Error: dc_render_ajax. Operation is not set!' if opts[:operation].nil?
+    logger.error 'Error: dc_render_ajax. Operation is not set!' if opts[:operation].nil?
     key = "#{opts[:operation]}_"
   end
   result[key] = opts[:value] || opts[:url] || ''
-  render plain: result.to_json
+  render json: result
 end
 
 ########################################################################
