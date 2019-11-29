@@ -10,14 +10,17 @@ Organization:
   legalName: 
     type: String
     text: Organization legal name
+  @id: 
+    type: String
+    text: https://www.example.com
 
   url: 
     type: String
-    text: http://www.example.com
+    text: https://www.example.com
 
   logo: 
     type: String
-    text: http://www.example.com/logo.jpg
+    text: https://www.example.com/logo.jpg
 
   foundingDate: 
     type: String
