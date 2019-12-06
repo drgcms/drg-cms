@@ -29,6 +29,8 @@ module DrgcmsFormFields
 # * +name:+ field name (required)
 # * +type:+ text_autocomplete (required)
 # * +table+ Collection (table) name. When defined search must contain field name
+# * +with_new+ Will add an icon for shortcut to add new document to collection
+# * +not_id+ Field value represent value not an id. Field will save entered value when not selected wit autocomplete.
 # * +search:+ Search may consist of three parameters from which are separated either by dot (.) 
 #   * search_field_name; when table option is defined search must define field name which will be used for search query
 #   * collection_name.search_field_name; Same as above except that table options must be ommited.
@@ -84,7 +86,7 @@ def render
   end
 # Found value to be written in field. If field is not found write out value.
   if value
-    record = t.find(value)
+    record = t.find(value) unless @yaml['not_id'] # don't if it's is not an id
     value_displayed = record ? record.send(ret_name) : value
   end
 # return if readonly
@@ -104,7 +106,15 @@ def render
              style: "vertical-align: top;", 'data-table' => @yaml['with_new'] )    
   end
   @html << @parent.hidden_field(record, @yaml['name'], value: value)        # actual value will be in hidden field
-# JS stuff    
+# JS stuff
+# allow unselected values on not_id: true option
+  not_id_code = %Q[
+if (ui.item == null) {  
+$("##{record}_#{@yaml['name']}").val($("##{record}__#{@yaml['name']}").val() );
+return;
+}
+] if @yaml['not_id']             
+#  
   @js << <<EOJS
 $(document).ready(function() {
   $("##{record}_#{_name}").autocomplete( {
@@ -122,7 +132,9 @@ $(document).ready(function() {
       });
     },
     change: function (event, ui) { 
+      #{not_id_code}
       $("##{record}_#{@yaml['name']}").val(ui.item.id);
+      
     },
     minLength: 2
   });

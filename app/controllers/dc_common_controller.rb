@@ -55,7 +55,7 @@ def autocomplete
   a = if params['search'].match(/\./)
     name, method = params['search'].split('.')
     table.send(method, params['input']).inject([]) do |r,v|
-      r << { label: v[0], value: v[0], id: v[1].to_s }
+      r << { label: v[0], value: v[0], id: (v[1] || v[0]).to_s }
     end
 # simply search which will search and return field_name defined in params['search']
   else
