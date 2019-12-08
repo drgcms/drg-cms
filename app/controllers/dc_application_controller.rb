@@ -106,6 +106,7 @@ end
 ##########################################################################
 def set_page_title()
   @page_title = @page.title.blank? ? @page.subject : @page.title
+  dc_add_meta_tag(:name, 'description', @page.meta_description)
 end
 
 ########################################################################
@@ -369,6 +370,7 @@ def dc_process_default_request()
   end
   dc_set_options @design.params if @design
   dc_set_options @page.params
+  dc_add_json_ld(@page.get_json_ld)
 # Add edit menu
   if session[:edit_mode] > 0
     session[:site_id]         = @site.id

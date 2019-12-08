@@ -10,7 +10,8 @@ Organization:
   legalName: 
     type: String
     text: Organization legal name
-  @id: 
+    
+  '@id': 
     type: String
     text: https://www.example.com
 

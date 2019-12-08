@@ -1376,12 +1376,11 @@ end
 #######################################################################
 def dc_get_seo_meta_tags()
   html = ''
-  html << "<link rel=\"canonical\" href=\"#{@page.canonical_link}\">\n" if @page and !@page.canonical_link.blank?
-  if  @meta_tags
-    html << @meta_tags.inject('') do |r, hash|
-      r << "<meta #{hash.first} content=\"#{hash.last}\">\n"
-    end
-  end
+  html << "<link rel=\"canonical\" href=\"#{@page.canonical_link}\">\n  " unless @page&.canonical_link.blank?
+
+  html << @meta_tags.inject('') do |r, hash|
+    r << "<meta #{hash.first} content=\"#{hash.last}\">\n  "
+  end if @meta_tags
   html.html_safe
 end
 
