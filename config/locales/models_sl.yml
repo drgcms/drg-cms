@@ -127,7 +127,7 @@ sl:
       dc_poll:
         tabletitle: Ankete
         choices4_operation: 'Poženi program:poll_submit,Povezava:link'
-        choices4_display: 'Od zgoraj-navzdol:td,Od leve na desno:lr'
+        choices4_display: 'Zgoraj:td,Levo:lr,Znotraj:in'
         tab1: Podatki
         tab2: Forma
         tab3: Vrstice
@@ -137,7 +137,7 @@ sl:
         sub_text: Kratek opis
         operation: Operacija
         parameters: Parametri
-        display: Prikaz
+        display: Napis
         css: CSS
         valid_from: Velja od
         valid_to: Velja do
@@ -650,7 +650,7 @@ sl:
         sub_text: Kratek opis ankete
         operation: Operacija, ki se izvede ob kliku na izbiro
         parameters: Dodatni parametri za operacijo
-        display: Kako so posamezni podatki postavljeni na obrazcu
+        display: Postavitev napisa glede na vpisno polje
         css: CSS samo za to anketo
         valid_from: Anketa je veljavna od
         valid_to: Anketa je veljavna do

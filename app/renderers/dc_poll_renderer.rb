@@ -82,13 +82,18 @@ def do_one_item(poll, yaml)
     key = "p_#{yaml['name']}"
     params[key] = yaml['default'] unless params[key]
   end
+# Label as placeholder
+  if poll.display == 'in'
+    yaml['html'] ||= {}
+    yaml['html']['placeholder'] = text
+  end
 # create form_field object and retrieve html code
   clas_string = yaml['type'].camelize
   field_html = if DrgcmsFormFields.const_defined?(clas_string) 
     clas = DrgcmsFormFields.const_get(clas_string)
-    o = clas.new(@parent, @record, yaml).render
+    field = clas.new(@parent, @record, yaml).render
 #TODO collect all javascript and add it at the end
-    o.html + (o.js.size > 0 ? @parent.javascript_tag(o.js) : '')
+    field.html + (field.js.size > 0 ? @parent.javascript_tag(field.js) : '')
   else # litle error string
     "Error: Code for field type #{yaml['type']} not defined!"
   end
@@ -114,12 +119,15 @@ def do_one_item(poll, yaml)
 # submit and link tag 
     clas = yaml['type'].match(/submit_tag/) ? '' : 'dc-link-submit'
     html << "<span class='#{clas} dc-animate'>#{field_html}#{yaml['separator']}</span>"
-# other elements
+# other fields
   else
-    html << if poll.display == 'lr'
+    html << case
+      when poll.display == 'lr' then
       "<div class='row-div'><div class='dc-form-label poll-data-text #{yaml['class']}'>#{text}</div><div class='dc-form-field poll-data-field #{yaml['class']}'>#{field_html}</div></div>\n"
-    else
+      when poll.display == 'tb' then
       "<div class='poll-data-text #{yaml['class']}'>#{text}</div><div class='poll-data-field #{yaml['class']}'>#{field_html}#{yaml['separator']}</div>\n"
+      else
+      "<div class='poll-data-field #{yaml['class']}'>#{field_html}#{yaml['separator']}</div>\n"
     end    
   end
 end

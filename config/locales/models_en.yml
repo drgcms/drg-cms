@@ -124,7 +124,7 @@ en:
       dc_poll:
         tabletitle: Polls
         choices4_operation: 'Submit poll:poll_submit,Link:link'
-        choices4_display: 'Top-Down:td,Left-Right:lr'
+        choices4_display: 'Top:td,Left:lr,Inside:in'
         tab1: Base
         tab2: Form
         tab3: Items
@@ -135,7 +135,7 @@ en:
         sub_text: Short description
         operation: Operation
         parameters: Parameters
-        display: Display
+        display: Label
         css: CSS
         valid_from: Valid from
         valid_to: Valid to
@@ -644,7 +644,7 @@ en:
         sub_text: Short description of the poll
         operation: Operation performed on submit
         parameters: Aditional parameters for operation
-        display: Select how fields are positioned on form
+        display: How label is positioned related to input field
         css: CSS specific to this poll
         valid_from: Pole is valid from
         valid_to: Pole is valid to

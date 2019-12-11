@@ -128,7 +128,7 @@ def dc_find_form_file(form_file)
     f = "#{path}/#{form_file}.yml"
     return f if File.exist?(f) and (form_path.nil? or path.to_s.match(/\/#{form_path}\//i))
   end
-  p "Form file #{form_file} not found!"
+  logger.error "Form file #{form_file} not found!"
   nil
 end
 
@@ -142,7 +142,7 @@ end
 #   return dc_render_404('Site') unless site
 ########################################################################
 def dc_render_404(where_the_error_is=nil)
-  logger.info("Error 404;#{request.env['REQUEST_URI']};#{request.referer};#{where_the_error_is}")
+  logger.info("Error 404;#{request.env['REQUEST_URI'] rescue ''};#{request.referer};#{where_the_error_is}")
   render(file: Rails.root.join('public/404.html'), status: 404)
 end
 
