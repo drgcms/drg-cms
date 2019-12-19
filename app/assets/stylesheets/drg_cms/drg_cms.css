@@ -647,6 +647,37 @@ padding: 5px 0;
 border-top: 2px solid #ddd;
 }
 
+/*** CMS toggle button */
+.cms-toggle {
+  z-index: 100000;
+  position: fixed;
+  top: 0; left: 0;
+  padding: 4px;
+  color: #fff;
+  background-color: #000;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.cms-toggle:hover {
+  color: #000;
+  background-color: #fff;
+  cursor: pointer;
+}
+
+.cms-toggle.mode-1:before {
+  font-family: 'FontAwesome';
+  font-size: 1rem;
+  content: '\f06e\20';
+  color: lightskyblue;
+}
+.cms-toggle.mode-2:before {
+  font-family: 'FontAwesome';
+  font-size: 1rem;
+  content: '\f044\20';
+  color: lightcoral;
+}
+
 #cmsedit-div {
 font-family: helvetica;
 font-size: 13px;

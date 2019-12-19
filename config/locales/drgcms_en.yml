@@ -63,8 +63,9 @@ en:
     no_class: Class %{class} not defined!
     img_alt_not_present: All images in body must have alternative text entered
     
+    toggle_cms: Toggle CMS edit/view mode
     edit: Edit
-    show: Prikaz
+    show: Show
     new: New
     sort: Sort
     filter: Filter

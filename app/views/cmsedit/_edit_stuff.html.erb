@@ -1,4 +1,4 @@
-
+<div class="cms-toggle mode-<%= session[:edit_mode] %>" title="<%= t('drgcms.toggle_cms')%>">CMS</div>
 <div id="cmsedit-div">
   <%= link_to('CMS', controller: 'dc_common', action: 'toggle_edit_mode', return_to: request.url) %>
   <% if session[:edit_mode] > 1 %>
@@ -22,6 +22,7 @@
               {controller: 'cmsedit', action: 'edit', table: 'dc_site', id: @site._id}, target: 'iframe_cms') %>
         <% end %>
         <b>&nbsp; | &nbsp; </b>
+        
         <%= link_to( fa_icon('compress lg', class: "dc-animate", title: t('drgcms.minimize')), '#',
             onclick: "$('#iframe_cms').height(1); return false;" ) %>
 
@@ -31,13 +32,6 @@
         <%= link_to( fa_icon('refresh lg', class: "dc-animate", title: t('drgcms.reload')), '#',
             onclick: "document.location.reload(true); return false;")  %>
         <b>&nbsp; | &nbsp; </b>
-        
-  <% if false %>     
-        <%= select('record', 'select', dc_choices4_cmsmenu ) %>
-        
-        <%= link_to( fa_icon('bars lg', class: "dc-animate", title: t('drgcms.edit_selected')), '#',
-            onclick: "$('#iframe_cms').attr('src', $('#record_select').val() ); return false;")  %>
-  <% end %>
 
         <%= link_to( fa_icon('copy lg', class: "dc-animate", title: "#{t('drgcms.doc_paste_title')}"),
             {controller: 'dc_common', action: 'paste_clipboard'}, target: 'iframe_cms') %>
@@ -61,16 +55,3 @@
   
   <% end %>
 </div>
-
-
-<% if false %>
-<%= javascript_tag do %>
-// 
-$('#cmsedit-edit-button').click(function() {
-  $('#iframe_cms').attr('src', $('#record_select').val() );
-});
-$('#record_select').change( function(e) {
-  $('#iframe_cms').attr('src', e.target.value );
-});
-<% end %>
-<% end %>

@@ -28,6 +28,7 @@
  *******************************************************************/
 $.getUrlParam = function(name) {
   var results = new RegExp('[\\?&]' + name + '=([^&#]*)').exec(window.location.href);
+  if (results == null) return null;
   return results[1] || 0;
 };
 
@@ -276,6 +277,13 @@ $(document).ready( function() {
 //    select_first_input_field('.dc-form');
   }
 */
+ /*******************************************************************
+  * It will scroll display to ypos if return_to_ypos parameter is present
+  *******************************************************************/
+  if (window.location.href.match(/return_to_ypos=/))
+  {
+    window.scrollTo(0, $.getUrlParam('return_to_ypos'));
+  }
   
  /*******************************************************************
   * Register ad clicks
@@ -285,6 +293,17 @@ $(document).ready( function() {
     return true;
   });
   
+ /*****************************************************************
+ * Toggle CMS mode. When clicked on left 30 pixels, window will be scrolled approximately 
+ * to the position wher toggle was clicked. When clicked from pixel 31 and on it will
+ * stay on the top of window.
+ ******************************************************************/  
+  $('.cms-toggle').bind('click', function(e) {
+    var url = '/dc_common/toggle_edit_mode?return_to=' + window.location.href;
+    if (e.pageX < 30) url = url + '&return_to_ypos=' + e.pageY ;
+    window.location.href = url;
+  });
+ 
  /*******************************************************************
   * Popup or close CMS edit menu on icon click
   *******************************************************************/

@@ -63,6 +63,7 @@ sl:
     no_class: Class %{class} ni definiran!
     img_alt_not_present: Vse slike v vsebini morajo imeti vpisano nadomestno besedilo    
 
+    toggle_cms: Preklopi med CMS urejanjem in prikazom
     edit: Urejanje
     show: Prikaz
     new: Dodaj

@@ -92,8 +92,21 @@ def toggle_edit_mode
   if session[:edit_mode] < 1 
     dc_render_404 
   else
+# if return_to_ypos parameter is present it will forward it and thus scroll to
+# aproximate position it was when toggle was clicked
     session[:edit_mode] = (session[:edit_mode] == 1) ? 2 : 1
-    redirect_to params[:return_to]
+    uri = Rack::Utils.parse_nested_query(request.url)
+# it parses only on & so first (return_to) parameter also contains url
+    url = uri.first.last
+    if (i = url.index('?return_to_ypos')).to_i > 0
+      url = url[0,i]
+    end 
+# offset CMS menu
+    if (ypos = uri['return_to_ypos'].to_i) > 0
+      ypos += session[:edit_mode] == 2 ? 250 : -250
+    end
+    url << "?return_to_ypos=#{ypos}"
+    redirect_to url
   end
 end
 
