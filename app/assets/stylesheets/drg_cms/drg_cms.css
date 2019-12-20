@@ -649,14 +649,16 @@ border-top: 2px solid #ddd;
 
 /*** CMS toggle button */
 .cms-toggle {
-  z-index: 100000;
+  z-index: 1000000;
   position: fixed;
-  top: 0; left: 0;
+  top: 1px; left: 1px;
   padding: 4px;
   color: #fff;
   background-color: #000;
   font-weight: bold;
-  font-size: 16px;
+  font-size: 14px;
+  box-shadow: 2px 2px 6px #666;
+  border-radius: 3px;
 }
 
 .cms-toggle:hover {
@@ -667,19 +669,17 @@ border-top: 2px solid #ddd;
 
 .cms-toggle.mode-1:before {
   font-family: 'FontAwesome';
-  font-size: 1rem;
   content: '\f06e\20';
   color: lightskyblue;
 }
 .cms-toggle.mode-2:before {
   font-family: 'FontAwesome';
-  font-size: 1rem;
-  content: '\f044\20';
+  content: '\f040\20';
   color: lightcoral;
 }
 
 #cmsedit-div {
-font-family: helvetica;
+font-family: Arial, sans-serif;
 font-size: 13px;
 line-height: 13px;
 }

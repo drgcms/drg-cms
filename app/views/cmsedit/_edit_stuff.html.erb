@@ -1,5 +1,5 @@
-<div class="cms-toggle mode-<%= session[:edit_mode] %>" title="<%= t('drgcms.toggle_cms')%>">CMS</div>
 <div id="cmsedit-div">
+  <div class="cms-toggle mode-<%= session[:edit_mode] %>" title="<%= t('drgcms.toggle_cms')%>">CMS</div>
   <%= link_to('CMS', controller: 'dc_common', action: 'toggle_edit_mode', return_to: request.url) %>
   <% if session[:edit_mode] > 1 %>
     <div class="cmsedit-table cmsedit-top">
