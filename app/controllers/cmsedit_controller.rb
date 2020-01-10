@@ -615,18 +615,6 @@ end
 
 protected
 
-=begin
-########################################################################
-# Processes on_save_ok form directive. Data is saved to session for
-# safety reasons.
-########################################################################
-def process_on_save_ok
-  session[:on_save_ok_id]     = @record_id
-  session[:on_save_ok_commit] = params[:commit]
-  eval(params[:on_save_ok])
-end
-=end
-
 ########################################################################
 # Merges two forms when current form extends other form. Subroutine of read_drg_cms_form.
 # With a little help of https://www.ruby-forum.com/topic/142809 
