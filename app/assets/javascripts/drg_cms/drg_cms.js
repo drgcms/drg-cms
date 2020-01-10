@@ -722,8 +722,9 @@ element = $(this).find(':first').attr('id');
    });
    
 /*******************************************************************
-  * Resize result table columns
+  * Resize result table columns. For now an idea.
   *******************************************************************/
+ /*
    $( ".dc-result-header .spacer" )
   .mouseenter(function() {
     console.log("enter");
@@ -731,7 +732,7 @@ element = $(this).find(':first').attr('id');
   .mouseleave(function() {
     console.log("leave");
   });
-  
+*/  
  /*******************************************************************
   * number_field type entered
   *******************************************************************/
@@ -809,6 +810,27 @@ element = $(this).find(':first').attr('id');
         $(field).val( parseFloat(value).toFixed(decimals) );
       }
    });
+   
+ /*******************************************************************
+  * number_field type keypressed
+  *******************************************************************/
+  $('.dc-result-header .th i').hover( function() {
+//    old_th_icon = $(this).attr("class").split(/\s+/)[1];
+    old_sort_icon = '';
+    // save old sort icon    
+    $.each( $(this).attr("class").split(/\s+/), 
+      function(index, item) { if (item.match('sort')) { old_sort_icon = item}; }
+    );
+    console.log(old_sort_icon);
+    $(this).removeClass(old_sort_icon).addClass('fa-filter');
+    var header = $(this).closest('.th')
+    console.log(header.attr("data-name") );
+
+  }, function(){
+    console.log($(this).attr("class"));
+    $(this).removeClass('fa-filter').addClass(old_sort_icon);
+  });
+  
 });
 
 /*******************************************************************
