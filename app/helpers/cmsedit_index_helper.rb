@@ -168,7 +168,7 @@ def dc_div_filter()
     name = f.match(' as ') ? f.split(' ').first : f
 # like another field on the form
     if f.match(' like ')
-      a = f.split(' ')
+      a    = f.split(' ')
       name = a.first
       f    = a.last
     end
@@ -195,6 +195,22 @@ def dc_div_filter()
     </div>
   </div>
 EOT
+  html.html_safe
+end
+
+############################################################################
+# Creates popup div for setting filter on result set header.
+############################################################################
+def dc_filter_popup()
+  html = %Q[<div class="filter-popup" style="display: none;">
+  <div>#{t('drgcms.filter_set')}</div>
+  <ul>]
+  url = url_for(table: @form['table'],form_name: params['form_name'], filter: :on, filter_input: 1, action: :index, controller: :cmsedit)
+  t('drgcms.choices4_filter_operators').chomp.split(',').each do |operator_choice|
+    caption,choice = operator_choice.split(':') 
+    html << %Q[<li data-operator="#{choice}" data-url="#{url}">#{caption}</li>]
+  end 
+  html << "</ul></div>"
   html.html_safe
 end
 
@@ -319,9 +335,7 @@ def dc_header_for_result()
   if (columns = @form['result_set']['columns'])
     columns.each do |k,v|
       session[:form_processing] = "result_set:columns: #{k}=#{v}"
-#      
-      th = %Q[<div class="th" style="width: #{v['width'] || '15%'};text-align: #{v['align'] || 'left'};" data-name="#{v['name']}" data-table="#{params[:table]}"]
-      v  = {'name' => v} if v.class == String      
+      th = %Q[<div class="th" style="width: #{v['width'] || '15%'};text-align: #{v['align'] || 'left'};" data-name="#{v['name']}"]
       caption = v['caption'] || t("helpers.label.#{@form['table']}.#{v['name']}")
 # no sorting when embedded documents or custom filter is active 
       sort_ok = @form['result_set'].nil? || (@form['result_set'] && @form['result_set']['filter'].nil?)

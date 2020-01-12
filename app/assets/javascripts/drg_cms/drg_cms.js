@@ -812,25 +812,54 @@ element = $(this).find(':first').attr('id');
    });
    
  /*******************************************************************
-  * number_field type keypressed
+  * Result header sort icon is hoverd. Change background icon to filter.
   *******************************************************************/
   $('.dc-result-header .th i').hover( function() {
-//    old_th_icon = $(this).attr("class").split(/\s+/)[1];
     old_sort_icon = '';
-    // save old sort icon    
+    // save old sort icon and replace it with filter icon   
     $.each( $(this).attr("class").split(/\s+/), 
       function(index, item) { if (item.match('sort')) { old_sort_icon = item}; }
     );
-    console.log(old_sort_icon);
     $(this).removeClass(old_sort_icon).addClass('fa-filter');
-    var header = $(this).closest('.th')
-    console.log(header.attr("data-name") );
-
+// bring back old sort icon
   }, function(){
-    console.log($(this).attr("class"));
     $(this).removeClass('fa-filter').addClass(old_sort_icon);
   });
+
+/*******************************************************************
+  * Result header sort icon is clicked. Display filter menu for the field.
+  *******************************************************************/
+  $('.dc-result-header .th i').click( function(e) {
+    e.preventDefault();
+    // additional click will close dialog when visible
+    if ($('.filter-popup').is(':visible')) {
+      $('.filter-popup').hide();
+      return;
+    }
+    // retrieve name of current field and set it in popup
+    var header = $(this).closest('.th');
+    var field_name = header.attr("data-name");    
+    $('.filter-popup').attr('data-name', field_name);
+    // change popup position and show
+    $('.filter-popup').css({'top':e.pageY+5,'left':e.pageX, 'position':'absolute'});
+    $('.filter-popup').show();    
+  });
   
+/*******************************************************************
+  * Filter operation is clicked on filter popup. Retrieve data and call
+  * filter on action.
+  *******************************************************************/
+  $('.filter-popup li').click( function(e) {
+    var url      = $(this).data('url')
+    var operator = $(this).data('operator');
+    var parent   = $(this).closest('.filter-popup')
+    var field_name = parent.data("name");
+    
+    url = url + '&filter_field=' + field_name + '&filter_oper=' + operator;
+    console.log(url);
+    window.location.href = url;
+  });
+
 });
 
 /*******************************************************************
@@ -849,9 +878,7 @@ $(document).keydown( function(e) {
 });
 
 /*******************************************************************
- * Catch ctrl+s key pressed and fire save form event. I press ctrl+s
- * almost every minute. That was a lesson learned years ago when I lost
- * few hours of work on computer lockup ;-(
+
  *******************************************************************
 $(document).onmousedown( function(e) {
   mouseDown = true;
