@@ -144,8 +144,13 @@ def self.get_filter_field(parent)
   klas = DrgcmsFormFields::const_get(klas_string) rescue nil
   return '' if klas.nil?
 # return data from object and create html code to display field
-  object = klas.new(parent, nil, field).render
-  js     = object.js
+  object = klas.new(parent, nil, field).render rescue nil
+  # Error. Forget filter and return 
+  if object.nil?
+    parent.session[ parent.form['table'] ][:filter] = nil
+    return ''
+  end
+  js = object.js
   "<span class=\"filter_field\" data-url=\"#{url}\">#{object.html} " <<
     parent.fa_icon('filter lg', class: 'record_filter_field_icon dc-link-icon dc-animate') <<
     (js.size > 2 ? parent.javascript_tag(js) : '') << '</span>'
