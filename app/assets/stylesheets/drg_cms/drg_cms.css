@@ -80,7 +80,7 @@ table {
 */
 
 body {
-font-family: helvetica;
+font-family: helvetica, sans-serif, arial;
 font-size: 12px;
 margin: 0px;
 vertical-align: middle;
@@ -92,7 +92,7 @@ color: #222;
 padding: 6px 4px;
 border: solid 2px #ddd;
 border-radius: 2px;
-font: 14px helvetica;
+font: 14px helvetica, sans-serif, arial;
 max-width: 100%;
 }
 
@@ -652,7 +652,7 @@ border-top: 2px solid #ddd;
   z-index: 1000000;
   position: fixed;
   top: 4px; left: 4px;
-  padding: 5px;
+  padding: 4px;
   color: #fff;
   background-color: #000;
   font-weight: bold;
