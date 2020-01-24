@@ -10,6 +10,9 @@ permissions:
 
 index:
   filter: name, id as text_field
+  select_fields: id,name
+  deny_fields: body,email
+  
   actions: standard
   
   actions:

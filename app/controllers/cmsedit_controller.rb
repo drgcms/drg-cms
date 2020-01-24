@@ -82,201 +82,6 @@ before_action :dc_reload_patches if Rails.env.development?
 layout 'cms'
 
 ########################################################################
-# Will check and set sorting options for current result set. Subroutine of index method.
-########################################################################
-def check_sort_options() #:nodoc:
-  table_name = @tables.first[1]
-  old_sort = session[table_name][:sort].to_s
-  sort, direction = old_sort.split(' ')
-# sort is requested
-  if params['sort']
-    # reverse sort if same selected
-    if params['sort'] == sort
-      direction = (direction == '1') ? '-1' : '1'
-    end
-    direction ||= 1
-    sort = params[:sort]
-    session[table_name][:sort] = "#{params['sort']} #{direction}"
-    session[table_name][:page] = 1
-  end
-  @records.sort( sort => direction.to_i ) if session[table_name][:sort]
-  params['sort'] = nil # otherwise there is problem with other links
-end
-
-########################################################################
-# Set aditional filter options when filter is defined by filter method in control object.
-########################################################################
-def user_filter_options(model) #:nodoc:
-  table_name = @tables.first[1]
-  if session[table_name]
-    DcFilter.get_filter(session[table_name][:filter]) || model
-  else
-    model
-  end
-end
-
-########################################################################
-# Will set session[table_name][:filter] and save last filter settings to session.
-# subroutine of check_filter_options.
-########################################################################
-def set_session_filter(table_name)
-  if params[:filter] == 'off' # clear all values
-    session[table_name][:filter] = nil
-    return
-  end
-
-  filter_value = if params[:filter_value].nil?
-# NIL indicates that no filtering is needed        
-    '#NIL'
-  else     
-    if params[:filter_value].class == String and params[:filter_value][0] == '@'
-# Internal value. Remove leading @ and evaluate expression
-      expression = DcInternals.get(params[:filter_value])
-      eval(expression) rescue nil
-    else
-# No filter when empty      
-      params[:filter_value] == '' ? '#NIL' : params[:filter_value] 
-    end
-  end
-# if filter field parameter is omitted then just set filter value
-  session[table_name][:filter] =
-  if params[:filter_field].nil?
-    saved = YAML.load(session[table_name][:filter])
-    saved['value'] = filter_value
-    saved.to_yaml
-  else 
-# As field defined. Split name and alternative input field
-    field = if params[:filter_field].match(' as ')
-      params[:filter_input] = params[:filter_field].split(' as ').last.strip
-      params[:filter_field].split(' as ').first.strip
-    else
-      params[:filter_field]
-    end
-#    
-    {'field'     => field, 
-     'operation' => params[:filter_oper], 
-     'value'     => filter_value,
-     'input'     => params[:filter_input],
-     'table'     => table_name }.to_yaml
-  end
-# must be. Otherwise kaminari includes parameter on paging
-   params[:filter]        = nil 
-   params[:filter_id]     = nil 
-   params[:filter_oper]   = nil  
-   params[:filter_input]  = nil 
-   params[:filter_field]  = nil 
-end
-
-########################################################################
-# Will check and set current filter options for result set. Subroutine of index method.
-########################################################################
-def check_filter_options() #:nodoc:
-  table_name = @tables.first[1]
-  model      = @tables.first[0]
-  session[table_name] ||= {}
-# process page
-  session[table_name][:page] = params[:page] if params[:page]
-# new filter is applied
-  if params[:filter]
-    set_session_filter(table_name)
-    session[table_name][:page] = 1
-  end
-# if data model has field dc_site_id ensure that only documents which belong to the site are selected.
-  site_id = dc_get_site._id if dc_get_site
-# dont't filter site if no dc_site_id field or user is ADMIN
-  site_id = nil if !model.method_defined?('dc_site_id') or dc_user_can(DcPermission::CAN_ADMIN)
-  site_id = nil if session[table_name][:filter].to_s.match('dc_site_id')
-#  
-  if @records = DcFilter.get_filter(session[table_name][:filter])
-    @records = @records.and(dc_site_id: site_id) if site_id
-  else
-    @records = if site_id
-      model.where(dc_site_id: site_id)
-    else
-      model
-    end
-  end
-=begin  
-# TODO Use only fields requested. Higly experimental but necessary in some scenarios
-  if (columns = @form['result_set']['columns'])
-    cols = []
-    columns.each { |k,v| cols << v['name'] }
-    p '*',cols,'*'
-    @records = @records.only(cols)
-  end
-=end  
-# pagination if required
-  per_page = (@form['result_set']['per_page'] || 30).to_i
-  @records = @records.page(session[table_name][:page]).per(per_page) if per_page > 0
-end
-
-########################################################################
-# Process index action for normal collections.
-########################################################################
-def process_collections #:nodoc
-# If result_set is not defined on form, then it will fail. :return_to should know where to go
-  if @form['result_set'].nil?
-    process_return_to(params[:return_to] || 'reload') 
-    return true
-  end
-# for now enable only filtering of top level documents
-  if @tables.size == 1 
-    check_filter_options()
-    check_sort_options()
-  end  
-# result set is defined by filter method in control object
-  if @form['result_set']['filter']
-    if respond_to?(@form['result_set']['filter'])
-      @records = send @form['result_set']['filter']
-# something iz wrong. flash[] should have explanation.
-      if @records.class == FalseClass
-        @records = []
-        render(action: :index)
-        return true
-      end
-# pagination but only if not already set
-      unless (@form['table'] == 'dc_memory' or @records.options[:limit])
-        per_page = (@form['result_set']['per_page'] || 30).to_i
-        @records = @records.page(params[:page]).per(per_page) if per_page > 0
-      end
-    else
-      Rails.logger.error "Error: result_set:filter: #{@form['result_set']['filter']} not found in controls!"
-    end
-  else
-    if @tables.size > 1 
-      rec = @tables.first[0].find(@ids.first)          # top most document.id
-      1.upto(@tables.size - 2) { |i| rec = rec.send(@tables[i][1].pluralize).find(@ids[i]) }  # find embedded childrens by ids
-# TO DO. When field name is different then pluralized class name. Not working yet.
-      embedded_field_name = @tables.last[0] ? @tables.last[1].pluralize : @tables.last[1]
-      @records = rec.send(embedded_field_name)   # current embedded set
-# sort by order if order field is present in model
-      if @tables.last[1].classify.constantize.respond_to?(:order)
-        @records = @records.order_by('order asc')
-      end
-    end
-  end
-  false
-end
-
-########################################################################
-# Process index action for in memory data.
-########################################################################
-def process_in_memory #:nodoc
-  @records = []
-  # result set is defined by filter method in control object
-  if (method = @form['result_set']['filter'])
-    send(method) if respond_to?(method)    
-  end
-  # result set is defined by class method
-  if (klass_method = @form['result_set']['filter_method'])
-    _klass, method = klass_method.split('.')
-    klass = _klass.classify.constantize
-    @records = klass.send(method) if klass.respond_to?(method)
-  end 
-  false
-end
-
-########################################################################
 # Index action 
 ########################################################################
 def index
@@ -913,5 +718,216 @@ def save_data
   end
   saved
 end
+
+########################################################################
+# Will return commma separated data (field names) as hash. For usage 
+# in select_fields and deny_fields
+########################################################################
+def separated_to_hash(data)
+  data.chomp.split(',').inject([]) {|r,element| r << element.strip.downcase.to_sym }
+end
   
+########################################################################
+# Will process select_fields and deny_fields if specified
+########################################################################
+def process_select_and_deny_fields
+  if @form['result_set']['select_fields']
+    @records = @records.only( separated_to_hash(@form['result_set']['select_fields']) )
+  end
+# deny fields specified
+  if @form['result_set']['deny_fields']
+    @records = @records.without( separated_to_hash(@form['result_set']['deny_fields']) )
+  end
+end
+
+########################################################################
+# Will check and set sorting options for current result set. Subroutine of index method.
+########################################################################
+def check_sort_options() #:nodoc:
+  table_name = @tables.first[1]
+  old_sort = session[table_name][:sort].to_s
+  sort, direction = old_sort.split(' ')
+# sort is requested
+  if params['sort']
+    # reverse sort if same selected
+    if params['sort'] == sort
+      direction = (direction == '1') ? '-1' : '1'
+    end
+    direction ||= 1
+    sort = params[:sort]
+    session[table_name][:sort] = "#{params['sort']} #{direction}"
+    session[table_name][:page] = 1
+  end
+  @records.sort( sort => direction.to_i ) if session[table_name][:sort]
+  params['sort'] = nil # otherwise there is problem with other links
+end
+
+########################################################################
+# Set aditional filter options when filter is defined by filter method in control object.
+########################################################################
+def user_filter_options(model) #:nodoc:
+  table_name = @tables.first[1]
+  if session[table_name]
+    DcFilter.get_filter(session[table_name][:filter]) || model
+  else
+    model
+  end
+end
+
+########################################################################
+# Will set session[table_name][:filter] and save last filter settings to session.
+# subroutine of check_filter_options.
+########################################################################
+def set_session_filter(table_name)
+  if params[:filter] == 'off' # clear all values
+    session[table_name][:filter] = nil
+    return
+  end
+
+  filter_value = if params[:filter_value].nil?
+# NIL indicates that no filtering is needed        
+    '#NIL'
+  else     
+    if params[:filter_value].class == String and params[:filter_value][0] == '@'
+# Internal value. Remove leading @ and evaluate expression
+      expression = DcInternals.get(params[:filter_value])
+      eval(expression) rescue nil
+    else
+# No filter when empty      
+      params[:filter_value] == '' ? '#NIL' : params[:filter_value] 
+    end
+  end
+# if filter field parameter is omitted then just set filter value
+  session[table_name][:filter] =
+  if params[:filter_field].nil?
+    saved = YAML.load(session[table_name][:filter])
+    saved['value'] = filter_value
+    saved.to_yaml
+  else 
+# As field defined. Split name and alternative input field
+    field = if params[:filter_field].match(' as ')
+      params[:filter_input] = params[:filter_field].split(' as ').last.strip
+      params[:filter_field].split(' as ').first.strip
+    else
+      params[:filter_field]
+    end
+#    
+    {'field'     => field, 
+     'operation' => params[:filter_oper], 
+     'value'     => filter_value,
+     'input'     => params[:filter_input],
+     'table'     => table_name }.to_yaml
+  end
+# must be. Otherwise kaminari includes parameter on paging
+   params[:filter]        = nil 
+   params[:filter_id]     = nil 
+   params[:filter_oper]   = nil  
+   params[:filter_input]  = nil 
+   params[:filter_field]  = nil 
+end
+
+########################################################################
+# Will check and set current filter options for result set. Subroutine of index method.
+########################################################################
+def check_filter_options() #:nodoc:
+  table_name = @tables.first[1]
+  model      = @tables.first[0]
+  session[table_name] ||= {}
+# process page
+  session[table_name][:page] = params[:page] if params[:page]
+# new filter is applied
+  if params[:filter]
+    set_session_filter(table_name)
+    session[table_name][:page] = 1
+  end
+# if data model has field dc_site_id ensure that only documents which belong to the site are selected.
+  site_id = dc_get_site._id if dc_get_site
+# dont't filter site if no dc_site_id field or user is ADMIN
+  site_id = nil if !model.method_defined?('dc_site_id') or dc_user_can(DcPermission::CAN_ADMIN)
+  site_id = nil if session[table_name][:filter].to_s.match('dc_site_id')
+#  
+  if @records = DcFilter.get_filter(session[table_name][:filter])
+    @records = @records.and(dc_site_id: site_id) if site_id
+  else
+    @records = if site_id
+      model.where(dc_site_id: site_id)
+    else
+      model
+    end
+  end
+# select only fields or deny fields specified
+  process_select_and_deny_fields
+# pagination if required
+  per_page = (@form['result_set']['per_page'] || 30).to_i
+  @records = @records.page(session[table_name][:page]).per(per_page) if per_page > 0
+end
+
+########################################################################
+# Process index action for normal collections.
+########################################################################
+def process_collections #:nodoc
+# If result_set is not defined on form, then it will fail. :return_to should know where to go
+  if @form['result_set'].nil?
+    process_return_to(params[:return_to] || 'reload') 
+    return true
+  end
+# for now enable only filtering of top level documents
+  if @tables.size == 1 
+    check_filter_options()
+    check_sort_options()
+  end  
+# result set is defined by filter method in control object
+  if @form['result_set']['filter']
+    if respond_to?(@form['result_set']['filter'])
+      @records = send @form['result_set']['filter']
+# something went wrong. flash[] should have explanation.
+      if @records.class == FalseClass
+        @records = []
+        render(action: :index)
+        return true
+      end
+      process_select_and_deny_fields           
+# pagination but only if not already set
+      unless (@form['table'] == 'dc_memory' or @records.options[:limit])
+        per_page = (@form['result_set']['per_page'] || 30).to_i
+        @records = @records.page(params[:page]).per(per_page) if per_page > 0
+      end
+    else
+      Rails.logger.error "Error: result_set:filter: #{@form['result_set']['filter']} not found in controls!"
+    end
+  else
+    if @tables.size > 1 
+      rec = @tables.first[0].find(@ids.first)          # top most document.id
+      1.upto(@tables.size - 2) { |i| rec = rec.send(@tables[i][1].pluralize).find(@ids[i]) }  # find embedded childrens by ids
+# TO DO. When field name is different then pluralized class name. Not working yet.
+      embedded_field_name = @tables.last[0] ? @tables.last[1].pluralize : @tables.last[1]
+      @records = rec.send(embedded_field_name)   # current embedded set
+# sort by order if order field is present in model
+      if @tables.last[1].classify.constantize.respond_to?(:order)
+        @records = @records.order_by('order asc')
+      end
+    end
+  end
+  false
+end
+
+########################################################################
+# Process index action for in memory data.
+########################################################################
+def process_in_memory #:nodoc
+  @records = []
+  # result set is defined by filter method in control object
+  if (method = @form['result_set']['filter'])
+    send(method) if respond_to?(method)    
+  end
+  # result set is defined by class method
+  if (klass_method = @form['result_set']['filter_method'])
+    _klass, method = klass_method.split('.')
+    klass = _klass.classify.constantize
+    @records = klass.send(method) if klass.respond_to?(method)
+  end 
+  false
+end
+
+
 end
