@@ -88,26 +88,24 @@ end
 ##########################################################################
 def toggle_edit_mode
   session[:edit_mode] ||= 0 
-# called without logged in  
-  if session[:edit_mode] < 1 
-    dc_render_404 
-  else
+# error when not logged in  
+  return dc_render_404 if session[:edit_mode] < 1 
 # if return_to_ypos parameter is present it will forward it and thus scroll to
 # aproximate position it was when toggle was clicked
-    session[:edit_mode] = (session[:edit_mode] == 1) ? 2 : 1
-    uri = Rack::Utils.parse_nested_query(request.url)
+  session[:edit_mode] = (session[:edit_mode] == 1) ? 2 : 1
+  uri = Rack::Utils.parse_nested_query(request.url)
 # it parses only on & so first (return_to) parameter also contains url
-    url = uri.first.last
-    if (i = url.index('?return_to_ypos')).to_i > 0
-      url = url[0,i]
-    end 
+  url = uri.first.last
+  if (i = url.index('return_to_ypos')).to_i > 0
+    url = url[0,i-1]
+  end 
 # offset CMS menu
-    if (ypos = uri['return_to_ypos'].to_i) > 0
-      ypos += session[:edit_mode] == 2 ? 250 : -250
-    end
-    url << "?return_to_ypos=#{ypos}"
-    redirect_to url
+  if (ypos = uri['return_to_ypos'].to_i) > 0
+    ypos += session[:edit_mode] == 2 ? 250 : -250
   end
+  url << (url.match(/\?/) ? '&' : '?')
+  url << "return_to_ypos=#{ypos}"
+  redirect_to url
 end
 
 ####################################################################
