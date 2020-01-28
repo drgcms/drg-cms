@@ -247,6 +247,15 @@ def dc_link_or_ajax_action(yaml, parms) #:nodoc:
 end
 
 ############################################################################
+# Calculates (blank) space required for actions when @record_footer is rendered 
+############################################################################
+def dc_actions_column_for_footer()
+  return '' unless @form['result_set']['actions']
+  ignore, code = dc_actions_column
+  code.html_safe
+end
+
+############################################################################
 # Determines actions and width of actions column
 ############################################################################
 def dc_actions_column()
