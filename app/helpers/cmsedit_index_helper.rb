@@ -251,8 +251,8 @@ end
 ############################################################################
 def dc_actions_column_for_footer()
   return '' unless @form['result_set']['actions']
-  ignore, code = dc_actions_column
-  code.html_safe
+  ignore, width = dc_actions_column
+  %Q[<div class="actions" style="width: #{width}px;"></div>].html_safe
 end
 
 ############################################################################
@@ -266,7 +266,7 @@ def dc_actions_column()
   actions.merge!(std_actions) if actions['standard']
 #  
   width = @form['result_set']['actions_width'] || 20*actions.size
-  [ actions, "<div class=\"actions\" style=\"width: #{width}px;\">" ] 
+  [ actions, width ] 
 end
 
 ############################################################################
@@ -276,7 +276,8 @@ def dc_actions_for_result(document)
   actions = @form['result_set']['actions']
   return '' if actions.nil? or @form['readonly']
 #  
-  actions, html = dc_actions_column()
+  actions, width = dc_actions_column()
+  html = %Q[<div class="actions" style="width: #{width}px;">]
   actions.each do |k,v|
     session[:form_processing] = "result_set:actions: #{k}=#{v}"
     next if k == 'standard' # ignore standard definition
@@ -332,8 +333,8 @@ end
 def dc_header_for_result()
   html = '<div class="dc-result-header">'
   if @form['result_set']['actions'] and !@form['readonly']
-    ignore, code = dc_actions_column()
-    html << code + '</div>'
+    ignore, width = dc_actions_column()
+    html << %Q[<div class="actions" style="width: #{width}px;"></div>]
   end
 # preparation for sort icon  
   sort_field, sort_direction = nil, nil
