@@ -58,6 +58,13 @@ def render
   record = record_text_for(@yaml['name'])
   @yaml['html'] ||= {}
   @yaml['html']['class'] = 'dc-number'
+  if @yaml['format'].class == String
+    format = @yaml['format']
+    @yaml['format'] = {}
+    @yaml['format']['decimal'] = format[1].blank? ? 2 : format[1].to_i
+    @yaml['format']['separator'] = format[2].blank? ? I18n.t('number.currency.format.separator') : format[2]
+    @yaml['format']['delimiter'] = format[3].blank? ? I18n.t('number.currency.format.delimiter') : format[3]
+  end
   @yaml['html']['data-decimal']   = @yaml.dig('format','decimal') || 2
   @yaml['html']['data-delimiter'] = @yaml.dig('format','delimiter') || I18n.t('number.currency.format.delimiter')
   @yaml['html']['data-separator'] = @yaml.dig('format','separator') || I18n.t('number.currency.format.separator')
