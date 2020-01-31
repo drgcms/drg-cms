@@ -12,8 +12,13 @@ def create_form_file
 #:TODO: find out how to prevent error when model class is not defined
   @file_name = file_name
   form_name = file_name #if formname.size == 0
-  @model = file_name.classify.constantize rescue nil
-  return (p "Model #{file_name.classify} not found! Aborting.") if @model.nil?
+  begin
+    @model = file_name.classify.constantize
+  rescue e
+    logger.error ([e.message]+e.backtrace).join($/)
+    @model = nil
+  end
+  return (p "Error loading #{file_name.classify} model! Aborting.") if @model.nil?
 #  
   yml = top_level_options + index_options + result_set_options + form_top_options + form_fields_options + localize_options
   create_file "app/forms/#{form_name}.yml", yml
