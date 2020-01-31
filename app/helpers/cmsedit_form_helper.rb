@@ -48,7 +48,7 @@ end
 # has value 2, back link will force readonly form. Value 1 or not set will result in
 # normal link.
 ############################################################################
-def dc_actions_for_form()
+def dc_actions_for_form(position)
 # create standard actions  
   std_actions = {' 1' => 'back', ' 2' => {'type' => 'submit', 'caption' => 'drgcms.save'},
                ' 3' => {'type' => 'submit', 'caption' => 'drgcms.save&back'} }
@@ -85,7 +85,7 @@ def dc_actions_for_form()
 # Sort so that standard actions come first
   actions = actions.to_a.sort {|x,y| x[0].to_s <=> y[0].to_s} 
 # Add spinner to the beginning
-  html = %Q[<span class="dc-spinner div-hidden">#{fa_icon('spinner lg spin')}</span><ul class="dc-menu">]
+  html = %Q[<span class="dc-spinner div-hidden">#{fa_icon('spinner lg spin')}</span><ul class="dc-menu #{position}">]
   
   actions.each do |element|
     session[:form_processing] = "form:actions: #{element}"
