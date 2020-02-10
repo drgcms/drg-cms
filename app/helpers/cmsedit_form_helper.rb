@@ -375,7 +375,7 @@ def dc_fields_for_form()
     tabs.each do |tab_name, tab_label| 
       html << "<li id=\"li_#{tab_name}\" data-div=\"#{tab_name.delete("\s\n")}\" class=\"dc-form-li"
       html << ' dc-form-li-selected' if first 
-      html << "\">#{t(tab_label, t_name(tab_label))}</li>" 
+      html << "\">#{t(tab_label, t_name(tab_label,tab_label))}</li>" 
       first = false
     end
     html << '</ul>'

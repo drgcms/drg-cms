@@ -98,6 +98,7 @@ def dc_render(renderer, opts={})
 # 
   opts[:edit_mode]  = session[:edit_mode] 
   opts[:editparams] = {}
+  
   opts = @options.merge(opts) # merge options with parameters passed on site, page, design ...
   opts.symbolize_keys!        # this makes lots of things easier
 # Create renderer object

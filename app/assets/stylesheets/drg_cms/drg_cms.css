@@ -80,7 +80,7 @@ table {
 */
 
 body {
-font-family: helvetica, sans-serif, arial;
+font-family: arial,sans-serif;
 font-size: 12px;
 margin: 0px;
 vertical-align: middle;
@@ -92,7 +92,7 @@ color: #222;
 padding: 6px 4px;
 border: solid 2px #ddd;
 border-radius: 2px;
-font: 14px helvetica, sans-serif, arial;
+font: 14px arial,sans-serif;
 max-width: 100%;
 }
 
@@ -1013,15 +1013,14 @@ background-color: transparent;
 
 }
 .filter-popup {
-  border: 2px solid #ccc;
   background-color: #fff;
+  box-shadow: 2px 2px 5px #666;
 }
 
 .filter-popup div {
-  padding: 4px;
+  padding: 5px 10px;
   text-align: center;
   text-transform: uppercase; 
-  border-bottom: 2px solid #ccc;
   background-color: #222;
   color: #fff;
 }
@@ -1031,7 +1030,7 @@ background-color: transparent;
 }
 
 .filter-popup li:hover {
-  background-color: #888;
+  background-color: #aaa;
   color: #fff;
   cursor: pointer;
 }
