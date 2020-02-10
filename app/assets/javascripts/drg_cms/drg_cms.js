@@ -747,44 +747,46 @@ element = $(this).find(':first').attr('id');
   /*******************************************************************
   * number_field type leaved
   *******************************************************************/
-   $('.dc-number').on('focusout', function(e) {
-//     format_number_field($(this));
-     
-     var decimals  = $(this).attr("data-decimal") || 2;
-     var delimiter = $(this).attr("data-delimiter") || '.';
-     var separator = $(this).attr("data-separator") || ',';
-     var currency  = $(this).attr("data-currency") || '';
-     var whole = this.value.split(separator)[0];
-     var dec   = this.value.split(separator)[1];
-// save value to hidden field which will be used for return 
-     var field = '#' + $(this).attr("id").slice(0,-1);
-     var value = this.value.replace(separator,'.');
+  $('.dc-number').on('focusout', function(e) {
+    var decimals  = $(this).attr("data-decimal") || 2;
+    var delimiter = $(this).attr("data-delimiter") || '.';
+    var separator = $(this).attr("data-separator") || ',';
+    var currency  = $(this).attr("data-currency") || '';
+    var val     = this.value;
+    // clear delimiters and replace separator with .
+    val = val.replace(delimiter,'');
+    val = val.replace(separator,'.');
+    val = parseFloat(val).toFixed(decimals);
+    var whole, dec, sign;
+    [whole,dec] = val.split('.');
 // remove negative sign and add at the end
-     var sign = whole.substr(0,1);
-     if (sign == '-') { 
-       whole = whole.substr(1,20);
-     } else { 
-       sign = '';
-     }
+    var sign = whole.substr(0,1);
+    if (sign == '-') { 
+      whole = whole.substr(1,20);
+    } else { 
+      sign = '';
+    }
+// save value to hidden field which holds return value
+    var field = '#' + $(this).attr("id").slice(0,-1);
+    $(field).val(val);
     
-     $(field).val( parseFloat(value).toFixed(decimals) );
-     
 // decimal part
-     if (dec == null) dec = '';
-     dec = dec.substring(0, decimals, dec);
-     while (dec.length < decimals) dec = dec + '0';
+    if (decimals == 0) separator = '';
+    if (dec == null) dec = '';
+    while (dec.length < decimals) dec = dec + '0';
 // whole part 
-     if (whole == null || whole == '') whole = '0';
-     var ar = [];
-     while (whole.length > 0) { 
-       var pos1 = whole.length - 3
-       if (pos1 < 0) pos1 = 0;
-       ar.unshift(whole.substr(pos1,3)); 
-       whole = whole.slice(0, -3); 
+    if (whole == null || whole == '') whole = '0';
+    var ar = [];
+    while (whole.length > 0) { 
+      var pos1 = whole.length - 3
+      if (pos1 < 0) pos1 = 0;
+      ar.unshift(whole.substr(pos1,3)); 
+      whole = whole.slice(0, -3); 
      };
           
-     if (delimiter !== '') whole = ar.join(delimiter);
-     $(this).val(sign + whole + separator + dec + currency);
+    if (delimiter !== '') whole = ar.join(delimiter);
+    $(this).val(sign + whole + separator + dec + currency);
+    console.log($(this).val())
    });
    
  /*******************************************************************
