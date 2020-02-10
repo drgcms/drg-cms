@@ -221,6 +221,8 @@ def duplicate_embedded(source) #:nodoc:
       dest[attribute_name] << ' dup' if add_duplicate
     end
   end
+  dest['created_at'] = Time.now if dest['created_at']
+  dest['updated_at'] = Time.now if dest['updated_at']
   dest
 end
 
@@ -245,6 +247,8 @@ def duplicate_document(source)
       dest[embedded_name] << duplicate_embedded(embedded)
     end
   end
+  dest['created_at'] = Time.now if dest['created_at']
+  dest['updated_at'] = Time.now if dest['updated_at']
   dest
 end
 
