@@ -74,7 +74,7 @@ def render
   @html << @parent.hidden_field( record, @yaml['name'], value: value )
   
   @yaml['html']['value'] = @parent.dc_format_number(value, @yaml['html']['data-decimal'], @yaml['html']['data-separator'], @yaml['html']['data-delimiter'] )
-  @html << @parent.text_field( nil,"record_#{@yaml['name']}1", @yaml['html']) 
+  @html << @parent.text_field( nil,"record_#{@yaml['name']}_", @yaml['html']) 
   self
 end
 
@@ -83,7 +83,7 @@ end
 ###########################################################################
 def self.get_data(params, name)
   return 0 if params['record'][name].blank?
-  params['record'][name].match('.') ? BigDecimal.new(params['record'][name]) : Integer.new(params['record'][name])
+  params['record'][name].match('.') ? BigDecimal(params['record'][name]) : Integer.new(params['record'][name])
 end
 
 end
