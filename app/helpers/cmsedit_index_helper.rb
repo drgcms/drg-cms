@@ -260,6 +260,7 @@ end
 ############################################################################
 def dc_actions_column()
   actions = @form['result_set']['actions']
+  return [{},0] if actions.nil? or dc_dont?(actions)
 # standard actions  
   actions = {'standard' => true} if actions.class == String && actions == 'standard'
   std_actions = {' 2' => 'edit', ' 3' => 'delete'}

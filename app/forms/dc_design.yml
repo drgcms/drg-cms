@@ -4,7 +4,7 @@ title: Site design
 table: dc_design
 
 index:
-  filter: description, body as text_field
+  filter: description, body as text_field, site_id
   actions: standard
 
 result_set:
@@ -17,9 +17,12 @@ result_set:
     3: delete
 
   columns:
-    2: 
+    10: 
       name: description
-      width: 80%
+      width: 50%
+    20: 
+      name: updated_at
+      
 
 form:
   title: 

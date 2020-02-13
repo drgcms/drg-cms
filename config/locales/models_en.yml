@@ -81,6 +81,7 @@ en:
         rails_view: Rails view filename
         control: Control file
         control_method: Control method
+        updated_at: Updated
 
       dc_user_role:
         tabletitle: User roles

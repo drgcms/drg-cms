@@ -82,7 +82,7 @@ sl:
         site_id: Spletišče
         control: Kontrolna datoteka
         control_method: Kontrolna metoda
-        
+        updated_at: Spremenjeno
 
       dc_user:
         tabletitle: Uporabniki

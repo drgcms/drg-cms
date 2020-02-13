@@ -83,7 +83,7 @@ end
 ###########################################################################
 def self.get_data(params, name)
   return 0 if params['record'][name].blank?
-  params['record'][name].match('.') ? BigDecimal(params['record'][name]) : Integer.new(params['record'][name])
+  params['record'][name].match('.') ? params['record'][name].to_f : Integer.new(params['record'][name])
 end
 
 end
