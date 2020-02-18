@@ -120,4 +120,18 @@ def self.clear(key)
   self.where(key: key).delete
 end
 
+########################################################################
+# Prepare dc_temp for data. It first checks if data associated with the key is to
+# be deleted and then yields block code. 
+# 
+# Returns: Query for the data associated with the key
+########################################################################
+def self.prepare(key:, clear: nil)
+  unless %w(no false 0).include?(clear.to_s.strip.downcase)
+    self.clear(key)
+    yield
+  end
+  self.where(key: key) 
+end
+
 end
