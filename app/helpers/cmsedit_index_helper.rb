@@ -337,18 +337,21 @@ def dc_header_for_result()
     ignore, width = dc_actions_column()
     html << %Q[<div class="actions" style="width: #{width}px;"></div>]
   end
-# preparation for sort icon  
+  # preparation for sort icon  
   sort_field, sort_direction = nil, nil
   if session[@form['table']]
     sort_field, sort_direction = session[@form['table']][:sort].to_s.split(' ')
   end
-#  
+  #  
   if (columns = @form['result_set']['columns'])
     columns.each do |k,v|
       session[:form_processing] = "result_set:columns: #{k}=#{v}"
       th = %Q[<div class="th" style="width: #{v['width'] || '15%'};text-align: #{v['align'] || 'left'};" data-name="#{v['name']}"]
-      caption = v['caption'] || t("helpers.label.#{@form['table']}.#{v['name']}")
-# no sorting when embedded documents or custom filter is active 
+      # when no caption or name is defined it might be just spacer      
+      if (caption = v['caption']).nil? 
+        caption = v['name'] ? t("helpers.label.#{@form['table']}.#{v['name']}") : ''
+      end
+      # no sorting when embedded documents or custom filter is active 
       sort_ok = @form['result_set'].nil? || (@form['result_set'] && @form['result_set']['filter'].nil?)
       sort_ok = sort_ok || (@form['index'] && @form['index']['sort'])
       if @tables.size == 1 and sort_ok
