@@ -449,7 +449,9 @@ end
 # [extend_option] : Value of @form['extend'] option
 ########################################################################
 def extend_drg_cms_form(extend_option)
-  form = YAML.load_file( dc_find_form_file(extend_option) )
+  form_file_name = dc_find_form_file(extend_option) 
+  @form_js << read_js_drg_cms_form(form_file_name)
+  form  = YAML.load_file( form_file_name )
   @form = forms_merge(form, @form)
 # If combined form contains tabs and fields options, merge fields into tabs
   if @form['form']['tabs'] and @form['form']['fields']
@@ -468,9 +470,22 @@ end
 def include_drg_cms_form(include_option)
   includes = include_option.class == Array ? include_option : include_option.split(/\,|\;/)
   includes.each do |include_file|
-    form = YAML.load_file( dc_find_form_file(include_file) )
+    form_file_name = dc_find_form_file(include_file)    
+    @form_js << read_js_drg_cms_form(form_file_name)
+    form  = YAML.load_file(form_file_name)    
     @form = forms_merge(@form, form)
   end
+end
+
+########################################################################
+# Will read data from form_file_name.js if it exists.
+# 
+# [Parameters:]
+# [form_file_name] : Physical form filename
+########################################################################
+def read_js_drg_cms_form(form_file_name)
+  js_form_file_name = form_file_name.sub('.yml','.js')
+  File.read(js_form_file_name) rescue ''
 end
 
 ########################################################################
@@ -484,15 +499,19 @@ def read_drg_cms_form
   @ids = ids.split(';').inject([]) { |r,v| r << v }
 # form_name defaults to last table specified
   form_name = params[:form_name] || @tables.last[1]
+  @form_js = ''
 # dynamicaly generated form  
   @form = if params[:form_name] == 'method'
     dc_eval_class_method(params[:form_method], params)
   else
-    YAML.load_file( dc_find_form_file(form_name) ) rescue nil
+    form_file_name = dc_find_form_file(form_name)
+    @form_js = read_js_drg_cms_form(form_file_name)
+    YAML.load_file(form_file_name)
   end
 # form includes or extends another form file
   include_drg_cms_form(@form['include']) if @form['include']
   extend_drg_cms_form(@form['extend'])   if @form['extend']
+  @form['script'] = (@form['script'].blank? ? @form_js : @form['script'] + @form_js)
 # add readonly key to form if readonly parameter is passed in url
   @form['readonly'] = 1 if params['readonly'] #and %w(1 yes true).include?(params['readonly'].to_s.downcase.strip)
 # !!!!!! Always use strings for key names since @parms['table'] != @parms[:table]

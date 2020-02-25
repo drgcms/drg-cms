@@ -302,7 +302,7 @@ def dc_fields_for_tab(fields_on_tab) #:nodoc:
       @js << field.js
       field.html 
     else # litle error string
-      "Error: Code for field type #{options['type']} not defined!"
+      "Error: Field type #{options['type']} not defined!"
     end
 # Line separator
     html << dc_top_bottom_line(options['top-line']) if options['top-line']
@@ -385,6 +385,8 @@ def dc_fields_for_form()
   html << hidden_field(nil, :last_updated_at, value: @record.updated_at.to_i) if @record.respond_to?(:updated_at)
   # add form time stamp to prevent double form submit
   html << hidden_field(nil, :form_time_stamp, value: Time.now.to_i)
+  # add javascript code if defined by form
+  @js << "\n#{@form['script']}" unless @form['script'].blank?
   html.html_safe
 end
 
