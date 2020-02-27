@@ -70,8 +70,9 @@ def render
 #
   @yaml['options'] ||= {}
   set_initial_value
-  @yaml['html']['size'] ||= 10
+  @yaml['html']['size'] ||= @yaml['size'] || 10
   @yaml['html']['value'] = value
+  @yaml['html']['autocomplete'] ||= 'off'
 #
   @yaml['options']['lang']   ||= "'#{I18n.locale}'"
   @yaml['options']['format'] ||= "'#{t('datetimepicker.formats.date')}'"

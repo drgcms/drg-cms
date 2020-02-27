@@ -56,8 +56,9 @@ def render
 #
   @yaml['options'] ||= {}
   set_initial_value
-  @yaml['html']['size'] ||= 14
+  @yaml['html']['size'] ||= @yaml['size'] || 14
   @yaml['html']['value'] = value if @record[@yaml['name']]
+  @yaml['html']['autocomplete'] ||= 'off'
 #
   @yaml['options']['lang']   ||= "'#{I18n.locale}'"
   @yaml['options']['format'] ||= "'#{t('datetimepicker.formats.datetime')}'"
