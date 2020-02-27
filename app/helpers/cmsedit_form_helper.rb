@@ -129,7 +129,7 @@ def dc_actions_for_form(position)
           dc_link_to( "drgcms.#{v}",v, parms )
           
         when v == 'refresh' then
-          "<span onclick='window.location.href=window.location.href;'>#{fa_icon('refresh')} #{t('drgcms.refresh')}</span></li>"
+          "<div onclick='window.location.href=window.location.href;'>#{fa_icon('refresh')} #{t('drgcms.refresh')}</div></li>"
       else 
         "err1 #{element[0]}=>#{v}"
       end

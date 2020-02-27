@@ -411,7 +411,7 @@ def dc_flash_messages()
   if _origin.flash[:update]
     html << "<div class=\"dc-form-updates\">\n"
     _origin.flash[:update].each do |field, value|
-      html << %Q[<div class="aa" data-field="#{field}" data-value="#{value}"></div>\n]
+      html << %Q[<div data-field="#{field}" data-value="#{value}"></div>\n]
     end
     html << '</div>'
     _origin.flash[:update] = nil

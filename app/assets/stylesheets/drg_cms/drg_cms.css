@@ -150,7 +150,7 @@ color: #666;
 font-weight: bold;
 text-decoration: none; 
 background: transparent;
-padding: 5px 0;
+padding: 7px;
 }
 
 .dc-link a:hover, .dc-animate a:hover, .dc-result a:hover  { 
@@ -166,9 +166,7 @@ a.dc-animate:hover { color: #000; background: transparent;}
 .dc-image-preview img { max-height: 2rem; padding-left: 0.5rem;}
 .dc-image-preview img:hover { cursor: zoom-in;}
 
-.text-with-select {
-width: 24px;
-}
+.text-with-select { width: 24px; }
 
 .no-borders {
   padding: 0px;
@@ -197,6 +195,10 @@ padding: 2px;
 font-size: 0.9rem;
 }
 
+.dc-result .actions .dc-animate { 
+padding: 0;
+}
+
 .dc-result-header {
   display: flex;
 /*  background-color: #eee;*/
@@ -216,7 +218,7 @@ font-size: 0.9rem;
   white-space: nowrap;
   overflow: hidden;
   font-weight: bold;
-  color: #666;
+  color: #444;
 }
 
 .dc-result-header .spacer, .dc-result-data .spacer {
@@ -263,13 +265,12 @@ font-size: 0.9rem;
   
 
 .dc-menu {
-padding: 0px;
-padding: 10px 0;
+padding: 4px 0;
 display: inline-table;
 }
 
 .dc-menu li {
-  display: initial;
+  display: inline-flex;
   margin-right: 3px;
 }
 
@@ -279,15 +280,15 @@ display: inline-table;
 font-weight: bold;
 color: #666;
 text-align: center;
-padding: 6px; 
+
 border-radius: 2px;
-background: transparent linear-gradient(to bottom, #FFF 0%, #F2F2F2 100%) repeat scroll 0% 0%;
+background: transparent linear-gradient(to bottom, #fdfdfd 0%, #f2f2f2 100%);
 border: 1px solid #eee;
 }
 
 .dc-link:hover {
   background: #ddd;
-  border: 1px solid #ddd;
+  border: 1px solid #bbb;
   transition: 0.3s; 
   color: #000;
   cursor: pointer;
@@ -298,30 +299,39 @@ border: 1px solid #eee;
   transition: 0.3s;  
 }
 
+.dc-link div { 
+  padding: 7px; 
+}
+
 .dc-link-no {
   text-align: left;
   font-weight: bold;
-  padding: 6px;  
+  padding: 8px;  
   border-radius: 2px;
   color: #fff;
-  background: #ddd;
+  background: #ccc;
 }
 
 .dc-link-ajax {
   text-align: left;
   font-weight: bold;
-  padding: 6px;  
+  padding: 7px;  
   border-radius: 2px;
   color: #666;
   background: transparent linear-gradient(to bottom, #FFF 0%, #F2F2F2 100%) repeat scroll 0% 0%;
   border: 1px solid #eee;
 }
 
+.dc-link-ajax i, .dc-link-no i {
+  padding: 1px 3px 0 0;
+}
+
 .dc-link-ajax:hover {
 cursor: pointer;
 background: #ddd;
-border: 1px solid #ddd;
+border: 1px solid #bbb;
 transition: 0.3s; 
+color: #000;
 }
 
 .dc-link-ajax:hover a { 
@@ -392,12 +402,12 @@ border: 1px solid #ddd;
 .skip-next a:hover { text-decoration: none; color: #c43; }
 
 .dc-animate-button {
-  background: transparent linear-gradient(to bottom, #eee 0%, #eee 100%) repeat scroll 0% 0% !important; 
+  background: transparent linear-gradient(to bottom, #fdfdfd 0%, #f2f2f2 100%) !important; 
 }
 
 .dc-link-submit {
   text-align: left;
-  padding: 6px;  
+  padding: 8px 6px 6px;
 
   border-radius: 2px;
   background-color: #eee;
@@ -416,11 +426,12 @@ border: 1px solid #ddd;
   color: #000;
   background: #ddd;
   transition: 0.3s;
+  border: 1px solid #bbb;
 }
 .dc-link-submit:hover .dc-submit {
   color: #000;
   transition: 0.3s;
-   background: #ddd;
+  background: #ddd;
 
 }
 .dc-submit {
@@ -492,7 +503,7 @@ border: 1px solid #ddd;
   width: 99.8%;
   padding: 0px;
   padding-top: 4px;
-  border: 1px solid #ddd;
+  border: 1px solid #eee;
   border-radius: 2px; 
   background-color: #fcfcfc;
 }
@@ -509,7 +520,7 @@ border: 1px solid #ddd;
   color: darkgreen;  
   border: 1px solid #b2dba1;  
   border-radius: 2px;
-  margin: 4px;
+  margin: 2px 0;
 }
 
 .dc-form-warning {
@@ -519,7 +530,7 @@ border: 1px solid #ddd;
   color: #c84;  
   border: 1px solid #f5e79e;  
   border-radius: 2px;
-  margin: 4px;
+  margin: 2px 0;
 }
 
 .dc-form-error {
@@ -530,7 +541,7 @@ border: 1px solid #ddd;
   color: #a94442;
   border: 1px solid #dca7a7;
   border-radius: 2px;
-  margin: 4px;
+  margin: 2px 0;
 }
 
 .dc-form-updates {
@@ -919,13 +930,13 @@ overflow-x:hidden;
 padding: 2px 0px 2px 0px;
 font-weight: bold;
 color: #666;
-display: flex;
+display: inline-flex;
 }
 
 #dc-action-menu ul {
 list-style:none;
 padding: 0px;
-margin: 6px 2px 4px 2px; 
+margin: 8px 2px 4px 2px; 
 }
 
 .dc-action-menu  {
@@ -936,7 +947,7 @@ list-style:none;
 display:inline; 
 position:relative;
 list-style:none;
-padding: 6px;
+padding: 7px;
 margin-right: 4px;
 border-radius:2px;
 z-index: 1;
@@ -944,15 +955,6 @@ z-index: 1;
 background: transparent linear-gradient(to bottom, #FFF 0%, #F2F2F2 100%) repeat scroll 0% 0%;
 border: 1px solid #eee;
 }
-
-
-.dc-action-menu li:hover {
-background: #ddd;
-border: 1px solid #ddd;
-color: #000;
-transition: 0.3s;  
-}
-
 
 .dc-action-menu ul {
 margin-top: 1px;
@@ -980,10 +982,14 @@ white-space:nowrap;
 
 .dc-action-menu li:hover ul { 
 left:-3px;
-margin-top:3px;
+/*margin-top:3px;*/
 background-color: #fff;
-border: 1px solid #ddd;
+border: 1px solid #bbb;
+  z-index: 1000000;
 /*box-shadow: 1px 1px 2px #ccc;*/
+}
+
+.dc-action-menu ul ul {
 }
 
 .dc-action-menu li:hover ul li a { 

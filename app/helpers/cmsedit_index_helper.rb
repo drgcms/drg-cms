@@ -148,7 +148,7 @@ EOT
       icon    = yaml['icon'] ? yaml['icon'] : action
       dc_link_to(caption, icon, url, yhtml)
     end
-    html << "<li class=\"dc-animate\">#{code}</li>"
+    html << "<li class=\"dc-link dc-animate\">#{code}</li>"
   end
   html << '</ul>'
   html << DcFilter.get_filter_field(self)
