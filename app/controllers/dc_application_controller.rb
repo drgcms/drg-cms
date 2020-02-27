@@ -715,4 +715,21 @@ def dc_add_meta_tag(type, name, content)
   @meta_tags[key] = content
 end
 
+########################################################################
+# Will prepare flash[:update] data, which will be used for updating fields
+# on forms parent form fields.
+# 
+# Parameters:
+# [field_name] String: Field name
+# [value] String: New value
+# [readonly] Boolean: Field is readonly
+# 
+########################################################################
+def dc_update_form_field(field_name, value, readonly=false)
+  key_name = (readonly ? 'td_' : '') + "record_#{field_name}"
+  flash[:update] ||= {}
+  flash[:update][key_name] = value
+end
+
+
 end
