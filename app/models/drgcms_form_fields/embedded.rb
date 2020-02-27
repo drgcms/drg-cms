@@ -69,6 +69,9 @@ def render
   end
   opts = { controller: 'cmsedit', action: 'index', ids: ids, table: tables, form_name: @yaml['form_name'], 
            field_name: @yaml['name'], iframe: "if_#{@yaml['name']}", readonly: @readonly }
+  # additional parameters if specified
+  @yaml['params'].each { |k,v| opts[k] = @parent.dc_value_for_parameter(v) } if @yaml['params']         
+         
   @html << "<iframe class='iframe_embedded' id='if_#{@yaml['name']}' name='if_#{@yaml['name']}' #{html}></iframe>"
   unless @record.new_record?
     @js << %Q[
