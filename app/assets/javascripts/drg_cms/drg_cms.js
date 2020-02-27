@@ -266,6 +266,21 @@ $.fn.dc_scroll_view = function () {
 };
 
 /*******************************************************************
+ * Updates single field on parent iframe form of embedded form.
+ *******************************************************************/
+process_parent_form_updates = function(element) {
+  var field = element.getAttribute("data-field");
+  var value = element.getAttribute("data-value");
+  if ( window.parent.$('#'+field).length > 0 ) {
+    if (field.substring(0,3) === 'td_') {   // readonly field
+      window.parent.$('#'+field+' > div').html(value);
+    } else { // input field
+      window.parent.$('#'+field).val(value);
+    }
+  }
+};
+
+/*******************************************************************
  * 
  *******************************************************************/
 $(document).ready( function() {
@@ -283,6 +298,20 @@ $(document).ready( function() {
   if (window.location.href.match(/return_to_ypos=/))
   {
     window.scrollTo(0, $.getUrlParam('return_to_ypos'));
+  }
+  
+ /*******************************************************************
+  * The idea is to update fields on parent iframe form, when embedded document
+  * is updated in its iframe. Update fields are listed in .dc-form-updates div
+  * and are set by flash[:update] Hash object.
+  * 
+  * eg. flash[:update] = {'td_record_radonly' => 'New value for read_only field',
+  *                       'record_name' => 'New name'}
+  *******************************************************************/
+  if ( $('.dc-form-updates').length > 0 ) {
+     $('.dc-form-updates').children().each( function( index, element ) {
+       process_parent_form_updates(element);
+     });
   }
   
  /*******************************************************************
@@ -786,7 +815,6 @@ element = $(this).find(':first').attr('id');
           
     if (delimiter !== '') whole = ar.join(delimiter);
     $(this).val(sign + whole + separator + dec + currency);
-    console.log($(this).val())
    });
    
  /*******************************************************************

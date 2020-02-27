@@ -392,23 +392,31 @@ end
 # String. HTML code formatted for display.
 ####################################################################
 def dc_flash_messages()
-  err  = _origin.flash[:error]
-  war  = _origin.flash[:warning]
-  inf  = _origin.flash[:info]
-  note = _origin.flash[:note]
+  err    = _origin.flash[:error]
+  war    = _origin.flash[:warning]
+  inf    = _origin.flash[:info]
+  note   = _origin.flash[:note]
+  html   = ''
   unless err.nil? and war.nil? and inf.nil? and note.nil?
-    c = ''
-    c << "<div class=\"dc-form-error\">#{err}</div>" if err
-    c << "<div class=\"dc-form-warning\">#{war}</div>" if war
-    c << "<div class=\"dc-form-info\">#{inf}</div>" if inf
-    c << note if note
+    html << "<div class=\"dc-form-error\">#{err}</div>" if err
+    html << "<div class=\"dc-form-warning\">#{war}</div>" if war
+    html << "<div class=\"dc-form-info\">#{inf}</div>" if inf
+    html << note if note
     _origin.flash[:error]   = nil
     _origin.flash[:warning] = nil
     _origin.flash[:info]    = nil
     _origin.flash[:note]    = nil
-
-    c.html_safe
   end
+# Update fields on the form
+  if _origin.flash[:update]
+    html << "<div class=\"dc-form-updates\">\n"
+    _origin.flash[:update].each do |field, value|
+      html << %Q[<div class="aa" data-field="#{field}" data-value="#{value}"></div>\n]
+    end
+    html << '</div>'
+    _origin.flash[:update] = nil
+  end
+  html.html_safe
 end
 
 ########################################################################

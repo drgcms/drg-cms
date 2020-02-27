@@ -533,6 +533,10 @@ border: 1px solid #ddd;
   margin: 4px;
 }
 
+.dc-form-updates {
+  display: none;
+}
+
 .field_with_errors {
   border: #a94442 2px solid;
 }
