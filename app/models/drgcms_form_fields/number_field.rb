@@ -52,7 +52,7 @@ class NumberField < DrgcmsField
 # Render text_field field html code
 ###########################################################################
 def render
-  return ro_standard if @readonly
+  #return ro_standard if @readonly
   set_initial_value
 #
   record = record_text_for(@yaml['name'])
@@ -61,7 +61,7 @@ def render
   if @yaml['format'].class == String
     format = @yaml['format']
     @yaml['format'] = {}
-    @yaml['format']['decimal'] = format[1].blank? ? 2 : format[1].to_i
+    @yaml['format']['decimal']   = format[1].blank? ? 2 : format[1].to_i
     @yaml['format']['separator'] = format[2].blank? ? I18n.t('number.currency.format.separator') : format[2]
     @yaml['format']['delimiter'] = format[3].blank? ? I18n.t('number.currency.format.delimiter') : format[3]
   end
@@ -70,10 +70,12 @@ def render
   @yaml['html']['data-separator'] = @yaml.dig('format','separator') || I18n.t('number.currency.format.separator')
  # @yaml['html']['data-currency']  = @yaml.dig('format','currency') == 'yes' ? I18n.t('number.currency.format.currency') : @yaml.dig('format','currency')
   value = @record[@yaml['name']] || 0 
-    
-  @html << @parent.hidden_field( record, @yaml['name'], value: value )
-  
   @yaml['html']['value'] = @parent.dc_format_number(value, @yaml['html']['data-decimal'], @yaml['html']['data-separator'], @yaml['html']['data-delimiter'] )
+  
+  return ro_standard(@yaml['html']['value']) if @readonly
+
+  @yaml['html']['autocomplete'] ||= 'off'
+  @html << @parent.hidden_field( record, @yaml['name'], value: value )
   @html << @parent.text_field( nil,"record_#{@yaml['name']}_", @yaml['html']) 
   self
 end

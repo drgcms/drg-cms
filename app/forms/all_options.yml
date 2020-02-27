@@ -7,6 +7,10 @@ controls: controls_file
 readonly: 1
 permissions:
   can_view: role_name
+  
+script: "
+javascript code
+"
 
 index:
   filter: name, id as text_field
