@@ -274,6 +274,7 @@ display: inline-table;
   margin-right: 3px;
 }
 
+
 #data-fields {margin: 5px;}
 
 .dc-link {
@@ -315,12 +316,14 @@ border: 1px solid #eee;
 .dc-link-ajax {
   text-align: left;
   font-weight: bold;
-  padding: 7px;  
+  padding: 7px;
   border-radius: 2px;
   color: #666;
   background: transparent linear-gradient(to bottom, #FFF 0%, #F2F2F2 100%) repeat scroll 0% 0%;
   border: 1px solid #eee;
 }
+
+.dc-link-ajax.with-link {padding: 0px;}
 
 .dc-link-ajax i, .dc-link-no i {
   padding: 1px 3px 0 0;

@@ -35,7 +35,7 @@ module CmseditHelper
 ############################################################################
 def dc_script_action(yaml)
   data = {'request' => 'script', 'script' => yaml['js']}
-  %Q[<li class="dc-link-ajax dc-animate">#{ dc_link_to(yaml['caption'], yaml['icon'], '#', data: data ) }</li>]
+  %Q[<li class="dc-link-ajax with-link dc-animate">#{ dc_link_to(yaml['caption'], yaml['icon'], '#', data: data ) }</li>]
 end 
   
   
