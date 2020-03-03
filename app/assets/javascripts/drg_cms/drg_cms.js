@@ -787,7 +787,9 @@ element = $(this).find(':first').attr('id');
     val = val.replace(separator,'.');
     val = parseFloat(val).toFixed(decimals);
     var whole, dec, sign;
-    [whole,dec] = val.split('.');
+//    [whole,dec] = val.split('.');
+    whole = val.split('.')[0];
+    dec   = val.split('.')[1];
 // remove negative sign and add at the end
     var sign = whole.substr(0,1);
     if (sign == '-') { 
