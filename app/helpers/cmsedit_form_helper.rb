@@ -185,7 +185,7 @@ def dc_actions_for_form(position)
           v['caption'] ||= v['text'] 
           caption = t("#{v['caption'].downcase}", v['caption'])
           #
-          url = url_for(parms) rescue ''
+          url = url_for(parms) #rescue 'URL error'
           request = v['request'] || v['method'] || 'get'
           icon    = v['icon'] ? "#{fa_icon(v['icon'])} " : ''
           if v['type'] == 'ajax' # ajax button
@@ -270,50 +270,50 @@ def dc_fields_for_tab(fields_on_tab) #:nodoc:
   odd_even       = nil
   group_option, group_count = 0, 0
   reset_cycle()
-# Select form fields and sort them by key
+  # Select form fields and sort them by key
   form_fields  = fields_on_tab.select {|field| field.class == Integer }
   form_fields.to_a.sort.each do |element|
     options = element.last
     session[:form_processing] = "form:fields: #{element.first}=#{options}"
-# ignore if edit_only singe field is required
+    # ignore if edit_only singe field is required
     next if params[:edit_only] and params[:edit_only] != options['name'] 
-# hidden_fields. Add them at the end
+    # hidden_fields. Add them at the end
     if options['type'] == 'hidden_field'
       hidden_fields << DrgcmsFormFields::HiddenField.new(self, @record, options).render
       next
     end
-# label
+    # label
     caption = options['caption'] || options['text']
     label = if !caption.blank?    
       t(caption, caption)
     elsif options['name']
       t_name(options['name'], options['name'].capitalize.gsub('_',' ') )
     end
-# help text can be defined in form or in translations starting with helpers. or as helpers.help.collection.field
+    # help text can be defined in form or in translations starting with helpers. or as helpers.help.collection.field
     help = if options['help'] 
       options['help'].match('helpers.') ? t(options['help']) : options['help']
     end
     help ||= t('helpers.help.' + @form['table'] + '.' + options['name'],' ') if options['name'] 
-# create field object from class and call its render method
-    klas_string = options['type'].camelize
-    field_html = if DrgcmsFormFields.const_defined?(klas_string) # check if field type is defined
-      klas = DrgcmsFormFields.const_get(klas_string)
-      field = klas.new(self, @record, options).render
+    # create field object from class and call its render method
+    klass_string = options['type'].camelize
+    field_html = if DrgcmsFormFields.const_defined?(klass_string) # when field type defined
+      klass = DrgcmsFormFields.const_get(klass_string)
+      field = klass.new(self, @record, options).render
       @js << field.js
       field.html 
     else # litle error string
       "Error: Field type #{options['type']} not defined!"
     end
-# Line separator
+    # Line separator
     html << dc_top_bottom_line(options['top-line']) if options['top-line']
-# Begining of new row
+    # Begining of new row
     if group_count == 0
       html << '<div class="row-div">' 
       odd_even = cycle('odd','even')
       group_count  = options['group'] || 1 
       group_option = options['group'] || 1 
     end
-#    
+    #    
     html << if labels_pos == 'top'
 %Q[
 <div class="dc-form-label-top dc-color-#{odd_even} dc-align-left" title="#{help}">
@@ -324,7 +324,7 @@ def dc_fields_for_tab(fields_on_tab) #:nodoc:
       label_width = 14
       # less place for label when more then 1 field per row
       label_width = 10 if group_option > 1 and group_option != group_count
-      data_width  = (94 - 10*group_option)/group_option
+      data_width  = 21 #(94 - 10*group_option)/group_option
 %Q[
 <div class="dc-form-label dc-color-#{odd_even} dc-align-#{labels_pos}" style="width:#{label_width}%;" title="#{help}">
   <label for="record_#{options['name']}">#{label} </label>
@@ -332,9 +332,13 @@ def dc_fields_for_tab(fields_on_tab) #:nodoc:
 <div id="td_record_#{options['name']}" class="dc-form-field dc-color-#{odd_even}" style="width:#{data_width}%;">#{field_html}</div>
 ]
     end
-# check if must go to next row
-    group_count -= 1
-    html << '</div>' if group_count == 0
+    # check if group end
+    if (group_count -= 1) == 0
+      html << '</div>'
+      # insert dummy div when only two fields in group
+      html << '<div></div>' if group_option == 2
+    end
+    
     html << dc_top_bottom_line(options['bottom-line']) if options['bottom-line']
   end
   html << '</div>' << hidden_fields

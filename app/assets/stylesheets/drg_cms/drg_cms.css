@@ -233,6 +233,11 @@ padding: 0;
 .dc-result-header .spacer:hover {
   cursor:ew-resize;
 }
+
+.dc-result-header a:link {
+  padding-left: 0;
+}
+
 .dc-result-data .td {
   padding: 5px 2px;
   white-space: nowrap;
