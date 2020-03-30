@@ -247,15 +247,6 @@ def dc_link_or_ajax_action(yaml, parms) #:nodoc:
 end
 
 ############################################################################
-# Calculates (blank) space required for actions when @record_footer is rendered 
-############################################################################
-def dc_actions_column_for_footer()
-  return '' unless @form['result_set']['actions']
-  ignore, width = dc_actions_column
-  %Q[<div class="actions" style="width: #{width}px;"></div>].html_safe
-end
-
-############################################################################
 # Determines actions and width of actions column
 ############################################################################
 def dc_actions_column()
@@ -266,9 +257,19 @@ def dc_actions_column()
   std_actions = {' 2' => 'edit', ' 3' => 'delete'}
   actions.merge!(std_actions) if actions['standard']
 #  
-  width = @form['result_set']['actions_width'] || 20*actions.size
+  width = @form['result_set']['actions_width'] || 16*actions.size
   [ actions, width ] 
 end
+
+############################################################################
+# Calculates (blank) space required for actions when @record_footer is rendered 
+############################################################################
+def dc_actions_column_for_footer()
+  return '' unless @form['result_set']['actions']
+  ignore, width = dc_actions_column
+  %Q[<div class="actions" style="width: #{width}px;"></div>].html_safe
+end
+
 
 ############################################################################
 # Creates actions that could be performed on single row of result set.

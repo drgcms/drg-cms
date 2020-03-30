@@ -321,10 +321,13 @@ def dc_fields_for_tab(fields_on_tab) #:nodoc:
   <div id="td_record_#{options['name']}">#{field_html}</div>
 </div> ]
     else
-      label_width = 14
-      # less place for label when more then 1 field per row
-      label_width = 10 if group_option > 1 and group_option != group_count
-      data_width  = 21 #(94 - 10*group_option)/group_option
+      if group_option > 1 
+        label_width = group_option != group_count ? 10 : 14        
+        data_width  = 21
+      else
+        label_width = 14
+        data_width  = 85      
+      end
 %Q[
 <div class="dc-form-label dc-color-#{odd_even} dc-align-#{labels_pos}" style="width:#{label_width}%;" title="#{help}">
   <label for="record_#{options['name']}">#{label} </label>
