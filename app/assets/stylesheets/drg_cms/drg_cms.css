@@ -935,7 +935,7 @@ overflow-x:hidden;
 /******************* action-menu *********************/
 
 #dc-action-menu {
-padding: 2px 0px 2px 0px;
+padding: 2px 0px 6px 0px;
 font-weight: bold;
 color: #666;
 display: inline-flex;

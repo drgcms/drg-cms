@@ -544,14 +544,15 @@ def check_authorization
     render plain: t('drgcms.form_error')
 #TODO So far only can_view is used. Think about if using other permissions has sense
   elsif @form['permissions'].nil? or @form['permissions']['can_view'].nil? or
-    dc_user_has_role(@form['permissions']['can_view'])
-# Extend class with methods defined in drgcms_controls module. May include embedded forms therefor ; => _ 
-    controls_string = (@form['controls'] ? @form['controls'] : params[:table].gsub(';','_')) + '_control'
-    controls = "DrgcmsControls::#{controls_string.classify}".constantize rescue nil
-# version next
+        dc_user_has_role(@form['permissions']['can_view'])
+# Extend class with methods defined in controls module. May include embedded forms therefor ; => _ 
+    controls_string = "#{@form['controls'] || params[:table].gsub(';','_')}_control"
+    controls = "#{controls_string.classify}".constantize rescue nil
+# old version. Will be deprecated
     if controls.nil?
-      controls_string = "#{@form['controls'] || params[:table].gsub(';','_')}_control"
-      controls = "#{controls_string.classify}".constantize rescue nil
+      controls_string = (@form['controls'] ? @form['controls'] : params[:table].gsub(';','_')) + '_control'
+      controls = "DrgcmsControls::#{controls_string.classify}".constantize rescue nil
+      dc_deprecate('Putting controls into app/controllers/drgcms_controls directory will be deprecated. Put them into app/controls instead.') if controls
     end
     extend controls if controls 
   else

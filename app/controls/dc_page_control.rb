@@ -44,8 +44,7 @@ end
 # Called just after record is saved to DB.
 ######################################################################
 def dc_after_save()
-  if params[:_record] and params[:_record][:_update_menu] == '1'
-#    menu_class = dc_get_site.menu_class.classify.constantize
+  if params.dig(:_record,:_update_menu).to_s == '1'
     dc_get_site.menu_klass.update_menu_item_link(@record)
   end
 end
