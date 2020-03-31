@@ -94,7 +94,7 @@ end
 # Returns html code together with CSS code.
 ####################################################################
 def html
-  @html + (@css ? "\n<style type=\"text/css\">#{@css}</style>" : '')
+  @html + css_code
 end
 
 ####################################################################
@@ -174,7 +174,7 @@ end
 #    
 # 
 ####################################################################
-def set_style()
+def __set_style()
   style = @yaml['html']['style'] || @yaml['style']
   case
     when style.nil? then ''
@@ -185,6 +185,17 @@ def set_style()
     else ''
   end 
 end
+
+####################################################################
+# Returns css code for the field if specified. It replaces all occurences of '# ' 
+# with field name id, as defined on form.
+####################################################################
+def css_code
+  return '' if @css.blank?
+  @css.gsub!('# ',"#td_record_#{@yaml['name']} ")
+  "\n<style type=\"text/css\">#{@css}</style>"
+end
+
 
 ####################################################################
 # Will return ruby hash formated as javascript string which can be used
