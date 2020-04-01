@@ -174,7 +174,7 @@ end
 #    
 # 
 ####################################################################
-def __set_style()
+def set_style()
   style = @yaml['html']['style'] || @yaml['style']
   case
     when style.nil? then ''

@@ -185,7 +185,7 @@ def dc_actions_for_form(position)
           v['caption'] ||= v['text'] 
           caption = t("#{v['caption'].downcase}", v['caption'])
           #
-          url = url_for(parms) #rescue 'URL error'
+          url = url_for(parms) rescue 'URL error'
           request = v['request'] || v['method'] || 'get'
           icon    = v['icon'] ? "#{fa_icon(v['icon'])} " : ''
           if v['type'] == 'ajax' # ajax button
