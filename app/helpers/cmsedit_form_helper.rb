@@ -191,13 +191,13 @@ def dc_actions_for_form(position)
           if v['type'] == 'ajax' # ajax button
             clas = action_active ? "dc-link-ajax dc-animate" : "dc-link-no"
             %Q[<li class="#{clas}" data-url="#{action_active ? url : ''}" 
-               data-request="#{request}" title="#{v['title']}">#{icon}#{caption}</li>]
+               data-request="#{request}" title="#{v['title']}">#{icon} #{caption}</li>]
           elsif v['type'] == 'link'  # link button
             clas = action_active ? "dc-link dc-animate" : "dc-link-no"
             %Q[<li class="#{clas}">#{action_active ? dc_link_to(v['caption'],v['icon'], parms, {target: v['target']} ) : caption}</li>]
           elsif v['type'] == 'window' 
             clas = action_active ? "dc-link dc-animate dc-window-open" : "dc-link-no"
-            %Q[<li class="#{clas}" data-url="#{action_active ? url : ''}">#{icon}#{caption}</li>]
+            %Q[<li class="#{clas}" data-url="#{action_active ? url : ''}">#{icon} #{caption}</li>]
           else 
             'Action Type error'
           end

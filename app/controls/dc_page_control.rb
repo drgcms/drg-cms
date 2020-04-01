@@ -31,12 +31,29 @@ module DcPageControl
 # Called when new empty record is created
 ######################################################################
 def dc_new_record()
-  @record.design_id = params[:design_id] if params[:design_id]
-  return unless params[:page_id]
-#
-  if page = DcPage.find(params[:page_id])
-    @record.design_id = page.design_id
-    @record.menu      = page.menu
+  # Called from menu. Fill in values, that could be obtained from menu
+  if params[:from_menu]
+    # find menu and submenu. Menu class is defined in Site.
+    menu_a = params[:id].split(';')
+    menu   = dc_get_site.menu_klass.find(menu_a.shift)
+    menu_items_method = "#{dc_get_site.menu_class}_items".underscore
+    menu_i = menu.send(menu_items_method).find(menu_a.shift)
+    while menu_a.size > 0 do menu_i = menu_i.send(menu_items_method).find(menu_a.shift) end
+    # Fill values for form
+    @record.subject = menu_i.caption    
+    @record.dc_site_id = menu.dc_site_id
+    @record.menu_id = params[:id]
+    # set update_menu on save parameter
+    params['p__update_menu'] = '1'
+  else
+    @record.design_id = params[:design_id] if params[:design_id]
+    return unless params[:page_id]
+    # inherit some values from currently active page
+    if page = DcPage.find(params[:page_id])
+      @record.design_id  = page.design_id
+      @record.menu       = page.menu
+      @record.dc_site_id = page.dc_site_id
+    end
   end
 end
 

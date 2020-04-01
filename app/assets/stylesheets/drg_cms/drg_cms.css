@@ -409,10 +409,12 @@ border: 1px solid #ddd;
 .skip-next a:link, .skip-next a:active, .skip-next a:visited { color: #333; text-decoration: none; background: transparent;}
 .skip-next a:hover { text-decoration: none; color: #c43; }
 
-.dc-animate-button {
-  background: transparent linear-gradient(to bottom, #fdfdfd 0%, #f2f2f2 100%) !important; 
+.dc-window-open {
+  padding: 8px 7px 6px;
 }
-
+.dc-window-open i {
+  padding-right: 4px;
+}
 .dc-link-submit {
   text-align: left;
   padding: 8px 6px 6px;
