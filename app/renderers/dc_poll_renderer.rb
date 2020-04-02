@@ -59,9 +59,11 @@ def do_one_item(poll, yaml)
 # 
   text = yaml['text'].match(/\./) ? t(yaml['text']) : yaml['text'] 
   if yaml['mandatory']
-    text << '<font color="red"> *</font>' 
+    text << ( poll.display == 'in' ? ' *' : '<font color="red"> *</font>' )
     yaml['html'] ||= {}
     yaml['html']['required'] = true
+  else
+    text << " &nbsp;" if poll.display == 'lr'
   end
   
 # Just add text if comment and go to next one    
@@ -123,11 +125,11 @@ def do_one_item(poll, yaml)
   else
     html << case
       when poll.display == 'lr' then
-      "<div class='row-div'><div class='dc-form-label poll-data-text #{yaml['class']}'>#{text}</div><div class='dc-form-field poll-data-field #{yaml['class']}'>#{field_html}</div></div>\n"
-      when poll.display == 'tb' then
-      "<div class='poll-data-text #{yaml['class']}'>#{text}</div><div class='poll-data-field #{yaml['class']}'>#{field_html}#{yaml['separator']}</div>\n"
+      "<div class='row-div'><div class='dc-form-label poll-data-text lr #{yaml['class']}'>#{text}</div><div class='poll-data-field td #{yaml['class']}'>#{field_html}</div></div>\n"
+      when poll.display == 'td' then
+      "<div class='poll-data-text td #{yaml['class']}'>#{text}</div><div class='poll-data-field td #{yaml['class']}'>#{field_html}#{yaml['separator']}</div>\n"
       else
-      "<div class='poll-data-field #{yaml['class']}'>#{field_html}#{yaml['separator']}</div>\n"
+      "<div class='poll-data-field in #{yaml['class']}'>#{field_html}#{yaml['separator']}</div>\n"
     end    
   end
 end
