@@ -1,0 +1,35 @@
+## Form for retrieveng poll results
+---
+table: dc_memory
+
+form:
+  actions: 
+    1: 
+      type: script
+      caption: drgcms.back
+      js: 'history.back();'
+      icon: arrow-left
+
+    3: 
+      type: ajax
+      caption: drgcms.export_poll
+      title: drgcms.export_poll_title
+      icon: cog
+      controller: cmsedit
+      action: run
+      method: post
+      control: poll.export
+ 
+  fields:
+    10:
+      name: dc_poll_id
+      type: select
+      eval: "dc_choices4('dc_poll','name','_id')"
+    20:
+      name: date_start
+      type: date_picker
+      size: 8
+    30:
+      name: date_end
+      type: date_picker
+      size: 8

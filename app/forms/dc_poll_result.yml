@@ -1,0 +1,49 @@
+## Form for retrieveng poll results
+---
+table: dc_poll_result
+
+index:
+  filter: dc-poll_id
+  actions:
+    1: filter
+    2: 
+      type: link
+      caption: drgcms.export_poll
+      title: drgcms.export_poll_title
+      icon: table
+      controller: cmsedit
+      action: new
+      table: dc_memory
+      form_name: dc_poll_result_export
+    
+result_set:
+  actions: standard
+
+  columns:
+    10:  
+      name: dc_poll_id
+      eval: dc_name4_id,dc_poll,name
+      width: 25%
+    20: 
+      name: created_at
+      format: '%d.%m.%Y %H:%M'
+      width: 10%
+
+form:
+  actions: 
+    1: back
+    2: save&back
+      
+  fields:
+    10:
+      name: dc_poll_id
+      type: select
+      eval: "dc_choices4('dc_poll','name','_id')"
+    20:
+      name: data
+      type: text_area
+      size: 100x25
+    30:
+      name: created_at
+      type: readonly
+      format: '%d.%m.%Y %H:%M'

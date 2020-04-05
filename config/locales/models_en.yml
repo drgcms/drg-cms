@@ -158,6 +158,13 @@ en:
         options: Options
         order: Order
         active: Active
+        
+      dc_poll_result:
+        tabletitle: Polls results
+
+        dc_poll_id: Poll name
+        created_at: Created date
+        data: Data
 
       dc_policy:
         tabletitle: Access policy declarations
@@ -654,10 +661,6 @@ en:
         form: You can specified input items by providing form acording to rules of drgCMS form.
 
       dc_poll_item:
-        tabletitle: Poll items
-        choices4_type: Text:text_field,Text area:text_area,Select:select,Check box:check_box,Submit:submit_tag,Link:link_to,Password:password_field,Comment:comment
-        choices4_separator: Space:&nbsp;,Empty line:<br />,Horizontal line:<hr>
-
         name: Name (alias) of returned field name
         text: Caption of item
         type: Input item type
@@ -667,6 +670,11 @@ en:
         options: Options for the item. Depends on item type.
         order: Order of item on poll
         active: Item is active        
+
+      dc_poll_result:
+        dc_poll_id: Poll name 
+        created_at: Date when poll result was submited
+        data: Data saved in YAML format
 
       dc_policy:
         name: Unique policy name

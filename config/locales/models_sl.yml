@@ -160,6 +160,13 @@ sl:
         options: Opcije
         order: Zaporedje
         active: Aktivna
+        
+      dc_poll_result:
+        tabletitle: Rezultati anket
+
+        dc_poll_id: Anketa
+        created_at: Kreirano
+        data: Podatki
 
       dc_policy:
         tabletitle: Politike za dostop
@@ -635,7 +642,6 @@ sl:
         password_confirmation: Še enkrat vpišite geslo
         signature: Podpis, ki se doda k vsakemu sporočilu tega uporabnika
 
-
       dc_user_role:
         dc_policy_role_id: Uporabnikova vloga
         has_cms_menu: Vloga dovoljuje prikaz opcije za CMS menu
@@ -668,6 +674,11 @@ sl:
         options: Opcije, odvisne od vrste vpisnega polja
         order: Zaporedje prikaza na anketi
         active: Vrstica je aktivna
+        
+      dc_poll_result:
+        dc_poll_id: Naziv ankete
+        created_at: Čas kreiranja podatkov
+        data: Podatki v YAML formatu
 
       dc_policy:
         name: Naziv politike

@@ -135,6 +135,24 @@ def do_one_item(poll, yaml)
 end
 
 ########################################################################
+# Call method before poll is displayed. Usefull for filling predefined values into flash[:record][value]
+# Method cane be defined as ClassName.method or only method. 
+# If only method is defined then method name must exist in helpers.
+# 
+# Called method must return at least one result if process can continue.
+########################################################################
+def eval_pre_display(code)
+  a = code.strip.split('.')
+  if a.size == 1
+    continue, message = @parent.send(a.first)
+  else
+    klass = a.first.classify.constantize
+    continue, message = klass.send(a.last,@parent)
+  end
+  [continue, message]
+end
+
+########################################################################
 # Default poll renderer method. Renders data for specified pool.
 ########################################################################
 def default
@@ -151,12 +169,10 @@ def default
   
   html = @opts[:div] ? "<div id='#{@opts[:div]}'>" : ''
   html << '<a name="poll-top"></a>'
-
-  # Operation called before poll is displayed. Usefull for filling predefined values into flash[:record][value]
-  # Called method must return at least one result if process can continue.
-  if poll.pre_display.to_s.size > 1
+  #
+  unless poll.pre_display.blank?
     begin
-      continue, message = eval(poll.pre_display.strip + '(@parent)')
+      continue, message = eval_pre_display(poll.pre_display)
     rescue Exception => e
       return "<div class=\"dc-form-error\">Error! Poll pre display. Error: #{e.message}</div>" 
     end

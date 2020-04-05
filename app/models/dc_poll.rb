@@ -51,26 +51,45 @@
 # as DcSimpleItem embedded structure or as DRG CMS form YAML style entered into form field.
 ########################################################################
 class DcPoll
-  include Mongoid::Document
-  include Mongoid::Timestamps
+  
+include Mongoid::Document
+include Mongoid::Timestamps
 
-  field :name,          type: String, default: ''
-  field :title,         type: String, default: ''
-  field :sub_text,      type: String, default: ''
-  field :pre_display,   type: String
-  field :operation,     type: String
-  field :parameters,    type: String
-  field :display,       type: String, default: '1'
-  field :css,           type: String
-  field :form,          type: String
-  field :valid_from,    type: DateTime
-  field :valid_to,      type: DateTime
-  field :captcha_type,  type: String
-  field :active,        type: Boolean, default: true 
-  field :created_by,    type: BSON::ObjectId
-  field :updated_by,    type: BSON::ObjectId
+field :name,          type: String, default: ''
+field :title,         type: String, default: ''
+field :sub_text,      type: String, default: ''
+field :pre_display,   type: String
+field :operation,     type: String
+field :parameters,    type: String
+field :display,       type: String, default: '1'
+field :css,           type: String
+field :form,          type: String
+field :valid_from,    type: DateTime
+field :valid_to,      type: DateTime
+field :captcha_type,  type: String
+field :active,        type: Boolean, default: true 
+field :created_by,    type: BSON::ObjectId
+field :updated_by,    type: BSON::ObjectId
 
-  index( { name: 1 }, { unique: true } )
+index( { name: 1 }, { unique: true } )
 
-  embeds_many :dc_poll_items
+embeds_many :dc_poll_items
+
+########################################################################
+# Save poll results to DcPollResults collection
+# 
+# Params:
+# data : Hash : Records hash (params[:record])
+########################################################################
+def save_results(data)
+  h = {}
+  items = self.form.blank? ? self.dc_poll_items : YAML.load(self.form.gsub('&nbsp;',' '))
+  items.each do |item|
+    next if %w(hidden_field submit_tag link_to comment).include?(item.type)
+    next if item.try(:options).match('hidden')
+    h[ item['name'] ] = data[ item['name'] ]
+  end
+  DcPollResult.create(dc_poll_id: self.id, data: h.to_yaml)
+end    
+    
 end
