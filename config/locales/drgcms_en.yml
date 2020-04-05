@@ -94,6 +94,9 @@ en:
     created_at: Created at
     updated_at: Updated at
     new_record: New record
+    
+    export_poll: Export
+    export_poll_title: Upload poll data in a file
 
     choices4_filter_operators: 'Equal to:eq,Contains:like,Greater then:gt,Less then:lt,Is empty:empty'
     

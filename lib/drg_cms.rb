@@ -140,6 +140,7 @@ def self.routes
       get 'dc_common/add_json_ld_schema'    => :add_json_ld_schema
     end
     match 'elfinder' => 'dc_elfinder#connector', via: [:get, :post]
+    match 'cmsedit/run' => 'cmsedit#run', via: [:get, :post]
     resources :cmsedit
     resources :cms, controller: :cmsedit
   end

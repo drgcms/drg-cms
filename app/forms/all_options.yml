@@ -25,6 +25,7 @@ index:
     3: sort
     
   actions:
+    standard: yes    
     1: 
       type: new
       caption: Alternative caption
@@ -114,8 +115,7 @@ form:
   title:
     edit: Title for edit
     show: Title for show
-  labels_pos: top
-    
+  labels_pos: top    
 
   actions: standard
   actions: none
@@ -127,6 +127,7 @@ form:
       action: action
       method: (get),put,post
       caption: ajax_call
+      control: control_name.method_to_call
       when_new: false
     5: 
       type: window

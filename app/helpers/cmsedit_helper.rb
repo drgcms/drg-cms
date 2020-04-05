@@ -34,9 +34,133 @@ module CmseditHelper
 # Creates code for script action type.
 ############################################################################
 def dc_script_action(yaml)
-  data = {'request' => 'script', 'script' => yaml['js']}
+  data = {'request' => 'script', 'script' => yaml['js'] || yaml['script'] }
   %Q[<li class="dc-link-ajax with-link dc-animate">#{ dc_link_to(yaml['caption'], yaml['icon'], '#', data: data ) }</li>]
-end 
-  
+end
+
+############################################################################
+# Will return field form definition if field is defined on form. 
+# Field definition will be used for input field on the form.
+############################################################################
+def dc_get_field_form_definition(name) #:nodoc:
+  @form['form']['tabs'].each do |tab|
+# Array with 2 elements. First is tabname, second is data      
+    my_fields = tab.last
+    my_fields.each {|k,v| return v if (k.class == Integer and v['name'] == name) }
+  end if @form['form']['tabs'] #  I know. But nice. 
+#
+  @form['form']['fields'].each do |field|
+    next unless field.first.class == Integer # options
+    return field.last if field.last['name'] == name
+  end if @form['form']['fields']
+  nil
+end
+
+############################################################################
+# Return field code, label and help text for a field defined on a DRG Form.
+# 
+# Parameters:
+# options : Hash : Field definition
+# 
+# Returns: 
+#   field_html : String : HTML code for field definition
+#   label : String : Label text
+#   help : String : Help text
+############################################################################
+def dc_field_label_help(options)
+  caption = options['caption'] || options['text']
+  label = if !caption.blank?    
+    t(caption, caption)
+  elsif options['name']
+    t_name(options['name'], options['name'].capitalize.gsub('_',' ') )
+  end
+  # help text can be defined in form or in translations starting with helpers. or as helpers.help.collection.field
+  help = if options['help'] 
+    options['help'].match('helpers.') ? t(options['help']) : options['help']
+  end
+  help ||= t('helpers.help.' + @form['table'] + '.' + options['name'],' ') if options['name'] 
+  # create field object from class and call its render method
+  klass_string = options['type'].camelize
+  field_html = if DrgcmsFormFields.const_defined?(klass_string) # when field type defined
+    klass = DrgcmsFormFields.const_get(klass_string)
+    field = klass.new(self, @record, options).render
+    @js << field.js
+    field.html 
+  else # litle error string
+    "Error: Field type #{options['type']} not defined!"
+  end
+  [field_html, label, help]
+end
+
+############################################################################
+# Creates code for including data entry field in actions
+############################################################################
+def dc_field_action(yaml)
+  if ( field_definition = dc_get_field_form_definition(yaml['name']) )
+     field, label, help = dc_field_label_help(field_definition)
+     # add placeholder to input field
+     field = field.sub('input',"input placeholder=\"#{label}\"")
+     %Q[<li class="no-background">#{field}</li>]
+  else
+    ''
+  end
+end
+
+############################################################################
+# Creates code for link, ajax or windows action for index or form actions.
+# 
+# Parameters:
+#   yaml: Hash : Action definition
+#   record : Object : Currently selected record if available
+#   action_active : Boolean : Is action active or disabled
+#   
+# Returns:
+#   String : HTML code for action
+############################################################################
+def dc_link_ajax_window_action(yaml, record=nil, action_active=true)
+  parms = {}
+  # direct url        
+  if yaml['url']
+    parms['controller'] = yaml['url'] 
+    parms['idr']        = dc_document_path(record) if record
+  # make url from action controller
+  else
+    parms['controller'] = yaml['controller'] 
+    parms['action']     = yaml['action'] 
+    parms['table']      = yaml['table'] 
+    parms['form_name']  = yaml['form_name']
+    parms['control']    = yaml['control'] if yaml['control']
+  end
+  # add current id to parameters
+  parms['id'] = dc_document_path(record) if record
+  # overwrite with or add additional parameters from environment or record
+  yaml['params'].each { |k,v| parms[k] = dc_value_for_parameter(v) } if yaml['params']
+  parms['table'] = parms['table'].underscore if parms['table'] # might be CamelCase
+  # error if controller parameter is missing
+  if parms['controller'].nil?
+    "<li>#{'Controller not defined'}</li>"
+  else
+    yaml['caption'] ||= yaml['text'] 
+    caption = t("#{yaml['caption'].downcase}", yaml['caption'])
+    #
+    url = url_for(parms) rescue 'URL error'
+    request = yaml['request'] || yaml['method'] || 'get'
+    icon    = yaml['icon'] ? "#{fa_icon(yaml['icon'])} " : ''
+    if yaml['type'] == 'ajax' # ajax button
+      clas = action_active ? "dc-link-ajax dc-animate" : "dc-link-no"
+      %Q[<li class="#{clas}" data-url="#{action_active ? url : ''}" 
+         data-request="#{request}" title="#{yaml['title']}">#{icon} #{caption}</li>]
+    elsif yaml['type'] == 'link'  # link button
+      clas = action_active ? "dc-link dc-animate" : "dc-link-no"
+      %Q[<li class="#{clas}">#{action_active ? dc_link_to(yaml['caption'],yaml['icon'], parms, {target: yaml['target']} ) : caption}</li>]
+    elsif yaml['type'] == 'window' 
+      clas = action_active ? "dc-link dc-animate dc-window-open" : "dc-link-no"
+      %Q[<li class="#{clas}" data-url="#{action_active ? url : ''}">#{icon} #{caption}</li>]
+    else 
+      '<li>Action Type error</li>'
+    end
+  end
+end
+
   
 end

@@ -946,7 +946,8 @@ display: inline-flex;
 #dc-action-menu ul {
 list-style:none;
 padding: 0px;
-margin: 8px 2px 4px 2px; 
+/*margin: 8px 2px 4px 2px; */
+line-height: 2.2rem;
 }
 
 .dc-action-menu  {
@@ -967,11 +968,11 @@ border: 1px solid #eee;
 }
 
 .dc-action-menu ul {
-margin-top: 1px;
-/*background:#fff; */
-position:absolute;
-left:-9999px; 
-border-radius: 2px;
+  margin: -3px 0 0 2px;
+  position: absolute;
+  left: -9999px;
+  border-radius: 1px;
+  line-height: 1.2em !important;
 }
 
 .dc-action-menu ul li {
@@ -1029,8 +1030,19 @@ background-color: transparent;
 }
 
 .menu-filter hr {margin: 0px;}
-.filter_field {
 
+.dc-action-menu .no-background {
+  background: #fff;
+  border: none;
+  padding: 0;
+  white-space: nowrap;
+}
+.dc-action-menu .no-background .label {
+  padding-left: 4px;
+}
+
+.dc-action-menu .filter_field i {
+  padding-right: 2px;
 }
 .filter-popup {
   background-color: #fff;

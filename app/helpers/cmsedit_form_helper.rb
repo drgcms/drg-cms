@@ -87,18 +87,17 @@ def dc_actions_for_form(position)
 # Add spinner to the beginning
   html = %Q[<span class="dc-spinner div-hidden">#{fa_icon('spinner lg spin')}</span><ul class="dc-menu #{position}">]
   
-  actions.each do |element|
-    session[:form_processing] = "form:actions: #{element}"
-    v = element[1]
-    next if v.nil?  # yes it happends
-    action_active = !(dc_dont?(v['when_new']) and @record.new_record?)
+  actions.each do |key, options|
+    session[:form_processing] = "form:actions: #{key} #{options}"
+    next if options.nil?  # yes it happends
+    action_active = !(dc_dont?(options['when_new']) and @record.new_record?)
     parms = @parms.clone
-    if v.class == String
-      next if params[:readonly] and !(v == 'back')
+    if options.class == String
+      next if params[:readonly] and !(options == 'back')
       
       html << '<li class="dc-link dc-animate">'
       html << case 
-        when (v == 'back' or v == 'cancle') then
+        when (options == 'back' or options == 'cancle') then
 # If return_to is present link directly to URL        
           if parms['xreturn_to'] # disabled for now
             dc_link_to( 'drgcms.back','arrow-left', parms['return_to'] )
@@ -108,104 +107,65 @@ def dc_actions_for_form(position)
             dc_link_to( 'drgcms.back','arrow-left', parms )
           end
           
-        when v == 'delete' then
-          parms['operation'] = v
+        when options == 'delete' then
+          parms['operation'] = options
           parms['id']   = @record.id
           dc_link_to( 'drgcms.delete','remove', parms, data: { confirm: t('drgcms.confirm_delete') }, method: :delete )
           
-        when v == 'new' then
-          parms['action'] = v
+        when options == 'new' then
+          parms['action'] = options
           dc_link_to( 'drgcms.new', 'plus', parms)
           
-        when (v == 'enable' or v == 'disable') then
-          parms['operation'] = v
+        when (options == 'enable' or options == 'disable') then
+          parms['operation'] = options
           parms['id']        = @record.id
-          icon = (v == 'enable' ? 'thumbs-o-up' : 'thumbs-o-down')
-          dc_link_to( "drgcms.#{v}",icon, parms, method: :delete )
+          icon = (options == 'enable' ? 'thumbs-o-up' : 'thumbs-o-down')
+          dc_link_to( "drgcms.#{options}",icon, parms, method: :delete )
           
-        when v == 'edit' then
-          parms['operation'] = v
+        when options == 'edit' then
+          parms['operation'] = options
           parms['id']        = @record.id
-          dc_link_to( "drgcms.#{v}",v, parms )
+          dc_link_to( "drgcms.#{options}",options, parms )
           
-        when v == 'refresh' then
+        when options == 'refresh' then
           "<div onclick='window.location.href=window.location.href;'>#{fa_icon('refresh')} #{t('drgcms.refresh')}</div></li>"
       else 
-        "err1 #{element[0]}=>#{v}"
+        "err1 #{key}=>#{options}"
       end
       html << '</td>'
     # non standard actions      
     else
+      options['title'] = t("#{options['title'].downcase}", options['title']) if options['title']
       html << case 
       # submit button
-      when v['type'] == 'submit'
-        caption = v['caption'] || 'drgcms.save'
-        icon    = v['icon'] || 'save'
+      when options['type'] == 'submit'
+        caption = options['caption'] || 'drgcms.save'
+        icon    = options['icon'] || 'save'
         if action_active 
           '<li class="dc-link-submit dc-animate">' + 
-             dc_submit_tag(caption, icon, {:data => v['params'], :title => v['title'] }) +
+             dc_submit_tag(caption, icon, {:data => options['params'], :title => options['title'] }) +
           '</li>'
         else
           "<li class=\"dc-link-no\">#{fa_icon(icon)} #{caption}</li>"
         end
       
       # delete with some sugar added
-      when v['type'] == 'delete'
+      when options['type'] == 'delete'
         parms['id']   = @record.id
-        parms.merge!(v['params'])
-        caption = v['caption'] || 'drgcms.delete'
-        icon = v['icon'] || 'remove'
+        parms.merge!(options['params'])
+        caption = options['caption'] || 'drgcms.delete'
+        icon = options['icon'] || 'remove'
         '<li class="dc-link dc-animate">' + 
           dc_link_to( caption, icon, parms, data: t('drgcms.confirm_delete'), method: :delete ) +
         '</li>'
       
       # ajax or link button
-      when v['type'] == 'ajax' || v['type'] == 'link' || v['type'] == 'window'
-        parms = {}
-        # direct url        
-        if v['url']
-          parms['controller'] = v['url'] 
-          parms['idr']        = dc_document_path(@record)
-        # make url from action controller
-        else
-          parms['controller'] = v['controller'] 
-          parms['action']     = v['action'] 
-          parms['table']      = v['table'] 
-          parms['form_name']  = v['form_name']
-        end
-        # add current id to parameters
-        parms['id'] = dc_document_path(@record)
-        # overwrite with or add additional parameters from environment or record
-        v['params'].each { |k,v| parms[k] = dc_value_for_parameter(v) } if v['params']
-        parms['table'] = parms['table'].underscore if parms['table'] # might be CamelCase
-        # error if controller parameter is missing
-        if parms['controller'].nil?
-          "<li>#{'Controller not defined'}</li>"
-        else
-          v['caption'] ||= v['text'] 
-          caption = t("#{v['caption'].downcase}", v['caption'])
-          #
-          url = url_for(parms) rescue 'URL error'
-          request = v['request'] || v['method'] || 'get'
-          icon    = v['icon'] ? "#{fa_icon(v['icon'])} " : ''
-          if v['type'] == 'ajax' # ajax button
-            clas = action_active ? "dc-link-ajax dc-animate" : "dc-link-no"
-            %Q[<li class="#{clas}" data-url="#{action_active ? url : ''}" 
-               data-request="#{request}" title="#{v['title']}">#{icon} #{caption}</li>]
-          elsif v['type'] == 'link'  # link button
-            clas = action_active ? "dc-link dc-animate" : "dc-link-no"
-            %Q[<li class="#{clas}">#{action_active ? dc_link_to(v['caption'],v['icon'], parms, {target: v['target']} ) : caption}</li>]
-          elsif v['type'] == 'window' 
-            clas = action_active ? "dc-link dc-animate dc-window-open" : "dc-link-no"
-            %Q[<li class="#{clas}" data-url="#{action_active ? url : ''}">#{icon} #{caption}</li>]
-          else 
-            'Action Type error'
-          end
-        end
+      when options['type'] == 'ajax' || options['type'] == 'link' || options['type'] == 'window'
+        dc_link_ajax_window_action(options, @record, action_active)
         
 # Javascript action        
-      when v['type'] == 'script'
-        dc_script_action(v)
+      when options['type'] == 'script'
+        dc_script_action(options)
       else
         '<li>err2</li>'
       end
@@ -272,9 +232,8 @@ def dc_fields_for_tab(fields_on_tab) #:nodoc:
   reset_cycle()
   # Select form fields and sort them by key
   form_fields  = fields_on_tab.select {|field| field.class == Integer }
-  form_fields.to_a.sort.each do |element|
-    options = element.last
-    session[:form_processing] = "form:fields: #{element.first}=#{options}"
+  form_fields.to_a.sort.each do |number, options|
+    session[:form_processing] = "form:fields: #{number}=#{options}"
     # ignore if edit_only singe field is required
     next if params[:edit_only] and params[:edit_only] != options['name'] 
     # hidden_fields. Add them at the end
@@ -283,27 +242,7 @@ def dc_fields_for_tab(fields_on_tab) #:nodoc:
       next
     end
     # label
-    caption = options['caption'] || options['text']
-    label = if !caption.blank?    
-      t(caption, caption)
-    elsif options['name']
-      t_name(options['name'], options['name'].capitalize.gsub('_',' ') )
-    end
-    # help text can be defined in form or in translations starting with helpers. or as helpers.help.collection.field
-    help = if options['help'] 
-      options['help'].match('helpers.') ? t(options['help']) : options['help']
-    end
-    help ||= t('helpers.help.' + @form['table'] + '.' + options['name'],' ') if options['name'] 
-    # create field object from class and call its render method
-    klass_string = options['type'].camelize
-    field_html = if DrgcmsFormFields.const_defined?(klass_string) # when field type defined
-      klass = DrgcmsFormFields.const_get(klass_string)
-      field = klass.new(self, @record, options).render
-      @js << field.js
-      field.html 
-    else # litle error string
-      "Error: Field type #{options['type']} not defined!"
-    end
+    field_html,label,help = dc_field_label_help(options)
     # Line separator
     html << dc_top_bottom_line(options['top-line']) if options['top-line']
     # Begining of new row
@@ -393,7 +332,7 @@ def dc_fields_for_form()
   # add form time stamp to prevent double form submit
   html << hidden_field(nil, :form_time_stamp, value: Time.now.to_i)
   # add javascript code if defined by form
-  @js << "\n#{@form['script']}" unless @form['script'].blank?
+  @js << "\n#{@form['script']}"
   html.html_safe
 end
 

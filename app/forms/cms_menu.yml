@@ -45,38 +45,42 @@ menu:
       50: 
         caption: helpers.label.dc_piece.tabletitle
         controller: cmsedit
-        icon: puzzle-piece lg        
+        icon: puzzle-piece lg
         table: dc_piece
       60: 
         caption: helpers.label.dc_link.tabletitle
         controller: cmsedit
-        icon: link lg        
+        icon: link lg
         table: dc_link
       70: 
         caption: helpers.label.dc_menu.tabletitle
         controller: cmsedit
-        icon: th-list lg        
+        icon: th-list lg
         table: dc_menu
       80: 
         caption: helpers.label.dc_simple_menu.tabletitle
         controller: cmsedit
-        icon: ellipsis-h lg        
+        icon: ellipsis-h lg
         table: dc_simple_menu
       90: 
         caption: helpers.label.dc_category.tabletitle
         controller: cmsedit
-        icon: list lg        
+        icon: list lg
         table: dc_category
-          
       100: 
         caption: helpers.label.dc_poll.tabletitle
         controller: cmsedit
-        icon: list-alt lg        
+        icon: list-alt lg
         table: dc_poll
       110: 
+        caption: helpers.label.dc_poll_result.tabletitle
+        controller: cmsedit
+        icon: database lg
+        table: dc_poll_result
+      120: 
         caption: helpers.label.dc_ad.tabletitle
         controller: cmsedit
-        icon: money lg        
+        icon: money lg
         table: dc_ad
 
   11_system_menu:
@@ -86,52 +90,52 @@ menu:
       10: 
         caption: helpers.label.dc_user.tabletitle
         controller: cmsedit
-        icon: users lg        
+        icon: users lg
         table: dc_user
       20: 
         caption: helpers.label.dc_policy_role.tabletitle
         controller: cmsedit
-        icon: user-secret lg        
+        icon: user-secret lg
         table: dc_policy_role
       30: 
         caption: helpers.label.dc_permission.tabletitle
         controller: cmsedit
-        icon: shield lg        
+        icon: shield lg
         table: dc_permission
       40: 
         caption: helpers.label.dc_folder_permission.tabletitle
         controller: cmsedit
-        icon: shield lg        
+        icon: shield lg
         table: dc_folder_permission
       60: 
         caption: helpers.label.dc_big_table.tabletitle
         controller: cmsedit
-        icon: table lg        
+        icon: table lg
         table: dc_big_table
       70: 
         caption: helpers.label.dc_key_value_store.tabletitle
         controller: cmsedit
-        icon: list lg        
+        icon: list lg
         table: dc_key_value_store
       80: 
         caption: helpers.label.dc_filter.tabletitle
         controller: cmsedit
-        icon: filter lg        
+        icon: filter lg
         table: dc_filter
       90: 
         caption: helpers.label.dc_removed_url.tabletitle
         controller: cmsedit
-        icon: trash-o lg        
+        icon: trash-o lg
         table: dc_removed_url
       500: 
         caption: helpers.label.dc_journal.tabletitle
         controller: cmsedit
-        icon: undo lg        
+        icon: undo lg
         table: dc_journal
 
       600: 
         caption: drgcms.browse_collections
         controller: cmsedit
-        icon: table lg        
+        icon: table lg
         table: dc_memory
         form_name: dc_browse_models

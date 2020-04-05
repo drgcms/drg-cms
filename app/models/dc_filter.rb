@@ -150,10 +150,12 @@ def self.get_filter_field(parent)
     parent.session[ parent.form['table'] ][:filter] = nil
     return ''
   end
-  js = object.js
-  "<span class=\"filter_field\" data-url=\"#{url}\">#{object.html} " <<
-    parent.fa_icon('filter lg', class: 'record_filter_field_icon dc-link-icon dc-animate') <<
-    (js.size > 2 ? parent.javascript_tag(js) : '') << '</span>'
+  js = object.js.blank? ? '' : parent.javascript_tag(object.js)
+%Q[<li class="no-background">
+<span class="filter_field" data-url="#{url}">#{object.html}
+#{parent.fa_icon('search lg', class: 'record_filter_field_icon')}
+#{js}</span>
+</li>]
 end
 
 ######################################################################

@@ -54,6 +54,7 @@ end
 # Creates action div for cmsedit index action. 
 ############################################################################
 def dc_actions_for_index()
+  @js ||= ''
   return '' if @form['index'].nil? or @form['readonly']
   actions = @form['index']['actions']
   return '' if actions.nil? or actions.size == 0
@@ -67,7 +68,7 @@ def dc_actions_for_index()
   
 # start div with hidden spinner image 
   html = <<EOT
-<div id="dc-action-menu">
+<form id="dc-action-menu">
   <span class="dc-spinner div-hidden">#{fa_icon('spinner lg spin')}</span>
   <ul class="dc-action-menu">
 EOT
@@ -75,12 +76,11 @@ EOT
   only_actions = []
   actions.each { |key, value| only_actions << [key, value] if key.class == Integer }
   only_actions.sort_by!(&:first)
-  only_actions.each do |element|
-    k,v = element
-    session[:form_processing] = "index:actions: #{k}=#{v}"
-    next if v.nil? # must be
+  only_actions.each do |key, options|
+    session[:form_processing] = "index:actions: #{key}=#{options}"
+    next if options.nil? # must be
     url = @parms.clone
-    yaml = v.class == String ? {'type' => v} : v # if single definition simulate type parameter
+    yaml = options.class == String ? {'type' => options} : options # if single definition simulate type parameter
     action = yaml['type'].to_s.downcase 
     if action == 'url'
       dc_deprecate "action: url will be deprecated. Use action: link in index: actions"
@@ -94,6 +94,7 @@ EOT
       url['action']     = yaml['action'] || action
       url['table']      = yaml['table']  if yaml['table']
       url['form_name']  = yaml['form_name'] if yaml['form_name']
+      url['control']    = yaml['control'] if yaml['control']
     end
 # html link options
     yhtml = yaml['html'] || {}
@@ -116,10 +117,10 @@ EOT
       caption = t('drgcms.filter')
       caption << '&nbsp;' + fa_icon('caret-down lg') + DcFilter.menu_filter(self)
 # add filter OFF link
-      s = session[@form['table']]
-      if s and s[:filter]
+      sess = session[@form['table']]
+      if sess and sess[:filter]
         caption << '&nbsp;&nbsp;' + dc_link_to(nil,'remove lg', {controller: 'cmsedit', 
-                   filter: 'off', table: @form['table']}, { title: DcFilter.title4_filter_off(s[:filter]) }) 
+                   filter: 'off', table: @form['table']}, { title: DcFilter.title4_filter_off(sess[:filter]) }) 
       end
       caption
 # new
@@ -128,8 +129,8 @@ EOT
       dc_link_to(caption,'plus', url, yhtml )
 # menu      
     when action == 'menu' then  
-      caption = t(v['caption'], v['caption']) + '&nbsp;' + fa_icon('caret-down lg')
-      caption + eval(v['eval'])      
+      caption = t(options['caption'], options['caption']) + '&nbsp;' + fa_icon('caret-down lg')
+      caption + eval(options['eval'])      
 =begin
 # reorder      
     when action == 'reorder' then  
@@ -141,7 +142,13 @@ EOT
       dc_link_to( caption, 'reorder', parms, method: :delete )              
 =end     
     when action == 'script'
-      html << dc_script_action(v)
+      html << dc_script_action(options)
+      next
+    when action == 'field'
+      html << dc_field_action(yaml) 
+      next 
+    when %w(ajax link window).include?(action)
+      html << dc_link_ajax_window_action(options, nil, true)
       next
     else 
       caption = yaml['caption'] || yaml['text']
@@ -149,10 +156,10 @@ EOT
       dc_link_to(caption, icon, url, yhtml)
     end
     html << "<li class=\"dc-link dc-animate\">#{code}</li>"
+    html << DcFilter.get_filter_field(self) if action == 'filter'
   end
   html << '</ul>'
-  html << DcFilter.get_filter_field(self)
-  html << '</div>'
+  html << '</form>'
   html.html_safe
 end
 

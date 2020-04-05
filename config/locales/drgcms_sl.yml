@@ -94,6 +94,9 @@ sl:
     created_at: Ustvarjeno
     updated_at: Spremenjeno
     new_record: Nov zapis
+    
+    export_poll: Izvoz
+    export_poll_title: Izvoz in prenos rezultatov ankete v datoteko
 
     choices4_filter_operators: 'Je enak:eq,Vsebuje:like,Je večji od:gt,Je manjši od:lt,Je prazen:empty'
     

@@ -76,7 +76,7 @@
 # If filter method returns false user will be presented with flash error.
 ########################################################################
 class CmseditController < DcApplicationController
-before_action :check_authorization, :except => [:login, :logout, :test]
+before_action :check_authorization, :except => [:login, :logout, :test, :run]
 before_action :dc_reload_patches if Rails.env.development?
   
 layout 'cms'
@@ -422,6 +422,26 @@ def destroy
   render action: :edit
 end
 
+########################################################################
+# Run action
+########################################################################
+def run
+      pp params,'-------------------------------'
+  control_name, method_name = params[:control].split('.')
+  extend_with_control_module(control_name)
+  if respond_to?(method_name)
+    send method_name
+  else
+    # Error message
+    text = "Method #{method_name} not defined in #{control_name}_control"
+    respond_to do |format|
+      format.json { render json: {msg_error: text} }
+      format.html { render plain: text }
+    end    
+  end
+
+end
+
 protected
 
 ########################################################################
@@ -522,39 +542,42 @@ def read_drg_cms_form
 end
 
 ############################################################################
+# Dynamically extend cmsedit class with methods defined in controls module.
+############################################################################
+def extend_with_control_module(control_name=@form['controls'])
+# May include embedded forms therefor ; => _ 
+  controls_string = "#{control_name || params[:table].gsub(';','_')}_control"
+  controls = "#{controls_string.classify}".constantize rescue nil
+# old version. Will be deprecated
+  if controls.nil?
+    controls_string = (control_name ? control_name : params[:table].gsub(';','_')) + '_control'
+    controls = "DrgcmsControls::#{controls_string.classify}".constantize rescue nil
+    dc_deprecate('Putting controls into app/controllers/drgcms_controls directory will be deprecated. Put them into app/controls instead.') if controls
+  end
+  extend controls if controls 
+end
+
+############################################################################
 # Check if user is authorized for the action. If authorization is in order it will also
 # load DRG form.
 ############################################################################
 def check_authorization
   params[:table] ||= params[:form_name]
-# Just show menu
-#  return show if params[:action] == 'show'
+  # Only show menu
   return login if params[:id].in?(%w(login logout test))
   table = params[:table].to_s.strip.downcase
-# request shouldn't pass
+  # request shouldn't pass
   if table != 'dc_memory' and 
      (session[:user_roles].nil? or table.size < 3 or !dc_user_can(DcPermission::CAN_VIEW))
     return render(action: 'error', locals: { error: t('drgcms.not_authorized')} )
   end
-
   read_drg_cms_form
-  
-# Permissions can be also defined on form
-  if @form.nil?
-    render plain: t('drgcms.form_error')
-#TODO So far only can_view is used. Think about if using other permissions has sense
-  elsif @form['permissions'].nil? or @form['permissions']['can_view'].nil? or
-        dc_user_has_role(@form['permissions']['can_view'])
-# Extend class with methods defined in controls module. May include embedded forms therefor ; => _ 
-    controls_string = "#{@form['controls'] || params[:table].gsub(';','_')}_control"
-    controls = "#{controls_string.classify}".constantize rescue nil
-# old version. Will be deprecated
-    if controls.nil?
-      controls_string = (@form['controls'] ? @form['controls'] : params[:table].gsub(';','_')) + '_control'
-      controls = "DrgcmsControls::#{controls_string.classify}".constantize rescue nil
-      dc_deprecate('Putting controls into app/controllers/drgcms_controls directory will be deprecated. Put them into app/controls instead.') if controls
-    end
-    extend controls if controls 
+  return render( plain: t('drgcms.form_error') ) if @form.nil?
+  # Permissions can be also defined on form
+  #TODO So far only can_view is used. Think about if using other permissions has sense
+  can_view = @form.dig('permissions','can_view') 
+  if can_view.nil? or dc_user_has_role(can_view)
+    extend_with_control_module
   else
     render(action: 'error', locals: { error: t('drgcms.not_authorized')} )
   end  
