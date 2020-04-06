@@ -3,4 +3,5 @@
   <%= dc_div_filter %>
   <%= dc_flash_messages %> 
   <div id='result'> <%= render partial: 'result' %></div>
+  <%= javascript_tag(@js) unless @js.blank? %>
 </div>

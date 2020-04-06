@@ -165,7 +165,7 @@ sl:
         tabletitle: Rezultati anket
 
         dc_poll_id: Anketa
-        created_at: Kreirano
+        created_at: Nastalo
         data: Podatki
 
       dc_policy:
@@ -677,7 +677,7 @@ sl:
         
       dc_poll_result:
         dc_poll_id: Naziv ankete
-        created_at: Čas kreiranja podatkov
+        created_at: Čas nastanka zapisa
         data: Podatki v YAML formatu
 
       dc_policy:

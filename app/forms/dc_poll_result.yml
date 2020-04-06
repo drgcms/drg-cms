@@ -3,21 +3,46 @@
 table: dc_poll_result
 
 index:
-  filter: dc-poll_id
   actions:
-    1: filter
-    2: 
-      type: link
+    10: 
+      type: field
+      name: dc_poll_id
+
+    30: 
+      type: field
+      name: start_date
+      field_type: date_picker
+        
+    40: 
+      type: field
+      name: end_date
+      field_type: date_picker
+      options: 
+        openOnFocus: false
+        
+    50: 
+      type: ajax
+      caption: drgcms.filter_poll
+      title: drgcms.filter_poll_title
+      icon: filter
+      controller: cmsedit
+      action: run
+      control: dc_poll_result.do_filter
+      method: post
+    
+    60: 
+      type: ajax
       caption: drgcms.export_poll
       title: drgcms.export_poll_title
-      icon: table
       controller: cmsedit
-      action: new
-      table: dc_memory
-      form_name: dc_poll_result_export
+      icon: table
+      action: run
+      control: dc_poll_result.do_export
+      method: post
     
 result_set:
   actions: standard
+  filter: poll_filter
 
   columns:
     10:  

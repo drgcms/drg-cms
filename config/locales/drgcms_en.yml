@@ -95,6 +95,8 @@ en:
     updated_at: Updated at
     new_record: New record
     
+    filter_poll: Filter
+    filter_poll_title: Filter poll data
     export_poll: Export
     export_poll_title: Upload poll data in a file
 

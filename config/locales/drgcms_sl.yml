@@ -95,6 +95,8 @@ sl:
     updated_at: Spremenjeno
     new_record: Nov zapis
     
+    filter_poll: Filter
+    filter_poll_title: Filtriraj podatke
     export_poll: Izvoz
     export_poll_title: Izvoz in prenos rezultatov ankete v datoteko
 
