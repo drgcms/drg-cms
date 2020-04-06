@@ -93,17 +93,25 @@ def dc_field_label_help(options)
 end
 
 ############################################################################
-# Creates code for including data entry field in actions
+# Creates code for including data entry field in index actions.
 ############################################################################
 def dc_field_action(yaml)
+  # assign value if value found in parameters
+  if params['record']
+    value = params['record'][yaml['name']]
+    params["p_#{yaml['name']}"] = value
+  end
+  #
   if ( field_definition = dc_get_field_form_definition(yaml['name']) )
      field, label, help = dc_field_label_help(field_definition)
-     # add placeholder to input field
-     field = field.sub('input',"input placeholder=\"#{label}\"")
-     %Q[<li class="no-background">#{field}</li>]
   else
-    ''
+    yaml['type'] = yaml['field_type']
+    field, label, help = dc_field_label_help(yaml)
   end
+   # input field will have label as placeholder
+   field = field.sub('input',"input placeholder=\"#{label}\"")
+   %Q[<li class="no-background">#{field}</li>]
+  
 end
 
 ############################################################################
