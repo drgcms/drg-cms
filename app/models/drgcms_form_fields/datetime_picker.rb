@@ -51,13 +51,13 @@ class DatetimePicker < DrgcmsField
 # Render date_time_picker field html code
 ###########################################################################
 def render
-  value = (@record and @record[@yaml['name']]) ? I18n.localize(@record[@yaml['name']].localtime) : nil
+  value = @record.try(@yaml['name']) ? I18n.localize(@record[@yaml['name']].localtime) : nil
   return ro_standard( @parent.dc_format_value(value)) if @readonly
 #
   @yaml['options'] ||= {}
   set_initial_value
   @yaml['html']['size'] ||= @yaml['size'] || 14
-  @yaml['html']['value'] = value if @record[@yaml['name']]
+  @yaml['html']['value'] ||= value if @record[@yaml['name']]
   @yaml['html']['autocomplete'] ||= 'off'
 #
   @yaml['options']['lang']   ||= "'#{I18n.locale}'"

@@ -65,13 +65,13 @@ class DatePicker < DrgcmsField
 # Render date_picker field html code
 ###########################################################################
 def render
-  value = (@record and @record[@yaml['name']]) ? I18n.localize(@record[@yaml['name']].to_date) : nil
+  value = @record.try(@yaml['name']) ? I18n.localize(@record[@yaml['name']].to_date) : nil
   return ro_standard( @parent.dc_format_value(value)) if @readonly
 #
   @yaml['options'] ||= {}
   set_initial_value
   @yaml['html']['size'] ||= @yaml['size'] || 10
-  @yaml['html']['value'] = value
+  @yaml['html']['value'] ||= value
   @yaml['html']['autocomplete'] ||= 'off'
 #
   @yaml['options']['lang']   ||= "'#{I18n.locale}'"
