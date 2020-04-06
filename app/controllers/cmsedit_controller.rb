@@ -426,11 +426,13 @@ end
 # Run action
 ########################################################################
 def run
-      pp params,'-------------------------------'
   control_name, method_name = params[:control].split('.')
   extend_with_control_module(control_name)
   if respond_to?(method_name)
-    send method_name
+    respond_to do |format|
+      format.json { send method_name }
+      format.html { send method_name }
+    end    
   else
     # Error message
     text = "Method #{method_name} not defined in #{control_name}_control"
