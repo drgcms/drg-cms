@@ -79,7 +79,7 @@ def get_query()
     unless params[:record][:start_date].blank?
       start_date = DrgcmsFormFields::DatePicker.get_data(params,'start_date').beginning_of_day
       end_date   = DrgcmsFormFields::DatePicker.get_data(params,'end_date').end_of_day
-      qry = qry.and(:created_at.gt => start_date, :created_at.lt => end_date)
+      qry = qry.and(:created_at.gt => start_date).and(:created_at.lt => end_date)
     end
   end
   qry
