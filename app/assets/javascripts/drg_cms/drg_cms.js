@@ -174,7 +174,11 @@ process_json_result = function(json) {
     switch (operation) {
     // update field 
     case 'record':
-      $('#'+key).val(val);
+      if ($('#'+key).is(':checkbox')) { //checkbox is different
+        $('#'+key).prop('checked', val);
+      } else {
+        $('#'+key).val(val);
+      }
       break;
     // display message   
     case 'msg': 
@@ -442,7 +446,7 @@ $(document).ready( function() {
       req = 'get'; // by default
     }
     
-    $('.dc-spinner').toggleClass('div-hidden');   
+    $('.dc-spinner').show();   
     $.ajax({
       url: target.getAttribute("data-url"),
       type: req,
@@ -453,7 +457,7 @@ $(document).ready( function() {
 //      }
       success: function(data) {
         process_json_result(data);
-        $('.dc-spinner').toggleClass('div-hidden');
+        $('.dc-spinner').hide();
       }
       
     });  
@@ -523,11 +527,11 @@ $(document).ready( function() {
  * Display spinner on link with spinner, submit link
  *******************************************************************/
   $('.dc-link-spinner').on('click', function(e) {
-    $('.dc-spinner').toggleClass('div-hidden');
+    $('.dc-spinner').show();
   });  
   
   $('.dc-link-submit').on('click', function(e) {
-    $('.dc-spinner').toggleClass('div-hidden');
+    $('.dc-spinner').show();
   });  
 
 /*******************************************************************
