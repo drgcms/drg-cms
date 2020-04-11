@@ -637,6 +637,7 @@ border-bottom: 1px solid #eee;
 .dc-spinner {
   float:left;
   padding: 6px 0;
+  display: none;
 }
 
 .dc-form-li {
@@ -1042,7 +1043,12 @@ background-color: transparent;
 }
 
 .dc-action-menu .filter_field i {
-  padding-right: 2px;
+  padding-right: 8px;
+}
+
+.dc-action-menu .filter_field i:hover {
+  cursor: pointer;
+  color: #ccc;
 }
 .filter-popup {
   background-color: #fff;
