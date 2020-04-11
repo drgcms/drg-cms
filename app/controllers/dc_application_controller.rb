@@ -598,6 +598,14 @@ def clear_login_data
   cookies.delete :remember_me
 end
 
+############################################################################
+# Sets at least default guest user to user roles when no user is set.
+############################################################################
+def set_default_guest_user_role
+  guest = DcPolicyRole.find_by(system_name: 'guest')
+  session[:user_roles] << guest.id if guest
+end
+
 ####################################################################
 # Fills session with data related to successful login.
 # 
@@ -610,8 +618,9 @@ def fill_login_data(user, remember_me=false)
   session[:edit_mode]  = 0 
   session[:user_roles] = []
   # Every user has guest role
-  guest = DcPolicyRole.find_by(system_name: 'guest')
-  session[:user_roles] << guest.id if guest
+#  guest = DcPolicyRole.find_by(system_name: 'guest')
+#  session[:user_roles] << guest.id if guest
+  set_default_guest_user_role
   return unless user and user.active  
   # special for SUPERADMIN
   sa = DcPolicyRole.find_by(system_name: 'superadmin')

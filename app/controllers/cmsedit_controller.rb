@@ -568,9 +568,10 @@ def check_authorization
   # Only show menu
   return login if params[:id].in?(%w(login logout test))
   table = params[:table].to_s.strip.downcase
+  set_default_guest_user_role if session[:user_roles].nil?
   # request shouldn't pass
   if table != 'dc_memory' and 
-     (session[:user_roles].nil? or table.size < 3 or !dc_user_can(DcPermission::CAN_VIEW))
+     (table.size < 3 or !dc_user_can(DcPermission::CAN_VIEW))
     return render(action: 'error', locals: { error: t('drgcms.not_authorized')} )
   end
   read_drg_cms_form

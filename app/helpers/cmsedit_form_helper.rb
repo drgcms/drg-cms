@@ -53,7 +53,7 @@ def dc_actions_for_form(position)
   std_actions = {' 1' => 'back', ' 2' => {'type' => 'submit', 'caption' => 'drgcms.save'},
                ' 3' => {'type' => 'submit', 'caption' => 'drgcms.save&back'} }
 # when edit only  
-  unless @record.id.nil?
+  unless @record.try(:id).nil?
     std_actions.merge!({' 6' => 'new'} )
     std_actions.merge!(@record.active ? {' 5' => 'disable'} : {' 5' => 'enable'} ) if @record.respond_to?('active')
     std_actions.merge!({' 7' => 'refresh'} )
@@ -85,7 +85,7 @@ def dc_actions_for_form(position)
 # Sort so that standard actions come first
   actions = actions.to_a.sort {|x,y| x[0].to_s <=> y[0].to_s} 
 # Add spinner to the beginning
-  html = %Q[<span class="dc-spinner div-hidden">#{fa_icon('spinner lg spin')}</span><ul class="dc-menu #{position}">]
+  html = %Q[<span class="dc-spinner">#{fa_icon('spinner lg spin')}</span><ul class="dc-menu #{position}">]
   
   actions.each do |key, options|
     session[:form_processing] = "form:actions: #{key} #{options}"

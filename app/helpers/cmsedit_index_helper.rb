@@ -69,7 +69,7 @@ def dc_actions_for_index()
 # start div with hidden spinner image 
   html = <<EOT
 <form id="dc-action-menu">
-  <span class="dc-spinner div-hidden">#{fa_icon('spinner lg spin')}</span>
+  <span class="dc-spinner">#{fa_icon('spinner lg spin')}</span>
   <ul class="dc-action-menu">
 EOT
 # Remove actions settings and sort
