@@ -603,7 +603,7 @@ end
 ############################################################################
 def set_default_guest_user_role
   guest = DcPolicyRole.find_by(system_name: 'guest')
-  session[:user_roles] << guest.id if guest
+  session[:user_roles] = [guest.id] if guest
 end
 
 ####################################################################
