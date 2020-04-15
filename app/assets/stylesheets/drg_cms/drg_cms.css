@@ -328,7 +328,7 @@ border: 1px solid #eee;
   border: 1px solid #eee;
 }
 
-.dc-link-ajax.with-link {padding: 0px;}
+.dc-link-ajax.with-link {padding: 7px;}
 
 .dc-link-ajax i, .dc-link-no i {
   padding: 1px 3px 0 0;
