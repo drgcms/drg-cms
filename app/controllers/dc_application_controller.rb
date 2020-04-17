@@ -128,8 +128,7 @@ def dc_find_form_file(form_file)
     f = "#{path}/#{form_file}.yml"
     return f if File.exist?(f) and (form_path.nil? or path.to_s.match(/\/#{form_path}\//i))
   end
-  logger.error "Form file #{form_file} not found!"
-  nil
+  raise "Exception: Form file '#{form_file}' not found!"
 end
 
 #######################################################################
