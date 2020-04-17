@@ -65,10 +65,13 @@
 }
 
 .ms-container .ms-selectable li.ms-elem-selectable{
-  border-bottom: 1px #eee solid;
   padding: 2px 10px;
-  color: #555;
+  color: #444;
   font-size: 14px;
+}
+
+.ms-container .ms-selectable li:nth-child(odd) {
+  background-color: #f4f4f4;
 }
 
 .ms-container .ms-selectable li.ms-hover{
@@ -88,6 +91,12 @@
   display: none;
 }
 
+
+.ms-container .ms-selected {
+  font-weight: bold;
+}
+
 .pull-right.ms-elem-selected{
   float: right;
+  font-size: larger;
 }

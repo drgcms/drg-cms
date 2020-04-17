@@ -293,8 +293,10 @@ border: 1px solid #eee;
 }
 
 .dc-link:hover {
-  background: #ddd;
-  border: 1px solid #bbb;
+/*  background: #ddd;
+  border: 1px solid #bbb;*/
+  border: 1px solid rgba(76,154,255, 1);
+  box-shadow: inset 0px 0px 0px 1px rgba(76,154,255, 1);
   transition: 0.3s; 
   color: #000;
   cursor: pointer;
@@ -328,7 +330,8 @@ border: 1px solid #eee;
   border: 1px solid #eee;
 }
 
-.dc-link-ajax.with-link {padding: 7px;}
+.dc-link-ajax.with-link {padding: 7px}
+#cmsform .dc-link-ajax.with-link {padding: 0}
 
 .dc-link-ajax i, .dc-link-no i {
   padding: 1px 3px 0 0;
@@ -336,8 +339,10 @@ border: 1px solid #eee;
 
 .dc-link-ajax:hover {
 cursor: pointer;
-background: #ddd;
+background: #eee;
 border: 1px solid #bbb;
+  border: 1px solid rgba(76,154,255, 1);
+  box-shadow: inset 0px 0px 0px 1px rgba(76,154,255, 1);
 transition: 0.3s; 
 color: #000;
 }
@@ -434,14 +439,15 @@ border: 1px solid #ddd;
 }
 .dc-link-submit:hover {
   color: #000;
-  background: #ddd;
-  transition: 0.3s;
   border: 1px solid #bbb;
+  border: 1px solid rgba(76,154,255, 1);
+  box-shadow: inset 0px 0px 0px 1px rgba(76,154,255, 1);  
+  transition: 0.3s;
 }
 .dc-link-submit:hover .dc-submit {
   color: #000;
   transition: 0.3s;
-  background: #ddd;
+
 
 }
 .dc-submit {
@@ -906,6 +912,8 @@ border: 1px solid #eee;
 .drgcms_popmenu_item:hover {
 background-color: white;
 border: 1px solid #ddd;
+  border: 1px solid rgba(76,154,255, 1);
+  box-shadow: inset 0px 0px 0px 1px rgba(76,154,255, 1);
 border-radius: 2px;
 }
 
@@ -952,7 +960,7 @@ line-height: 2.2rem;
 }
 
 .dc-action-menu  {
-list-style:none;
+display: inline-table;
 }
 
 .dc-action-menu li {
@@ -985,20 +993,18 @@ white-space: nowrap;
 background: #fff;
 border: 0;
 color: #888;
-/*background: transparent linear-gradient(to bottom, #FFF 0%, #F2F2F2 100%) repeat scroll 0% 0%;*/
 }
 
 .dc-action-menu ul a {
 white-space:nowrap;
+padding: 7px;
 }
 
 .dc-action-menu li:hover ul { 
-left:-3px;
-/*margin-top:3px;*/
-background-color: #fff;
-border: 1px solid #bbb;
+  left:-3px;
+  background-color: #fff;
+  border: 1px solid #ccc;
   z-index: 1000000;
-/*box-shadow: 1px 1px 2px #ccc;*/
 }
 
 .dc-action-menu ul ul {
@@ -1013,7 +1019,7 @@ color: #222;
 }
 .dc-action-menu li:hover ul li:hover {
 border: 0px;
-background: #ddd;
+background: #eee;
 border-radius: 2px;
 }
 

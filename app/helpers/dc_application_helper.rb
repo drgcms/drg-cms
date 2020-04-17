@@ -1437,11 +1437,9 @@ end
 # [String] alt_image_name
 #######################################################################
 def dc_img_alt(file_name, text=nil)
-  if text.blank?
-    name = File.basename(file_name.to_s)
-    text = name[0,name.index('.')].downcase rescue name
-  end
-  text
+  return text unless text.blank?
+  name = File.basename(file_name.to_s)
+  name[0,name.index('.')].downcase rescue name
 end
 
 
