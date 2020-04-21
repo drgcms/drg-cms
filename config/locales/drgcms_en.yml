@@ -24,6 +24,8 @@
 # English (en) localization for drgCMS
 en:
   drgcms:
+    "true": "yes"
+    "false": "no"
     record_deleted: Document deleted!
     confirm_delete: Confirm document deletion!
     confirm_dup: Confirm document duplication!

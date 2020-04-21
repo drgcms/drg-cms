@@ -24,6 +24,9 @@
 # drgCMS slovenska (sl) lokalizacija 
 sl:
   drgcms:
+en:
+    "true": "da"
+    "false": "ne"    
     record_deleted: Dokument izbrisan!
     confirm_delete: Potrdite izbris dokumenta!
     confirm_dup: Potrdite podvajanje dokumenta!

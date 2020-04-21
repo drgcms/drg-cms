@@ -1,4 +1,5 @@
 /*
+dddddddddd
 #--
 # Copyright (c) 2012+ Damjan Rems
 #
@@ -90,14 +91,14 @@ color: #222;
 textarea, input, select {
 color: #222;
 padding: 6px 4px;
-border: solid 2px #ddd;
+border: solid 1px #ccc;;
 border-radius: 2px;
 font: 14px arial,sans-serif;
 max-width: 100%;
 }
 
 textarea:focus, input:focus, select:focus {
-  border: 2px solid rgba(76,154,255, 1);
+  border: 1px solid rgba(76,154,255, 1);
 }
 
 input.file {
@@ -107,7 +108,7 @@ border: none;
 select {
 padding: 5px 0px;
 background: #fff;  
-border: solid 2px #ddd;
+border: solid 1px #ccc;;
 border-radius: 2px;
 }
 
@@ -185,7 +186,7 @@ padding: 0px;
 border-spacing: 0px;
 border-radius: 1px;  
 background-color: #f9f9f9;
-/*border: 2px solid #ddd;
+/*border: solid 1px #ccc;;
 border-left: 2px solid #ddd;
 border-bottom: none;*/
 }
@@ -369,7 +370,7 @@ transition: 0.3s;
 padding: 3px;
 border-radius: 2px;
 background: transparent linear-gradient(to bottom, #FFF 0%, #F2F2F2 100%) repeat scroll 0% 0%;
-border: 1px solid #ddd;
+border: solid 1px #ccc;;
 }
 
 
@@ -390,13 +391,13 @@ border: 1px solid #ddd;
   color: #222;
   padding: 4px;
   background: #fff;
-  border: 2px solid #222;
+  border: 1px solid #222;
   border-radius: 5px;
 }
 
 .dc-inline-link:hover {
   color: #c43;
-  border: 2px solid #c43;
+  border: 1px solid #c43;
 }
 
 .skip-next {
@@ -471,7 +472,7 @@ border: 1px solid #ddd;
 
 /* Pagination */
 #result .pagination span {
-  border: 1px solid #ddd;
+  border: solid 1px #ccc;;
   padding: 4px 4px 3px 6px;
   margin-left: 1px;
   background: transparent linear-gradient(to bottom, #FFF 0%, #F2F2F2 100%) repeat scroll 0% 0%;  
@@ -616,7 +617,7 @@ border: 1px solid #ddd;
   font-weight: normal;
   color: #222;
   padding: 6px 3px;
-  border: 2px solid #ddd;
+  border: solid 1px #ccc;;
   background-color: #eee;
   border-radius: 2px;
 }
@@ -725,7 +726,7 @@ background: transparent;
 #cmsedit-div a:hover { color: #000; }
 
 #cmsedit-div #record_select  {
-border: 2px solid #aaa;
+border: 1px solid #aaa;
 border-radius: 2px;
 font-size: 1.2em;
 }
@@ -836,7 +837,7 @@ display: none;
   font-style: italic;
   padding: 6px;
   border-radius: 2px;
-  border: solid 2px #9c9;
+  border: solid 1px #9c9;
 /*  background: linear-gradient(#8d8 0%, #ffe 15%, #fff 80%); */
 }
 
@@ -852,14 +853,14 @@ border: 1px solid #fff;
 .ui-autocomplete .ui-menu-item .ui-state-active {
 padding: 3px;  
 background-color: #eee;
-border: 1px solid #ddd;
+border: solid 1px #ccc;;
 color: #000;
 }
 
 .ui-autocomplete-border {
   display: inline-block;
   border-radius: 2px;
-  border: solid 2px #ddd;
+  border: solid 1px #ccc;;
   padding: 8px;
   background-color: #fff;
 }
@@ -899,7 +900,7 @@ display: none;
 padding:4px;
 position:absolute;
 background-color: #eee;
-border: 1px solid #ddd;
+border: solid 1px #ccc;;
 border-radius: 4px;
 z-index: 100;
 list-style-type: none;
@@ -911,7 +912,7 @@ border: 1px solid #eee;
 }
 .drgcms_popmenu_item:hover {
 background-color: white;
-border: 1px solid #ddd;
+border: solid 1px #ccc;;
   border: 1px solid rgba(76,154,255, 1);
   box-shadow: inset 0px 0px 0px 1px rgba(76,154,255, 1);
 border-radius: 2px;
@@ -929,7 +930,7 @@ padding: 0px;
 padding: 4px;
 background-image: none;
 border-radius: 2px;
-border: 2px solid #669;
+border: 1px solid #669;
 background-color: #fff;
 }
 
@@ -1028,10 +1029,10 @@ min-width: 200px;
 max-width: 400px;
 }
 
-.menu-filter a {
+.menu-filter li {
 color: #888 !important;
 }
-.menu-filter a:hover {
+.menu-filter li:hover {
 color: #000 !important;
 background-color: transparent;
 }
@@ -1096,7 +1097,7 @@ text-align: left;
 padding:4px;
 position:absolute;
 background-color: #f8f8f8;
-border: 1px solid #ddd;
+border: solid 1px #ccc;;
 border-radius: 2px;
 z-index: 100;
 }
@@ -1117,6 +1118,7 @@ background: #fff;
 display: none;
 padding: 10px;
 }
+
 #drgcms_filter h1 {
 font-size: 1.8em; 
 padding-top: 5px;
@@ -1138,7 +1140,28 @@ color: #669;
   max-width: 50%;
   background-color: #fff;
   padding: 10px;
-  border: 2px solid #ddd;
+  border: solid 1px #ccc;;
+}
+
+/**  Radio button input field **/
+
+.dc-radio {
+  background-color: #fff;
+  border: solid 1px #ccc;;
+  padding: 5px 0 7px 0;
+  display: inline-table;
+}
+.dc-radio div {
+  font-size: 1.1em;
+  padding: 0 8px 6px 0;
+  white-space: nowrap;
+}
+.dc-radio.dc-inline div {
+  display: inline;
+}
+
+.dc-radio input {
+  vertical-align: bottom;
 }
 
 /****** MOBILE DEVICE *****/

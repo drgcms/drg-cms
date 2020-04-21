@@ -23,13 +23,13 @@
 module DrgcmsFormFields
 
 ###########################################################################
-# Implementation of text_with_select DRG CMS form field. Field will provide
-# text_field entry field with select dropdown box with optional values for the field.
+# Implementation of radio DRG CMS form field. Field provides radio button input
+# structure.
 # Form options are mostly same as in select field. 
 # 
 # ===Form options:
 # * +name:+ field name (required)
-# * +type:+ text_with_select (required)
+# * +type:+ radio (required)
 # * +choices:+ Values for choices separated by comma. Values can also be specified like description:value.
 # In this case description will be shown to user, but value will be saved to document.
 #   choices: 'OK:0,Ready:1,Error:2'
@@ -49,17 +49,16 @@ module DrgcmsFormFields
 # your local language then select choices will be localized.
 #   en.helpers.model_name.choices4_status: 'OK:0,Ready:1,Error:2'
 #   sl.helpers.model_name.choices4_status: 'V redu:0,Pripravljen:1,Napaka:2'
-# * +html:+ html options which apply to select and text_field fields (optional)
+# * +inline:+ Radio buttons will be presented inline instead of stacked on each other.
 # 
 # Form example:
 #    10:
-#      name: link
-#      type: text_with_select
-#      eval: '@parent.dc_page_class.all_pages_for_site(@parent.dc_get_site)'
-#      html:
-#        size: 50
+#      name: hifi
+#      type: radio
+#      choices: 'Marantz:1,Sony:2,Bose:3,Pioneer:4'
+#      inline: true
 ###########################################################################
-class TextWithSelect < Select
+class Radio < Select
 
 ###########################################################################
 # Render text_with_select field html code
@@ -69,23 +68,22 @@ def render
   set_initial_value('html','value')
   
   record = record_text_for(@yaml['name'])
-  @html << @parent.text_field( record, @yaml['name'], @yaml['html']) 
-  @yaml['html']['class'] ||= ''
-  @yaml['html']['class'] <<  ' text-with-select'
   @yaml['html'].symbolize_keys!
-  @html << @parent.select( @yaml['name'] + '_', nil, get_choices, { include_blank: true }, { class: 'text-with-select' })
-
-  # javascript to update text field if new value is selected in select field
-  @js =<<EOJS
-$(document).ready(function() {
- $('##{@yaml['name']}_').change( function() {
-  if ($(this).val().toString().length > 0) {
-    $('##{record}_#{@yaml['name']}').val( $(this).val() );
-  }
-  $('##{record}_#{@yaml['name']}').focus();
- });
-});
-EOJS
+  clas = 'dc-radio' + ( @yaml['inline'] ? ' dc-inline' : '')
+  @html << "<div class=\"#{clas}\">"
+  choices = get_choices
+  # When error and boolean field
+  if choices.size == 1 and (@record[@yaml['name']].class == TrueClass or @record[@yaml['name']].class == FalseClass)
+    choices = [[I18n.t('drgcms.true'), true], [I18n.t('drgcms.false'), false]] 
+  end
+  choices.each do |choice|
+    choice = [choice, choice] if choice.class == String
+    @html << "<div>"
+    @html << @parent.radio_button_tag("#{record}[#{@yaml['name']}]",choice.last, choice.last.to_s == @record[@yaml['name']].to_s)
+    @html << choice.first
+    @html << "</div>"
+  end
+  @html << "</div>\n"
   self
 end
 
