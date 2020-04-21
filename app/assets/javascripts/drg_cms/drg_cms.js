@@ -160,7 +160,7 @@ $(function() {
  *******************************************************************/
 
 process_json_result = function(json) {
-  var i,operation,what, selector;
+  var i,operation,what, selector, field;
   $.each(json, function(key, val) {
     i = key.search('_');
     if (i > 1) {
@@ -172,15 +172,26 @@ process_json_result = function(json) {
     }
 //  
     switch (operation) {
-    // update field 
+      
+/**** update fields on form ****/
     case 'record':
-      if ($('#'+key).is(':checkbox')) { //checkbox is different
-        $('#'+key).prop('checked', val);
+      field = $('#'+key);
+      // checkbox field
+      if (field.is(':checkbox')) { 
+        field.prop('checked', val);
+      // select field  
+      } else if (field.is('select')) { 
+        field.empty();
+        $.each(val, function(index, v) {
+          field.append( new Option(v[0], v[1]) );
+        });
+      // other input fields
       } else {
-        $('#'+key).val(val);
+        field.val(val);
       }
       break;
-    // display message   
+
+/**** display message ****/
     case 'msg': 
       selector = 'dc-form-' + what;
       if ( $('.'+selector).length == 0 ) {
@@ -190,12 +201,13 @@ process_json_result = function(json) {
         $('.'+selector).html(val);
       }
       break;
-    // display popup message
+      
+/**** display popup message ****/
     case 'popup':
       $('#popup').html(val);
       $('#popup').bPopup({ speed: 650, transition: 'slideDown' });            
 
-    // update div 
+/**** update div ****/
     case '#div+':
       $('#'+what).append(val);
       break;
@@ -214,7 +226,8 @@ process_json_result = function(json) {
     case '.div':
       $('.'+what).html(val);
       break;
-    // goto url 
+      
+/**** goto url ****/
     case 'url':
       window.location.href = val;
       break;
