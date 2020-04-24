@@ -107,7 +107,7 @@ border: none;
 
 select {
 padding: 5px 0px;
-background: #fff;  
+background-color: #fff;  
 border: solid 1px #ccc;;
 border-radius: 2px;
 }

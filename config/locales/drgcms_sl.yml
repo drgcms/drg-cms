@@ -23,8 +23,7 @@
 
 # drgCMS slovenska (sl) lokalizacija 
 sl:
-  drgcms:
-en:
+  drgcms:  
     "true": "da"
     "false": "ne"    
     record_deleted: Dokument izbrisan!
