@@ -413,7 +413,6 @@ $(document).ready( function() {
  * unless on initial display.
  *******************************************************************/
   $('#iframe_cms').on('load', function() {
-//    alert('bla 1');
     new_height = this.contentWindow.document.body.offsetHeight + 50;
     if (new_height < 500 && new_height > 60) new_height = 500;
     this.style.height = new_height + 'px'; 
@@ -438,21 +437,25 @@ $(document).ready( function() {
  * Process Ajax call on cmsedit form actions
  *******************************************************************/
   $('.dc-link-ajax').on('click', function(e) {
-// check HTML5 validations
+    var confirmation = this.getAttribute("data-confirm");
+    // if confirmation required
+    if (confirmation !== null) {
+      if (!confirm(confirmation)) {return false;}
+    }
+   
+    // check HTML5 validations
     if ($("form")[0] && !$("form")[0].checkValidity() ) {
       $("form")[0].reportValidity();
       return false;
     }
-    var target = e.target;
-    var req    = target.getAttribute("data-request");
-// Get values from elements on the page:
+    var req    = this.getAttribute("data-request");
+    // Get values from elements on the page:
     if (req == "script") {
-      eval (target.getAttribute("data-script"));
+      eval (this.getAttribute("data-script"));
       return false;
     }
     else if (req == "post") { 
       data = $('form').serialize(); 
-//      alert(data);
     }
     else { 
       data = {}; 
@@ -461,13 +464,10 @@ $(document).ready( function() {
     
     $('.dc-spinner').show();   
     $.ajax({
-      url: target.getAttribute("data-url"),
+      url: this.getAttribute("data-url"),
       type: req,
       dataType: "json",
       data: data,
-//      success: function(files,data,xhr) { 
-//        document.getElementById('if_priponkas').contentDocument.location.reload(true); 
-//      }
       success: function(data) {
         process_json_result(data);
         $('.dc-spinner').hide();
@@ -480,6 +480,12 @@ $(document).ready( function() {
   will open a new window with URL specified. 
 ********************************************************************/
   $('.dc-window-open').on('click', function(e) { 
+    var confirmation = this.getAttribute("data-confirm");
+    // if confirmation required
+    if (confirmation !== null) {
+      if (!confirm(confirmation)) {return false;}
+    }
+    
     var url   = this.getAttribute("data-url");
     var title = this.getAttribute("title");
     var w     = 1000;

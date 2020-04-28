@@ -223,8 +223,7 @@ end
 # Creates input fields for one tab. Subroutine of dc_fields_for_form.
 ############################################################################
 def dc_fields_for_tab(fields_on_tab) #:nodoc:
-  @js      ||= ''
-  html       = '<div class="dc-form">'
+  html   = '<div class="dc-form">'
   labels_pos = dc_check_and_default(@form['form']['labels_pos'], 'right', ['top','left','right'])
   hidden_fields  = ''
   odd_even       = nil
@@ -260,13 +259,17 @@ def dc_fields_for_tab(fields_on_tab) #:nodoc:
   <div id="td_record_#{options['name']}">#{field_html}</div>
 </div> ]
     else
-      if group_option > 1 
+      # no label
+      if dc_dont?(options['caption'])
+        label_width = 0
+        data_width  = 100      
+      elsif group_option > 1 
         label_width = group_option != group_count ? 10 : 14        
         data_width  = 21
       else
         label_width = 14
         data_width  = 85      
-      end
+      end      
 %Q[
 <div class="dc-form-label dc-color-#{odd_even} dc-align-#{labels_pos}" style="width:#{label_width}%;" title="#{help}">
   <label for="record_#{options['name']}">#{label} </label>
@@ -291,6 +294,8 @@ end
 ############################################################################
 def dc_fields_for_form()
   html, tabs, tab_data = '',[], ''
+  @js  ||= ''
+  @css   = ''
 # Only fields defined  
   if (form_fields = @form['form']['fields'])
     html << "<div id='data_fields' " + (@form['form']['height'] ? "style=\"height: #{@form['form']['height']}px;\">" : '>')  
@@ -333,6 +338,7 @@ def dc_fields_for_form()
   html << hidden_field(nil, :form_time_stamp, value: Time.now.to_i)
   # add javascript code if defined by form
   @js << "\n#{@form['script']}"
+  @css << "\n#{@form['css']}" 
   html.html_safe
 end
 
