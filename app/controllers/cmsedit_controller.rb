@@ -427,6 +427,10 @@ end
 ########################################################################
 def run
   control_name, method_name = params[:control].split('.')
+  if method.name.nil?
+    method_name  = control_name
+    control_name = params[:table]   
+  end
   extend_with_control_module(control_name)
   if respond_to?(method_name)
     respond_to do |format|
