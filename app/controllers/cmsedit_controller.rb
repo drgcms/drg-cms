@@ -427,7 +427,7 @@ end
 ########################################################################
 def run
   control_name, method_name = params[:control].split('.')
-  if method.name.nil?
+  if method_name.nil?
     method_name  = control_name
     control_name = params[:table]   
   end
