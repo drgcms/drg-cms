@@ -62,6 +62,7 @@ module DrgcmsFormFields
 ###########################################################################
 class DrgcmsField
 attr_reader :js
+attr_reader :css
 
 ####################################################################
 # DrgcmsField initialization code.
@@ -86,7 +87,7 @@ def initialize( parent, record, yaml )
   end
   @html   = ''  
   @js     = ''
-  @css    = @yaml['css']
+  @css    = set_css_code @yaml['css']
   self
 end
 
@@ -94,7 +95,7 @@ end
 # Returns html code together with CSS code.
 ####################################################################
 def html
-  @html + css_code
+  @html
 end
 
 ####################################################################
@@ -187,6 +188,8 @@ def set_style()
 end
 
 ####################################################################
+# DEPRECATED!
+#  
 # Returns css code for the field if specified. It replaces all occurences of '# ' 
 # with field name id, as defined on form.
 ####################################################################
@@ -196,6 +199,14 @@ def css_code
   "\n<style type=\"text/css\">#{@css}</style>"
 end
 
+####################################################################
+# Sets css code for the field if specified. It replaces all occurences of '# ' 
+# with field name id, as defined on form.
+####################################################################
+def set_css_code(css)
+  return '' if css.blank?
+  css.gsub!('# ',"#td_record_#{@yaml['name']} ")
+end
 
 ####################################################################
 # Will return ruby hash formated as javascript string which can be used

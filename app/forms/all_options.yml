@@ -59,7 +59,7 @@ result_set:
   table_class: tclass
   tr_style: 'color: green;'
   tr_class: trclass
-  tr_class: 
+  tr_style: 
     eval: "document['result'] < 0 ? 'color: red;' : 'color: #000;'"
   
   actions: standard

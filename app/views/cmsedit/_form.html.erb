@@ -12,4 +12,5 @@
   <%= dc_actions_for_form 'bottom' %>
 </div>
 
-<%= javascript_tag(@js) unless @js.blank? %>
+<%= javascript_tag(@js)  unless @js.blank? %>
+<% unless @css.blank? %><style type="text/css"><%= @css %></style><% end %>

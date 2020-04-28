@@ -54,7 +54,8 @@ end
 # Creates action div for cmsedit index action. 
 ############################################################################
 def dc_actions_for_index()
-  @js ||= ''
+  @js  ||= ''
+  @css   = @form['css'] || ''
   return '' if @form['index'].nil? or @form['readonly']
   actions = @form['index']['actions']
   return '' if actions.nil? or actions.size == 0

@@ -69,10 +69,10 @@ end
 ############################################################################
 def dc_field_label_help(options)
   caption = options['caption'] || options['text']
-  label = if !caption.blank?    
-    t(caption, caption)
-  elsif options['name']
+  label = if caption.blank?    
     t_name(options['name'], options['name'].capitalize.gsub('_',' ') )
+  elsif options['name']
+    t(caption, caption) 
   end
   # help text can be defined in form or in translations starting with helpers. or as helpers.help.collection.field
   help = if options['help'] 
@@ -84,7 +84,8 @@ def dc_field_label_help(options)
   field_html = if DrgcmsFormFields.const_defined?(klass_string) # when field type defined
     klass = DrgcmsFormFields.const_get(klass_string)
     field = klass.new(self, @record, options).render
-    @js << field.js
+    @js  << field.js
+    @css << field.css
     field.html 
   else # litle error string
     "Error: Field type #{options['type']} not defined!"
@@ -114,6 +115,11 @@ def dc_field_action(yaml)
   
 end
 
+def dc_html_data(yaml)
+  return '' if yaml.blank?
+  yaml.inject(' ') {|result, e| result << "#{e.first}=\"#{e.last}\" "}
+end
+
 ############################################################################
 # Creates code for link, ajax or windows action for index or form actions.
 # 
@@ -127,7 +133,10 @@ end
 ############################################################################
 def dc_link_ajax_window_action(yaml, record=nil, action_active=true)
   parms = {}
-  # direct url        
+  # set data-confirm when confirm 
+  yaml['html'] ||= {}
+  yaml['html']['data-confirm'] = t(yaml['html']['data-confirm'] || yaml['confirm'])
+  # direct url   
   if yaml['url']
     parms['controller'] = yaml['url'] 
     parms['idr']        = dc_document_path(record) if record
@@ -149,21 +158,23 @@ def dc_link_ajax_window_action(yaml, record=nil, action_active=true)
     "<li>#{'Controller not defined'}</li>"
   else
     yaml['caption'] ||= yaml['text'] 
-    caption = t("#{yaml['caption'].downcase}", yaml['caption'])
+    caption   = t("#{yaml['caption'].downcase}", yaml['caption'])
+    html_data = dc_html_data(yaml['html'])
     #
     url = url_for(parms) rescue 'URL error'
     request = yaml['request'] || yaml['method'] || 'get'
     icon    = yaml['icon'] ? "#{fa_icon(yaml['icon'])} " : ''
     if yaml['type'] == 'ajax' # ajax button
       clas = action_active ? "dc-link-ajax dc-animate" : "dc-link-no"
-      %Q[<li class="#{clas}" data-url="#{action_active ? url : ''}" 
+      %Q[<li class="#{clas}" data-url="#{action_active ? url : ''}"  #{html_data} 
          data-request="#{request}" title="#{yaml['title']}">#{icon} #{caption}</li>]
     elsif yaml['type'] == 'link'  # link button
       clas = action_active ? "dc-link dc-animate" : "dc-link-no"
-      %Q[<li class="#{clas}">#{action_active ? dc_link_to(yaml['caption'],yaml['icon'], parms, {target: yaml['target']} ) : caption}</li>]
+      link = dc_link_to(yaml['caption'],yaml['icon'], parms, {target: yaml['target'], html: yaml['html']} )
+      %Q[<li class="#{clas}">#{action_active ? link : caption}</li>]
     elsif yaml['type'] == 'window' 
       clas = action_active ? "dc-link dc-animate dc-window-open" : "dc-link-no"
-      %Q[<li class="#{clas}" data-url="#{action_active ? url : ''}">#{icon} #{caption}</li>]
+      %Q[<li class="#{clas}" data-url="#{action_active ? url : ''}" #{html_data}>#{icon} #{caption}</li>]
     else 
       '<li>Action Type error</li>'
     end
