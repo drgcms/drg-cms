@@ -1,5 +1,4 @@
 /*
-dddddddddd
 #--
 # Copyright (c) 2012+ Damjan Rems
 #
@@ -497,7 +496,7 @@ border: solid 1px #ccc;;
 .dc-title {
   font-weight: bold;
   font-size: 1.4em;
-  color: #66a;
+  color: #338;
   padding: 5px 1px;
   border-spacing: 0px;
   margin: 0px;
@@ -520,6 +519,7 @@ border: solid 1px #ccc;;
   width: 99.8%;
   padding: 0px;
   padding-top: 4px;
+  /*border: 1px solid #eee;*/
   border: 1px solid #eee;
   border-radius: 2px; 
   background-color: #fcfcfc;
@@ -616,7 +616,7 @@ border: solid 1px #ccc;;
   font-size: 14px;
   font-weight: normal;
   color: #222;
-  padding: 6px 3px;
+  padding: 6px 4px;
   border: solid 1px #ccc;;
   background-color: #eee;
   border-radius: 2px;
@@ -632,7 +632,7 @@ border: solid 1px #ccc;;
 }
 
 .dc-form-ul {
-padding: 2px;
+padding: 2px 0;
 margin-top: 6px;
 /*
 margin-bottom: 3px;
@@ -650,22 +650,25 @@ border-bottom: 1px solid #eee;
 .dc-form-li {
   display:inline; 
   list-style:none;
-  color: #888;
+  color: #666;
   text-decoration: none;
   text-align: center;
   font-weight: bold;
+  line-height: 1rem;
 
-  padding:3px 15px;
+  padding:4px 15px;
   border-radius: 4px 4px 0px 0px;
-  background: #eee;
+  background: #ddd;
   margin-right: 2px;
 }
 
 .dc-form-li:hover, .dc-form-li-selected {
   cursor: pointer;
-  color: #fff;
-  background: #888;
-  padding:4px 15px 3px 15px;
+  color: #222;
+  background: #fff;
+  border-top: 3px solid rgba(76,154,255, 1);
+  border-left: 1px solid #eee;
+  border-right: 1px solid #eee;
 }
 
 .dc-odd {
@@ -676,8 +679,25 @@ border-bottom: 1px solid #eee;
 }
 
 .dc-separator {
-padding: 5px 0;
-border-top: 2px solid #ddd;
+margin: 5px 0;
+border-top: 1px solid #ddd;
+}
+
+/** Form head **/
+.dc-head  {
+ padding: 2px 4px; 
+ font-size: 1.2em;
+ line-height: 1.6em;
+ font-weight: bold;
+ background-color: rgba(204,230,255,0.5);
+}
+.dc-head .dc-row {
+display: flex;
+}
+.dc-head .dc-column {
+}
+.dc-head .text {
+  font-weight: normal;  
 }
 
 /*** CMS toggle button */

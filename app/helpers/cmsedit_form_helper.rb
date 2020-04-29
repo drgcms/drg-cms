@@ -50,13 +50,13 @@ end
 ############################################################################
 def dc_actions_for_form(position)
 # create standard actions  
-  std_actions = {' 1' => 'back', ' 2' => {'type' => 'submit', 'caption' => 'drgcms.save'},
-               ' 3' => {'type' => 'submit', 'caption' => 'drgcms.save&back'} }
+  std_actions = {1 => 'back', 2 => {'type' => 'submit', 'caption' => 'drgcms.save'},
+                 3 => {'type' => 'submit', 'caption' => 'drgcms.save&back'} }
 # when edit only  
   unless @record.try(:id).nil?
-    std_actions.merge!({' 6' => 'new'} )
-    std_actions.merge!(@record.active ? {' 5' => 'disable'} : {' 5' => 'enable'} ) if @record.respond_to?('active')
-    std_actions.merge!({' 7' => 'refresh'} )
+    std_actions.merge!({6 => 'new'} )
+    std_actions.merge!(@record.active ? {5 => 'disable'} : {5 => 'enable'} ) if @record.respond_to?('active')
+    std_actions.merge!({7 => 'refresh'} )
   end
   actions = @form['form']['actions']
 # shortcut for actions: standard 
@@ -64,7 +64,7 @@ def dc_actions_for_form(position)
 # standard actions
   actions = std_actions if actions.nil?
 # readonly 
-  actions = {' 1' => 'back'} if @form['readonly']
+  actions = {1 => 'back'} if @form['readonly']
 # Actions are strictly forbidden 
   if @form['form']['actions'] and dc_dont?(@form['form']['actions'])
     actions = []
@@ -82,8 +82,9 @@ def dc_actions_for_form(position)
       end
     end
   end
-# Sort so that standard actions come first
-  actions = actions.to_a.sort {|x,y| x[0].to_s <=> y[0].to_s} 
+# remove standard option and sort so that standard actions come first
+  actions.delete('standard')
+  actions = actions.to_a.sort {|x,y| x[0] <=> y[0]} 
 # Add spinner to the beginning
   html = %Q[<span class="dc-spinner">#{fa_icon('spinner lg spin')}</span><ul class="dc-menu #{position}">]
   
@@ -339,6 +340,54 @@ def dc_fields_for_form()
   # add javascript code if defined by form
   @js << "\n#{@form['script']}"
   @css << "\n#{@form['css']}" 
+  html.html_safe
+end
+
+
+############################################################################
+# Creates head form div. Head form div is used to display header datausefull
+# to be seen even when tabs are switched.
+############################################################################
+def dc_head_for_form()
+  head = @form['form']['head']
+  return '' if head.nil?
+  html    = %Q[<div class="dc-head #{head['class']}">\n<div class="dc-row">]
+  split   = head['split'] || 4
+  percent = 100/split
+  current = 0
+  head_fields = head.select {|field| field.class == Integer }
+  head_fields.to_a.sort.each do |number, options|
+    session[:form_processing] = "form: head: #{number}=#{options}"
+    # Label
+    caption = options['caption']
+    span    = options['span'] || 1
+    label   = if caption.blank?
+      ''
+    elsif options['name'] == caption
+      t_name(options['name'], options['name'].capitalize.gsub('_',' ') )
+    else
+      t(caption, caption) 
+    end
+    # Field value
+    field = if options['eval']
+      dc_process_column_eval(options, @record)
+    else
+      @record.send(options['name'])
+    end
+    #
+    klass = dc_style_or_class(nil, options['class'], field, @record)
+    style = dc_style_or_class(nil, options['style'], field, @record)
+    html << %Q[<div class="dc-column #{klass}" style="width:#{percent*span}%;#{style}">
+  #{label.blank? ? '' : "<span class=\"label\">#{label}</span>"}
+  <span class="field">#{field}</span>
+</div>]
+    current += span
+    if current == split
+      html << %Q[</div>\n<div class="dc-row">]
+      current = 0
+    end
+  end
+  html << '</div></div>'
   html.html_safe
 end
 

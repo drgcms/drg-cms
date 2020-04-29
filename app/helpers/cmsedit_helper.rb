@@ -34,8 +34,11 @@ module CmseditHelper
 # Creates code for script action type.
 ############################################################################
 def dc_script_action(yaml)
-  data = {'request' => 'script', 'script' => yaml['js'] || yaml['script'] }
-  %Q[<li class="dc-link-ajax with-link dc-animate">#{ dc_link_to(yaml['caption'], yaml['icon'], '#', data: data ) }</li>]
+#  data = {'request' => 'script', 'script' => yaml['js'] || yaml['script'] }
+#  %Q[<li class="dc-link-ajax with-link dc-animate">#{ dc_link_to(yaml['caption'], yaml['icon'], '#', data: data ) }</li>]
+  icon = dc_icon_for_link yaml['icon']
+  data = %Q[data-request="script" data-script="#{yaml['js'] || yaml['script']}"]
+  %Q[<li class="dc-link-ajax dc-animate" #{data}>#{icon} #{ t(yaml['caption'],yaml['caption']) }</li>]
 end
 
 ############################################################################
@@ -135,7 +138,8 @@ def dc_link_ajax_window_action(yaml, record=nil, action_active=true)
   parms = {}
   # set data-confirm when confirm 
   yaml['html'] ||= {}
-  yaml['html']['data-confirm'] = t(yaml['html']['data-confirm'] || yaml['confirm'])
+  confirm = yaml['html']['data-confirm'] || yaml['confirm']
+  yaml['html']['data-confirm'] = t(confirm) unless confirm.blank?
   # direct url   
   if yaml['url']
     parms['controller'] = yaml['url'] 

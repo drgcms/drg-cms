@@ -352,6 +352,21 @@ def dc_submit_tag(caption, icon, parms, rest={})
   html = icon_image || ''
   html << submit_tag(t(caption, caption), parms)
 end
+
+############################################################################
+# Returns icon code if icon is specified
+############################################################################
+def dc_icon_for_link(icon)
+  return nil unless icon
+  if icon.match(/\./)
+    _origin.image_tag(icon, class: 'dc-link-img dc-animate')
+  elsif icon.match('<i')
+    icon
+  else
+    _origin.fa_icon(icon)
+  end
+end
+  
 ############################################################################
 # Similar to rails link_to, but also takes care of link icon, translation, ...
 ############################################################################
@@ -366,16 +381,7 @@ def dc_link_to(caption, icon, parms, rest={})
     icon_pos = parms.delete('icon_pos') || 'first'
   end
 #  
-  if icon
-    icon_image = if icon.match(/\./)
-      _origin.image_tag(icon, class: 'dc-link-img dc-animate')
-    elsif icon.match('<i')
-      icon
-    else
-      _origin.fa_icon(icon)
-    end
-  end
-#  
+  icon_image = dc_icon_for_link(icon)
   if caption
     caption = t(caption, caption)
     icon_image << ' ' if icon_image

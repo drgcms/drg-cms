@@ -435,8 +435,11 @@ def dc_style_or_class(selector, yaml, value, record)
   html = selector ? "#{selector}=\"" : ''
   html << if yaml.class == String
     yaml
-  else
-    (yaml['eval'] ? eval(yaml['eval']) : '') rescue 'background-color:red;'
+  # direct evaluate expression
+  elsif yaml['eval']
+    eval(yaml['eval']) rescue 'background-color:red;'
+  elsif yaml['method']
+    dc_process_eval(yaml['method'],record)
   end
   html << '"' if selector 
   html
@@ -452,51 +455,79 @@ def dc_row_for_result(document)
 end
 
 ############################################################################
+# Process eval. Breaks eval option and calls with send method.
+# Parameters:
+#   evaluate : String : Expression to be evaluated
+#   parameters : Array : array of parameters which will be send to method
+############################################################################
+def dc_process_eval(evaluate, parameters)
+  # evaluate by calling send method 
+  clas, method = evaluate.split('.')
+  if method.nil?
+    send(clas, *parameters)
+  else
+    klass = clas.camelize.constantize
+    klass.send(method, *parameters)
+  end  
+end
+
+############################################################################
+# Process eval option for field value. 
+# Used for processing single field column on result_set or form head.
+############################################################################
+def dc_process_column_eval(yaml, document)
+  # dc_name4_id
+  if yaml['eval'].match('dc_name4_id')
+    a = yaml['eval'].split(/\ |\,/)
+    if a.size == 3
+      dc_name4_id(a[1], a[2], nil, document[ yaml['name'] ])
+    else
+      dc_name4_id(a[1], a[2], a[3], document[ yaml['name'] ])
+    end
+  # dc_name4_value  
+  elsif yaml['eval'].match('dc_name4_value')
+    dc_name4_value( @form['table'], yaml['name'], document[ yaml['name'] ] )
+  elsif yaml['eval'].match('eval ')
+  # TO DO evaluate with specified parameters
+  else
+    parameters = if yaml['params']
+      # pass document as parameter
+      if yaml['params'] == 'document' or yaml['params'] == 'record'     
+        document
+      else
+        yaml['params'].chomp.split(',').inject([]) do |result,e| 
+          result << document[e.strip]
+        end        
+      end        
+    else
+      document[ yaml['name'] ]
+    end
+    # evaluate by calling send method 
+    dc_process_eval(yaml['eval'], parameters)
+  end
+end
+
+############################################################################
 # Creates column for each field of result set document.
 ############################################################################
 def dc_columns_for_result(document)
+  return '' unless @form['result_set']['columns']
   html = ''  
-  return html unless @form['result_set']['columns']
-#  
+  #  
   @form['result_set']['columns'].each do |k,v|
     session[:form_processing] = "result_set:columns: #{k}=#{v}"
-# convert shortcut to hash 
+    # convert shortcut to hash 
     v = {'name' => v} if v.class == String
-# eval
+    # eval
     value = if v['eval']
-      if v['eval'].match('dc_name4_id')
-        a = v['eval'].split(',')
-        if a.size == 3
-          dc_name4_id(a[1], a[2], nil, document[ v['name'] ])
-        else
-          dc_name4_id(a[1], a[2], a[3], document[ v['name'] ])
-        end
-      elsif v['eval'].match('dc_name4_value')
-        dc_name4_value( @form['table'], v['name'], document[ v['name'] ] )
-      elsif v['eval'].match('eval ')
-# evaluate with specified parameters
-      else
-        if v['params']
-          if v['params'] == 'document'     # pass document as parameter when all
-            eval( "#{v['eval']} document") 
-          else                        # list of fields delimeted by ,
-            params = v['params'].chomp.split(',').inject('') do |result,e| 
-              result << (e.match(/\.|\:|\(/) ? e : "document['#{e.strip}']") + ','
-            end
-            params.chomp!(',')
-            eval( "#{v['eval']} #{params}") 
-          end
-        else
-          eval( "#{v['eval']} '#{document[ v['name'] ]}'") 
-        end
-      end
-# as field        
+      dc_process_column_eval(v, document)
+    # as field        
     elsif document.respond_to?(v['name'])
       dc_format_value(document.send( v['name'] ), v['format']) 
-# as hash (dc_memory)
+    # as hash (dc_memory)
     elsif document.class == Hash 
       dc_format_value(document[ v['name'] ], v['format'])
-# error
+    # error
     else
       "!!! #{v['name']}"
     end

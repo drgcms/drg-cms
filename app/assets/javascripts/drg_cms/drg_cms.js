@@ -160,15 +160,15 @@ $(function() {
  *******************************************************************/
 
 process_json_result = function(json) {
-  var i,operation,what, selector, field;
-  $.each(json, function(key, val) {
+  var i,operation,selector, msg_div, field;
+  $.each(json, function(key, value) {
     i = key.search('_');
     if (i > 1) {
       operation = key.substring(0,i);
-      what = key.substring(i+1,100);
+      selector  = key.substring(i+1,100);
     } else {
       operation = key;
-      what = '';
+      selector  = '';
     }
 //  
     switch (operation) {
@@ -178,71 +178,75 @@ process_json_result = function(json) {
       field = $('#'+key);
       // checkbox field
       if (field.is(':checkbox')) { 
-        field.prop('checked', val);
+        field.prop('checked', value);
       // select field  
       } else if (field.is('select')) { 
         field.empty();
-        $.each(val, function(index, v) {
+        $.each(value, function(index, v) {
           field.append( new Option(v[0], v[1]) );
         });
       // other input fields
       } else {
-        field.val(val);
+        field.value(value);
       }
       break;
 
 /**** display message ****/
     case 'msg': 
-      selector = 'dc-form-' + what;
-      if ( $('.'+selector).length == 0 ) {
-        val = '<div class="' + selector + '">' + val + '</div>';
-        $('.dc-title').after(val);
+      msg_div = 'dc-form-' + selector;
+      if ( $('.'+msg_div).length == 0 ) {
+        value = '<div class="' + msg_div + '">' + value + '</div>';
+        $('.dc-title').after(value);
       } else {
-        $('.'+selector).html(val);
+        $('.'+msg_div).html(value);
       }
       break;
       
 /**** display popup message ****/
     case 'popup':
-      $('#popup').html(val);
+      $('#popup').html(value);
       $('#popup').bPopup({ speed: 650, transition: 'slideDown' });            
 
 /**** update div ****/
     case '#div+':
-      $('#'+what).append(val);
+      $('#'+selector).append(value);
       break;
     case '#+div':
-      $('#'+what).prepend(val);
+      $('#'+selector).prepend(value);
       break;
     case '#div':
-      $('#'+what).html(val);
+      $('#'+selector).html(value);
       break;
     case '.div+':
-      $('.'+what).append(val);
+      $('.'+selector).append(value);
       break;
     case '.+div':
-      $('.'+what).prepend(val);
+      $('.'+selector).prepend(value);
       break;
     case '.div':
-      $('.'+what).html(val);
+      $('.'+selector).html(value);
       break;
       
 /**** goto url ****/
     case 'url':
-      window.location.href = val;
+      window.location.href = value;
       break;
     case 'alert':
-      alert(val);
+      alert(value);
       break;
     case 'window':
-      w = window.open(val, what);
+      w = window.open(value, selector);
       w.focus();        
       break;
     case 'eval':
-      eval (val);
+      eval (value);
       break;
     case 'reload':
-      location.reload(); 
+      if (value == 'parent') {
+        parent.location.reload();
+      } else {
+        location.reload();
+      } 
       break;
     default: 
       console.log("DRGCMS: Invalid ajax result operation: " + operation);
@@ -401,7 +405,9 @@ $(document).ready( function() {
       $('#data_' + old_tab_id).toggleClass('div-hidden');
       $('#data_' + e.target.getAttribute("data-div")).toggleClass('div-hidden');
 // resize parent iframe to fit selected tab size
-      var div_height = document.getElementById('data_' + e.target.getAttribute("data-div")).clientHeight + 130;
+//      var div_height = document.getElementById('data_' + e.target.getAttribute("data-div")).clientHeight + 130;
+      var div_height = document.getElementById('cmsform').clientHeight + 50;
+      
         window.frameElement.style.height = div_height.toString() + 'px';
 // it would be too easy      $('#cmsform :input:enabled:visible:first').focus();
       select_first_input_field('#data_' + e.target.getAttribute("data-div"));
@@ -448,7 +454,7 @@ $(document).ready( function() {
       $("form")[0].reportValidity();
       return false;
     }
-    var req    = this.getAttribute("data-request");
+    var req = this.getAttribute("data-request");
     // Get values from elements on the page:
     if (req == "script") {
       eval (this.getAttribute("data-script"));
