@@ -60,7 +60,7 @@ def render
   html = ''  
   @yaml['html'].each {|k,v| html << "#{k}=\"#{v}\" "}
 # 
-  if @yaml['name'] == @yaml['table']
+  if @yaml['name'] == @yaml['table'] or @yaml['table'] == 'dc_memory'
     tables = @yaml['table']
     ids = @record._id
   else
