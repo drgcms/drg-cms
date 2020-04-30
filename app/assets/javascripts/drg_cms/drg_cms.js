@@ -406,7 +406,8 @@ $(document).ready( function() {
       $('#data_' + e.target.getAttribute("data-div")).toggleClass('div-hidden');
 // resize parent iframe to fit selected tab size
 //      var div_height = document.getElementById('data_' + e.target.getAttribute("data-div")).clientHeight + 130;
-      var div_height = document.getElementById('cmsform').clientHeight + 50;
+//      var div_height = document.getElementById('cmsform').clientHeight + 50;
+      var div_height = document.width + 50;
       
         window.frameElement.style.height = div_height.toString() + 'px';
 // it would be too easy      $('#cmsform :input:enabled:visible:first').focus();
