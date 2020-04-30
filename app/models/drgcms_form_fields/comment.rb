@@ -29,11 +29,14 @@ module DrgcmsFormFields
 # ===Form options:
 # * +text:+ any text. Text will be translated if key is found in translations. (required)
 # * +type:+ comment (required)
-#
+# * +caption:+ Caption text written in label place. If set to false comment 
+# will occupy whole row. (required)
+# 
 # Form example:
 #    30:
-#      name: active
-#      type: check_box
+#      type: comment
+#      text: myapp.comment_text
+#      caption: false
 ###########################################################################
 class Comment < DrgcmsField
   
@@ -41,7 +44,8 @@ class Comment < DrgcmsField
 # Render comment field html code
 ###########################################################################
 def render
-  @html << t(@yaml['comment'], @yaml['comment'])
+  comment = @yaml['comment'] || @yaml['text']
+  @html << "<div class=\"dc-comment\">#{t(comment, comment).gsub("\n",'<br>')}</div>"
   self
 end
 end

@@ -29,15 +29,13 @@ form:
     10:
       name: description
       type: text_field
-      html:
-        size: 50
+      size: 50
    
     20:
       name: table
       type: text_with_select
       eval: dc_choices4_all_collections      
-      html:
-        size: 30
+      size: 30
 
     30:
       name: dc_user_id
@@ -52,5 +50,4 @@ form:
     50:
       name: filter
       type: text_area
-      html:
-        size: 80x20
+      size: 80x20
