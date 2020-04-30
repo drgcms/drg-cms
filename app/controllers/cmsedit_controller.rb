@@ -979,7 +979,11 @@ def process_in_memory #:nodoc
     _klass, method = klass_method.split('.')
     klass = _klass.classify.constantize
     @records = klass.send(method) if klass.respond_to?(method)
-  end 
+  end
+  # ensure that record has id field
+  if @records.size > 0
+    raise "Exception: id field must be set in dc_memory record!" unless @records.first.id
+  end
   false
 end
 
