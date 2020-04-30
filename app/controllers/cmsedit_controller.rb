@@ -754,8 +754,6 @@ def save_data
     value = DrgcmsFormFields.const_get(v['type'].camelize).get_data(params, v['name'])
     @record.send("#{v['name']}=", value)
   end
-# 
-  operation = @record.new_record? ? :new : :update
 # controls callback method
   if (m = callback_method('before_save') )
     ret = call_callback_method(m)
@@ -766,6 +764,7 @@ def save_data
   changes = @record.changes
   update_standards() if changes.size > 0  # update only if there has been some changes
   if (saved = @record.save)
+    operation = @record.new_record? ? :new : :update
     save_journal(operation, changes)
 # callback methods
     if (m = callback_method('after_save') ) then call_callback_method(m)  end
