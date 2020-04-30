@@ -388,15 +388,15 @@ border: solid 1px #ccc;;
 .dc-inline-link {
   cursor: pointer;
   color: #222;
-  padding: 4px;
+  padding: 5px 4px 4px;
   background: #fff;
-  border: 1px solid #222;
+  border: 2px solid #222;
   border-radius: 5px;
 }
 
 .dc-inline-link:hover {
-  color: #c43;
-  border: 1px solid #c43;
+  color: rgba(76,154,255, 1);
+  border: 2px solid rgba(76,154,255, 1);
 }
 
 .skip-next {

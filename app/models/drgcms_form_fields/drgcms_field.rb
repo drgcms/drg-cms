@@ -205,7 +205,8 @@ end
 ####################################################################
 def set_css_code(css)
   return '' if css.blank?
-  css.gsub!('# ',"#td_record_#{@yaml['name']} ")
+  css.gsub!('# ',"#td_record_#{@yaml['name']} ") if css.match('# ')
+  css
 end
 
 ####################################################################
