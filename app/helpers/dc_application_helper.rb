@@ -811,7 +811,7 @@ end
 #        name: active
 #        eval: dc_icon4_boolean
 ############################################################################
-def dc_icon4_boolean(value)
+def dc_icon4_boolean(value=false)
   dc_dont?(value, true) ? fa_icon('square-o lg') : fa_icon('check-square-o lg') 
 end
 
