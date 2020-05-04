@@ -63,7 +63,7 @@ def do_one_item(poll, yaml)
     yaml['html'] ||= {}
     yaml['html']['required'] = true
   else
-    text << " &nbsp;" if poll.display == 'lr'
+    text << " &nbsp;" if poll.display == 'lr' and !yaml['type'].match(/submit_tag|link_to/)
   end
   
 # Just add text if comment and go to next one    
@@ -116,7 +116,7 @@ def do_one_item(poll, yaml)
         html << captcha.render_html
         @part_css = captcha.render_css
       end
-      @end_od_data = true
+      @end_of_data = true
     end
 # submit and link tag 
     clas = yaml['type'].match(/submit_tag/) ? '' : 'dc-link-submit'
