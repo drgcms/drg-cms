@@ -118,6 +118,9 @@ def dc_field_action(yaml)
   
 end
 
+############################################################################
+#
+############################################################################
 def dc_html_data(yaml)
   return '' if yaml.blank?
   yaml.inject(' ') {|result, e| result << "#{e.first}=\"#{e.last}\" "}
@@ -185,5 +188,14 @@ def dc_link_ajax_window_action(yaml, record=nil, action_active=true)
   end
 end
 
+############################################################################
+#
+############################################################################
+def dc_log_exception(exception)
+  log = exception ? "\n!!!Error: #{exception.message}\n#{exception.backtrace.first.inspect}\n" : ''
+  log << "DRG Form processing line: #{session[:form_processing]}\n"
+  
+  logger.error log
+end
   
 end
