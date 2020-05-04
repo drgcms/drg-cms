@@ -305,7 +305,7 @@ def edit
     ret = call_callback_method(m)
 # Don't do anything if return is false
     return index if ret.class == FalseClass
-  end  
+  end
   @parms['action'] = 'update'
   render action: :edit
 end
@@ -334,6 +334,10 @@ def update
 # Process return_to link
       return process_return_to(params[:return_to]) if params[:return_to]
     else
+      # do not forget before_edit callback
+      if m = callback_method('before_edit')
+        call_callback_method(m)
+      end
       return render action: :edit
     end
   else
