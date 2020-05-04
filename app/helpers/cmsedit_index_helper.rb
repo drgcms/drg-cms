@@ -507,6 +507,7 @@ def dc_process_column_eval(yaml, document)
   end
 end
 
+
 ############################################################################
 # Creates column for each field of result set document.
 ############################################################################
@@ -518,21 +519,27 @@ def dc_columns_for_result(document)
     session[:form_processing] = "result_set:columns: #{k}=#{v}"
     # convert shortcut to hash 
     v = {'name' => v} if v.class == String
-    # eval
-    value = if v['eval']
-      dc_process_column_eval(v, document)
-    # as field        
-    elsif document.respond_to?(v['name'])
-      dc_format_value(document.send( v['name'] ), v['format']) 
-    # as hash (dc_memory)
-    elsif document.class == Hash 
-      dc_format_value(document[ v['name'] ], v['format'])
-    # error
-    else
-      "!!! #{v['name']}"
+    
+    begin
+      # eval
+      value = if v['eval']
+        dc_process_column_eval(v, document)
+      # as field        
+      elsif document.respond_to?(v['name'])
+        dc_format_value(document.send( v['name'] ), v['format']) 
+      # as hash (dc_memory)
+      elsif document.class == Hash 
+        dc_format_value(document[ v['name'] ], v['format'])
+      # error
+      else
+        "!!! #{v['name']}"
+      end
+    rescue Exception => e
+      dc_log_exception(e)
+      value = '!!!Error'
     end
 #
-    td = '<div class="spacer"></div><div class="td" '
+    td = %Q[<div class="spacer"></div><div id="#{document.id}" class="td" ]
     td << dc_style_or_class('class', v['td_class'], value, document)
 
     width_align = %Q[width: #{v['width'] || '15%'};text-align: #{v['align'] || 'left'};]
