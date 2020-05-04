@@ -262,8 +262,9 @@ def dc_fields_for_tab(fields_on_tab) #:nodoc:
     else
       # no label
       if dc_dont?(options['caption'])
+        label = ''
         label_width = 0
-        data_width  = 100      
+        data_width  = 100
       elsif group_option > 1 
         label_width = group_option != group_count ? 10 : 14        
         data_width  = 21
@@ -369,10 +370,15 @@ def dc_head_for_form()
       t(caption, caption) 
     end
     # Field value
-    field = if options['eval']
-      dc_process_column_eval(options, @record)
-    else
-      @record.send(options['name'])
+    begin
+      field = if options['eval']
+        dc_process_column_eval(options, @record)
+      else
+        @record.send(options['name'])
+      end
+    rescue Exception => e
+      dc_log_exception(e)
+      field = '!!!Error'
     end
     #
     klass = dc_style_or_class(nil, options['class'], field, @record)
