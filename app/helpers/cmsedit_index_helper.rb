@@ -54,8 +54,8 @@ end
 # Creates action div for cmsedit index action. 
 ############################################################################
 def dc_actions_for_index()
-  @js  ||= ''
-  @css   = @form['css'] || ''
+  @js  = @form['script'] || @form['js'] || ''
+  @css = @form['css'] || ''
   return '' if @form['index'].nil? or @form['readonly']
   actions = @form['index']['actions']
   return '' if actions.nil? or actions.size == 0
@@ -451,7 +451,7 @@ end
 def dc_row_for_result(document)
   clas  = "dc-#{cycle('odd','even')} " + dc_style_or_class(nil, @form['result_set']['tr_class'], nil, document)
   style = dc_style_or_class('style', @form['result_set']['tr_style'], nil, document)
-  "<div class=\"dc-result-data #{clas}\" #{dc_clicks_for_result(document)} #{style}>".html_safe
+  "<div  id=\"#{document.id}\" class=\"dc-result-data #{clas}\" #{dc_clicks_for_result(document)} #{style}>".html_safe
 end
 
 ############################################################################
@@ -514,7 +514,6 @@ end
 def dc_columns_for_result(document)
   return '' unless @form['result_set']['columns']
   html = ''  
-  #  
   @form['result_set']['columns'].each do |k,v|
     session[:form_processing] = "result_set:columns: #{k}=#{v}"
     # convert shortcut to hash 
@@ -538,20 +537,15 @@ def dc_columns_for_result(document)
       dc_log_exception(e)
       value = '!!!Error'
     end
-#
-    td = %Q[<div class="spacer"></div><div id="#{document.id}" class="td" ]
-    td << dc_style_or_class('class', v['td_class'], value, document)
-
+    html << '<div class="spacer"></div>'
+    # set class
+    clas = dc_style_or_class(nil, v['td_class'], value, document)
+    # set width and align an additional style
+    style = dc_style_or_class(nil, v['td_style'] || v['style'], value, document)
     width_align = %Q[width: #{v['width'] || '15%'};text-align: #{v['align'] || 'left'};]
-    style = dc_style_or_class('style', v['td_style'] || v['style'], value, document)
-    style = if style.size > 1
-      # remove trailing " add width and add trailing " back
-      style.delete_suffix('"') + width_align + '"'
-    else
-      # create style string
-      "style=\"#{width_align}\""
-    end
-    html << "#{td} #{style}>#{value}</div>"
+    style = "#{width_align}#{style}"
+
+    html << "<div class=\"td #{clas}\" style=\"#{style}\">#{value}</div>"
   end
   html.html_safe
 end

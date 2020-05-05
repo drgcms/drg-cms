@@ -253,7 +253,7 @@ padding: 0;
 
 .dc-result-data:hover { 
   background-color: rgba(255,127,0, 0.1); 
-  background-color: rgba(0,0,255, 0.1); 
+  background-color: rgba(0,0,255, 0.1);
 }
 
 .dc-result-data.footer {
@@ -657,9 +657,11 @@ border-bottom: 1px solid #eee;
   line-height: 1rem;
 
   padding:4px 15px;
-  border-radius: 4px 4px 0px 0px;
   background: #ddd;
   margin-right: 2px;
+  border-left: 1px solid #ddd;
+  border-right: 1px solid #ddd;
+  border-radius: 4px 4px 0px 0px;
 }
 
 .dc-form-li:hover, .dc-form-li-selected {
@@ -685,11 +687,12 @@ border-top: 1px solid #ddd;
 
 /** Form head **/
 .dc-head  {
- padding: 2px 4px; 
+ padding: 3px 6px; 
  font-size: 1.2em;
  line-height: 1.6em;
  font-weight: bold;
- background-color: rgba(204,230,255,0.5);
+ background-color: #e5f2ff;
+ border: 1px dotted #ccc;
 }
 .dc-head .dc-row {
 display: flex;
