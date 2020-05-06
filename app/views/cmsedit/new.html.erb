@@ -1,5 +1,5 @@
 <%= dc_table_title dc_new_title() %>
 
-<%= form_tag @parms, method: :post, id: 'cmsform' do %>
+<%= form_tag( @parms, method: :post, id: 'cmsform', multipart: @form['form']['multipart'] ) do %>
   <%= render partial: 'form' %>
 <% end %>

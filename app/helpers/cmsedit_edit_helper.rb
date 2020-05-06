@@ -364,7 +364,6 @@ def dc_head_for_form()
     caption = options['caption']
     span    = options['span'] || 1
     @css << "\n#{options['css']}" unless options['css'].blank?
-    pp "@css: #{head} #{head['css'].blank?} #{@css}"
     label   = if caption.blank?
       ''
     elsif options['name'] == caption

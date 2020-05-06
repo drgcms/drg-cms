@@ -74,9 +74,11 @@ def render
          
   @html << "<iframe class='iframe_embedded' id='if_#{@yaml['name']}' name='if_#{@yaml['name']}' #{html}></iframe>"
   unless @record.new_record?
+    url  = @parent.url_for(opts)
+    data = @yaml['delay'] ? 'data-src-delay' : 'src'
     @js << %Q[
 $(document).ready( function() {
-  $('#if_#{@yaml['name']}').attr('src', '#{@parent.url_for(opts)}');
+  $('#if_#{@yaml['name']}').attr('#{data}', '#{url}');
 });]
   end
   self
