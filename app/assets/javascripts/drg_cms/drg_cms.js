@@ -54,6 +54,21 @@ remove_background_from_iframe = function(obj) {
 };
 
 /*******************************************************************
+ * Trying to remove background from iframe element. It is not yet working.
+ *******************************************************************/
+update_embedded_on_first_display = function(div_name) {
+  var iframes = $(div_name).find("iframe");
+  $.each(iframes, function(index, iframe) {
+    var src_delay = iframe.getAttribute('data-src-delay').toString(); 
+    if (src_delay !== 'null') {
+      iframe.setAttribute('data-src-delay', null);
+      iframe.setAttribute('src', src_delay);
+    }
+  });
+};
+
+
+/*******************************************************************
  * Will update select field on the form which select options are dependend on other field
  *******************************************************************/
 update_select_depend = function(select_name, depend_name, method) {
@@ -387,11 +402,11 @@ $(document).ready( function() {
   * Tab clicked on form. Hide old and show selected div.
   *******************************************************************/
   $('.dc-form-li').on('click', function(e) { 
-// find li with dc-form-li-selected class. This is our old tab
+    // find li with dc-form-li-selected class. This is our old tab
     var old_tab_id = null;
     $(e.target).parents('ul').find('li').each( function() {
       if ($(this).hasClass('dc-form-li-selected')) {
-// when not already selected toggle dc-form-li-selected class and save old tab
+        // when not already selected toggle dc-form-li-selected class and save old tab
         if ($(this) !== $(e.target)) {
           $(this).toggleClass('dc-form-li-selected');
           $(e.target).toggleClass('dc-form-li-selected');
@@ -404,14 +419,15 @@ $(document).ready( function() {
     if (old_tab_id !== null) {
       $('#data_' + old_tab_id).toggleClass('div-hidden');
       $('#data_' + e.target.getAttribute("data-div")).toggleClass('div-hidden');
-// resize parent iframe to fit selected tab size
+      
+      // resize parent iframe to fit selected tab size
 //      var div_height = document.getElementById('data_' + e.target.getAttribute("data-div")).clientHeight + 130;
 //      var div_height = document.getElementById('cmsform').clientHeight + 50;
       var div_height = document.width + 50;
-      
-        window.frameElement.style.height = div_height.toString() + 'px';
+      window.frameElement.style.height = div_height.toString() + 'px';
 // it would be too easy      $('#cmsform :input:enabled:visible:first').focus();
       select_first_input_field('#data_' + e.target.getAttribute("data-div"));
+      update_embedded_on_first_display('#data_' + e.target.getAttribute("data-div"));
     }
   });  
 
