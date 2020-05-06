@@ -71,17 +71,20 @@ end
 #   help : String : Help text
 ############################################################################
 def dc_field_label_help(options)
-  caption = options['caption'] || options['text']
-  label = if caption.blank?    
-    t_name(options['name'], options['name'].capitalize.gsub('_',' ') )
-  elsif options['name']
-    t(caption, caption) 
+  # no label or help in comments
+  unless options['type'] == 'comment'
+    caption = options['caption'] || options['text']
+    label = if caption.blank?    
+      t_name(options['name'], options['name'].capitalize.gsub('_',' ') )
+    elsif options['name']
+      t(caption, caption) 
+    end
+    # help text can be defined in form or in translations starting with helpers. or as helpers.help.collection.field
+    help = if options['help'] 
+      options['help'].match('helpers.') ? t(options['help']) : options['help']
+    end
+    help ||= t('helpers.help.' + @form['table'] + '.' + options['name'],' ') if options['name'] 
   end
-  # help text can be defined in form or in translations starting with helpers. or as helpers.help.collection.field
-  help = if options['help'] 
-    options['help'].match('helpers.') ? t(options['help']) : options['help']
-  end
-  help ||= t('helpers.help.' + @form['table'] + '.' + options['name'],' ') if options['name'] 
   # create field object from class and call its render method
   klass_string = options['type'].camelize
   field_html = if DrgcmsFormFields.const_defined?(klass_string) # when field type defined
