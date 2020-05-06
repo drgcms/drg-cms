@@ -126,7 +126,7 @@ end
 # Standard code for returning readonly field.
 ####################################################################
 def ro_standard(value=nil)
-  value = @record[@yaml['name']] if value.nil? and @record.respond_to?(@yaml['name']) 
+  value = @record.send(@yaml['name']) if value.nil? and @record.respond_to?(@yaml['name']) 
   @html << (value.blank? ? '' : "<div class='dc-readonly'>#{value}</div>")
   self
 end

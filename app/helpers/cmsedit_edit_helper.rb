@@ -27,7 +27,7 @@
 # data found in 3 major sections of DRG CMS form: index, result_set and form sections. 
 #
 ###########################################################################
-module CmseditFormHelper
+module CmseditEditHelper
 
 ############################################################################
 # Will return value when internal or additional parameters are defined in action
@@ -297,7 +297,7 @@ end
 def dc_fields_for_form()
   html, tabs, tab_data = '',[], ''
   @js  ||= ''
-  @css   = ''
+  @css ||= ''
 # Only fields defined  
   if (form_fields = @form['form']['fields'])
     html << "<div id='data_fields' " + (@form['form']['height'] ? "style=\"height: #{@form['form']['height']}px;\">" : '>')  
@@ -350,6 +350,7 @@ end
 # to be seen even when tabs are switched.
 ############################################################################
 def dc_head_for_form()
+  @css ||= ''
   head = @form['form']['head']
   return '' if head.nil?
   html    = %Q[<div class="dc-head #{head['class']}">\n<div class="dc-row">]
@@ -362,6 +363,8 @@ def dc_head_for_form()
     # Label
     caption = options['caption']
     span    = options['span'] || 1
+    @css << "\n#{options['css']}" unless options['css'].blank?
+    pp "@css: #{head} #{head['css'].blank?} #{@css}"
     label   = if caption.blank?
       ''
     elsif options['name'] == caption
