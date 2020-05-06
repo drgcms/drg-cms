@@ -69,7 +69,7 @@ def render
       eval( "#{@yaml['eval']} '#{@record[ @yaml['name'] ]}'") 
     end
   else
-    @parent.dc_format_value(@record[@yaml['name']],@yaml['format'])    
+    @parent.dc_format_value(@record.send(@yaml['name']),@yaml['format'])    
   end  
   @html << '</div>'
   self
