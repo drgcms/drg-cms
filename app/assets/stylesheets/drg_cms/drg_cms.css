@@ -94,6 +94,7 @@ border: solid 1px #ccc;;
 border-radius: 2px;
 font: 14px arial,sans-serif;
 max-width: 100%;
+vertical-align: middle;
 }
 
 textarea:focus, input:focus, select:focus {
@@ -202,7 +203,7 @@ padding: 0;
 .dc-result-header {
   display: flex;
 /*  background-color: #eee;*/
-  background: linear-gradient(to bottom, #eee 0%, #ddd 100%); 
+  background: linear-gradient(to bottom, #eee 0%, #e2e2e2 100%); 
 }
 .dc-result-data {
   display: flex;
@@ -286,10 +287,9 @@ display: inline-table;
 font-weight: bold;
 color: #666;
 text-align: center;
-
 border-radius: 2px;
-background: transparent linear-gradient(to bottom, #fdfdfd 0%, #f2f2f2 100%);
-border: 1px solid #eee;
+background: transparent linear-gradient(to bottom, #fff 0%, #e2e2e2 100%);
+border: 1px solid #ddd;
 }
 
 .dc-link:hover {
@@ -326,8 +326,8 @@ border: 1px solid #eee;
   padding: 7px;
   border-radius: 2px;
   color: #666;
-  background: transparent linear-gradient(to bottom, #FFF 0%, #F2F2F2 100%) repeat scroll 0% 0%;
-  border: 1px solid #eee;
+  background: transparent linear-gradient(to bottom, #fff 0%, #e2e2e2 100%) repeat scroll 0% 0%;
+  border: 1px solid #ddd;
 }
 
 .dc-link-ajax.with-link {padding: 7px}
@@ -368,7 +368,7 @@ transition: 0.3s;
 .dc-link-icon {
 padding: 3px;
 border-radius: 2px;
-background: transparent linear-gradient(to bottom, #FFF 0%, #F2F2F2 100%) repeat scroll 0% 0%;
+background: transparent linear-gradient(to bottom, #fff 0%, #e2e2e2 100%) repeat scroll 0% 0%;
 border: solid 1px #ccc;;
 }
 
@@ -426,8 +426,8 @@ border: solid 1px #ccc;;
 
   border-radius: 2px;
   background-color: #eee;
-  background: transparent linear-gradient(to bottom, #FFF 0%, #F2F2F2 100%) repeat scroll 0% 0%;
-  border: 1px solid #eee;
+  background: transparent linear-gradient(to bottom, #fff 0%, #e2e2e2 100%) repeat scroll 0% 0%;
+  border: 1px solid #ddd;
 }
 
 .dc-link-submit .fa {
@@ -439,7 +439,6 @@ border: solid 1px #ccc;;
 }
 .dc-link-submit:hover {
   color: #000;
-  border: 1px solid #bbb;
   border: 1px solid rgba(76,154,255, 1);
   box-shadow: inset 0px 0px 0px 1px rgba(76,154,255, 1);  
   transition: 0.3s;
@@ -452,21 +451,18 @@ border: solid 1px #ccc;;
 }
 .dc-submit {
   text-decoration: none;
-  border: 0px;
+  border: none;
   color: #666;
   font-weight: bold;
-  box-shadow: none;
-/*  background: none;*/
   padding: 0px 2px;
   border-radius: 0px;
-  background: transparent linear-gradient(to bottom, #FFF 0%, #F2F2F2 100%) repeat scroll 0% 0%;
+  background: transparent;
 } 
 
 .dc-submit:hover { 
   cursor: pointer;
   text-decoration: none;
   color: #fff;
-  background-color: #000; 
 }
 
 /* Pagination */
@@ -474,7 +470,7 @@ border: solid 1px #ccc;;
   border: solid 1px #ccc;;
   padding: 4px 4px 3px 6px;
   margin-left: 1px;
-  background: transparent linear-gradient(to bottom, #FFF 0%, #F2F2F2 100%) repeat scroll 0% 0%;  
+  background: transparent linear-gradient(to bottom, #fff 0%, #e2e2e2 100%) repeat scroll 0% 0%;  
   border-radius: 1px;
 }
 #result .pagination span a {
@@ -519,7 +515,6 @@ border: solid 1px #ccc;;
   width: 99.8%;
   padding: 0px;
   padding-top: 4px;
-  /*border: 1px solid #eee;*/
   border: 1px solid #eee;
   border-radius: 2px; 
   background-color: #fcfcfc;
@@ -692,6 +687,7 @@ border-top: 1px solid #ddd;
  line-height: 1.6em;
  font-weight: bold;
  background-color: #e5f2ff;
+ background-color: rgba(76,154,255, 0.2);
  border: 1px dotted #ccc;
 }
 .dc-head .dc-row {
@@ -939,9 +935,8 @@ border: 1px solid #eee;
 }
 .drgcms_popmenu_item:hover {
 background-color: white;
-border: solid 1px #ccc;;
-  border: 1px solid rgba(76,154,255, 1);
-  box-shadow: inset 0px 0px 0px 1px rgba(76,154,255, 1);
+border: 1px solid rgba(76,154,255, 1);
+box-shadow: inset 0px 0px 0px 1px rgba(76,154,255, 1);
 border-radius: 2px;
 }
 
@@ -1000,8 +995,8 @@ margin-right: 4px;
 border-radius:2px;
 z-index: 1;
 
-background: transparent linear-gradient(to bottom, #FFF 0%, #F2F2F2 100%) repeat scroll 0% 0%;
-border: 1px solid #eee;
+background: transparent linear-gradient(to bottom, #fff 0%, #e2e2e2 100%) repeat scroll 0% 0%;
+border: 1px solid #ddd;
 }
 
 .dc-action-menu ul {
