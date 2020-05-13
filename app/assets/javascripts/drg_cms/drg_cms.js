@@ -43,51 +43,42 @@ dumpAttributes = function(obj) {
 };
 
 /*******************************************************************
- * Trying to remove background from iframe element. It is not yet working.
- *******************************************************************/
-remove_background_from_iframe = function(obj) {
-  var head = obj.head;
-  var css = '<style type="text/css">' +
-            'body{background: none; background-picture:none; } ' +
-            '</style>';
-  $(head).append(css);    
-};
-
-/*******************************************************************
- * Trying to remove background from iframe element. It is not yet working.
+ * Function checks if there are delay loaded embedded elements on 
+ * selected tab and triggers iframe reload.
  *******************************************************************/
 update_embedded_on_first_display = function(div_name) {
   var iframes = $(div_name).find("iframe");
   $.each(iframes, function(index, iframe) {
-    var src_delay = iframe.getAttribute('data-src-delay').toString(); 
-    if (src_delay !== 'null') {
+    var src_delay = iframe.getAttribute('data-src-delay'); 
+    if (src_delay !== null) {
       iframe.setAttribute('data-src-delay', null);
-      iframe.setAttribute('src', src_delay);
+      iframe.setAttribute('src', src_delay.toString());
     }
   });
 };
 
-
 /*******************************************************************
- * Will update select field on the form which select options are dependend on other field
+ * Will update select field on the form which select options are dependend 
+ * on other field value. It calls /dc_common/autocomplete and passes 
+ * methodname and depend field value to obtain new values for select field.
  *******************************************************************/
 update_select_depend = function(select_name, depend_name, method) {
   var select_field = $('#'+select_name);
   var depend_field = $('#'+depend_name);
- /* 
+  
   $.ajax({
     url: "/dc_common/autocomplete",
     type: "POST",
     dataType: "json",
-    data: { input: request.term, table: "#{table}", search: "#{search}" #{(',id: "'+@yaml['id'] + '"') if @yaml['id']} },
+    data: { input: depend_field.val(), search: method},
     success: function(data) {
-      response( $.map( data, function(key) {
-        return key;
-      }));
+
+      select_field.empty();
+      $.each(data, function(index, element) {
+        select_field.append( new Option(element['label'], element['id']) );
+      });
     }
   });  
-*/  
-  
 };
 
 /*******************************************************************
@@ -423,7 +414,7 @@ $(document).ready( function() {
       // resize parent iframe to fit selected tab size
 //      var div_height = document.getElementById('data_' + e.target.getAttribute("data-div")).clientHeight + 130;
 //      var div_height = document.getElementById('cmsform').clientHeight + 50;
-      var div_height = document.width + 50;
+      var div_height = document.body.scrollHeight;
       window.frameElement.style.height = div_height.toString() + 'px';
 // it would be too easy      $('#cmsform :input:enabled:visible:first').focus();
       select_first_input_field('#data_' + e.target.getAttribute("data-div"));
@@ -934,7 +925,6 @@ element = $(this).find(':first').attr('id');
     var field_name = parent.data("name");
     
     url = url + '&filter_field=' + field_name + '&filter_oper=' + operator;
-    console.log(url);
     window.location.href = url;
   });
 
