@@ -196,7 +196,8 @@ def new
     end
   end
 # This is how we set default values for new record
-  dc_new_record() if respond_to?('dc_new_record') 
+  #dc_new_record() if respond_to?('dc_new_record') 
+  if (m = callback_method('new_record') ) then call_callback_method(m)  end
   @parms['action'] = 'create'
 end
 
@@ -673,6 +674,7 @@ def callback_method(key) #:nodoc:
   cb = case
     when params['data'] && params['data'][data_key] then params['data'][data_key]
 # if dc_ + key method is present in model then it will be called automatically     
+    when @form['form'][key] then @form['form'][key]
     when respond_to?('dc_' + key) then 'dc_' + key
     when params[data_key] then params[data_key]
     else nil
