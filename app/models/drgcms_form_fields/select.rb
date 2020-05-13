@@ -99,7 +99,12 @@ def choices_in_eval(e, all=false)
     eval e
   else
     # add event listener to depend field
-    @js << "$('#record_#{@yaml['depend']}').change( function(e) { update_select_depend('#{@yaml['name']}', '#{@yaml['depend']}','#{e}');})\n"
+    @js << %Q[
+$(document).ready(function() {
+  $('#record_#{@yaml['depend']}').change( function(e) { update_select_depend('record_#{@yaml['name']}', 'record_#{@yaml['depend']}','#{e}');});
+  $('#_record_#{@yaml['depend']}').change( function(e) { update_select_depend('record_#{@yaml['name']}', '_record_#{@yaml['depend']}','#{e}');});
+});
+]
     depend_value = @record[@yaml['depend']]
     e << " '#{depend_value}'"
     eval e
