@@ -105,7 +105,13 @@ $(document).ready(function() {
   $('#_record_#{@yaml['depend']}').change( function(e) { update_select_depend('record_#{@yaml['name']}', '_record_#{@yaml['depend']}','#{e}');});
 });
 ]
-    depend_value = @record[@yaml['depend']]
+    # depend field might be virtual field. Its value should be set in params
+    depend_value = if @yaml['depend'][0] == '_'
+      @parent.params["p_#{@yaml['depend']}"]
+    else
+      @record[@yaml['depend']]
+    end
+    
     e << " '#{depend_value}'"
     eval e
   end
