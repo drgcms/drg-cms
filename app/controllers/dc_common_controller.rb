@@ -45,7 +45,12 @@ layout false
 # JSON array [label, value, id] of first 20 documents that confirm to query.
 ########################################################################
 def autocomplete
-#  return '' unless session[:edit_mode] > 0 # 
+  # table parameter must be defined. If not, get it from search parameter
+  if params['table'].nil? and params['search'].match(/\./)
+    name = params['search'].split('.').first
+    params['table'] = name.underscore
+  end
+  
   return render plain: t('drgcms.not_authorized') unless dc_user_can(DcPermission::CAN_VIEW)
 # TODO Double check if previous line works as it should.
   table = params['table'].classify.constantize
