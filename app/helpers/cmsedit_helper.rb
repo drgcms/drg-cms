@@ -46,6 +46,8 @@ end
 # Field definition will be used for input field on the form.
 ############################################################################
 def dc_get_field_form_definition(name) #:nodoc:
+  return nil if @form['form'].nil?
+  
   @form['form']['tabs'].each do |tab|
 # Array with 2 elements. First is tabname, second is data      
     my_fields = tab.last
@@ -140,7 +142,7 @@ end
 # Returns:
 #   String : HTML code for action
 ############################################################################
-def dc_link_ajax_window_action(yaml, record=nil, action_active=true)
+def dc_link_ajax_window_submit_action(yaml, record=nil, action_active=true)
   parms = {}
   # set data-confirm when confirm 
   yaml['html'] ||= {}
@@ -176,16 +178,27 @@ def dc_link_ajax_window_action(yaml, record=nil, action_active=true)
     icon    = yaml['icon'] ? "#{fa_icon(yaml['icon'])} " : ''
     if yaml['type'] == 'ajax' # ajax button
       clas = action_active ? "dc-link-ajax dc-animate" : "dc-link-no"
-      %Q[<li class="#{clas}" data-url="#{action_active ? url : ''}"  #{html_data} 
+      %Q[<li class="#{clas}" data-url="#{action_active ? url : ''}"  #{html_data}
          data-request="#{request}" title="#{yaml['title']}">#{icon} #{caption}</li>]
+
+    elsif yaml['type'] == 'submit'  # submit button
+      # It's dirty hack, but will prevent not authorized message and render index action correctly
+      parms[:filter] = 'on' 
+      url = url_for(parms) rescue 'URL error'
+      clas = action_active ? "dc-action-submit" : "dc-link-no"
+      %Q[<li class="#{clas}" data-url="#{action_active ? url : ''}"  #{html_data}
+         data-request="#{request}" title="#{yaml['title']}">#{icon} #{caption}</li>]
+
     elsif yaml['type'] == 'link'  # link button
       clas = action_active ? "dc-link dc-animate" : "dc-link-no"
       link = dc_link_to(yaml['caption'],yaml['icon'], parms, {target: yaml['target'], html: yaml['html']} )
       %Q[<li class="#{clas}">#{action_active ? link : caption}</li>]
-    elsif yaml['type'] == 'window' 
+
+    elsif yaml['type'] == 'window'
       clas = action_active ? "dc-link dc-animate dc-window-open" : "dc-link-no"
       %Q[<li class="#{clas}" data-url="#{action_active ? url : ''}" #{html_data}>#{icon} #{caption}</li>]
-    else 
+
+    else
       '<li>Action Type error</li>'
     end
   end

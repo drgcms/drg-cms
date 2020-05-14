@@ -587,7 +587,7 @@ def check_authorization
   return render( plain: t('drgcms.form_error') ) if @form.nil?
   # Permissions can be also defined on form
   #TODO So far only can_view is used. Think about if using other permissions has sense
-  can_view = @form.dig('permissions','can_view') 
+  can_view = @form.dig('permissions','can_view')
   if can_view.nil? or dc_user_has_role(can_view)
     extend_with_control_module
   else

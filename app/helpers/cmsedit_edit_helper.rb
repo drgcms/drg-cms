@@ -161,8 +161,8 @@ def dc_actions_for_form(position)
         '</li>'
       
       # ajax or link button
-      when options['type'] == 'ajax' || options['type'] == 'link' || options['type'] == 'window'
-        dc_link_ajax_window_action(options, @record, action_active)
+      when %w(ajax link window).include?(options['type'])
+        dc_link_ajax_window_submit_action(options, @record, action_active)
         
 # Javascript action        
       when options['type'] == 'script'

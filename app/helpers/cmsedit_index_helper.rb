@@ -148,8 +148,8 @@ EOT
     when action == 'field'
       html << dc_field_action(yaml) 
       next 
-    when %w(ajax link window).include?(action)
-      html << dc_link_ajax_window_action(options, nil, true)
+    when %w(ajax link window submit).include?(action)
+      html << dc_link_ajax_window_submit_action(options, nil, true)
       next
     else 
       caption = yaml['caption'] || yaml['text']

@@ -50,11 +50,24 @@ update_embedded_on_first_display = function(div_name) {
   var iframes = $(div_name).find("iframe");
   $.each(iframes, function(index, iframe) {
     var src_delay = iframe.getAttribute('data-src-delay'); 
-    if (src_delay !== null) {
-      iframe.setAttribute('data-src-delay', null);
-      iframe.setAttribute('src', src_delay.toString());
+    if (src_delay != null && src_delay != '') {
+      iframe.setAttribute('data-src-delay', '');
+      iframe.setAttribute('src', src_delay);
     }
   });
+};
+
+/*******************************************************************
+ *  Return false when confirmation is not required 
+ *******************************************************************/
+confirmation_is_cancled = function(object) {
+  var confirmation = object.getAttribute("data-confirm");
+  // if confirmation required
+  console.log(confirmation);
+  if (confirmation !== null) {
+    if (!confirm(confirmation)) {return true;}
+  }
+  return false;
 };
 
 /*******************************************************************
@@ -451,11 +464,8 @@ $(document).ready( function() {
  * Process Ajax call on cmsedit form actions
  *******************************************************************/
   $('.dc-link-ajax').on('click', function(e) {
-    var confirmation = this.getAttribute("data-confirm");
-    // if confirmation required
-    if (confirmation !== null) {
-      if (!confirm(confirmation)) {return false;}
-    }
+    // confirmation if required
+    if (confirmation_is_cancled(this)) {return false;}
    
     // check HTML5 validations
     if ($("form")[0] && !$("form")[0].checkValidity() ) {
@@ -488,17 +498,36 @@ $(document).ready( function() {
       }
       
     });  
-  }); 
+  });
+  
+/*******************************************************************
+ * Process action submit button click. 
+ *******************************************************************/
+  $('.dc-action-submit').on('click', function(e) {
+    // confirmation if required
+    console.log('.dc-action-submit')
+    if (confirmation_is_cancled(this)) {return false;}
+   
+    // check HTML5 validations
+    var form = $("form")[0];
+    if (form && !form.checkValidity() ) {
+      form.reportValidity();
+      return false;
+    }
+    var url = this.getAttribute("data-url");
+    if (url == null) {return false;}
+
+    form.setAttribute('action', url);
+    form.setAttribute('method', "post");
+    form.submit();
+  });  
     
 /*******************************************************************
   will open a new window with URL specified. 
 ********************************************************************/
   $('.dc-window-open').on('click', function(e) { 
-    var confirmation = this.getAttribute("data-confirm");
-    // if confirmation required
-    if (confirmation !== null) {
-      if (!confirm(confirmation)) {return false;}
-    }
+   // confirmation if required
+    if (confirmation_is_cancled(this)) {return false;}
     
     var url   = this.getAttribute("data-url");
     var title = this.getAttribute("title");
@@ -508,7 +537,6 @@ $(document).ready( function() {
     var top   = (screen.height/2)-(h/2);
     var win   = window.open(url, title, 'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=no, copyhistory=no, width='+w+', height='+h+', top='+top+', left='+left);
     win.focus();
-//    $('#bpopup').bPopup({ loadUrl: url, speed: 650, transition: 'slideDown' });  
   });  
 
  /*******************************************************************

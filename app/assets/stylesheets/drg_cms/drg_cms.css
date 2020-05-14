@@ -337,7 +337,7 @@ border: 1px solid #ddd;
   padding: 1px 3px 0 0;
 }
 
-.dc-link-ajax:hover {
+.dc-link-ajax:hover, .dc-action-submit:hover {
 cursor: pointer;
 background: #eee;
 border: 1px solid #bbb;
@@ -989,6 +989,7 @@ display: inline-table;
 .dc-action-menu li {
 display:inline; 
 position:relative;
+white-space: nowrap;
 list-style:none;
 padding: 7px;
 margin-right: 4px;
