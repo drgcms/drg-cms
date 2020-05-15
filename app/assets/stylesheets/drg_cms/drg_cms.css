@@ -466,23 +466,23 @@ border: solid 1px #ccc;;
 }
 
 /* Pagination */
-#result .pagination span {
+.dc-paginate .pagination span {
   border: solid 1px #ccc;;
   padding: 4px 4px 3px 6px;
   margin-left: 1px;
   background: transparent linear-gradient(to bottom, #fff 0%, #e2e2e2 100%) repeat scroll 0% 0%;  
   border-radius: 1px;
 }
-#result .pagination span a {
+.dc-paginate .pagination span a {
   color: #888;
   text-decoration: none;
 }
 
-#result .pagination span:hover > a {
+.dc-paginate .pagination span:hover > a {
   color: #000;
 }
 
-#result .pagination .current {
+.dc-paginate .pagination .current {
   background: #888;
   color: #fff;
   border: 1px solid #888;
