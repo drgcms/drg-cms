@@ -838,7 +838,11 @@ end
 # subroutine of check_filter_options.
 ########################################################################
 def set_session_filter(table_name)
-  if params[:filter] == 'off' # clear all values
+  # models that can not be filtered (for now)
+  return if %w(dc_temp dc_memory).include?(params[:table])
+
+  # clear filter 
+  if params[:filter] == 'off' 
     session[table_name][:filter] = nil
     return
   end
