@@ -353,7 +353,7 @@ def dc_header_for_result()
   end
   #  
   if (columns = @form['result_set']['columns'])
-    columns.each do |k,v|
+    columns.sort.each do |k,v|
       session[:form_processing] = "result_set:columns: #{k}=#{v}"
       th = %Q[<div class="th" style="width: #{v['width'] || '15%'};text-align: #{v['align'] || 'left'};" data-name="#{v['name']}"]
       # when no caption or name is defined it might be just spacer      
@@ -507,18 +507,16 @@ def dc_process_column_eval(yaml, document)
   end
 end
 
-
 ############################################################################
 # Creates column for each field of result set document.
 ############################################################################
 def dc_columns_for_result(document)
   return '' unless @form['result_set']['columns']
   html = ''  
-  @form['result_set']['columns'].each do |k,v|
+  @form['result_set']['columns'].sort.each do |k,v|
     session[:form_processing] = "result_set:columns: #{k}=#{v}"
     # convert shortcut to hash 
-    v = {'name' => v} if v.class == String
-    
+    v = {'name' => v} if v.class == String    
     begin
       # eval
       value = if v['eval']
