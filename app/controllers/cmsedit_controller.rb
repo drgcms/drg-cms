@@ -78,6 +78,7 @@
 class CmseditController < DcApplicationController
 before_action :check_authorization, :except => [:login, :logout, :test, :run]
 before_action :dc_reload_patches if Rails.env.development?
+protect_from_forgery with: :null_session, only: Proc.new { |c| c.request.format.json? }
   
 layout 'cms'
 
