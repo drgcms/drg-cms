@@ -63,7 +63,6 @@ update_embedded_on_first_display = function(div_name) {
 confirmation_is_cancled = function(object) {
   var confirmation = object.getAttribute("data-confirm");
   // if confirmation required
-  console.log(confirmation);
   if (confirmation !== null) {
     if (!confirm(confirmation)) {return true;}
   }
@@ -505,7 +504,6 @@ $(document).ready( function() {
  *******************************************************************/
   $('.dc-action-submit').on('click', function(e) {
     // confirmation if required
-    console.log('.dc-action-submit')
     if (confirmation_is_cancled(this)) {return false;}
    
     // check HTML5 validations

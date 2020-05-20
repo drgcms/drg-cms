@@ -154,11 +154,12 @@ def dc_link_ajax_window_submit_action(yaml, record=nil, action_active=true)
     parms['idr']        = dc_document_path(record) if record
   # make url from action controller
   else
-    parms['controller'] = yaml['controller'] 
+    parms['controller'] = yaml['controller'] || 'cmsedit'
     parms['action']     = yaml['action'] 
     parms['table']      = yaml['table'] 
     parms['form_name']  = yaml['form_name']
     parms['control']    = yaml['control'] if yaml['control']
+    parms['id']         = record.id if record
   end
   # add current id to parameters
   parms['id'] = dc_document_path(record) if record
@@ -170,7 +171,7 @@ def dc_link_ajax_window_submit_action(yaml, record=nil, action_active=true)
     "<li>#{'Controller not defined'}</li>"
   else
     yaml['caption'] ||= yaml['text'] 
-    caption   = t("#{yaml['caption'].downcase}", yaml['caption'])
+    caption   = yaml['caption'] ? t("#{yaml['caption'].downcase}", yaml['caption']) : nil
     html_data = dc_html_data(yaml['html'])
     #
     url = url_for(parms) rescue 'URL error'

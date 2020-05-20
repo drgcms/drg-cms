@@ -210,7 +210,7 @@ padding: 0;
 }
 
 .dc-result-data .actions i {
-  padding: 6px 1px;
+  padding: 2px 1px;
   font-size: 1rem;
 }
 
@@ -247,9 +247,16 @@ padding: 0;
 }
 
 .dc-result-data .actions, .dc-result-header .actions {
-  padding-left: 4px;
-  vertical-align: middle;
+  padding-right: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;  
   white-space: nowrap;
+}
+
+.dc-result-data .dc-link, .dc-result-data .dc-link-ajax {
+  background: none;
+  border: 1px solid transparent;
 }
 
 .dc-result-data:hover { 

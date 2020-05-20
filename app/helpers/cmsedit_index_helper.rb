@@ -58,7 +58,8 @@ def dc_actions_for_index()
   @css = @form['css'] || ''
   return '' if @form['index'].nil? or @form['readonly']
   actions = @form['index']['actions']
-  return '' if actions.nil? or actions.size == 0
+  return '' if actions.blank?
+  
   std_actions = {2 => 'new', 3 => 'sort', 4 => 'filter' }
   if actions.class == String
     actions = define_standard_actions(actions, std_actions)
@@ -238,7 +239,7 @@ end
 ############################################################################
 # Creates code for link or ajax action type. Subroutine of dc_actions_for_result.
 ############################################################################
-def dc_link_or_ajax_action(yaml, parms) #:nodoc:
+def __dc_link_or_ajax_action(yaml, parms) #:nodoc:
   rest = {}
   rest['method']  = yaml['method'] || yaml['request'] || 'get'
   rest['caption'] = yaml['caption'] || yaml['text']
@@ -287,53 +288,64 @@ def dc_actions_for_result(document)
   return '' if actions.nil? or @form['readonly']
 #  
   actions, width = dc_actions_column()
-  html = %Q[<div class="actions" style="width: #{width}px;">]
+  html = %Q[<ul class="actions" style="width: #{width}px;">]
   actions.each do |k,v|
     session[:form_processing] = "result_set:actions: #{k}=#{v}"
     next if k == 'standard' # ignore standard definition
     parms = @parms.clone   
-    yaml = v.class == String ? {'type' => v} : v # if single definition simulate type parameter
-    html << case
-    when yaml['type'] == 'edit' then
-      parms['action'] = 'edit'
-      parms['id']     = document.id
-      dc_link_to( nil, 'pencil lg', parms )
-    when yaml['type'] == 'duplicate' then
-      parms['id']     = document.id
-# duplicate string will be added to these fields.
-      parms['dup_fields'] = yaml['dup_fields'] 
-      parms['action'] = 'create'
-      dc_link_to( nil, 'copy lg', parms, data: { confirm: t('drgcms.confirm_dup') }, method: :post )
-    when yaml['type'] == 'delete' then
-      parms['action'] = 'destroy'
-      parms['id']     = document.id
-      parms['return_to'] = request.url
-      dc_link_to( nil, 'remove lg', parms, data: { confirm: t('drgcms.confirm_delete') }, method: :delete )
-# undocumented so far
-    when yaml['type'] == 'edit_embedded'
-      parms['controller'] = 'cmsedit'
-      parms['table'] +=  ";#{yaml['table']}"
-      parms['ids']   ||= ''
-      parms['ids']   +=  "#{document.id};"
-      dc_link_to( nil, 'table lg', parms, method: :get )
-    when yaml['type'] == 'link' || yaml['type'] == 'ajax' then
-      if yaml['url']
-        parms['controller'] = yaml['url']
-        parms['idr']        = document.id
-      else
-        parms['id']         = document.id
+    # if single definition simulate type parameter
+    yaml = v.class == String ? {'type' => v} : v
+    # code already includes li tag
+    if %w(ajax link window submit).include?(yaml['type']) then
+      @record = document # otherwise document fields can't be used as parameters
+      html << dc_link_ajax_window_submit_action(yaml,document)
+    else
+      html << '<li class="dc-link">'
+      html << case
+      when yaml['type'] == 'edit' then
+        parms['action'] = 'edit'
+        parms['id']     = document.id
+        dc_link_to( nil, 'pencil lg', parms )
+      when yaml['type'] == 'duplicate' then
+        parms['id']     = document.id
+        # duplicate string will be added to these fields.
+        parms['dup_fields'] = yaml['dup_fields'] 
+        parms['action'] = 'create'
+        dc_link_to( nil, 'copy lg', parms, data: { confirm: t('drgcms.confirm_dup') }, method: :post )
+      when yaml['type'] == 'delete' then
+        parms['action'] = 'destroy'
+        parms['id']     = document.id
+        parms['return_to'] = request.url
+        dc_link_to( nil, 'remove lg', parms, data: { confirm: t('drgcms.confirm_delete') }, method: :delete )
+      # undocumented so far
+      when yaml['type'] == 'edit_embedded'
+        parms['controller'] = 'cmsedit'
+        parms['table'] +=  ";#{yaml['table']}"
+        parms['ids']   ||= ''
+        parms['ids']   +=  "#{document.id};"
+        dc_link_to( nil, 'table lg', parms, method: :get )
+=begin        
+      when yaml['type'] == 'link' || yaml['type'] == 'ajax' then
+        if yaml['url']
+          parms['controller'] = yaml['url']
+          parms['idr']        = document.id
+        else
+          parms['id']         = document.id
+        end
+        parms['controller'] = yaml['controller'] if yaml['controller']
+        parms['action']     = yaml['action']     if yaml['action']
+        parms['table']      = yaml['table']      if yaml['table']
+        parms['form_name']  = yaml['form_name']  if yaml['form_name']
+        parms['target']     = yaml['target']     if yaml['target']
+        dc_link_or_ajax_action(yaml, parms)
+=end        
+      else # error. 
+        yaml['type'].to_s
       end
-      parms['controller'] = yaml['controller'] if yaml['controller']
-      parms['action']     = yaml['action']     if yaml['action']
-      parms['table']      = yaml['table']      if yaml['table']
-      parms['form_name']  = yaml['form_name']  if yaml['form_name']
-      parms['target']     = yaml['target']     if yaml['target']
-      dc_link_or_ajax_action(yaml, parms)
-    else # error. 
-      yaml['type'].to_s
+      html << '</li>'
     end
   end
-  html << '</div>'
+  html << '</ul>'
   html.html_safe
 end
 

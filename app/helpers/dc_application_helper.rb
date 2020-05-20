@@ -1330,7 +1330,7 @@ def dc_internal_var(object, var_name)
       'VARIABLE: UNKNOWN OBJECT'
     end
   rescue Exception => e
-    Rails.logger.error "Method dc_internal_var. Runtime error. #{e.message}"
+    logger.error "Method dc_internal_var. Runtime error. #{e.message}"
     'VARIABLE: ERROR'
   end
 end
