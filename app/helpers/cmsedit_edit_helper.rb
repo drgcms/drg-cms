@@ -142,9 +142,11 @@ def dc_actions_for_form(position)
       when options['type'] == 'submit'
         caption = options['caption'] || 'drgcms.save'
         icon    = options['icon'] || 'save'
+        prms = {}
+        options['params'].each { |k,v| prms[k] = dc_value_for_parameter(v) } if options['params']
         if action_active 
           '<li class="dc-link-submit dc-animate">' + 
-             dc_submit_tag(caption, icon, {:data => options['params'], :title => options['title'] }) +
+             dc_submit_tag(caption, icon, {:data => prms, :title => options['title'] }) +
           '</li>'
         else
           "<li class=\"dc-link-no\">#{fa_icon(icon)} #{caption}</li>"
