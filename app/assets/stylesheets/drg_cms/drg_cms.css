@@ -101,6 +101,10 @@ textarea:focus, input:focus, select:focus {
   border: 1px solid rgba(76,154,255, 1);
 }
 
+textarea:read-only, input:read-only, select:read-only {
+  background-color: #eee;
+}
+
 input.file {
 border: none;
 }
@@ -202,7 +206,6 @@ padding: 0;
 
 .dc-result-header {
   display: flex;
-/*  background-color: #eee;*/
   background: linear-gradient(to bottom, #eee 0%, #e2e2e2 100%); 
 }
 .dc-result-data {

@@ -144,6 +144,7 @@ end
 # Return value when readonly is required
 ###########################################################################
 def ro_standard
+  #value   = @yaml['html']['value'] ? @yaml['html']['value'] : nil
   value = @record.respond_to?(@yaml['name']) ? @record[@yaml['name']] : nil
   return self if value.nil?
 # 

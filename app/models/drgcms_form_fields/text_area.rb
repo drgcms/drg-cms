@@ -52,7 +52,7 @@ end
 # Render text_area field html code
 ###########################################################################
 def render
-  return ro_standard if @readonly
+  #return ro_standard if @readonly
   set_initial_value
 #
 #  @yaml['html'] ||= {}

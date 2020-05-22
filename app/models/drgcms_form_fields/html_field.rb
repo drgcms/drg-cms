@@ -49,7 +49,7 @@ class HtmlField < DrgcmsField
 # Render html_field field html code
 ###########################################################################
 def render
-  return ro_standard if @readonly  
+  #return ro_standard if @readonly  
 # retrieve html editor from page settings
   editor_string = @parent.dc_get_site.params['html_editor'] if @parent.dc_get_site
   editor_string ||= 'ckeditor'

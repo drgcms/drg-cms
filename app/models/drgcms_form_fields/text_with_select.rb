@@ -65,7 +65,7 @@ class TextWithSelect < Select
 # Render text_with_select field html code
 ###########################################################################
 def render
-  return ro_standard if @readonly  
+  #return ro_standard if @readonly  
   set_initial_value('html','value')
   
   record = record_text_for(@yaml['name'])

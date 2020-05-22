@@ -87,7 +87,7 @@ end
 # Render tree_select field html code
 ###########################################################################
 def render
-  return ro_standard if @readonly  
+  #return ro_standard if @readonly  
   set_initial_value('html','value')
   require 'sort_alphabetical'  
   

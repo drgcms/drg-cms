@@ -66,7 +66,7 @@ class DatePicker < DrgcmsField
 ###########################################################################
 def render
   value = @record.try(@yaml['name']) ? I18n.localize(@record[@yaml['name']].to_date) : nil
-  return ro_standard( @parent.dc_format_value(value)) if @readonly
+  #return ro_standard( @parent.dc_format_value(value)) if @readonly
 #
   @yaml['options'] ||= {}
   set_initial_value

@@ -98,7 +98,7 @@ def render
     return self
   end
 # 
-  return ro_standard(table, search) if @readonly
+  #return ro_standard(table, search) if @readonly
 # TODO check if table exists    
   collection = table.classify.constantize
   unless @record.respond_to?(@yaml['name'])

@@ -44,7 +44,7 @@ class TextField < DrgcmsField
 # Render text_field field html code
 ###########################################################################
 def render
-  return ro_standard if @readonly
+  #return ro_standard if @readonly
   set_initial_value
 #
   record = record_text_for(@yaml['name'])

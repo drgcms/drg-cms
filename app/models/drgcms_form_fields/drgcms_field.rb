@@ -80,11 +80,13 @@ def initialize( parent, record, yaml )
   @record = record
   @yaml   = yaml
   @form   = parent.form
+  @yaml['html'] ||= {}
+  # set readonly field
   @readonly = (@yaml and @yaml['readonly']) || (@form and @form['readonly'])
-  if @yaml['size'] # move size to html element if not already there
-    @yaml['html'] ||= {}
-    @yaml['html']['size'] ||= @yaml['size']
-  end
+  @yaml['html']['readonly'] = true if @readonly
+  # assign size to html element if not already there
+  @yaml['html']['size'] ||= @yaml['size'] if @yaml['size'] 
+    
   @html   = ''  
   @js     = ''
   @css    = set_css_code @yaml['css']
@@ -126,7 +128,14 @@ end
 # Standard code for returning readonly field.
 ####################################################################
 def ro_standard(value=nil)
-  value = @record.send(@yaml['name']) if value.nil? and @record.respond_to?(@yaml['name']) 
+  p @yaml['name'],value
+  if value.nil?
+    value = if @yaml['html']['value']
+      @yaml['html']['value']
+    else
+      @record.respond_to?(@yaml['name']) ? @record.send(@yaml['name']) : nil
+    end
+  end
   @html << (value.blank? ? '' : "<div class='dc-readonly'>#{value}</div>")
   self
 end

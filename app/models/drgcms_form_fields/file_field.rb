@@ -42,7 +42,8 @@ class FileField < DrgcmsField
 # Render text_field field html code
 ###########################################################################
 def render
-  record = record_text_for(@yaml['name'])
+  return self if @readonly 
+  #record = record_text_for(@yaml['name'])
   @html << @parent.file_field( @yaml['name'], @yaml['html']) 
   self
 end

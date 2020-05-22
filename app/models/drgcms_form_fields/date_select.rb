@@ -46,7 +46,7 @@ class DateSelect < DrgcmsField
 # Render date_select field html code
 ###########################################################################
 def render
-  return ro_standard( @parent.dc_format_value(@record[@yaml['name']])) if @readonly
+  #return ro_standard( @parent.dc_format_value(@record[@yaml['name']])) if @readonly
 #
   @yaml['options'] ||= {}
   set_initial_value('options','default')
