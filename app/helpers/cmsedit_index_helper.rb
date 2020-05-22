@@ -264,9 +264,12 @@ def dc_actions_column()
 # standard actions  
   actions = {'standard' => true} if actions.class == String && actions == 'standard'
   std_actions = {' 2' => 'edit', ' 3' => 'delete'}
-  actions.merge!(std_actions) if actions['standard']
+  if actions['standard']
+    actions.merge!(std_actions) 
+    actions.delete('standard')
+  end
 #  
-  width = @form['result_set']['actions_width'] || 16*actions.size
+  width = @form['result_set']['actions_width'] || 18*actions.size
   [ actions, width ] 
 end
 

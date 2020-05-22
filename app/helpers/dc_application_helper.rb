@@ -274,6 +274,7 @@ end
 # String. HTML code for title.
 ############################################################################
 def dc_edit_title()
+  session[:form_processing] = "form:title:"
   title = @form['form']['title']
 # defined as form:title:edit
   if title and title['edit'] and !@form['readonly']
@@ -300,6 +301,7 @@ end
 # String. HTML code for title.
 ############################################################################
 def dc_new_title()
+  session[:form_processing] = "form:title:"
   title = @form['form']['title']
 # defined as form:title:new
   if title and title['new']
