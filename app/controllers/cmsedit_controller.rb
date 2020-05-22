@@ -566,7 +566,12 @@ def extend_with_control_module(control_name=@form['controls'])
     controls = "DrgcmsControls::#{controls_string.classify}".constantize rescue nil
     dc_deprecate('Putting controls into app/controllers/drgcms_controls directory will be deprecated. Put them into app/controls instead.') if controls
   end
-  extend controls if controls 
+# Form may be dynamically updated before processed 
+  if controls 
+    extend controls
+    send(:dc_update_form) if respond_to?(:dc_update_form)
+  end
+    
 end
 
 ############################################################################
