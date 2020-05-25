@@ -65,13 +65,13 @@ def render
 # 
   record = record_text_for(@yaml['name'])
   @html << @parent.text_field(record, @yaml['name'], @yaml['html'])
-  @js << <<EOJS
+  @js << %Q[
 $(document).ready(function() {
   $("##{record}_#{@yaml['name']}").datetimepicker( {
     #{hash_to_options(@yaml['options'])}
   });
-});
-EOJS
+}); 
+] unless @readonly
   
   self
 end
