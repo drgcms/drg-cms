@@ -90,6 +90,7 @@ color: #222;
 textarea, input, select {
 color: #222;
 padding: 6px 4px;
+margin-left: 1px;
 border: solid 1px #ccc;;
 border-radius: 2px;
 font: 14px arial,sans-serif;
@@ -101,8 +102,8 @@ textarea:focus, input:focus, select:focus {
   border: 1px solid rgba(76,154,255, 1);
 }
 
-textarea:read-only, input:read-only, select:read-only {
-  background-color: #eee;
+textarea:read-only, input:read-only, select:read-only, input:-moz-read-only {
+  background-color: #eee !important;
 }
 
 input.file {
@@ -629,22 +630,21 @@ border: solid 1px #ccc;;
 
 .dc-color-odd {
   background-color: #fcfcfc;  
-/*  border-bottom: solid 1px #eee; */
 }
 .dc-color-even {
   background-color: #fcfcfc;  
-/*  border-bottom: solid 1px #eee;  */
 }
-
 .dc-form-ul {
 padding: 2px 0;
 margin-top: 6px;
-/*
-margin-bottom: 3px;
-border-bottom: 1px solid #eee;
-*/
-
+margin-bottom: -3px;
 }
+
+.dc-width-10 {width: 10%;}
+.dc-width-14 {width: 14%;}
+.dc-width-21 {width: 21%;}
+.dc-width-85 {width: 85%;}
+.dc-width-100 {width: 100%;}
 
 .dc-spinner {
   float:left;
@@ -653,7 +653,8 @@ border-bottom: 1px solid #eee;
 }
 
 .dc-form-li {
-  display:inline; 
+  display:inline-block; 
+  white-space: nowrap;
   list-style:none;
   color: #666;
   text-decoration: none;
@@ -662,7 +663,7 @@ border-bottom: 1px solid #eee;
   line-height: 1rem;
 
   padding:4px 15px;
-  background: #ddd;
+  background: #e8e8e8;
   margin-right: 2px;
   border-left: 1px solid #ddd;
   border-right: 1px solid #ddd;
@@ -1202,13 +1203,16 @@ color: #669;
   .dc-form .row-div {
     display: block;
   }
-  .dc-form-field {
-    width: 100%;
-  }
+
   .dc-form-label {
     text-align: left;
     width: 100%;
     padding-bottom: 2px;
     white-space: nowrap;
   }
+  
+  .dc-form-li {margin-top: 3px;}
+  .dc-menu li {margin-top: 2px;}
+  
+  .dc-width-10, .dc-width-14, .dc-width-21, .dc-width-85, .dc-width-100 {width: 100%;}
 }

@@ -275,10 +275,10 @@ def dc_fields_for_tab(fields_on_tab) #:nodoc:
         data_width  = 85      
       end      
 %Q[
-<div class="dc-form-label dc-color-#{odd_even} dc-align-#{labels_pos}" style="width:#{label_width}%;" title="#{help}">
+<div class="dc-form-label dc-color-#{odd_even} dc-align-#{labels_pos} dc-width-#{label_width}" title="#{help}">
   <label for="record_#{options['name']}">#{label} </label>
 </div>
-<div id="td_record_#{options['name']}" class="dc-form-field dc-color-#{odd_even}" style="width:#{data_width}%;">#{field_html}</div>
+<div id="td_record_#{options['name']}" class="dc-form-field dc-color-#{odd_even} dc-width-#{data_width}">#{field_html}</div>
 ]
     end
     # check if group end
