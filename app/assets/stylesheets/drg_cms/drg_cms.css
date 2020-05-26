@@ -100,9 +100,18 @@ vertical-align: middle;
 
 textarea:focus, input:focus, select:focus {
   border: 1px solid rgba(76,154,255, 1);
+  outline: 1px solid rgba(76,154,255, 1);
+  border-radius: 1px;
 }
 
-textarea:read-only, input:read-only, select:read-only, input:-moz-read-only {
+input[type=submit]:focus {
+  outline: none;
+  border: none;
+  background-color: rgba(76,154,255, 1);
+  color: #fff;
+}
+
+textarea[readonly], input[readonly], select[readonly] {
   background-color: #eee !important;
 }
 
@@ -111,11 +120,13 @@ border: none;
 }
 
 select {
-padding: 5px 0px;
-background-color: #fff;  
-border: solid 1px #ccc;;
-border-radius: 2px;
+  background-color: #fff;  
 }
+
+select option { 
+  /* not working */
+  outline: none;
+}  
 
 hr {
 background-color: #ccc;
