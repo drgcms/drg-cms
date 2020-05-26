@@ -205,7 +205,7 @@ process_json_result = function(json) {
         });
       // other input fields
       } else {
-        field.value(value);
+        field.val(value);
       }
       break;
 
