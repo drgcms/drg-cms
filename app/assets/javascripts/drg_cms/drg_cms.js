@@ -253,7 +253,11 @@ process_json_result = function(json) {
       alert(value);
       break;
     case 'window':
-      w = window.open(value, selector);
+      w = window.open(value, selector)
+      w.focus();        
+      break;
+    case 'newwindow':
+      w = window.open(value, selector,"location=no,scrollbars=yes,resizable=yes");
       w.focus();        
       break;
     case 'eval':
