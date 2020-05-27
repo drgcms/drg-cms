@@ -488,20 +488,43 @@ border: solid 1px #ccc;;
 }
 
 /* Pagination */
+
+.dc-paginate .pagination {
+  display: flex;
+}
 .dc-paginate .pagination span {
-  border: solid 1px #ccc;;
-  padding: 4px 4px 3px 6px;
+  border: solid 1px #ccc;  
   margin-left: 1px;
   background: transparent linear-gradient(to bottom, #fff 0%, #e2e2e2 100%) repeat scroll 0% 0%;  
   border-radius: 1px;
 }
+.dc-paginate .pagination span.page.gap {
+padding: 1px 4px 4px 4px;
+color: #aaa;
+}
+
+.dc-paginate .pagination span.next a, .dc-paginate .pagination span.last a,
+.dc-paginate .pagination span.prev a, .dc-paginate .pagination span.first a {
+  padding: 3px 6px 4px 7px;  
+}
 .dc-paginate .pagination span a {
+  display: block;
   color: #888;
+  padding: 4px 6px 3px 7px;
   text-decoration: none;
+}
+
+.dc-paginate .pagination span.page.current {
+  padding: 4px 6px 3px 7px;
 }
 
 .dc-paginate .pagination span:hover > a {
   color: #000;
+}
+
+.dc-paginate .pagination span:hover {
+  border: 1px solid rgba(76,154,255, 1);
+  outline: 1px solid rgba(76,154,255, 1);
 }
 
 .dc-paginate .pagination .current {
@@ -510,6 +533,10 @@ border: solid 1px #ccc;;
   border: 1px solid #888;
 }
 
+.dc-paginate .pagination .current:hover  {
+  border: solid 1px #888;
+  outline: none;
+}
 
 .dc-title {
   font-weight: bold;
