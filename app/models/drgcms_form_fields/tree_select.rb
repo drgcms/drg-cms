@@ -92,7 +92,8 @@ def render
   require 'sort_alphabetical'  
   
   record = record_text_for(@yaml['name'])
-  @html << "<div id=\"#{@yaml['name']}\" class=\"tree-select\" #{set_style()} >"
+  clas   = 'tree-select' + (@readonly ? ' dc-readonly' : '')
+  @html << "<div id=\"#{@yaml['name']}\" class=\"#{clas}\" #{set_style()} >"
 # Fill @choices hash. The key is parent object id
   @choices = {}
   choices_in_eval(@yaml['eval']).each do |data| 
@@ -118,13 +119,20 @@ def render
 # save multiple indicator for data processing on return
   @html << @parent.hidden_field(record, "#{@yaml['name']}_multiple", value: 1) if @yaml['multiple']
 # javascript to update hidden record field when tree looses focus
+readonly_code = %Q[
+,
+"conditionalselect" : function (node) {
+return false; }
+]
+
   @js =<<EOJS
 $(function(){
   $("##{@yaml['name']}").jstree( {
     "checkbox" : {"three_state" : false},        
     "core" : { "themes" : { "icons": false },
                "multiple" : #{@yaml['multiple'] ? 'true' : 'false'}  },
-    "plugins" : ["checkbox"]
+    "plugins" : ["checkbox","conditionalselect"]
+    #{@readonly ? readonly_code : ''}
   });
 });
   

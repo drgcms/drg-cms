@@ -73,7 +73,9 @@ def render
   @yaml['html']['class'] ||= ''
   @yaml['html']['class'] <<  ' text-with-select'
   @yaml['html'].symbolize_keys!
-  @html << @parent.select( @yaml['name'] + '_', nil, get_choices, { include_blank: true }, { class: 'text-with-select' })
+  unless @readonly
+    @html << @parent.select( @yaml['name'] + '_', nil, get_choices, { include_blank: true }, { class: 'text-with-select' })
+  end
 
   # javascript to update text field if new value is selected in select field
   @js =<<EOJS

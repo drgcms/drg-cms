@@ -113,9 +113,11 @@ def render
   @html << '<div class="ui-autocomplete-border">'
   @html << @parent.link_to(@parent.fa_icon('plus-square lg', class: 'dc-animate dc-green'), '#',onclick: 'return false;') # dummy add. But it is usefull.
 
-  record = record_text_for(@yaml['name'])    
-  @html << ' ' << @parent.text_field(record, _name, @yaml['html'])                 # text field for autocomplete
-  @html << "<div id =\"#{record}#{@yaml['name']}\">"        # div to list active records
+  record = record_text_for(@yaml['name'])
+  # text field for autocomplete
+  @html << ' ' << @parent.text_field(record, _name, @yaml['html'])
+  # div to list active selections
+  @html << "<div id =\"#{record}#{@yaml['name']}\">"
 # find value for each field inside categories 
   unless @record[@yaml['name']].nil?
     @record[@yaml['name']].each do |element|
@@ -131,6 +133,7 @@ def render
       @html << if rec
         link  = @parent.link_to(@parent.fa_icon('remove lg', class: 'dc-animate dc-red'), '#',
                 onclick: "$('##{rec.id}').hide(); var v = $('##{record}_#{@yaml['name']}_#{rec.id}'); v.val(\"-\" + v.val());return false;")
+        link  = @parent.fa_icon('check lg', class: 'dc-green') if @readonly      
         field = @parent.hidden_field(record, "#{@yaml['name']}_#{rec.id}", value: element)
         "<div id=\"#{rec.id}\" style=\"padding:4px;\">#{link} #{rec.send(field_name)}<br>#{field}</div>"
       else

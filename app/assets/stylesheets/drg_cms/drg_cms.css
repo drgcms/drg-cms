@@ -639,6 +639,11 @@ border: solid 1px #ccc;;
   border-radius: 2px;
 }
 
+.tree-select.dc-readonly {
+ display: block;
+ background-color: #eee;
+}
+
 .dc-color-odd {
   background-color: #fcfcfc;  
 }
