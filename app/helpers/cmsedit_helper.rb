@@ -144,6 +144,12 @@ end
 ############################################################################
 def dc_link_ajax_window_submit_action(yaml, record=nil, action_active=true)
   parms = {}
+  caption = yaml['caption'] ? t("#{yaml['caption'].downcase}", yaml['caption']) : nil
+  icon    = yaml['icon'] ? "#{fa_icon(yaml['icon'])} " : ''
+  # Is action active at all
+  unless dc_is_action_active?(yaml)
+    return "<li class=\"dc-link-no\">#{fa_icon(icon)} #{caption}</li>" 
+  end
   # set data-confirm when confirm 
   yaml['html'] ||= {}
   confirm = yaml['html']['data-confirm'] || yaml['confirm']
@@ -171,12 +177,11 @@ def dc_link_ajax_window_submit_action(yaml, record=nil, action_active=true)
     "<li>#{'Controller not defined'}</li>"
   else
     yaml['caption'] ||= yaml['text'] 
-    caption   = yaml['caption'] ? t("#{yaml['caption'].downcase}", yaml['caption']) : nil
+    
     html_data = dc_html_data(yaml['html'])
     #
     url = url_for(parms) rescue 'URL error'
     request = yaml['request'] || yaml['method'] || 'get'
-    icon    = yaml['icon'] ? "#{fa_icon(yaml['icon'])} " : ''
     if yaml['type'] == 'ajax' # ajax button
       clas = action_active ? "dc-link-ajax dc-animate" : "dc-link-no"
       %Q[<li class="#{clas}" data-url="#{action_active ? url : ''}"  #{html_data}

@@ -48,6 +48,32 @@ end
 # has value 2, back link will force readonly form. Value 1 or not set will result in
 # normal link.
 ############################################################################
+def dc_is_action_active?(options)
+  if options['when_new']
+    dc_deprecate("when_option will be deprecated and replaced by active: not_new_record! Form #{params[:form_name]}") 
+    return !(dc_dont?(options['when_new']) and @record.new_record?)
+  end
+  return true unless options['active']
+  # alias record and document so both can be used in eval
+  record = document = @record
+  option = options['active']
+  if option.class == String
+    (@record.new_record? && option == 'new_record') || (!@record.new_record? && option == 'not_new_record')
+  # direct evaluate expression
+  elsif option['eval']
+    eval(option['eval'])
+  elsif option['method']
+    dc_process_eval(option['method'],@record)
+  end  
+end
+
+############################################################################
+# Creates actions div for edit form.
+# 
+# Displaying readonly form turned out to be challenge. For now when readonly parameter
+# has value 2, back link will force readonly form. Value 1 or not set will result in
+# normal link.
+############################################################################
 def dc_actions_for_form(position)
 # create standard actions  
   std_actions = {1 => 'back', 2 => {'type' => 'submit', 'caption' => 'drgcms.save'},
@@ -91,7 +117,7 @@ def dc_actions_for_form(position)
   actions.each do |key, options|
     session[:form_processing] = "form:actions: #{key} #{options}"
     next if options.nil?  # yes it happends
-    action_active = !(dc_dont?(options['when_new']) and @record.new_record?)
+    action_active = dc_is_action_active?(options)
     parms = @parms.clone
     if options.class == String
       next if params[:readonly] and !(options == 'back')

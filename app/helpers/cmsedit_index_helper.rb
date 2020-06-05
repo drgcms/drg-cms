@@ -85,7 +85,7 @@ EOT
     yaml = options.class == String ? {'type' => options} : options # if single definition simulate type parameter
     action = yaml['type'].to_s.downcase 
     if action == 'url'
-      dc_deprecate "action: url will be deprecated. Use action: link in index: actions"
+      dc_deprecate "action: url will be deprecated. Use action: link in index: actions! Form #{params['form_name']}"
       action = 'link' 
     end
 # if return_to is present link directly to URL 
