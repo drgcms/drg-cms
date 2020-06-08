@@ -58,11 +58,10 @@ def dc_is_action_active?(options)
   record = document = @record
   option = options['active']
   case 
+  # usually only for test
+  when option.class  == TrueClass || option['eval'].class == TrueClass then true    
   when option.class == String then
     (@record.new_record? && option == 'new_record') || (!@record.new_record? && option == 'not_new_record')
-  # usually only for test
-  when option['eval'].class == TrueClass then
-    true
   # direct evaluate expression
   when option['eval'] then
     eval(option['eval'])
