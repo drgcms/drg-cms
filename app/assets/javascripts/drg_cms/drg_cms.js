@@ -198,11 +198,17 @@ process_json_result = function(json) {
       if (field.is(':checkbox')) { 
         field.prop('checked', value);
       // select field  
-      } else if (field.is('select')) { 
-        field.empty();
-        $.each(value, function(index, v) {
-          field.append( new Option(v[0], v[1]) );
-        });
+      } else if (field.is('select')) {
+          // options for select field
+          if (value && value.isArray) {
+            field.empty();
+            $.each(value, function(index, v) {
+              field.append( new Option(v[0], v[1]) );
+            });
+          // select field value
+          } else {
+            field.val(value);
+          }
       // other input fields
       } else {
         field.val(value);
