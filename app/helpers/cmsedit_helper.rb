@@ -74,7 +74,7 @@ end
 ############################################################################
 def dc_field_label_help(options)
   # no label or help in comments
-  unless options['type'] == 'comment'
+  unless %w(comment action).include?(options['type'])
     caption = options['caption'] || options['text']
     label = if caption.blank?    
       t_name(options['name'], options['name'].capitalize.gsub('_',' ') )
@@ -146,7 +146,7 @@ def dc_link_ajax_window_submit_action(yaml, record=nil, action_active=true)
   parms = {}
   caption = yaml['caption'] ? t("#{yaml['caption'].downcase}", yaml['caption']) : nil
   icon    = yaml['icon'] ? "#{fa_icon(yaml['icon'])} " : ''
-  # Is action active at all
+  # action is not active
   unless dc_is_action_active?(yaml)
     return "<li class=\"dc-link-no\">#{fa_icon(icon)} #{caption}</li>" 
   end
@@ -154,7 +154,7 @@ def dc_link_ajax_window_submit_action(yaml, record=nil, action_active=true)
   yaml['html'] ||= {}
   confirm = yaml['html']['data-confirm'] || yaml['confirm']
   yaml['html']['data-confirm'] = t(confirm) unless confirm.blank?
-  # direct url   
+  # direct url
   if yaml['url']
     parms['controller'] = yaml['url'] 
     parms['idr']        = dc_document_path(record) if record
@@ -173,7 +173,7 @@ def dc_link_ajax_window_submit_action(yaml, record=nil, action_active=true)
   yaml['params'].each { |k,v| parms[k] = dc_value_for_parameter(v) } if yaml['params']
   parms['table'] = parms['table'].underscore if parms['table'] # might be CamelCase
   # error if controller parameter is missing
-  if parms['controller'].nil?
+  if parms['controller'].nil? && parms['url'].nil?
     "<li>#{'Controller not defined'}</li>"
   else
     yaml['caption'] ||= yaml['text'] 
@@ -183,25 +183,25 @@ def dc_link_ajax_window_submit_action(yaml, record=nil, action_active=true)
     url = url_for(parms) rescue 'URL error'
     request = yaml['request'] || yaml['method'] || 'get'
     if yaml['type'] == 'ajax' # ajax button
-      clas = action_active ? "dc-link-ajax dc-animate" : "dc-link-no"
+      clas = "dc-link-ajax dc-animate"
       %Q[<li class="#{clas}" data-url="#{action_active ? url : ''}"  #{html_data}
          data-request="#{request}" title="#{yaml['title']}">#{icon} #{caption}</li>]
 
     elsif yaml['type'] == 'submit'  # submit button
       # It's dirty hack, but will prevent not authorized message and render index action correctly
       parms[:filter] = 'on' 
-      url = url_for(parms) rescue 'URL error'
-      clas = action_active ? "dc-action-submit" : "dc-link-no"
+      url  = url_for(parms) rescue 'URL error'
+      clas = "dc-action-submit"
       %Q[<li class="#{clas}" data-url="#{action_active ? url : ''}"  #{html_data}
          data-request="#{request}" title="#{yaml['title']}">#{icon} #{caption}</li>]
 
     elsif yaml['type'] == 'link'  # link button
-      clas = action_active ? "dc-link dc-animate" : "dc-link-no"
+      clas = "dc-link dc-animate"
       link = dc_link_to(yaml['caption'],yaml['icon'], parms, {target: yaml['target'], html: yaml['html']} )
       %Q[<li class="#{clas}">#{action_active ? link : caption}</li>]
 
     elsif yaml['type'] == 'window'
-      clas = action_active ? "dc-link dc-animate dc-window-open" : "dc-link-no"
+      clas = "dc-link dc-animate dc-window-open"
       %Q[<li class="#{clas}" data-url="#{action_active ? url : ''}" #{html_data}>#{icon} #{caption}</li>]
 
     else

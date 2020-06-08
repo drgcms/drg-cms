@@ -756,11 +756,11 @@ def save_data
 #
   form_fields.each do |v|
     session[:form_processing] = v['name'] # for debuging
-    next if v['type'].nil? or
+    next if v['type'].nil? or v['name'].nil? or
             v['type'].match('embedded') or # don't wipe embedded types
             (params[:edit_only] and params[:edit_only] != v['name']) or # otherwise other fields would be wiped
             v['readonly'] or # fields with readonly option don't return value and would be wiped
-            !@record.respond_to?(v['name']) # there can be temporary fields on the form
+            !@record.respond_to?(v['name']) # there are temporary fields on the form
     # good to know! How to get type of field @record.fields[v['name']].type
     # return value from form field definition
     value = DrgcmsFormFields.const_get(v['type'].camelize).get_data(params, v['name'])

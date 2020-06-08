@@ -57,13 +57,21 @@ def dc_is_action_active?(options)
   # alias record and document so both can be used in eval
   record = document = @record
   option = options['active']
-  if option.class == String
+  case 
+  when option.class == String then
     (@record.new_record? && option == 'new_record') || (!@record.new_record? && option == 'not_new_record')
+  # usually only for test
+  when option['eval'].class == TrueClass then
+    true
   # direct evaluate expression
-  elsif option['eval']
+  when option['eval'] then
     eval(option['eval'])
-  elsif option['method']
-    dc_process_eval(option['method'],@record)
+  when option['method'] then
+    # if record present send record otherwise send params as parameter
+    parms = @record ? @record : params
+    dc_process_eval(option['method'],parms)
+  else
+    false
   end  
 end
 
@@ -117,7 +125,6 @@ def dc_actions_for_form(position)
   actions.each do |key, options|
     session[:form_processing] = "form:actions: #{key} #{options}"
     next if options.nil?  # yes it happends
-    action_active = dc_is_action_active?(options)
     parms = @parms.clone
     if options.class == String
       next if params[:readonly] and !(options == 'back')
@@ -170,7 +177,7 @@ def dc_actions_for_form(position)
         icon    = options['icon'] || 'save'
         prms = {}
         options['params'].each { |k,v| prms[k] = dc_value_for_parameter(v) } if options['params']
-        if action_active 
+        if dc_is_action_active?(options) 
           '<li class="dc-link-submit dc-animate">' + 
              dc_submit_tag(caption, icon, {:data => prms, :title => options['title'] }) +
           '</li>'
@@ -190,7 +197,7 @@ def dc_actions_for_form(position)
       
       # ajax or link button
       when %w(ajax link window).include?(options['type'])
-        dc_link_ajax_window_submit_action(options, @record, action_active)
+        dc_link_ajax_window_submit_action(options, @record)
         
 # Javascript action        
       when options['type'] == 'script'

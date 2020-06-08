@@ -331,10 +331,12 @@ border: 1px solid #ddd;
 .dc-link-no {
   text-align: left;
   font-weight: bold;
-  padding: 8px;  
+  padding: 7px;
+  vertical-align: bottom;
+  border: 1px solid #ddd;
   border-radius: 2px;
-  color: #fff;
-  background: #ccc;
+  color: #888;
+  background: #eee !important;
 }
 
 .dc-link-ajax {
@@ -640,10 +642,10 @@ color: #aaa;
   text-align: left;
   padding: 3px 2px;
   z-index: 10;
-/*  
-  background-color: #f4f4f4;
-  border-bottom: 1px solid #eee;
-*/
+}
+
+.dc-form-field .action li {
+  display: inline-flex;
 }
 
 .dc-number {
@@ -1160,7 +1162,7 @@ font-size: 11px;
 }
 
 #dc-document-info:hover {
-color: darkred;
+color: rgba(76,154,255, 1);
 cursor: pointer;
 }
 
