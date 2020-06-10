@@ -145,10 +145,10 @@ end
 def dc_link_ajax_window_submit_action(yaml, record=nil, action_active=true)
   parms = {}
   caption = yaml['caption'] ? t("#{yaml['caption'].downcase}", yaml['caption']) : nil
-  icon    = yaml['icon'] ? "#{fa_icon(yaml['icon'])} " : ''
+  icon    = yaml['icon'] ? "#{fa_icon(yaml['icon'])}" : ''
   # action is not active
   unless dc_is_action_active?(yaml)
-    return "<li class=\"dc-link-no\">#{fa_icon(icon)} #{caption}</li>" 
+    return "<li class=\"dc-link-no\">#{icon} #{caption}</li>" 
   end
   # set data-confirm when confirm 
   yaml['html'] ||= {}
@@ -185,15 +185,15 @@ def dc_link_ajax_window_submit_action(yaml, record=nil, action_active=true)
     if yaml['type'] == 'ajax' # ajax button
       clas = "dc-link-ajax dc-animate"
       %Q[<li class="#{clas}" data-url="#{action_active ? url : ''}"  #{html_data}
-         data-request="#{request}" title="#{yaml['title']}">#{icon} #{caption}</li>]
+         data-request="#{request}" title="#{yaml['title']}">#{icon}#{caption}</li>]
 
     elsif yaml['type'] == 'submit'  # submit button
       # It's dirty hack, but will prevent not authorized message and render index action correctly
       parms[:filter] = 'on' 
       url  = url_for(parms) rescue 'URL error'
       clas = "dc-action-submit"
-      %Q[<li class="#{clas}" data-url="#{action_active ? url : ''}"  #{html_data}
-         data-request="#{request}" title="#{yaml['title']}">#{icon} #{caption}</li>]
+      %Q[<li class="#{clas}" data-url="#{action_active ? url : ''}" #{html_data}
+         data-request="#{request}" title="#{yaml['title']}">#{icon}#{caption}</li>]
 
     elsif yaml['type'] == 'link'  # link button
       clas = "dc-link dc-animate"
@@ -202,7 +202,7 @@ def dc_link_ajax_window_submit_action(yaml, record=nil, action_active=true)
 
     elsif yaml['type'] == 'window'
       clas = "dc-link dc-animate dc-window-open"
-      %Q[<li class="#{clas}" data-url="#{action_active ? url : ''}" #{html_data}>#{icon} #{caption}</li>]
+      %Q[<li class="#{clas}" data-url="#{action_active ? url : ''}" #{html_data}>#{icon}#{caption}</li>]
 
     else
       '<li>Action Type error</li>'
