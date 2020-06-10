@@ -178,7 +178,7 @@ $(function() {
  *******************************************************************/
 
 process_json_result = function(json) {
-  var i,operation,selector, msg_div, field;
+  var i,w,operation,selector, msg_div, field;
   $.each(json, function(key, value) {
     i = key.search('_');
     if (i > 1) {
@@ -259,8 +259,12 @@ process_json_result = function(json) {
       alert(value);
       break;
     case 'window':
-      w = window.open(value, selector)
-      w.focus();        
+      if (value == 'close') { window.close(); 
+      } else if (value == 'reload') { location.reload(); 
+      } else {
+        w = window.open(value, selector);
+        w.focus();
+      }
       break;
     case 'newwindow':
       w = window.open(value, selector,"location=no,scrollbars=yes,resizable=yes");
