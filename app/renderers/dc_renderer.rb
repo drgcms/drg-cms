@@ -32,6 +32,7 @@ class DcRenderer
 ########################################################################
 def initialize( parent, opts={} )
   @parent   = parent
+  @page     = parent.page
   @opts     = opts
   @css = ''
   self
