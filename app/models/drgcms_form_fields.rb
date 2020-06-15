@@ -22,5 +22,16 @@
 #++
 
 module DrgcmsFormFields
+  
+def self.field(parent, record, options) 
+  klass = options['type'].camelize
+  if DrgcmsFormFields.const_defined?(klass)
+    field = DrgcmsFormFields.const_get(klass).new(parent, record, options).render
+    [field.html + (field.js.size > 0 ? @parent.javascript_tag(field.js) : ''),field.css]
+  else
+    nil
+  end
+end
+
 end
 
