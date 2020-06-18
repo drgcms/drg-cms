@@ -66,7 +66,7 @@ def render
       
 #      @parent.dc_name4_id(a[1], a[2], @record[ @yaml['name'] ])
     else
-      eval( "#{@yaml['eval']} '#{@record[ @yaml['name'] ]}'") 
+      eval( "#{@yaml['eval']} '#{@record.send(@yaml['name'])}'") 
     end
   else
     @parent.dc_format_value(@record.send(@yaml['name']),@yaml['format'])    
