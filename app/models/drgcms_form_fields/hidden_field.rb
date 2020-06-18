@@ -42,7 +42,7 @@ class HiddenField < DrgcmsField
 ###########################################################################
 def render 
   set_initial_value
-  value = @yaml['html']['value'] ? @yaml['html']['value'] : @record[@yaml['name']]
+  value = @yaml['html']['value'] ? @yaml['html']['value'] : @record.send(@yaml['name'])
   record = record_text_for(@yaml['name'])  
   @parent.hidden_field(record, @yaml['name'], value: value)
 end
