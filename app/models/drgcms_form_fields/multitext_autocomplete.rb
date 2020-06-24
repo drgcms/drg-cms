@@ -89,7 +89,7 @@ def render
     elsif @yaml['table']['eval']
       eval @yaml['table']['eval']
     else
-      p "Field #{@yaml['name']}: Invalid table parameter!"
+      @parent.logger.error "Field #{@yaml['name']}: Invalid table parameter!"
       nil
     end
   end
@@ -97,15 +97,14 @@ def render
     @html << 'Table or search field not defined!' 
     return self
   end
-# 
-  #return ro_standard(table, search) if @readonly
-# TODO check if table exists    
+  # 
+  # TODO check if table exists    
   collection = table.classify.constantize
   unless @record.respond_to?(@yaml['name'])
     @html << "Invalid field name: #{@yaml['name']}" 
     return self
   end
-# put field to enter search data on form
+  # put field to enter search data on form
   @yaml['html'] ||= {}
   @yaml['html']['value'] = ''   # must be. Otherwise it will look into record and return error
   @yaml['html']['placeholder'] = t('drgcms.search_placeholder')
@@ -115,10 +114,16 @@ def render
 
   record = record_text_for(@yaml['name'])
   # text field for autocomplete
-  @html << ' ' << @parent.text_field(record, _name, @yaml['html'])
+  @html << '<span class="dc-text-autocomplete">' << @parent.text_field(record, _name, @yaml['html']) << '<span></span></span>'
+  
+  if @yaml['with_new']
+    @html << ' ' + 
+             @parent.fa_icon('plus-square lg', class: 'in-edit-add', title: t('drgcms.new'), 
+             style: "vertical-align: top;", 'data-table' => @yaml['with_new'] )    
+  end
   # div to list active selections
   @html << "<div id =\"#{record}#{@yaml['name']}\">"
-# find value for each field inside categories 
+  # find value for each field inside categories 
   unless @record[@yaml['name']].nil?
     @record[@yaml['name']].each do |element|
 # this is quick and dirty trick. We have model dc_big_table which can be used for retrive 
