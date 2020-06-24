@@ -23,7 +23,7 @@
 module DrgcmsFormFields
 
 ###########################################################################
-# Implementation of multitext_autocomplete DRG CMS form field.
+# Implementation of multitext_autocomplete DRG Form field.
 # 
 # multitext_autocomplete field is complex data entry field which uses autocomplete
 # function when selecting multiple values for MongoDB Array field. Array typically holds
@@ -33,20 +33,21 @@ module DrgcmsFormFields
 # ===Form options:
 # * +name:+ field name (required)
 # * +type:+ multitext_autocomplete (required)
-# * +table+ Collection (table) name. When defined search must contain field name
+# * +table+ Model (table) name which must contain searched field name.
 # * +search:+ Search may consist of three parameters from which are separated either by dot (.) or comma(,)
 #   * search_field_name; when table option is defined search must define field name which will be used for search query
 #   * collection_name.search_field_name; Same as above except that table options must be ommited.
 #   * collection_name.search_field_name.method_name; When searching is more complex custom search
 #   method may be defined in CollectionName model which will provide result set for search.
+# * +with_new+ Will add an icon for shortcut to add new document to collection
 #      
 # Form example:
 #      90:
 #        name: kats
 #        type: multitext_autocomplete
 #        search: dc_category.name      
-#        html:
-#          size: 30
+#        with_new: model_name
+#        size: 30
 ###########################################################################
 class MultitextAutocomplete < DrgcmsField
 
@@ -115,8 +116,8 @@ def render
   record = record_text_for(@yaml['name'])
   # text field for autocomplete
   @html << '<span class="dc-text-autocomplete">' << @parent.text_field(record, _name, @yaml['html']) << '<span></span></span>'
-  
-  if @yaml['with_new']
+  # direct link for adding new documents to collection
+  if @yaml['with_new'] and !@readonly
     @html << ' ' + 
              @parent.fa_icon('plus-square lg', class: 'in-edit-add', title: t('drgcms.new'), 
              style: "vertical-align: top;", 'data-table' => @yaml['with_new'] )    
