@@ -110,35 +110,37 @@ def self.get_filter_field(parent)
   return '' if parent.session[ parent.form['table'] ].nil?
   filter = parent.session[ parent.form['table'] ][:filter]
   return '' if filter.nil?
-#
+
   filter = YAML.load(filter) rescue nil 
   return '' if filter.nil?
-#
+
   field = get_field_form_definition(filter['field'], parent)
   return '' if field.nil? and filter['input'].nil?
   field = {} if field.nil?
-# If field has choices available in labels, use them. This is most likely select input field.
+  # If field has choices available in labels, use them. This is most likely select input field.
   if field['name']
     choices = parent.t('helpers.label.' + parent.form['table'] + '.choices4_' + field['name'] )
     unless choices.match( 'translation missing' ) or choices.match('helpers.label')
       field['choices'] = choices
     end
   end
-# field redefined with input keyword. Name must start with _
+  # field redefined with input keyword. Name must start with _
   field['name']     = '_filter_field'
   field['type']     = filter['input'] if filter['input'].to_s.size > 5
   field['type']   ||= 'text_field'
   field['readonly'] = false   # must be
   field['html']   ||= {} 
   field['html']['size']  = 20
-# Start with last entered value
-  field['html']['value'] = filter['value'] unless filter['value'] == '#NIL'
+  # Start with last entered value
+  field['html']['value']    = filter['value'] unless filter['value'] == '#NIL'
   field['html']['selected'] = field['html']['value'] # for select field
-# url for filter ON action
+  # url for filter ON action
   field['html']['data-url'] = parent.url_for(
     controller: 'cmsedit',action: :index, filter: 'on',
     table: parent.form['table'], form_name: parent.form['form_name'])
   url = field['html']['data-url']
+  # remove if present
+  field['with_new'] = nil if field['with_new']
 # create input field object
   klas_string = field['type'].camelize
   klas = DrgcmsFormFields::const_get(klas_string) rescue nil
