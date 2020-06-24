@@ -915,11 +915,27 @@ display: none;
 /****** jquery ui-autocomplete widget ***************/
 .ui-autocomplete-input {
   font-style: italic;
-  padding: 6px;
+  padding: 6px 6px 6px 12px;
   border-radius: 2px;
-  border: solid 1px #9c9;
+/*  border: solid 1px #9c9;*/
 /*  background: linear-gradient(#8d8 0%, #ffe 15%, #fff 80%); */
 }
+.dc-text-autocomplete {
+  position: relative;
+}
+
+.dc-text-autocomplete input+span:before {
+  font-family: 'FontAwesome';
+  content: '\f002';
+  top: -4px;
+  left: 4px;
+  position: absolute;
+  color: #666;
+  font-weight: bold;
+  font-size: 10px;
+}
+
+.filter_field .dc-text-autocomplete input+span:before {top: -16px;}
 
 .ui-autocomplete.ui-menu{
  font-size: 1.1em;

@@ -99,13 +99,13 @@ def render
 #    
   _name = '_' + @yaml['name']
   record = record_text_for(@yaml['name'])  
-  @html << @parent.text_field(record, _name, @yaml['html'])
+  @html << '<span class="dc-text-autocomplete">' + @parent.text_field(record, _name, @yaml['html']) + '<span></span>'
   if @yaml['with_new']
     @html << ' ' + 
              @parent.fa_icon('plus-square lg', class: 'in-edit-add', title: t('drgcms.new'), 
              style: "vertical-align: top;", 'data-table' => @yaml['with_new'] )    
   end
-  @html << @parent.hidden_field(record, @yaml['name'], value: value)        # actual value will be in hidden field
+  @html << '</span>' + @parent.hidden_field(record, @yaml['name'], value: value)        # actual value will be in hidden field
 # JS stuff
 # allow unselected values on not_id: true option
   not_id_code = %Q[
