@@ -484,12 +484,16 @@ end
 ####################################################################
 def dc_check_model(document, crash=false)
   return nil unless document.errors.any?
-  msg = ''
+  msg = ""
   document.errors.each do |attribute, errors_array|
     msg << "#{attribute}: #{errors_array}\n"
   end
-  logger.debug(msg) if msg.size > 0
-  crash_it if crash
+  #
+  if crash and msg.size > 0
+    msg = "Errors in document #{document.class}:\n" + msg
+    logger.error(msg)
+    raise "Validation error. See log for more information."
+  end
   msg
 end
 
