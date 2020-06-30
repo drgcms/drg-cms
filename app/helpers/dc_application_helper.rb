@@ -1308,14 +1308,17 @@ end
 # This objects can be params, session, ...
 # 
 # Parameters:
-# [object] String: Internal object holding variable. Current values can be session, params, site, page
+# [object] String: Internal object holding variable. Current values can be session, params, site, page, class
 # [var_name] String[symbol]: Variable name (:user_name, 'user_id', ...)
 # 
 # Example:
 #    # called when constructing iframe for display
-#    dc_internal_var(session, :user_id)
-#    dc_internal_var(params, :some_external_parameter)
-#    dc_internal_var(site, :name)
+#    dc_internal_var('session', :user_id)
+#    dc_internal_var('params', :some_external_parameter)
+#    dc_internal_var('site', :name)
+#    # or even
+#    dc_internal_var('class', 'ClassName.class_method_name')
+#    
 # 
 # Returns:
 # Value of variable or nil when not found
@@ -1328,8 +1331,13 @@ def dc_internal_var(object, var_name)
       when object == 'site'    then _origin.dc_get_site.send(var_name)
       when object == 'page'    then _origin.page.send(var_name)
       when object == 'record'  then _origin.record.send(var_name)
-    else
-      'VARIABLE: UNKNOWN OBJECT'
+      when object == 'class'   then
+        clas, method_name = var_name.split('.')
+        klas = clas.classify.constantize
+        # call method. Error will be cought below.
+        klas.send(method_name)
+      else
+        'VARIABLE: UNKNOWN OBJECT'
     end
   rescue Exception => e
     logger.error "Method dc_internal_var. Runtime error. #{e.message}"
