@@ -14,8 +14,8 @@ def create_form_file
   form_name = file_name #if formname.size == 0
   begin
     @model = file_name.classify.constantize
-  rescue e
-    logger.error ([e.message]+e.backtrace).join($/)
+  rescue Exception => e
+    Rails.logger.error ([e.message]+e.backtrace).join($/)
     @model = nil
   end
   return (p "Error loading #{file_name.classify} model! Aborting.") if @model.nil?
