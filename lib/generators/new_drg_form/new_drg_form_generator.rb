@@ -15,10 +15,12 @@ def create_form_file
   begin
     @model = file_name.classify.constantize
   rescue Exception => e
-    Rails.logger.error ([e.message]+e.backtrace).join($/)
+    msg = ([e.message]+e.backtrace).join($/)
+    Rails.logger.error(msg)
+    pp msg
     @model = nil
   end
-  return (p "Error loading #{file_name.classify} model! Aborting.") if @model.nil?
+  return (pp "Error loading #{file_name.classify} model! Aborting.") if @model.nil?
 #  
   yml = top_level_options + index_options + result_set_options + form_top_options + form_fields_options + localize_options
   create_file "app/forms/#{form_name}.yml", yml

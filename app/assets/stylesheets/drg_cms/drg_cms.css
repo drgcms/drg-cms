@@ -686,6 +686,7 @@ margin-top: 6px;
 margin-bottom: -3px;
 }
 
+.dc-width-0 {width: 0;}
 .dc-width-10 {width: 10%;}
 .dc-width-14 {width: 14%;}
 .dc-width-21 {width: 21%;}

@@ -90,7 +90,7 @@ def render
     value_displayed = record ? record.send(ret_name) : value
   end
 # return if readonly
-  #return ro_standard(value_displayed) if @readonly
+  return ro_standard(value_displayed) if @readonly
 # Add method back, so autocomplete will know that it must search for method inside class
   ret_name = "#{ret_name}.#{method}" if method
   @yaml['html'] ||= {}
