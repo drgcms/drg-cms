@@ -464,7 +464,7 @@ eot
 end
 
 ####################################################################
-# Checks if any errors exist on document and writes debug log. It can also 
+# Checks if any errors exist on document and writes error log. It can also 
 # crash if requested. This is mostly usefull in development for debuging 
 # model errors or when saving to multiple collections and where each save must be 
 # checked if succesfull.
@@ -483,18 +483,7 @@ end
 #      
 ####################################################################
 def dc_check_model(document, crash=false)
-  return nil unless document.errors.any?
-  msg = ""
-  document.errors.each do |attribute, errors_array|
-    msg << "#{attribute}: #{errors_array}\n"
-  end
-  #
-  if crash and msg.size > 0
-    msg = "Errors in document #{document.class}:\n" + msg
-    logger.error(msg)
-    raise "Validation error. See log for more information."
-  end
-  msg
+  self.dc_check_model(document, crash=false)
 end
 
 ######################################################################
@@ -741,6 +730,42 @@ def dc_update_form_field(field_name, value, readonly=false)
   key_name = (readonly ? 'td_' : '') + "record_#{field_name}"
   flash[:update] ||= {}
   flash[:update][key_name] = value
+end
+
+
+####################################################################
+# Checks if any errors exist on document and writes error log. It can also 
+# crash if requested. This is mostly usefull in development for debuging 
+# model errors or when updating multiple collections and each save must be 
+# checked if succesfull.
+# 
+# @param [Document] Document object which will be checked
+# @param [Boolean] If true method should end in runtime error. Default = false.
+# 
+# @return [String] Error messages or empty string if everything is OK.
+# 
+# @Example Check for error when data is saved.
+#   model.save
+#   if (msg = dc_check_model(model) ).size > 0
+#     p msg
+#     error process ......
+#   end
+#      
+####################################################################
+def self.dc_check_model(document, crash=false)
+  return nil unless document.errors.any?
+  msg = ""
+  document.errors.each do |attribute, errors_array|
+    msg << "#{attribute}: #{errors_array}\n"
+  end
+  #
+  if crash and msg.size > 0
+    msg = "Validation errors in #{document.class}:\n" + msg
+    pp msg
+    Rails.logger.error(msg)
+    raise "Validation error. See log for more information."
+  end
+  msg
 end
 
 
