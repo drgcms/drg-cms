@@ -271,8 +271,12 @@ process_json_result = function(json) {
       w.focus();        
       break;
     case 'eval':
+      console.log('from process_json_result: Eval option will be deprecated. Use script instead.')
       eval (value);
       break;
+    case 'script':
+      eval (value);
+      break; 
     case 'reload':
       if (value == 'parent') {
         parent.location.reload();
