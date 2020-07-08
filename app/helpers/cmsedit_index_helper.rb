@@ -504,6 +504,8 @@ def dc_process_column_eval(yaml, document)
     dc_name4_value( @form['table'], yaml['name'], document[ yaml['name'] ] )
   elsif yaml['eval'].match('eval ')
   # TO DO evaluate with specified parameters
+  elsif document.respond_to?(yaml['eval'])
+    document.send(yaml['eval'])
   else
     parameters = if yaml['params']
       # pass document as parameter
