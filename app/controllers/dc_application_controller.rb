@@ -746,7 +746,7 @@ end
 # 
 # @Example Check for error when data is saved.
 #   model.save
-#   if (msg = dc_check_model(model) ).size > 0
+#   if (msg = DcApplicationController.dc_check_model(model) ).size > 0
 #     p msg
 #     error process ......
 #   end
