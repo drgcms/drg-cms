@@ -732,12 +732,20 @@ end
 # Returns: 
 # String. Descriptive text (translated) for selected choice value.
 ############################################################################
-def dc_name4_value(model, field, value)
+def dc_name_for_value(model, field, value)
   return '' if value.nil?
   c = t('helpers.label.' + model + '.choices4_' + field )
   a = c.chomp.split(',').inject([]) {|r,v| r << v.split(':') }
   a.each {|e| return e.first if e.last.to_s == value.to_s }
-  ''
+  '???'
+end
+
+############################################################################
+#
+############################################################################
+def dc_name4_value(model, field, value) #nodoc
+  #dc_deprecate('dc_name4_value will be deprecated. Use dc_name_for_value instead.')
+  dc_name_for_value(model, field, value)
 end
 
 ############################################################################
@@ -753,10 +761,18 @@ end
 # Returns: 
 # Array. Choices for select input field
 ############################################################################
-def dc_choices4_field(model, field)
+def dc_choices_for_field(model, field)
   c = t('helpers.label.' + model + '.choices4_' + field )
   return ['error'] if c.match( 'translation missing' )
   c.chomp.split(',').inject([]) {|r,v| r << v.split(':') }
+end
+
+############################################################################
+#
+############################################################################
+def dc_choices4_field(model, field) #nodoc
+  #dc_deprecate('dc_choices4_field will be deprecated. Use dc_choices_for_field instead.')
+  dc_choices_for_field(model, field)
 end
 
 ############################################################################
@@ -787,7 +803,7 @@ end
 # Returns: 
 # String. Name (descriptive value) for specified key in table.
 ############################################################################
-def dc_name4_id(model, field, field_name, id=nil)
+def dc_name_for_id(model, field, field_name, id=nil)
   return '' if id.nil?
   field_name = (field_name || 'id').strip.to_sym
   field = field.strip.to_sym
@@ -795,6 +811,14 @@ def dc_name4_id(model, field, field_name, id=nil)
   model = model.strip.classify.constantize if model.class == String
   rec = Mongoid::QueryCache.cache { model.find_by(field_name => id) }
   rec.nil? ? '' : (rec.send(field) rescue 'not defined')
+end
+
+############################################################################
+#
+############################################################################
+def dc_name4_id(model, field, field_name, id=nil) #nodoc
+  #dc_deprecate('dc_name4_id will be deprecated. Use dc_name_for_id instead.')
+  dc_name_for_id(model, field, field_name, id) 
 end
 
 ############################################################################
@@ -815,6 +839,14 @@ end
 ############################################################################
 def dc_icon4_boolean(value=false)
   dc_dont?(value, true) ? fa_icon('square-o lg') : fa_icon('check-square-o lg') 
+end
+
+############################################################################
+#
+############################################################################
+def dc_icon4_boolean(value=false) #nodoc
+  #dc_deprecate('dc_icon4_boolean will be deprecated. Use dc_icon_for_boolean instead.')
+  dc_icon_for_boolean(value)
 end
 
 ############################################################################
@@ -1049,9 +1081,6 @@ def dc_choices4(model, name, id='_id', options = {})
     qry   = qry.in(dc_site_id: sites) if sites
   end
   qry   = qry.and(active: true) if model.method_defined?(:active)
-#  qry   = qry.sort(name => 1) 
-#  choices = []
-#  qry.each {|v| choices << [ v[name], v[id] ] }
   choices = qry.inject([]) {|result,e| result << [ e[name], e[id] ]}
   choices.sort_alphabetical_by(&:first) # use UTF-8 sort
 end
