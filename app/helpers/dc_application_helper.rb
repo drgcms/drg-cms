@@ -837,7 +837,7 @@ end
 #        name: active
 #        eval: dc_icon4_boolean
 ############################################################################
-def dc_icon4_boolean(value=false)
+def dc_icon_for_boolean(value=false)
   dc_dont?(value, true) ? fa_icon('square-o lg') : fa_icon('check-square-o lg') 
 end
 
@@ -1373,7 +1373,6 @@ def dc_internal_var(object, var_name)
     'VARIABLE: ERROR'
   end
 end
-
 
 ########################################################################
 # Will return whole path to document if document is embedded in another document.
