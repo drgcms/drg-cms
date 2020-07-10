@@ -30,27 +30,6 @@
 module CmseditIndexHelper
   
 ############################################################################
-# Get standard actions when actions directive contains single line.
-# Subroutine of dc_actions_for_index
-# 
-# Allows for actions: new, filter, standard syntax
-############################################################################
-def define_standard_actions(actions_params, standard)
-  actions = {}
-  actions_params.split(',').each do |an_action|
-    an_action.strip!
-    if an_action == 'standard'
-      actions.merge!(standard)
-    else
-      standard.each do |index, action| 
-        (actions[index] = action; break) if action == an_action
-      end
-    end
-  end 
-  actions
-end
-
-############################################################################
 # Creates action div for cmsedit index action. 
 ############################################################################
 def dc_actions_for_index()
@@ -62,7 +41,7 @@ def dc_actions_for_index()
   
   std_actions = {2 => 'new', 3 => 'sort', 4 => 'filter' }
   if actions.class == String
-    actions = define_standard_actions(actions, std_actions)
+    actions = dc_define_standard_actions(actions, std_actions)
   elsif actions['standard']
     actions.merge!(std_actions)
     actions['standard'] = nil
@@ -237,25 +216,6 @@ def dc_table_title_for_result(result=nil)
 end
 
 ############################################################################
-# Creates code for link or ajax action type. Subroutine of dc_actions_for_result.
-############################################################################
-def __dc_link_or_ajax_action(yaml, parms) #:nodoc:
-  rest = {}
-  rest['method']  = yaml['method'] || yaml['request'] || 'get'
-  rest['caption'] = yaml['caption'] || yaml['text']
-  rest['class']   = 'dc-animate'
-  rest['title']   = yaml['title']
-  
-  if yaml['type'] == 'link'
-    dc_link_to(yaml['caption'], yaml['icon'], parms, rest ) 
-  else
-    rest['data-url'] = url_for(parms)
-    rest['class'] << " fa fa-#{yaml['icon']}"
-    fa_icon(yaml['icon'], rest ) 
-  end
-end
-
-############################################################################
 # Determines actions and width of actions column
 ############################################################################
 def dc_actions_column()
@@ -327,21 +287,7 @@ def dc_actions_for_result(document)
         parms['ids']   ||= ''
         parms['ids']   +=  "#{document.id};"
         dc_link_to( nil, 'table lg', parms, method: :get )
-=begin        
-      when yaml['type'] == 'link' || yaml['type'] == 'ajax' then
-        if yaml['url']
-          parms['controller'] = yaml['url']
-          parms['idr']        = document.id
-        else
-          parms['id']         = document.id
-        end
-        parms['controller'] = yaml['controller'] if yaml['controller']
-        parms['action']     = yaml['action']     if yaml['action']
-        parms['table']      = yaml['table']      if yaml['table']
-        parms['form_name']  = yaml['form_name']  if yaml['form_name']
-        parms['target']     = yaml['target']     if yaml['target']
-        dc_link_or_ajax_action(yaml, parms)
-=end        
+    
       else # error. 
         yaml['type'].to_s
       end
@@ -441,87 +387,12 @@ def dc_format_value(value, format=nil)
 end      
 
 ############################################################################
-# Defines style or class for row (tr) or column (td)
-############################################################################
-def dc_style_or_class(selector, yaml, value, record)
-  return '' if yaml.nil?
-# alias record and value so both names can be used in eval
-  field, document = value, record
-  html = selector ? "#{selector}=\"" : ''
-  html << if yaml.class == String
-    yaml
-  # direct evaluate expression
-  elsif yaml['eval']
-    eval(yaml['eval']) rescue 'background-color:red;'
-  elsif yaml['method']
-    dc_process_eval(yaml['method'],record)
-  end
-  html << '"' if selector 
-  html
-end 
-
-############################################################################
 # Creates tr code for each row of result set.
 ############################################################################
 def dc_row_for_result(document)
   clas  = "dc-#{cycle('odd','even')} " + dc_style_or_class(nil, @form['result_set']['tr_class'], nil, document)
   style = dc_style_or_class('style', @form['result_set']['tr_style'], nil, document)
   "<div  id=\"#{document.id}\" class=\"dc-result-data #{clas}\" #{dc_clicks_for_result(document)} #{style}>".html_safe
-end
-
-############################################################################
-# Process eval. Breaks eval option and calls with send method.
-# Parameters:
-#   evaluate : String : Expression to be evaluated
-#   parameters : Array : array of parameters which will be send to method
-############################################################################
-def dc_process_eval(evaluate, parameters)
-  # evaluate by calling send method 
-  clas, method = evaluate.split('.')
-  if method.nil?
-    send(clas, *parameters)
-  else
-    klass = clas.camelize.constantize
-    klass.send(method, *parameters)
-  end  
-end
-
-############################################################################
-# Process eval option for field value. 
-# Used for processing single field column on result_set or form head.
-############################################################################
-def dc_process_column_eval(yaml, document)
-  # dc_name4_id
-  if yaml['eval'].match('dc_name4_id')
-    a = yaml['eval'].split(/\ |\,/)
-    if a.size == 3
-      dc_name4_id(a[1], a[2], nil, document[ yaml['name'] ])
-    else
-      dc_name4_id(a[1], a[2], a[3], document[ yaml['name'] ])
-    end
-  # dc_name4_value  
-  elsif yaml['eval'].match('dc_name4_value')
-    dc_name4_value( @form['table'], yaml['name'], document[ yaml['name'] ] )
-  elsif yaml['eval'].match('eval ')
-  # TO DO evaluate with specified parameters
-  elsif document.respond_to?(yaml['eval'])
-    document.send(yaml['eval'])
-  else
-    parameters = if yaml['params']
-      # pass document as parameter
-      if yaml['params'] == 'document' or yaml['params'] == 'record'     
-        document
-      else
-        yaml['params'].chomp.split(',').inject([]) do |result,e| 
-          result << document[e.strip]
-        end        
-      end        
-    else
-      document[ yaml['name'] ]
-    end
-    # evaluate by calling send method 
-    dc_process_eval(yaml['eval'], parameters)
-  end
 end
 
 ############################################################################
@@ -546,7 +417,7 @@ def dc_columns_for_result(document)
         dc_format_value(document[ v['name'] ], v['format'])
       # error
       else
-        "!!! #{v['name']}"
+        "??? #{v['name']}"
       end
     rescue Exception => e
       dc_log_exception(e)
@@ -565,5 +436,113 @@ def dc_columns_for_result(document)
   html.html_safe
 end
 
+private
+
+############################################################################
+# Process eval. Breaks eval option and calls with send method.
+# Parameters:
+#   evaluate : String : Expression to be evaluated
+#   parameters : Array : array of parameters which will be send to method
+############################################################################
+def dc_process_eval(evaluate, parameters)
+  # evaluate by calling send method 
+  clas, method = evaluate.split('.')
+  if method.nil?
+    send(clas, *parameters)
+  else
+    klass = clas.camelize.constantize
+    klass.send(method, *parameters)
+  end  
+end
+
+############################################################################
+# Break eval expression to array by parameters.
+# Will break dc_name4_value(one ,"two") => ['dc_name4_value', 'one', 'two']
+############################################################################
+def dc_eval_to_array(expression)
+  expression.split(/\ |\,|\(|\)/).delete_if {|e| e.blank? }.map {|e| e.gsub(/\'|\"/,'').strip }
+end
+
+############################################################################
+# Process eval option for field value. 
+# Used for processing single field column on result_set or form head.
+############################################################################
+def dc_process_column_eval(yaml, document)
+  # dc_name_for_id
+  if yaml['eval'].match('dc_name4_id') || yaml['eval'].match('dc_name_for_id')
+    a = dc_eval_to_array(yaml['eval'])
+    if a.size == 3
+      dc_name_for_id(a[1], a[2], nil, document[ yaml['name'] ])
+    else
+      dc_name_for_id(a[1], a[2], a[3], document[ yaml['name'] ])
+    end
+  # dc_name_for_value  
+  elsif yaml['eval'] == 'dc_name4_value' || yaml['eval'] == 'dc_name_for_value'
+    dc_name_for_value( @form['table'], yaml['name'], document[ yaml['name'] ] )
+  elsif yaml['eval'].match('dc_name4_value') || yaml['eval'].match('dc_name_for_value')
+    a = dc_eval_to_array(yaml['eval'])
+    dc_name_for_value( a[1], a[2], document[ yaml['name'] ] )
+  elsif yaml['eval'].match('eval ')
+  # TO DO evaluate with specified parameters
+  elsif document.respond_to?(yaml['eval'])
+    document.send(yaml['eval'])
+  else
+    parameters = if yaml['params']
+      # pass document as parameter
+      if yaml['params'] == 'document' or yaml['params'] == 'record'     
+        document
+      else
+        yaml['params'].chomp.split(',').inject([]) do |result,e| 
+          result << document[e.strip]
+        end        
+      end        
+    else
+      document[ yaml['name'] ]
+    end
+    # evaluate by calling send method 
+    dc_process_eval(yaml['eval'], parameters)
+  end
+end
+
+############################################################################
+# Defines style or class for row (tr) or column (td)
+############################################################################
+def dc_style_or_class(selector, yaml, value, record)
+  return '' if yaml.nil?
+# alias record and value so both names can be used in eval
+  field, document = value, record
+  html = selector ? "#{selector}=\"" : ''
+  html << if yaml.class == String
+    yaml
+  # direct evaluate expression
+  elsif yaml['eval']
+    eval(yaml['eval']) rescue 'background-color:red;'
+  elsif yaml['method']
+    dc_process_eval(yaml['method'],record)
+  end
+  html << '"' if selector 
+  html
+end 
+
+############################################################################
+# Get standard actions when actions directive contains single line.
+# Subroutine of dc_actions_for_index
+# 
+# Allows for actions: new, filter, standard syntax
+############################################################################
+def dc_define_standard_actions(actions_params, standard)
+  actions = {}
+  actions_params.split(',').each do |an_action|
+    an_action.strip!
+    if an_action == 'standard'
+      actions.merge!(standard)
+    else
+      standard.each do |index, action| 
+        (actions[index] = action; break) if action == an_action
+      end
+    end
+  end 
+  actions
+end
 
 end
