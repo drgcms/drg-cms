@@ -168,7 +168,7 @@ protected
 #############################################################################
 # Add permissions. Subroutine of dc_user_can
 ############################################################################
-def add_permissions_for(table_name=nil) # :nodoc:
+def __add_permissions_for(table_name=nil) # :nodoc:
   perm = table_name.nil? ? DcPermission.find_by(is_default: true) : DcPermission.find_by(table_name: table_name, active: true)
   (perm.dc_policy_rules.each {|p1| @permissions[p1.dc_policy_role_id] = p1.permission }) if perm
 end
@@ -185,7 +185,7 @@ end
 # @Example True when user has view permission on the table
 #   if dc_user_can(DcPermission::CAN_VIEW, params[:table]) then ...
 ############################################################################
-def dc_user_can(permission, table=params[:table])
+def __dc_user_can(permission, table=params[:table])
   if @permissions.nil?
     @permissions = {}
     add_permissions_for # default permission
@@ -200,6 +200,25 @@ def dc_user_can(permission, table=params[:table])
   session[:user_roles].each {|r| return true if @permissions[r] and @permissions[r] >= permission }
   false
 end  
+
+###########################################################################
+# Checks if user can perform (read, create, edit, delete) document in specified
+# table (collection).
+# 
+# @param [Integer] Required permission level
+# @param [String] Collection (table) name for which permission is queried. Defaults to params[table].
+# 
+# @return [Boolean] true if user's role permits (is higher or equal then required) operation on a table (collection). 
+# 
+# @Example True when user has view permission on the table
+#   if dc_user_can(DcPermission::CAN_VIEW, params[:table]) then ...
+############################################################################
+def dc_user_can(permission, table=params[:table])
+  @permissions ||= DcPermission.permissions_for_table(table)
+# Return true if any of the permissions user has is higher or equal to requested permission 
+  session[:user_roles].each {|r| return true if @permissions[r] and @permissions[r] >= permission }
+  false
+end
 
 ####################################################################
 # Detects if called from mobile agent according to http://detectmobilebrowsers.com/ 
@@ -217,7 +236,6 @@ def dc_set_is_mobile
     session[:is_robot] = true
   end
 end
-
 
 ##########################################################################
 # Merge values from parameters fields (from site, page ...) into internal @options hash.

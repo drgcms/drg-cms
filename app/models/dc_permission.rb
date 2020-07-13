@@ -85,4 +85,26 @@ def self.values_for_permissions #:nodoc:
   [['NO_ACCESS',0],['CAN_VIEW',1],['CAN_CREATE',2],['CAN_EDIT',4],['CAN_EDIT_ALL',8],['CAN_DELETE',16],['CAN_DELETE_ALL',32],['CAN_ADMIN',64],['SUPERADMIN',128]]
 end
 
+#############################################################################
+# 
+############################################################################
+def self.permissions_for_table(table_name)
+  result = permissions_for('*')
+  result = permissions_for("#{table_name[0,3]}*", result)
+  permissions_for(table_name, result)
+end
+
+#############################################################################
+# 
+############################################################################
+def self.permissions_for(table_name, result={}) #:nodoc:
+  permissions = if table_name == '*' 
+    self.find_by(is_default: true)
+  else
+    self.find_by(table_name: table_name, active: true)
+  end
+  permissions.dc_policy_rules.each {|perm| result[perm.dc_policy_role_id] = perm.permission } if permissions
+  result
+end
+
 end
