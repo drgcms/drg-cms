@@ -470,22 +470,28 @@ end
 def dc_process_column_eval(yaml, document)
   # dc_name_for_id
   if yaml['eval'].match('dc_name4_id') || yaml['eval'].match('dc_name_for_id')
-    a = dc_eval_to_array(yaml['eval'])
-    if a.size == 3
-      dc_name_for_id(a[1], a[2], nil, document[ yaml['name'] ])
+    prms = dc_eval_to_array(yaml['eval'])
+    if prms.size == 3
+      dc_name_for_id(prms[1], prms[2], nil, document[ yaml['name'] ])
     else
-      dc_name_for_id(a[1], a[2], a[3], document[ yaml['name'] ])
+      dc_name_for_id(prms[1], prms[2], prms[3], document[ yaml['name'] ])
     end
-  # dc_name_for_value  
+  # dc_name_for_value from this model
   elsif yaml['eval'] == 'dc_name4_value' || yaml['eval'] == 'dc_name_for_value'
     dc_name_for_value( @form['table'], yaml['name'], document[ yaml['name'] ] )
+  # dc_name_for_value from other model  
   elsif yaml['eval'].match('dc_name4_value') || yaml['eval'].match('dc_name_for_value')
-    a = dc_eval_to_array(yaml['eval'])
-    dc_name_for_value( a[1], a[2], document[ yaml['name'] ] )
-  elsif yaml['eval'].match('eval ')
-  # TO DO evaluate with specified parameters
+    prms = dc_eval_to_array(yaml['eval'])
+    dc_name_for_value( prms[1], prms[2], document[ yaml['name'] ] )
+  # for example dc_icon_for_boolean
+  elsif respond_to?(yaml['eval'])
+    send(yaml['eval'], document[ yaml['name'] ])
+  # defined in document
   elsif document.respond_to?(yaml['eval'])
     document.send(yaml['eval'])
+  # special eval  
+  elsif yaml['eval'].match('eval ')
+  # TO DO evaluate with specified parameters
   else
     parameters = if yaml['params']
       # pass document as parameter
