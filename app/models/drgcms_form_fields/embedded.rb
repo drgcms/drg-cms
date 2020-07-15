@@ -31,6 +31,7 @@ module DrgcmsFormFields
 # * +name:+ field name (required)
 # * +type:+ embedded (required)
 # * +form_name:+ name of form which will be used for editing
+# * +load:+ when is embedded iframe loaded. default=on form load, delay=on tab select, always=every time tab is selected)
 # * +html:+ html options (optional)
 #   * +height:+ height of embedded object in pixels (1000)
 #   * +width:+ width of embedded object in pixels (500)
@@ -40,6 +41,7 @@ module DrgcmsFormFields
 #      name: dc_parts
 #      type: embedded
 #      form_name: dc_part
+#      refresh: delay
 #      html:
 #        height: 1000
 ###########################################################################
@@ -49,23 +51,23 @@ class Embedded < DrgcmsField
 ###########################################################################
 def render 
   #return self if @record.new_record?  # would be in error otherwise
-# HTML defaults. Some must be set    
+  # HTML defaults. Some must be set    
   @yaml['html'] ||= {}
   @yaml['html']['height'] ||= 300
   @yaml['html']['width']  ||= '99%'
-# defaults both way 
+  # defaults both way 
   @yaml['table']     ||= @yaml['form_name'] if @yaml['form_name']
   @yaml['form_name'] ||= @yaml['table'] if @yaml['table']
-# 
+  # 
   html = ''  
   @yaml['html'].each {|k,v| html << "#{k}=\"#{v}\" "}
-# 
+  # 
   if @yaml['name'] == @yaml['table'] or @yaml['table'] == 'dc_memory'
     tables = @yaml['table']
-    ids = @record._id
+    ids = @record.id
   else
     tables      = @parent.tables.inject('') { |r,v| r << "#{v[1]};" } + @yaml['table']
-    ids         = @parent.ids.inject('') { |r,v| r << "#{v};" } + @record._id
+    ids         = @parent.ids.inject('') { |r,v| r << "#{v};" } + @record.id
   end
   opts = { controller: 'cmsedit', action: 'index', ids: ids, table: tables, form_name: @yaml['form_name'], 
            field_name: @yaml['name'], iframe: "if_#{@yaml['name']}", readonly: @readonly }
@@ -75,7 +77,7 @@ def render
   @html << "<iframe class='iframe_embedded' id='if_#{@yaml['name']}' name='if_#{@yaml['name']}' #{html}></iframe>"
   unless @record.new_record?
     url  = @parent.url_for(opts)
-    data = @yaml['delay'] ? 'data-src-delay' : 'src'
+    data = (@yaml['load'].nil? || @yaml['load'] == 'default') ? 'src' : "data-src-#{@yaml['load']}"
     @js << %Q[
 $(document).ready( function() {
   $('#if_#{@yaml['name']}').attr('#{data}', '#{url}');

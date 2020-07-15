@@ -46,14 +46,20 @@ dumpAttributes = function(obj) {
  * Function checks if there are delay loaded embedded elements on 
  * selected tab and triggers iframe reload.
  *******************************************************************/
-update_embedded_on_first_display = function(div_name) {
+update_embedded_on_tab_select = function(div_name) {
   var iframes = $(div_name).find("iframe");
   $.each(iframes, function(index, iframe) {
+    // delayed load
     var src_delay = iframe.getAttribute('data-src-delay'); 
     if (src_delay != null && src_delay != '') {
       iframe.setAttribute('data-src-delay', '');
       iframe.setAttribute('src', src_delay);
     }
+    // always load on tab select
+    var src_always = iframe.getAttribute('data-src-always');
+    if (src_always != null) {
+      iframe.setAttribute('src', src_always);
+    }    
   });
 };
 
@@ -448,7 +454,7 @@ $(document).ready( function() {
       window.frameElement.style.height = div_height.toString() + 'px';
 // it would be too easy      $('#cmsform :input:enabled:visible:first').focus();
       select_first_input_field('#data_' + e.target.getAttribute("data-div"));
-      update_embedded_on_first_display('#data_' + e.target.getAttribute("data-div"));
+      update_embedded_on_tab_select('#data_' + e.target.getAttribute("data-div"));
     }
   });  
 
