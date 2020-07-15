@@ -750,7 +750,6 @@ def dc_update_form_field(field_name, value, readonly=false)
   flash[:update][key_name] = value
 end
 
-
 ####################################################################
 # Checks if any errors exist on document and writes error log. It can also 
 # crash if requested. This is mostly usefull in development for debuging 
@@ -784,6 +783,19 @@ def self.dc_check_model(document, crash=false)
     raise "Validation error. See log for more information."
   end
   msg
+end
+
+########################################################################
+# Will dump exception to rails log and console.
+# 
+# Parameters:
+# [exception] Object: Exception caught
+# 
+########################################################################
+def dc_dump_exception(exception)
+  msg = [exception.message, *exception.backtrace].join($/)
+  pp msg
+  Rails.logger.error msg
 end
 
 
