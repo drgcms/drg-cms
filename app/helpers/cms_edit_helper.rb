@@ -27,7 +27,7 @@
 # data found in 3 major sections of DRG CMS form: index, result_set and form sections. 
 #
 ###########################################################################
-module CmseditEditHelper
+module CmsEditHelper
 
 ############################################################################
 # Will return value when internal or additional parameters are defined in action

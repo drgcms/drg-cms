@@ -27,7 +27,7 @@
 # data found in 3 major sections of DRG CMS form: index, result_set and form sections. 
 #
 ###########################################################################
-module CmseditIndexHelper
+module CmsIndexHelper
   
 ############################################################################
 # Creates action div for cmsedit index action. 

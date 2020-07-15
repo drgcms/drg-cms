@@ -26,7 +26,7 @@
 # CmseditHelper module defines common methods used for DRGCMS forms.
 #
 ###########################################################################
-module CmseditHelper
+module CmsHelper
   # javascript part created by form helpers
   attr_reader :js 
   
