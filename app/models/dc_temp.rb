@@ -33,9 +33,11 @@
 class DcTemp
   include Mongoid::Document
   include Mongoid::Timestamps
+  
   field :key,     type: String
   field :data,    type: Hash,     default: {}
   field :active,  type: Time,     default: Time.now
+  field :order,   type: String
   
   index key: 1
   
@@ -45,8 +47,9 @@ class DcTemp
 def initialize(parms = {})
   super()
   parms.stringify_keys!
-  self.key = parms.delete('key')  if parms['key']
-  self.key = parms.delete('active') if parms['active']
+  self.key    = parms.delete('key')  if parms['key']
+  self.active = parms.delete('active') if parms['active']
+  self.order  = parms.delete('order') if parms['order']
   parms.each { |k, value| self.data[k] = value }
 end
 
