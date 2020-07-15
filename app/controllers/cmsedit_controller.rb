@@ -554,16 +554,28 @@ def read_drg_cms_form
 end
 
 ############################################################################
+# Load module if available. Try not to mask errors in control module
+############################################################################
+def load_controls_module(controls_string)
+  begin
+    controls_string.classify.constantize
+  rescue NameError => e
+    return nil if e.message.match('uninitialized constant') || e.message.match('wrong constant name')
+    # report errors when loading existing module
+    raise e
+  end
+end
+
+############################################################################
 # Dynamically extend cmsedit class with methods defined in controls module.
 ############################################################################
 def extend_with_control_module(control_name=@form['controls'])
-# May include embedded forms therefor ; => _ 
+# May include embedded forms therefor ; => 
   controls_string = "#{control_name || params[:table].gsub(';','_')}_control"
-  controls = "#{controls_string.classify}".constantize rescue nil
+  controls = load_controls_module(controls_string)
 # old version. Will be deprecated
   if controls.nil?
-    controls_string = (control_name ? control_name : params[:table].gsub(';','_')) + '_control'
-    controls = "DrgcmsControls::#{controls_string.classify}".constantize rescue nil
+    controls = load_controls_module("DrgcmsControls::#{controls_string}")
     dc_deprecate('Putting controls into app/controllers/drgcms_controls directory will be deprecated. Put them into app/controls instead.') if controls
   end
 # Form may be dynamically updated before processed 
