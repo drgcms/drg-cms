@@ -35,6 +35,7 @@
 class DcMenuRenderer
 
 include DcApplicationHelper
+include CmsCommonHelper
 ########################################################################
 # Object initialization. Will also prepare DcMenu document.
 ########################################################################

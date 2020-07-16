@@ -34,6 +34,7 @@
 class DcSimpleMenuRenderer
 
 include DcApplicationHelper
+include CmsCommonHelper
 ########################################################################
 # Object initialization.
 ########################################################################

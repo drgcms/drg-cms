@@ -27,7 +27,7 @@
 ########################################################################
 class DcPollRenderer
   
-#include CmsHelper
+include CmsCommonHelper
 include DcApplicationHelper
 include ActionView::Helpers::FormHelper # for form hepers
 include ActionView::Helpers::FormOptionsHelper # for select helper
