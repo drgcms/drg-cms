@@ -157,8 +157,8 @@ end
 ###########################################################################
 def ro_standard
   #value   = @yaml['html']['value'] ? @yaml['html']['value'] : nil
-  value = @record.respond_to?(@yaml['name']) ? @record[@yaml['name']] : nil
-  return self if value.nil?
+  value = @record.respond_to?(@yaml['name']) ? @record.send(@yaml['name']) : nil
+  return self if value.blank?
 # 
   choices = get_choices()
   if value.class == Array   # multiple choices
@@ -203,9 +203,9 @@ def render
     @js   << "$('##{record}_#{@yaml['name']}').selectMultiple();"
   else
     @html << @parent.select(record, @yaml['name'], get_choices, @yaml['html'], html_part)
+    # add code for view more data
+    @html << add_view_code() if @yaml['view']
   end
-# add code for view more data
-  @html << add_view_code() if @yaml['view']
   self
 end
 

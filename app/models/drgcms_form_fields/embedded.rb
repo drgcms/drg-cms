@@ -64,10 +64,10 @@ def render
   # 
   if @yaml['name'] == @yaml['table'] or @yaml['table'] == 'dc_memory'
     tables = @yaml['table']
-    ids = @record.id
+    ids    = @record.id
   else
-    tables      = @parent.tables.inject('') { |r,v| r << "#{v[1]};" } + @yaml['table']
-    ids         = @parent.ids.inject('') { |r,v| r << "#{v};" } + @record.id
+    tables = @parent.tables.inject('') { |r,v| r << "#{v[1]};" } + @yaml['table']
+    ids    = @parent.ids.inject('') { |r,v| r << "#{v};" } + @record.id
   end
   opts = { controller: 'cmsedit', action: 'index', ids: ids, table: tables, form_name: @yaml['form_name'], 
            field_name: @yaml['name'], iframe: "if_#{@yaml['name']}", readonly: @readonly }
@@ -77,7 +77,11 @@ def render
   @html << "<iframe class='iframe_embedded' id='if_#{@yaml['name']}' name='if_#{@yaml['name']}' #{html}></iframe>"
   unless @record.new_record?
     url  = @parent.url_for(opts)
-    data = (@yaml['load'].nil? || @yaml['load'] == 'default') ? 'src' : "data-src-#{@yaml['load']}"
+    data = if @yaml['load'].nil? || @yaml['load'].match('default')
+      "src"
+    else
+      "data-src-#{@yaml['load']}"
+    end
     @js << %Q[
 $(document).ready( function() {
   $('#if_#{@yaml['name']}').attr('#{data}', '#{url}');
