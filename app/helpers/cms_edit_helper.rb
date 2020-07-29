@@ -98,6 +98,7 @@ def dc_actions_for_form(position)
   actions = std_actions if actions.nil?
 # readonly 
   actions = {1 => 'back'} if @form['readonly']
+  actions = {1 => 'close'} if params[:window_close]
 # Actions are strictly forbidden 
   if @form['form']['actions'] and dc_dont?(@form['form']['actions'])
     actions = []
@@ -126,7 +127,7 @@ def dc_actions_for_form(position)
     next if options.nil?  # yes it happends
     parms = @parms.clone
     if options.class == String
-      next if params[:readonly] and !(options == 'back')
+      next if params[:readonly] and !options.match(/back|close/)
       
       html << '<li class="dc-link dc-animate">'
       html << case 
@@ -162,6 +163,9 @@ def dc_actions_for_form(position)
           
         when options == 'refresh' then
           "<div onclick='window.location.href=window.location.href;'>#{fa_icon('refresh')} #{t('drgcms.refresh')}</div></li>"
+          
+        when options == 'close' then
+          "<div onclick='window.close();'>#{fa_icon('close')} #{t('drgcms.close')}</div></li>"
       else 
         "err1 #{key}=>#{options}"
       end
