@@ -141,6 +141,18 @@ def get_choices(all=false)
 end
 
 ###########################################################################
+# Will add code to view more data about selected option in a window
+###########################################################################
+def add_view_code()
+  return '' if (data = @record.send(@yaml['name'])).blank?
+  ar = @yaml['view'].split(/\ |\,/).delete_if {|e| e.blank?}
+  table, form_name = *ar
+  url  = @parent.url_for(controller: :cmsedit, id: data, action: :edit, table: table, form_name: form_name, readonly: true, window_close: 1 )
+  icon = @parent.fa_icon('eye')
+  %Q[<span class="dc-window-open" data-url="#{url}">#{icon}</span>]
+end
+
+###########################################################################
 # Return value when readonly is required
 ###########################################################################
 def ro_standard
@@ -178,15 +190,22 @@ end
 def render
   return ro_standard if @readonly
   set_initial_value('html','selected')
-#
+# separate options and html part
   @yaml['html'].symbolize_keys!
+  html_part = {}
+  html_part[:class] = @yaml['html'].delete(:class)  if @yaml['html'][:class]
+  html_part[:id]    = @yaml['html'].delete(:id)     if @yaml['html'][:id]
+  html_part[:style] = @yaml['html'].delete(:style)  if @yaml['html'][:style]
   record = record_text_for(@yaml['name'])
-  if @yaml['multiple']  
-    @html << @parent.select(record, @yaml['name'], get_choices, @yaml['html'], {multiple: true})
+  if @yaml['multiple']
+    html_part[:multiple] = true
+    @html << @parent.select(record, @yaml['name'], get_choices, @yaml['html'], html_part)
     @js   << "$('##{record}_#{@yaml['name']}').selectMultiple();"
   else
-    @html << @parent.select(record, @yaml['name'], get_choices, @yaml['html'])
+    @html << @parent.select(record, @yaml['name'], get_choices, @yaml['html'], html_part)
   end
+# add code for view more data
+  @html << add_view_code() if @yaml['view']
   self
 end
 
