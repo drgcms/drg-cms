@@ -572,6 +572,7 @@ end
 def extend_with_control_module(control_name=@form['controls'])
 # May include embedded forms therefor ; => 
   controls_string = "#{control_name || params[:table].gsub(';','_')}_control"
+#  p '************',  controls_string
   controls = load_controls_module(controls_string)
 # old version. Will be deprecated
   if controls.nil?
@@ -958,9 +959,10 @@ def process_collections #:nodoc
     check_sort_options()
   end  
 # result set is defined by filter method in control object
-  if @form['result_set']['filter']
-    if respond_to?(@form['result_set']['filter'])
-      @records = send @form['result_set']['filter']
+  form_filter = @form['result_set']['filter'] || 'dc_filter'
+  if form_filter
+    if respond_to?(form_filter)
+      @records = send(form_filter)
 # something went wrong. flash[] should have explanation.
       if @records.class == FalseClass
         @records = []
@@ -973,7 +975,7 @@ def process_collections #:nodoc
         per_page = (@form['result_set']['per_page'] || 30).to_i
         @records = @records.page(params[:page]).per(per_page) if per_page > 0
       end
-    else
+    elsif form_filter != 'dc_filter'
       Rails.logger.error "Error: result_set:filter: #{@form['result_set']['filter']} not found in controls!"
     end
   else
