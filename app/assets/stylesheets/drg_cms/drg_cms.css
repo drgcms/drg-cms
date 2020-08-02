@@ -452,7 +452,7 @@ border: solid 1px #ccc;;
 }
 .dc-link-submit {
   text-align: left;
-  padding: 8px 6px 6px;
+  padding: 3px 6px 1px;
 
   border-radius: 2px;
   background-color: #eee;
@@ -487,6 +487,7 @@ border: solid 1px #ccc;;
   padding: 0px 2px;
   border-radius: 0px;
   background: transparent;
+  line-height: 2em;
 } 
 
 .dc-submit:hover { 
