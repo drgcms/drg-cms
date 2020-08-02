@@ -959,7 +959,7 @@ def process_collections #:nodoc
     check_sort_options()
   end  
 # result set is defined by filter method in control object
-  form_filter = @form['result_set']['filter'] || 'dc_filter'
+  form_filter = @form['result_set']['filter']
   if form_filter
     if respond_to?(form_filter)
       @records = send(form_filter)
