@@ -231,7 +231,7 @@ form:
       20:
         name: dc_poll_items
         type: embedded
-        refresh: default,delay,always
+        load: default,delay,always
         form_name: dc_poll_item
         html:
           height: 800      

@@ -256,6 +256,8 @@ padding: 0;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  display: flex;
+  align-items: center;
 }
 
 .dc-result-data .actions, .dc-result-header .actions {
