@@ -23,6 +23,8 @@
 #++
 */
 
+@import url('https://fonts.googleapis.com/css2?family=Exo:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet"');
+
 /* Web reset. Countributed by
 /* http://meyerweb.com/eric/tools/css/reset/ 
    v2.0 | 20110126
@@ -54,6 +56,7 @@ article, aside, details, figcaption, figure,
 footer, header, hgroup, menu, nav, section {
 	display: block;
 }
+
 body {
 /*	line-height: 1; */
 }
@@ -80,20 +83,26 @@ table {
 */
 
 body {
-font-family: arial,sans-serif;
-font-size: 12px;
+font-family: Exo,arial,sans-serif;
+font-size: 14px;
 margin: 0px;
 vertical-align: middle;
-color: #222;
+color: #000;
+font-weight: 400;
 }
 
+button {
+font-family: Exo,arial,sans-serif;
+}
+
+
 textarea, input, select {
-color: #222;
+color: #000;
 padding: 6px 4px;
 margin-left: 1px;
 border: solid 1px #ccc;;
 border-radius: 2px;
-font: 14px arial,sans-serif;
+font: 14px Exo,arial,sans-serif;
 max-width: 100%;
 vertical-align: middle;
 }
@@ -164,7 +173,7 @@ img { vertical-align:bottom; }
 .dc-animate a:link, .dc-animate a:active, .dc-animate a:visited, 
 .dc-result a:link, .dc-result a:active, .dc-result a:visited { 
 color: #666;
-font-weight: bold;
+font-weight: 600;
 text-decoration: none; 
 background: transparent;
 padding: 7px;
@@ -206,7 +215,8 @@ background-color: #f9f9f9;
 
 .dc-result i { 
 padding: 2px;
-font-size: 0.9rem;
+font-size: 14px;
+vertical-align: initial;
 }
 
 .dc-result .actions .dc-animate { 
@@ -311,7 +321,7 @@ display: inline-table;
 #data-fields {margin: 5px;}
 
 .dc-link {
-font-weight: bold;
+font-weight: 600;
 color: #666;
 text-align: center;
 border-radius: 2px;
@@ -333,12 +343,12 @@ border: 1px solid #ddd;
 }
 
 .dc-link div { 
-  padding: 7px; 
+  padding: 7px 8px; 
 }
 
 .dc-link-no {
   text-align: left;
-  font-weight: bold;
+  font-weight: 600;
   padding: 7px;
   vertical-align: bottom;
   border: 1px solid #ddd;
@@ -349,8 +359,8 @@ border: 1px solid #ddd;
 
 .dc-link-ajax {
   text-align: left;
-  font-weight: bold;
-  padding: 7px;
+  font-weight: 600;
+  padding: 8px 8px 6px;
   border-radius: 2px;
   color: #666;
   background: transparent linear-gradient(to bottom, #fff 0%, #e2e2e2 100%) repeat scroll 0% 0%;
@@ -452,12 +462,15 @@ border: solid 1px #ccc;;
 }
 .dc-link-submit {
   text-align: left;
-  padding: 3px 6px 1px;
-
+  padding: 1px 8px 0.5px;
+  
   border-radius: 2px;
   background-color: #eee;
   background: transparent linear-gradient(to bottom, #fff 0%, #e2e2e2 100%) repeat scroll 0% 0%;
   border: 1px solid #ddd;
+  display: flex;
+  align-items: center;
+  
 }
 
 .dc-link-submit .fa {
@@ -471,23 +484,22 @@ border: solid 1px #ccc;;
   color: #000;
   border: 1px solid rgba(76,154,255, 1);
   box-shadow: inset 0px 0px 0px 1px rgba(76,154,255, 1);  
-  transition: 0.3s;
+  transition: 0.3s;  
 }
 .dc-link-submit:hover .dc-submit {
   color: #000;
   transition: 0.3s;
-
-
 }
+
 .dc-submit {
   text-decoration: none;
   border: none;
   color: #666;
   font-weight: bold;
-  padding: 0px 2px;
+  padding: 2px 2px 0;
   border-radius: 0px;
   background: transparent;
-  line-height: 2em;
+  line-height: 30px;
 } 
 
 .dc-submit:hover { 
@@ -626,7 +638,7 @@ color: #aaa;
   color: #555;
   text-align: right;
   vertical-align: middle;
-  font-weight: bold;
+  font-weight: 600;
   padding: 10px 2px;
   width:  150px;
 }
@@ -712,8 +724,8 @@ margin-bottom: -3px;
   color: #666;
   text-decoration: none;
   text-align: center;
-  font-weight: bold;
-  line-height: 1rem;
+  font-weight: 600;
+  line-height: 1.2rem;
 
   padding:4px 15px;
   background: #e8e8e8;
@@ -795,7 +807,7 @@ display: flex;
 }
 
 #cmsedit-div {
-font-family: Arial, sans-serif;
+font-family: Exo,Arial, sans-serif;
 font-size: 13px;
 line-height: 13px;
 }
@@ -856,13 +868,13 @@ font-size: 1.2em;
 display: inline-block;
 padding: 4px 0px;
 margin: 4px;
-font-size: 13px;
+font-size: 14px;
 color: #222;
-font-weight: bold;
+font-weight: 600;
 }
 
 .cmsedit-container .fa {
-width: 20px;
+width: 26px;
 }
 
 .cmsedit-container #menu a {
@@ -1256,7 +1268,7 @@ color: #669;
 }
 .dc-radio div {
   font-size: 1.1em;
-  padding: 0 8px 6px 0;
+  padding: 8px;
   white-space: nowrap;
 }
 .dc-radio.dc-inline div {
@@ -1264,7 +1276,9 @@ color: #669;
 }
 
 .dc-radio input {
-  vertical-align: bottom;
+  vertical-align: initial;
+  margin: 0;
+  
 }
 
 /****** MOBILE DEVICE *****/
