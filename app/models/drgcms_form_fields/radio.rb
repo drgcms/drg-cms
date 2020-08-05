@@ -61,10 +61,9 @@ module DrgcmsFormFields
 class Radio < Select
 
 ###########################################################################
-# Render text_with_select field html code
+# Render radio DRG Form field
 ###########################################################################
 def render
-  #return ro_standard if @readonly  
   set_initial_value('html','value')
   
   record = record_text_for(@yaml['name'])
@@ -76,10 +75,16 @@ def render
   if choices.size == 1 and (@record[@yaml['name']].class == TrueClass or @record[@yaml['name']].class == FalseClass)
     choices = [[I18n.t('drgcms.true'), true], [I18n.t('drgcms.false'), false]] 
   end
+  # Should select first button if no value provided
+  value = if @record[@yaml['name']].blank? 
+    choices.first.class == String ? choices.first :  choices.first.last
+  else
+    @record[@yaml['name']]
+  end
   choices.each do |choice|
     choice = [choice, choice] if choice.class == String
     @html << "<div>"
-    @html << @parent.radio_button_tag("#{record}[#{@yaml['name']}]",choice.last, choice.last.to_s == @record[@yaml['name']].to_s)
+    @html << @parent.radio_button_tag("#{record}[#{@yaml['name']}]",choice.last, choice.last.to_s == value.to_s)
     @html << choice.first
     @html << "</div>"
   end
