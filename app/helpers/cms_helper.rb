@@ -124,11 +124,11 @@ def dc_field_action(yaml)
 end
 
 ############################################################################
-#
+# Create ex. class="my-class" html code from html options for action
 ############################################################################
 def dc_html_data(yaml)
   return '' if yaml.blank?
-  yaml.inject(' ') {|result, e| result << "#{e.first}=\"#{e.last}\" "}
+  yaml.inject(' ') {|result, e| result = e.last.nil? ? result : result << "#{e.first}=\"#{e.last}\" "}
 end
 
 ############################################################################
@@ -154,6 +154,8 @@ def dc_link_ajax_window_submit_action(yaml, record=nil, action_active=true)
   yaml['html'] ||= {}
   confirm = yaml['html']['data-confirm'] || yaml['confirm']
   yaml['html']['data-confirm'] = t(confirm) unless confirm.blank?
+  yaml['html']['title']  ||= yaml['title']
+  yaml['html']['target'] ||= yaml['target']
   # direct url
   if yaml['url']
     parms['controller'] = yaml['url'] 
@@ -176,15 +178,14 @@ def dc_link_ajax_window_submit_action(yaml, record=nil, action_active=true)
   if parms['controller'].nil? && parms['url'].nil?
     "<li>#{'Controller not defined'}</li>"
   else
-    yaml['caption'] ||= yaml['text'] 
-    
+    yaml['caption'] ||= yaml['text']
     html_data = dc_html_data(yaml['html'])
     #
     url = url_for(parms) rescue 'URL error'
     request = yaml['request'] || yaml['method'] || 'get'
     if yaml['type'] == 'ajax' # ajax button
       clas = "dc-link-ajax dc-animate"
-      %Q[<li class="#{clas}" data-url="#{action_active ? url : ''}"  #{html_data}
+      %Q[<li class="#{clas}" data-url="#{action_active ? url : ''}" #{html_data}
          data-request="#{request}" title="#{yaml['title']}">#{icon}#{caption}</li>]
 
     elsif yaml['type'] == 'submit'  # submit button
@@ -197,7 +198,7 @@ def dc_link_ajax_window_submit_action(yaml, record=nil, action_active=true)
 
     elsif yaml['type'] == 'link'  # link button
       clas = "dc-link dc-animate"
-      link = dc_link_to(yaml['caption'],yaml['icon'], parms, {target: yaml['target'], html: yaml['html']} )
+      link = dc_link_to(yaml['caption'], yaml['icon'], parms, yaml['html'] )
       %Q[<li class="#{clas}">#{action_active ? link : caption}</li>]
 
     elsif yaml['type'] == 'window'

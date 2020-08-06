@@ -377,7 +377,7 @@ def dc_link_to(caption, icon, parms, rest={})
   if parms.class == Hash
     parms.stringify_keys!
     rest.stringify_keys!
-    rest['class'] = rest['class'].to_s + ' dc-animate'
+    rest['class'] = rest['class'].to_s + ' dc-animate' unless rest['class'].to_s.match('dc-animate')
     rest['target'] ||=  parms.delete('target')
     parms['controller'] ||= 'cmsedit'
     icon_pos = parms.delete('icon_pos') || 'first'
