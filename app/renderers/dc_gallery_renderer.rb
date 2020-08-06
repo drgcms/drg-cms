@@ -33,6 +33,7 @@
 class DcGalleryRenderer
 
 include DcApplicationHelper
+include CmsCommonHelper
 
 ########################################################################
 # Object initialization.

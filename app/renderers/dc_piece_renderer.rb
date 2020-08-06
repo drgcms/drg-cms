@@ -33,7 +33,7 @@
 class DcPieceRenderer
 
 include DcApplicationHelper
-
+include CmsCommonHelper
 ########################################################################
 # Object initialization. It also loads requested dc_piece document.
 ########################################################################

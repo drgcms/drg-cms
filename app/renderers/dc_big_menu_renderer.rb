@@ -32,6 +32,7 @@
 class DcBigMenuRenderer
 
 include DcApplicationHelper
+include CmsCommonHelper
 ########################################################################
 # Object initialization.
 ########################################################################
