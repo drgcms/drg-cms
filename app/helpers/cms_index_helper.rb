@@ -353,6 +353,8 @@ def dc_clicks_for_result(document)
     opts[:form_name]  = yaml['form_name']
     opts[:method]     = yaml['method'] || 'get'
     opts[:id]         = document['id']
+    opts[:readonly]   = yaml['readonly'] if yaml['readonly']
+    opts[:window_close] = yaml['window_close'] if yaml['window_close']
     html << ' data-dblclick=' + url_for(opts) 
   else
      html << (' data-dblclick=' +
@@ -428,7 +430,8 @@ def dc_columns_for_result(document)
     clas = dc_style_or_class(nil, v['td_class'], value, document)
     # set width and align an additional style
     style = dc_style_or_class(nil, v['td_style'] || v['style'], value, document)
-    width_align = %Q[width: #{v['width'] || '15%'};text-align: #{v['align'] || 'left'};]
+    flex_align = v['align'].to_s == 'right' ? 'flex-direction: row-reverse;' : ''
+    width_align = %Q[width: #{v['width'] || '15%'};#{flex_align};]
     style = "#{width_align}#{style}"
 
     html << "<div class=\"td #{clas}\" style=\"#{style}\">#{value}</div>"

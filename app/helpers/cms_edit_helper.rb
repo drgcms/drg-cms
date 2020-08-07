@@ -165,7 +165,12 @@ def dc_actions_for_form(position)
           "<div onclick='window.location.href=window.location.href;'>#{fa_icon('refresh')} #{t('drgcms.refresh')}</div></li>"
           
         when options == 'close' then
-          "<div onclick='window.close();'>#{fa_icon('close')} #{t('drgcms.close')}</div></li>"
+          close = params[:window_close].to_i
+          if close < 2
+            "<div onclick='window.close();'>#{fa_icon('close')} #{t('drgcms.close')}</div></li>"
+          else
+            "<div onclick='history.back();'>#{fa_icon('close')} #{t('drgcms.close')}</div></li>"
+          end
       else 
         "err1 #{key}=>#{options}"
       end
