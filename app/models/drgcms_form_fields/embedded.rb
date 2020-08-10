@@ -55,6 +55,7 @@ def render
   @yaml['html'] ||= {}
   @yaml['html']['height'] ||= 300
   @yaml['html']['width']  ||= '99%'
+  @yaml['action'] ||= 'index'
   # defaults both way 
   @yaml['table']     ||= @yaml['form_name'] if @yaml['form_name']
   @yaml['form_name'] ||= @yaml['table'] if @yaml['table']
@@ -69,7 +70,8 @@ def render
     tables = @parent.tables.inject('') { |r,v| r << "#{v[1]};" } + @yaml['table']
     ids    = @parent.ids.inject('') { |r,v| r << "#{v};" } + @record.id
   end
-  opts = { controller: 'cmsedit', action: 'index', ids: ids, table: tables, form_name: @yaml['form_name'], 
+  opts = { controller: 'cmsedit', action: @yaml['action'], 
+           ids: ids, table: tables, form_name: @yaml['form_name'], 
            field_name: @yaml['name'], iframe: "if_#{@yaml['name']}", readonly: @readonly }
   # additional parameters if specified
   @yaml['params'].each { |k,v| opts[k] = @parent.dc_value_for_parameter(v) } if @yaml['params']         
