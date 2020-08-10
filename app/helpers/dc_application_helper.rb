@@ -352,7 +352,8 @@ def dc_submit_tag(caption, icon, parms, rest={})
     end
   end
   html = icon_image || ''
-  html << submit_tag(t(caption, caption), parms)
+  #html << submit_tag(t(caption, caption), parms)
+  %Q[<button type="submit" class="dc-submit" name="commit" value="#{t(caption, caption)}">#{icon_image} #{t(caption, caption)}</button>].html_safe
 end
 
 ############################################################################
