@@ -1262,7 +1262,7 @@ color: #669;
 
 .dc-radio {
   background-color: #fff;
-  border: solid 1px #ccc;;
+/*  border: solid 1px #ccc;;*/
   padding: 5px 0 7px 0;
   display: inline-table;
 }

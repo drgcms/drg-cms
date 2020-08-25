@@ -261,7 +261,7 @@ end
 def dc_table_title(text, result_set=nil)
   c = %Q[<div class="dc-title">#{text}]
   if result_set and result_set.respond_to?(:current_page)
-    c << %Q[<div class="dc-paginate">#{paginate(result_set, :params => {action: 'index', clear: 'no'})}</div>]
+    c << %Q[<div class="dc-paginate">#{paginate(result_set, :params => {action: 'index', clear: 'no', filter: nil})}</div>]
   end
   c << '<div style="clear: both;"></div></div>'
   c.html_safe
