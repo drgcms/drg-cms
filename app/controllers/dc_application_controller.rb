@@ -501,7 +501,7 @@ end
 #      
 ####################################################################
 def dc_check_model(document, crash=false)
-  self.dc_check_model(document, crash=false)
+  DcApplicationController.dc_check_model(document, crash=false)
 end
 
 ######################################################################
