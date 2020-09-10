@@ -309,7 +309,7 @@ def dc_header_for_result()
   html = '<div class="dc-result-header">'
   if @form['result_set']['actions'] and !@form['readonly']
     ignore, width = dc_actions_column()
-    html << %Q[<div class="actions" style="width: #{width}px;"></div>]
+    html << %Q[<div class="actions" style="width:#{width}px;"></div>]
   end
   # preparation for sort icon  
   sort_field, sort_direction = nil, nil
@@ -320,7 +320,7 @@ def dc_header_for_result()
   if (columns = @form['result_set']['columns'])
     columns.sort.each do |k,v|
       session[:form_processing] = "result_set:columns: #{k}=#{v}"
-      th = %Q[<div class="th" style="width: #{v['width'] || '15%'};text-align: #{v['align'] || 'left'};" data-name="#{v['name']}"]
+      th = %Q[<div class="th" style="width:#{v['width'] || '15%'};text-align:#{v['align'] || 'left'};" data-name="#{v['name']}"]
       # when no caption or name is defined it might be just spacer      
       if (caption = v['caption']).nil? 
         caption = v['name'] ? t("helpers.label.#{@form['table']}.#{v['name']}") : ''
@@ -434,11 +434,11 @@ def dc_columns_for_result(document)
     clas = dc_style_or_class(nil, v['td_class'], value, document)
     # set width and align an additional style
     style = dc_style_or_class(nil, v['td_style'] || v['style'], value, document)
-    flex_align = v['align'].to_s == 'right' ? 'flex-direction: row-reverse;' : ''
-    width_align = %Q[width: #{v['width'] || '15%'};#{flex_align};]
-    style = "#{width_align}#{style}"
+    flex_align  = v['align'].to_s == 'right' ? 'flex-direction:row-reverse;' : ''
+    width_align = %Q[width:#{v['width'] || '15%'};#{flex_align}]
+    style = "style=\"#{width_align}#{style}\" "
 
-    html << "<div class=\"td #{clas}\" style=\"#{style}\">#{value}</div>"
+    html << "<div class=\"td #{clas}\" #{style}>#{value}</div>"
   end
   html.html_safe
 end

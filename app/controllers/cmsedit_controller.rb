@@ -859,12 +859,13 @@ end
 def set_session_filter(table_name)
   # models that can not be filtered (for now)
   return if %w(dc_temp dc_memory).include?(params[:table])
-
   # clear filter 
   if params[:filter] == 'off' 
     session[table_name][:filter] = nil
     return
   end
+  # field_name should exist on set filter condition
+  return if params[:filter_oper] && params[:filter_field].blank?
 
   filter_value = if params[:filter_value].nil?
 # NIL indicates that no filtering is needed        

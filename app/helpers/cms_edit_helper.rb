@@ -389,7 +389,7 @@ end
 
 
 ############################################################################
-# Creates head form div. Head form div is used to display header datausefull
+# Creates head form div. Head form div is used to display header data usefull
 # to be seen even when tabs are switched.
 ############################################################################
 def dc_head_for_form()
