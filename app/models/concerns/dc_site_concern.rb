@@ -86,7 +86,7 @@ end
 # Returns class object of menu collection name
 ########################################################################
 def menu_klass()
-  (self.menu_class.blank? ? 'DcMenu' : self.menu_class).classify.constantize
+  (menu_class.blank? ? 'DcMenu' : menu_class).classify.constantize
 end
 
 ########################################################################
@@ -104,6 +104,17 @@ def self.choices4_policies
   site = ApplicationController.dc_get_site_()
   #all.inject([]) { |r,site| r << [ (site.active ? '' : t('drgcms.disabled') ) + site.name, site._id] }
   [['a','b']]
+end
+
+########################################################################
+# Return choices for selecting policies for the site
+########################################################################
+def self.choices_for_menu(menu_class)
+  return [] if menu_class.blank?
+  menu = menu_class.classify.constantize
+  menu.where(active: true).inject([]) do |r, a_menu|
+    r << [a_menu.description, a_menu.id]
+  end
 end
 
 end  

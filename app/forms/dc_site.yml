@@ -100,15 +100,11 @@ form:
         name: menu_class
         type: text_field
         size: 20
-#      60:
-#        name: menu_name
-#        type: text_with_select
-#        eval: dc_choices4(@record.menu_class,'description','name')
-#        size: 30
       70:
         name: menu_id
         type: select
-        eval: dc_choices4(@record.menu_class,'description','_id')
+        eval: DcSite.choices_for_menu
+        depend: menu_class
       90:
         name: settings
         type: text_area
