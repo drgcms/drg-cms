@@ -36,6 +36,7 @@
 class DcPageRenderer
 
 include DcApplicationHelper
+include CmsCommonHelper
 
 ########################################################################
 # Object initialization.
