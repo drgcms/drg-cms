@@ -374,7 +374,8 @@ end
 ############################################################################
 def dc_format_value(value, format=nil)
   return '' if value.nil?
-  klass = value.class.to_s
+
+  klass  = value.class.to_s
   case when klass.match('Time') then
     format ||= t('time.formats.default')
     value.strftime(format)  
@@ -382,6 +383,8 @@ def dc_format_value(value, format=nil)
     format ||= t('date.formats.default')
     value.strftime(format)  
   when format.to_s[0] == 'N' then
+    return '' if value == 0 and format.match('z')
+
     dec = format[1].blank? ? nil : format[1].to_i
     sep = format[2].blank? ? nil : format[2]
     del = format[3].blank? ? nil : format[3]
