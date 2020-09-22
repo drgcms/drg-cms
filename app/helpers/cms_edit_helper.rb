@@ -257,13 +257,6 @@ def dc_check_and_default(value, default, values=nil) #:nodoc:
 end
 
 ############################################################################
-# Creates top or bottom horizontal line on form. 
-############################################################################
-def dc_top_bottom_line(options)
-  '<div class="dc-separator"></div>'
-end    
-
-############################################################################
 # Creates input fields for one tab. Subroutine of dc_fields_for_form.
 ############################################################################
 def dc_fields_for_tab(fields_on_tab) #:nodoc:
@@ -287,8 +280,8 @@ def dc_fields_for_tab(fields_on_tab) #:nodoc:
     # label
     field_html,label,help = dc_field_label_help(options)
     # Line separator
-    html << dc_top_bottom_line(options['top-line']) if options['top-line']
-    # Begining of new row
+    html << dc_top_bottom_line(:top, options)
+    # Beginning of new row
     if group_count == 0
       html << '<div class="row-div">' 
       odd_even = cycle('odd','even')
@@ -329,7 +322,7 @@ def dc_fields_for_tab(fields_on_tab) #:nodoc:
       html << '<div></div>' if group_option == 2
     end
     
-    html << dc_top_bottom_line(options['bottom-line']) if options['bottom-line']
+    html << dc_top_bottom_line(:bottom, options)
   end
   html << '</div>' << hidden_fields
 end
@@ -476,5 +469,24 @@ def dc_document_statistics
                   'data-url' => url, 'data-request' => 'get', title: t('drgcms.doc_copy_clipboard') )
   (html << '</div></div>').html_safe
 end
+
+private
+
+############################################################################
+# Creates top or bottom horizontal line on form.
+#
+# @param [String] location (top or bottom)
+# @param [Object] options yaml field definition
+#
+# @return [String] html code for drawing a line
+############################################################################
+def dc_top_bottom_line(location, options)
+  if options["#{location}-line"] || options['line'].to_s == location.to_s
+    '<div class="dc-separator"></div>'
+  else
+    ''
+  end
+end
+
 
 end

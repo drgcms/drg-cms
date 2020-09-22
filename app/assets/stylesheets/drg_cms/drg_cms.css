@@ -929,11 +929,8 @@ display: none;
 }
 /****** jquery ui-autocomplete widget ***************/
 .ui-autocomplete-input {
-  font-style: italic;
   padding: 6px 6px 6px 12px;
   border-radius: 2px;
-/*  border: solid 1px #9c9;*/
-/*  background: linear-gradient(#8d8 0%, #ffe 15%, #fff 80%); */
 }
 .dc-text-autocomplete {
   position: relative;
