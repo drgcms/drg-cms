@@ -219,6 +219,13 @@ font-size: 14px;
 vertical-align: initial;
 }
 
+.dc-result .dc-link-no {
+  padding: 0;
+  border: none;
+  color: #bbb;
+  background: transparent !important;
+}
+
 .dc-result .actions .dc-animate { 
 padding: 0;
 }
