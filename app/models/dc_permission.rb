@@ -86,22 +86,30 @@ def self.values_for_permissions #:nodoc:
 end
 
 #############################################################################
-# 
+# Will return permissions for collection
 ############################################################################
-def self.permissions_for_table(table_name)
+def self.permissions_for_table(collection_name)
+  if collection_name.match(';')
+    collection, embedded, rest = collection_name.split(';')
+  else
+    collection, embedded = collection_name, nil
+  end
   result = permissions_for('*')
-  result = permissions_for("#{table_name[0,3]}*", result)
-  permissions_for(table_name, result)
+  result = permissions_for("#{collection[0,3]}*", result)
+  result = permissions_for(collection, result)
+  # include permissions for embedded documents
+  result = permissions_for("#{collection};#{embedded}", result) if embedded
+  result
 end
 
 #############################################################################
 # 
 ############################################################################
-def self.permissions_for(table_name, result={}) #:nodoc:
-  permissions = if table_name == '*' 
+def self.permissions_for(collection_name, result = {}) #:nodoc:
+  permissions = if collection_name == '*'
     self.find_by(is_default: true)
   else
-    self.find_by(table_name: table_name, active: true)
+    self.find_by(table_name: collection_name, active: true)
   end
   permissions.dc_policy_rules.each {|perm| result[perm.dc_policy_role_id] = perm.permission } if permissions
   result
