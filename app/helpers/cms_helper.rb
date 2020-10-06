@@ -164,7 +164,7 @@ def dc_link_ajax_window_submit_action(yaml, record=nil, action_active=true)
   else
     parms['controller'] = yaml['controller'] || 'cmsedit'
     parms['action']     = yaml['action'] 
-    parms['table']      = yaml['table'] 
+    parms['table']      = yaml['table'] || @form['table']
     parms['form_name']  = yaml['form_name']
     parms['control']    = yaml['control'] if yaml['control']
     parms['id']         = record.id if record

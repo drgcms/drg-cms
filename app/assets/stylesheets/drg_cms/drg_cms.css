@@ -77,11 +77,6 @@ table {
 }
 /* END */
 
-/* Firefox only
-@-moz-document url-prefix() { 
-}
-*/
-
 body {
 font-family: Exo,arial,sans-serif;
 font-size: 14px;
@@ -133,8 +128,8 @@ select {
 }
 
 select option { 
-  /* not working */
-  outline: none;
+  /* not working
+  outline: none;*/
 }  
 
 hr {
@@ -499,12 +494,13 @@ border: solid 1px #ccc;;
   text-decoration: none;
   border: none;
   color: #666;
-  font-weight: bold;
-  padding: 2px 2px 0;
+  font-weight: 600;
+  padding: 1px 2px 0;
   border-radius:  0;
   background: transparent;
   line-height: 30px;
-} 
+  font-size: 14px;
+}
 
 .dc-submit:hover { 
   cursor: pointer;
@@ -1297,4 +1293,11 @@ color: #669;
   .dc-menu li {margin-top: 2px;}
   
   .dc-width-10, .dc-width-14, .dc-width-21, .dc-width-85, .dc-width-100 {width: 100%;}
+}
+
+/******* Firefox only ********/
+@-moz-document url-prefix() {
+  .dc-submit {
+    padding: 0 2px 1px;
+  }
 }

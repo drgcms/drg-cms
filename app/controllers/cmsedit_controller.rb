@@ -432,13 +432,24 @@ end
 # Run action
 ########################################################################
 def run
+  # must have at least view permission to collection
+  unless dc_user_can(DcPermission::CAN_VIEW)
+    respond_to do |format|
+      format.json { render json: {msg_error: t('drgcms.not_authorized') } }
+      format.html { render plain: t('drgcms.not_authorized') }
+    end
+    return
+  end
+  # determine control file name and method
   control_name, method_name = params[:control].split('.')
   if method_name.nil?
     method_name  = control_name
     control_name = params[:table]   
   end
+  # extend with control file methods
   extend_with_control_module(control_name)
   if respond_to?(method_name)
+    # call method
     respond_to do |format|
       format.json { send method_name }
       format.html { send method_name }
@@ -447,11 +458,10 @@ def run
     # Error message
     text = "Method #{method_name} not defined in #{control_name}_control"
     respond_to do |format|
-      format.json { render json: {msg_error: text} }
+      format.json { render json: { msg_error: text } }
       format.html { render plain: text }
     end    
   end
-
 end
 
 protected
@@ -460,7 +470,7 @@ protected
 # Merges two forms when current form extends other form. Subroutine of read_drg_cms_form.
 # With a little help of https://www.ruby-forum.com/topic/142809 
 ########################################################################
-def forms_merge(hash1, hash2) 
+def forms_merge(hash1, hash2)
   target = hash1.dup
   hash2.keys.each do |key|
     if hash2[key].is_a? Hash and hash1[key].is_a? Hash
