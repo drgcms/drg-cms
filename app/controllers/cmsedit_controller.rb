@@ -432,14 +432,6 @@ end
 # Run action
 ########################################################################
 def run
-  # must have at least view permission to collection
-  unless dc_user_can(DcPermission::CAN_VIEW)
-    respond_to do |format|
-      format.json { render json: {msg_error: t('drgcms.not_authorized') } }
-      format.html { render plain: t('drgcms.not_authorized') }
-    end
-    return
-  end
   # determine control file name and method
   control_name, method_name = params[:control].split('.')
   if method_name.nil?
@@ -465,6 +457,26 @@ def run
 end
 
 protected
+
+########################################################################
+# Checks if user has permissions to perform operation on table and if not
+# prepares response for not authorized message.
+#
+# @param [Integer] permission : Permission level defined in DcPermission constants eg. DcPermission::CAN_EDIT
+# @param [String] collection_name : Table name on which user must have permission
+#
+# @return [Boolean] true when user has required permission otherwise false
+########################################################################
+def user_has_permission?(permission, collection_name)
+  unless dc_user_can(permission, collection_name.to_s)
+    respond_to do |format|
+      format.json { render json: {msg_error: t('drgcms.not_authorized') } }
+      format.html { render plain: t('drgcms.not_authorized') }
+    end
+    return false
+  end
+  true
+end
 
 ########################################################################
 # Merges two forms when current form extends other form. Subroutine of read_drg_cms_form.
