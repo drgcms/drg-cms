@@ -87,17 +87,22 @@ def dc_field_label_help(options)
     end
     help ||= t('helpers.help.' + @form['table'] + '.' + options['name'],' ') if options['name'] 
   end
-  # create field object from class and call its render method
-  klass_string = options['type'].camelize
-  field_html = if DrgcmsFormFields.const_defined?(klass_string) # when field type defined
-    klass = DrgcmsFormFields.const_get(klass_string)
-    field = klass.new(self, @record, options).render
-    @js  << field.js
-    @css << field.css
-    field.html 
-  else # litle error string
-    "Error: Field type #{options['type']} not defined!"
+  # create field object from type option and call its render method
+  if options['type'].present?
+    klass_string = options['type'].camelize
+    field_html = if DrgcmsFormFields.const_defined?(klass_string) # when field type defined
+      klass = DrgcmsFormFields.const_get(klass_string)
+      field = klass.new(self, @record, options).render
+      @js  << field.js
+      @css << field.css
+      field.html
+    else
+      "Error: Field type #{options['type']} not defined!"
+    end
+  else
+    "Error: Field type missing!"
   end
+
   [field_html, label, help]
 end
 
