@@ -286,8 +286,11 @@ process_json_result = function(json) {
     case 'reload':
       if (value == 'parent') {
         parent.location.reload();
+/*** this would be current window (reload: true) ****/
+      } else if (value.size < 5) {
+/*** reload iframe ****/
       } else {
-        location.reload();
+        $( '#' + value ).attr('src', $( '#' + value ).attr('src'));
       } 
       break;
     default: 
