@@ -591,22 +591,17 @@ end
 ############################################################################
 # Dynamically extend cmsedit class with methods defined in controls module.
 ############################################################################
-def extend_with_control_module(control_name=@form['controls'])
-# May include embedded forms therefor ; => 
-  controls_string = "#{control_name || params[:table].gsub(';','_')}_control"
-#  p '************',  controls_string
-  controls = load_controls_module(controls_string)
-# old version. Will be deprecated
-  if controls.nil?
-    controls = load_controls_module("DrgcmsControls::#{controls_string}")
-    dc_deprecate('Putting controls into app/controllers/drgcms_controls directory will be deprecated. Put them into app/controls instead.') if controls
-  end
-# Form may be dynamically updated before processed 
-  if controls 
+def extend_with_control_module(control_name = @form['controls'])
+  # May include embedded forms so ; => _
+  control_name ||= params[:table].gsub(';','_')
+  control_name += '_control' unless control_name.match(/$control|$report/)
+  #  p '************',  control_name
+  controls = load_controls_module(control_name)
+  if controls
     extend controls
+    # Form may be dynamically updated before processed
     send(:dc_update_form) if respond_to?(:dc_update_form)
   end
-    
 end
 
 ############################################################################

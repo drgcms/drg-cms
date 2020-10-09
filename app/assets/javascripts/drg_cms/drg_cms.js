@@ -287,7 +287,8 @@ process_json_result = function(json) {
       if (value == 'parent') {
         parent.location.reload();
 /*** this would be current window (reload: true) ****/
-      } else if (value.size < 5) {
+      } else if (value.length < 5) {
+        window.location.href = window.location.href;
 /*** reload iframe ****/
       } else {
         $( '#' + value ).attr('src', $( '#' + value ).attr('src'));
