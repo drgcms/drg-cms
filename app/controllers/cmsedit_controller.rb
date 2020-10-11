@@ -1,4 +1,3 @@
-#coding: utf-8
 #--
 # Copyright (c) 2012+ Damjan Rems
 #
@@ -594,8 +593,8 @@ end
 def extend_with_control_module(control_name = @form['controls'])
   # May include embedded forms so ; => _
   control_name ||= params[:table].gsub(';','_')
-  control_name += '_control' unless control_name.match(/$control|$report/)
-  #  p '************',  control_name
+  control_name += '_control' unless control_name.match(/control$|report$/i)
+  # p '************',  control_name
   controls = load_controls_module(control_name)
   if controls
     extend controls
