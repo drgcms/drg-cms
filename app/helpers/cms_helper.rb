@@ -75,17 +75,16 @@ end
 def dc_field_label_help(options)
   # no label or help in comments
   unless %w(comment action).include?(options['type'])
-    caption = options['caption'] || options['text']
-    label = if caption.blank?    
+    label = options['caption'] || options['text'] || options['label']
+    label = if label.blank?
       t_name(options['name'], options['name'].capitalize.gsub('_',' ') )
     elsif options['name']
-      t(caption, caption) 
+      t(label, label)
     end
     # help text can be defined in form or in translations starting with helpers. or as helpers.help.collection.field
-    help = if options['help'] 
-      options['help'].match('helpers.') ? t(options['help']) : options['help']
-    end
-    help ||= t('helpers.help.' + @form['table'] + '.' + options['name'],' ') if options['name'] 
+    help = options['help']
+    help ||= "helpers.help.#{@form['table']}.#{options['name']}" if options['name']
+    help = t(help,' ') if help.to_s.match(/helpers\./)
   end
   # create field object from type option and call its render method
   if options['type'].present?

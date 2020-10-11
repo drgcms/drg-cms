@@ -321,10 +321,10 @@ def dc_header_for_result()
     columns.sort.each do |k,v|
       session[:form_processing] = "result_set:columns: #{k}=#{v}"
       th = %Q[<div class="th" style="width:#{v['width'] || '15%'};text-align:#{v['align'] || 'left'};" data-name="#{v['name']}"]
-      # when no caption or name is defined it might be just spacer      
-      if (caption = v['caption']).nil? 
-        caption = v['name'] ? t("helpers.label.#{@form['table']}.#{v['name']}") : ''
-      end
+
+      label = v['caption'] || v['label']
+      label = (v['name'] ? "helpers.label.#{@form['table']}.#{v['name']}" : '') if label.nil?
+      label = t(label) if label.match(/helpers\./)
       # no sorting when embedded documents or custom filter is active 
       sort_ok = @form['result_set'].nil? || (@form['result_set'] && @form['result_set']['filter'].nil?)
       sort_ok = sort_ok || (@form['index'] && @form['index']['sort'])
@@ -333,9 +333,9 @@ def dc_header_for_result()
         if v['name'] == sort_field
           icon = sort_direction == '1' ? 'sort-alpha-asc lg' : 'sort-alpha-desc lg'
         end        
-        th << ">#{dc_link_to(caption, icon, sort: v['name'], table: params[:table], form_name: params[:form_name], action: :index, icon_pos: :last )}</div>"
+        th << ">#{dc_link_to(label, icon, sort: v['name'], table: params[:table], form_name: params[:form_name], action: :index, icon_pos: :last )}</div>"
       else
-        th << ">#{caption}</div>"
+        th << ">#{label}</div>"
       end
       html << "<div class=\"spacer\"></div>" + th
     end
