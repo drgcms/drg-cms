@@ -772,7 +772,7 @@ element = $(this).find(':first').attr('id');
   });
   
  /*******************************************************************
-  * This will fire cmsedit index action and pass value enterred into 
+  * This will fire cmsedit index action and pass value entered into
   * filter field and thus refresh browsed result set.
   *******************************************************************/
   $('#_record__filter_field').keydown( function(e) {
@@ -911,10 +911,13 @@ element = $(this).find(':first').attr('id');
    });
    
  /*******************************************************************
-  * number_field type keypressed
+  * Key pressed in number_field.
+  * - put minus sign in front of input field
+  * - replace dot and comma separators when required. Not all numeric pads are created equal.
+  * - when enter is pressed, save value to field before form is proccessed
   *******************************************************************/
    $('.dc-number').on('keydown', function(e) {
-// Minus sign. Put it on first place     
+     // Minus sign. Put it on first place
      if (e.which == 109) {
        if($(this).val().substr(0,1) == '-') {
          $(this).val( $(this).val().substr(1,20));
@@ -923,17 +926,47 @@ element = $(this).find(':first').attr('id');
        }
        e.preventDefault();
      }
-// Enter. Save value before Enter is processed
-      if (e.which == 13) {
-        var delimiter = $(this).attr("data-delimiter") || '.';
-        var decimals  = $(this).attr("data-decimal") || 2;        
-        var value = $(this).val().replace(delimiter,'.');
-        var field = '#' + $(this).attr("id").slice(0,-1);
+     // replace , with . if . is separator.
+     var separator = $(this).attr("data-separator") || '.';
+     var inp = this;
+     if (e.which == 188) {
+       if (separator == '.') {
+         setTimeout(function() {
+           inp.value = inp.value.replace(/,/g, '.');
+         }, 0);
+       }
+     }
+     // replace . with , if , is separator
+     if (e.which == 190) {
+       if (separator == ',') {
+         setTimeout(function() {
+           inp.value = inp.value.replace(/\./g, ',');
+         }, 0);
+       }
+     }
+
+     // Enter means process form. Save the value before form is processed
+     if (e.which == 13) {
+       var decimals  = $(this).attr("data-decimal") || 2;
+       var value = $(this).val().replace(separator,'.');
+       var field = '#' + $(this).attr("id").slice(0,-1);
         
-        $(field).val( parseFloat(value).toFixed(decimals) );
-      }
+       $(field).val( parseFloat(value).toFixed(decimals) );
+     }
    });
-   
+
+  /*******************************************************************
+   * Slovenian keyboard has comma key instead of dot in numeric pad.
+   * This will catch if comma has been pressed and will replace it with dot.
+   *******************************************************************/
+  $('.date-picker').keypress( function(e) {
+    if (e.keyCode !== 44) return;
+    var inp = this;
+    setTimeout(function() {
+      inp.value = inp.value.replace(/,/g, '.');
+    }, 0);
+  });
+
  /*******************************************************************
   * Result header sort icon is hoverd. Change background icon to filter.
   *******************************************************************/

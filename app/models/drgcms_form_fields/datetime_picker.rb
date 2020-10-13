@@ -53,16 +53,17 @@ class DatetimePicker < DrgcmsField
 def render
   value = @record.try(@yaml['name']) ? I18n.localize(@record[@yaml['name']].localtime) : nil
   #return ro_standard( @parent.dc_format_value(value)) if @readonly
-#
+
   @yaml['options'] ||= {}
   set_initial_value
   @yaml['html']['size'] ||= @yaml['size'] || 14
   @yaml['html']['value'] ||= value if @record[@yaml['name']]
   @yaml['html']['autocomplete'] ||= 'off'
-#
+  @yaml['html']['class'] = @yaml['html']['class'].to_s + ' date-picker'
+
   @yaml['options']['lang']   ||= "'#{I18n.locale}'"
   @yaml['options']['format'] ||= "'#{t('datetimepicker.formats.datetime')}'"
-# 
+
   record = record_text_for(@yaml['name'])
   @html << @parent.text_field(record, @yaml['name'], @yaml['html'])
   @js << %Q[
