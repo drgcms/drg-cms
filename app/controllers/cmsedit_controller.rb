@@ -597,6 +597,11 @@ def extend_with_control_module(control_name = @form['controls'])
   # p '************',  control_name
   controls = load_controls_module(control_name)
   if controls
+    # extend first with dc_report when report
+    if control_name.match(/report$/i)
+      extend DcReport
+      set_report_id(control_name)
+    end
     extend controls
     # Form may be dynamically updated before processed
     send(:dc_update_form) if respond_to?(:dc_update_form)
