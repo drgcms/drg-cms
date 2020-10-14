@@ -64,13 +64,13 @@ end
 ######################################################################
 #
 ######################################################################
-def set_report_id(id)
+def init_report(id)
   @report_id = id
   @bulk = []
 end
 
 ######################################################################
-# Preveri ali so vsa vpisana polja prazna
+# Check if listed fields are blank.
 ######################################################################
 def all_blank?(*names)
   names.each {|e| e.blank? ? true : (break false) }
@@ -78,7 +78,7 @@ end
 
 ######################################################################
 # Will write bulk data to DcTemp.
-################################################################################
+######################################################################
 def bulk_write(doc, the_end = false)
   if doc.class == TrueClass
     the_end = true
@@ -135,7 +135,7 @@ def dc_format_date_time(value, format = nil)
 end
 
 ##############################################################################
-# Inicializira PDF dokument za izpis
+# Initialize PDF document for print
 ##############################################################################
 def pdf_init(opts={})
   pdf = Prawn::Document.new( opts.merge(margin: [30,30,30,30], page_size: 'A4') )
@@ -155,8 +155,11 @@ def pdf_init(opts={})
 end
 
 ################################################################################
-# Izpiše en podatek
-################################################################################
+# Prints out single text (or object) on report.
+#
+# @param [Object] txt : Text or object. Result of to_s method of the object is
+# @param [Hash] opts
+###############################################################################
 def pdf_text(txt, opts={})
   box_opts = {}
   ypos = @pdf.cursor
@@ -170,8 +173,10 @@ def pdf_text(txt, opts={})
 end
 
 ################################################################################
-# Izpiše glavo izpisa
-################################################################################
+# Skip line on report
+#
+# @param [Integer] skip . Number of lines to skip. Default 1.
+###############################################################################
 def pdf_skip(skip = 1)
   @pdf.text('<br>' * skip, inline_format: true)
 end 

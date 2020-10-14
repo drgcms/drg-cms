@@ -600,7 +600,7 @@ def extend_with_control_module(control_name = @form['controls'])
     # extend first with dc_report when report
     if control_name.match(/report$/i)
       extend DcReport
-      set_report_id(control_name)
+      init_report(control_name)
     end
     extend controls
     # Form may be dynamically updated before processed
