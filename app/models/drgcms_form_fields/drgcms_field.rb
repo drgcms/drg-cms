@@ -128,7 +128,6 @@ end
 # Standard code for returning readonly field.
 ####################################################################
 def ro_standard(value=nil)
-  p @yaml['name'],value
   if value.nil?
     value = if @yaml['html']['value']
       @yaml['html']['value']
@@ -152,13 +151,28 @@ end
 #    flash[:record] = {}
 #    flash[:record]['picture'] = '/path/to_picture'
 ####################################################################
-def set_initial_value(opt1='html', opt2='value')
+def set_initial_value(opt1 = 'html', opt2 = 'value')
   @yaml['html'] ||= {}
   value_send_as = 'p_' + @yaml['name']
   if @parent.params[value_send_as]
     @yaml[opt1][opt2] = @parent.params[value_send_as] 
   elsif @parent.flash[:record] and @parent.flash[:record][@yaml['name']]
     @yaml[opt1][opt2] = @parent.flash[:record][@yaml['name']]
+  end
+  set_default_value(opt1, opt2) if @yaml['default']
+end
+
+####################################################################
+# Will set default value
+####################################################################
+def set_default_value(opt1, opt2)
+  return if @yaml[opt1][opt2].present?
+  return if @record && @record[@yaml['name']].present?
+
+  @yaml[opt1][opt2] = if @yaml['default'].class == Hash
+    eval(@yaml['default']['eval'])
+  else
+    @yaml['default']
   end
 end
 
