@@ -29,7 +29,7 @@ attr_accessor :report_id
 attr_accessor :bulk
 
 ######################################################################
-# Print data to PDF
+# Print to PDF action
 ######################################################################
 def print
   pdf_do
@@ -39,14 +39,14 @@ def print
 end
 
 ######################################################################
-# Export data do excel
+# Export data do excel action
 ######################################################################
 def export
   export_to_excel( temp_key )
 end
 
 ######################################################################
-# Will return query to report data
+# Default filter to select data for result.
 ######################################################################
 def data_filter
   DcTemp.where(key: temp_key).order_by(order: 1)
@@ -54,15 +54,18 @@ end
 
 private
 
-################################################################################
-# Return temp key
-################################################################################
+######################################################################
+# Temp key consists of report name and user's id. Key should be added
+# to every dc_temp document and is used to define data, which belongs
+# to current user.
+######################################################################
 def temp_key
   "#{@report_id}-#{session[:user_id]}"
 end
 
 ######################################################################
-#
+# Initialize report. Set report_id internal variable and initialize bulk
+# for bulk saving data to dc_temp collection.
 ######################################################################
 def init_report(id)
   @report_id = id
@@ -70,14 +73,14 @@ def init_report(id)
 end
 
 ######################################################################
-# Check if listed fields are blank.
+# Check if all send fields are blank.
 ######################################################################
-def all_blank?(*names)
-  names.each {|e| e.blank? ? true : (break false) }
+def all_blank?(*fields)
+  fields.each {|e| e.blank? ? true : (break false) }
 end
 
 ######################################################################
-# Will write bulk data to DcTemp.
+# Will write bulk data to dc_temp collection.
 ######################################################################
 def bulk_write(doc, the_end = false)
   if doc.class == TrueClass
@@ -144,8 +147,7 @@ def pdf_init(opts={})
                         permissions: { print_document: true,
                                        modify_contents: false,
                                        copy_contents: false,
-                                       modify_annotations: false }
-                      )
+                                       modify_annotations: false })
   pdf.font_families.update(
     'Arial' => { normal: Rails.root.join('public', 'arial.ttf'),
                  bold: Rails.root.join('public', 'arialbd.ttf') }
@@ -168,6 +170,7 @@ def pdf_text(txt, opts={})
   box_opts.merge!(at: (opts.delete(:at) || [xpos, ypos]))
   box_opts.merge!(width: opts[:width]) if opts[:width]
   box_opts.merge!(align: opts[:align]) if opts[:align]
+  box_opts.merge!(inline_format: opts[:inline_format]) if opts[:inline_format]
 
   @pdf.text_box(txt.to_s, box_opts)
 end
