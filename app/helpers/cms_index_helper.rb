@@ -242,10 +242,10 @@ end
 ############################################################################
 def dc_actions_column_for_footer()
   return '' unless @form['result_set']['actions']
+
   ignore, width = dc_actions_column
   %Q[<div class="actions" style="width: #{width}px;"></div>].html_safe
 end
-
 
 ############################################################################
 # Creates actions that could be performed on single row of result set.
@@ -253,7 +253,7 @@ end
 def dc_actions_for_result(document)
   actions = @form['result_set']['actions']
   return '' if actions.nil? or @form['readonly']
-#  
+
   actions, width = dc_actions_column()
   html = %Q[<ul class="actions" style="width: #{width}px;">]
   actions.each do |k,v|
@@ -265,7 +265,7 @@ def dc_actions_for_result(document)
     # code already includes li tag
     if %w(ajax link window submit).include?(yaml['type']) then
       @record = document # otherwise document fields can't be used as parameters
-      html << dc_link_ajax_window_submit_action(yaml,document)
+      html << dc_link_ajax_window_submit_action(yaml, document)
     else
       html << '<li class="dc-link">'
       html << case

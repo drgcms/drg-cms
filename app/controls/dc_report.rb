@@ -114,7 +114,7 @@ def export_to_excel(report_id)
   data_filter.each do |doc|
     n += 1
     columns.each_with_index do |column, i|
-      value = doc[column.last['name']].to_s.gsub('<br>', "\n")
+      value = doc[column.last['name']].to_s.gsub('<br>', ";")
       value = value.gsub(/\<\/strong\>|\<strong\>|\<\/b\>|\<b\>/, '')
       excel[n, i] = value
     end

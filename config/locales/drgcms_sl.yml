@@ -27,8 +27,8 @@ sl:
     "true": "da"
     "false": "ne"    
     record_deleted: Dokument izbrisan!
-    confirm_delete: Potrdite izbris dokumenta!
-    confirm_dup: Potrdite podvajanje dokumenta!
+    confirm_delete: Potrditev izbrisa dokumenta!
+    confirm_dup: Potrdite podvajanja dokumenta!
     not_authorized: Uporabnik nima pravic za to operacijo!
     doc_disabled: Dokument onemogočen!
     doc_enabled:  Dokument omogočen!
