@@ -590,7 +590,7 @@ end
 ############################################################################
 # Dynamically extend cmsedit class with methods defined in controls module.
 ############################################################################
-def extend_with_control_module(control_name = @form['controls'])
+def extend_with_control_module(control_name = @form['controls'] || @form['control'])
   # May include embedded forms so ; => _
   control_name ||= params[:table].gsub(';','_')
   control_name += '_control' unless control_name.match(/control$|report$/i)
