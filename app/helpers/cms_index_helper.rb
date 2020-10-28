@@ -92,7 +92,7 @@ EOT
       end
       fa_icon('sort-alpha-asc') + ' ' + t('drgcms.sort') + ' ' + 
               select('sort', 'sort', choices, { include_blank: true }, 
-              { class: 'drgcms_sort', 'data-table' => @form['table']} )
+              { class: 'drgcms_sort', 'data-table' => @form['table'], 'data-form' => params['form_name']} )
 # filter
     when action == 'filter' then 
       caption = t('drgcms.filter')
@@ -100,8 +100,9 @@ EOT
 # add filter OFF link
       sess = session[@form['table']]
       if sess and sess[:filter]
-        caption << '&nbsp;&nbsp;' + dc_link_to(nil,'remove lg', {controller: 'cmsedit', 
-                   filter: 'off', table: @form['table']}, { title: DcFilter.title4_filter_off(sess[:filter]) }) 
+        caption << '&nbsp;&nbsp;' + dc_link_to(nil,'remove lg',
+                   { controller: 'cmsedit', filter: 'off', table: @form['table'], form_name: params['form_name'] },
+                   { title: DcFilter.title4_filter_off(sess[:filter]) })
       end
       caption
 # new

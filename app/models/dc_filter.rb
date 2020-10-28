@@ -137,7 +137,7 @@ def self.get_filter_field(parent)
   # url for filter ON action
   field['html']['data-url'] = parent.url_for(
     controller: 'cmsedit',action: :index, filter: 'on',
-    table: parent.form['table'], form_name: parent.form['form_name'])
+    table: parent.form['table'], form_name: parent.params['form_name'])
   url = field['html']['data-url']
   # remove if present
   field['with_new'] = nil if field['with_new']
