@@ -127,8 +127,9 @@ en:
         choices4_operation: 'Submit poll:poll_submit,Link:link'
         choices4_display: 'Top:td,Left:lr,Inside:in'
         tab1: Base
-        tab2: Form
+        tab2: Script
         tab3: Items
+        tab4: Items - advanced
 
         name: Poll name
 
@@ -137,7 +138,9 @@ en:
         operation: Operation
         parameters: Parameters
         display: Label
+        pre_display: Pre display code
         css: CSS
+        js: Javascript
         valid_from: Valid from
         valid_to: Valid to
         dc_poll_items: Items
@@ -654,6 +657,8 @@ en:
         parameters: Aditional parameters for operation
         display: How label is positioned related to input field
         css: CSS specific to this poll
+        js: Javascript code specific to this poll
+        pre_display: Method to be run before poll is displayed. Usually for initial filling of form.
         valid_from: Pole is valid from
         valid_to: Pole is valid to
         dc_poll_items: Items for this poll

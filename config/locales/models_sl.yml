@@ -129,8 +129,9 @@ sl:
         choices4_operation: 'Poženi program:poll_submit,Povezava:link'
         choices4_display: 'Zgoraj:td,Levo:lr,Znotraj:in'
         tab1: Podatki
-        tab2: Forma
-        tab3: Vrstice
+        tab2: Skriptna koda
+        tab3: Vsebina
+        tab4: Vsebina - napredno
 
         name: Ime
         title: Naslov
@@ -139,6 +140,8 @@ sl:
         parameters: Parametri
         display: Napis
         css: CSS
+        js: Skriptna koda
+        pre_display: Pred prikazom zaženi
         valid_from: Velja od
         valid_to: Velja do
         dc_poll_items: Vrstice
@@ -658,6 +661,8 @@ sl:
         parameters: Dodatni parametri za operacijo
         display: Postavitev napisa glede na vpisno polje
         css: CSS samo za to anketo
+        js: Javascript koda samo za to anketo
+        pre_display: Metoda. ki se zažene pred prikazom obrazca. Običajno za privzeto polnjenje podatkov obrazca
         valid_from: Anketa je veljavna od
         valid_to: Anketa je veljavna do
         dc_poll_items: Posamezni podatki ankete

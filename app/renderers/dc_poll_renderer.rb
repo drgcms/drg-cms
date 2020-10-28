@@ -39,6 +39,7 @@ def initialize( parent, opts={} ) #:nodoc:
   @parent   = parent
   @opts     = opts
   @part_css = ''
+  @part_js  = ''
   self
 end
 
@@ -95,8 +96,9 @@ def do_one_item(poll, yaml)
     clas = DrgcmsFormFields.const_get(clas_string)
     field = clas.new(@parent, @record, yaml).render
 #TODO collect all javascript and add it at the end
-    field.html + (field.js.size > 0 ? @parent.javascript_tag(field.js) : '')
-  else # litle error string
+    @part_js << field.js
+    field.html #+ (field.js.size > 0 ? @parent.javascript_tag(field.js) : '')
+  else # error string
     "Error: Code for field type #{yaml['type']} not defined!"
   end
 
@@ -242,6 +244,8 @@ def default
   html << @parent.hidden_field_tag('return_to_error', @parent.request.url )
   html << @parent.hidden_field_tag('poll_id', poll_id )
   html << @parent.hidden_field_tag('page_id', @parent.page.id )
+  # Add javascript code
+  html << @parent.javascript_tag(@part_js + poll.js.to_s)
   html << "</form></div>"
   html << '</div>' if @opts[:div]
   

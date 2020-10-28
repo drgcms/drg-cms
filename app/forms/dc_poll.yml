@@ -78,13 +78,14 @@ form:
 
       80:
         name: valid_from
-        type: datetime_select
+        type: datetime_picker
         options:
           include_blank: true
+        group: 2
 
       90:
         name: valid_to
-        type: datetime_select
+        type: datetime_picker
         options:
           include_blank: true
 
@@ -99,12 +100,11 @@ form:
         type: check_box
     tab2:
       10:
-        name: form
+        name: js
         type: text_area
         html:
           size: 100x50
-          style: 'font-family:courier;' 
-
+          style: 'font-family:courier;'
     tab3:
       20:
         name: dc_poll_items
@@ -112,3 +112,10 @@ form:
         form_name: dc_poll_item
         html:
           height: 800      
+    tab4:
+      10:
+        name: form
+        type: text_area
+        html:
+          size: 100x50
+          style: 'font-family:courier;'

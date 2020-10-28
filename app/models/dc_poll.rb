@@ -63,6 +63,7 @@ field :operation,     type: String
 field :parameters,    type: String
 field :display,       type: String, default: '1'
 field :css,           type: String
+field :js,            type: String
 field :form,          type: String
 field :valid_from,    type: DateTime
 field :valid_to,      type: DateTime
