@@ -84,7 +84,7 @@ def dc_field_label_help(options)
     # help text can be defined in form or in translations starting with helpers. or as helpers.help.collection.field
     help = options['help']
     help ||= "helpers.help.#{@form['table']}.#{options['name']}" if options['name']
-    help = t(help,' ') if help.to_s.match(/helpers\./)
+    help = t(help, ' ') if help.to_s.match(/helpers\./)
   end
   # create field object from type option and call its render method
   if options['type'].present?
@@ -114,17 +114,18 @@ def dc_field_action(yaml)
     value = params['record'][yaml['name']]
     params["p_#{yaml['name']}"] = value
   end
-  #
+  # find field definition on form
   if ( field_definition = dc_get_field_form_definition(yaml['name']) )
-     field, label, help = dc_field_label_help(field_definition)
+    # some options may be redefined
+    field_definition['size'] = yaml['size'] if yaml['size']
+    field, label, help = dc_field_label_help(field_definition)
   else
     yaml['type'] = yaml['field_type']
     field, label, help = dc_field_label_help(yaml)
   end
-   # input field will have label as placeholder
-   field = field.sub('input',"input placeholder=\"#{label}\"")
-   %Q[<li class="no-background">#{field}</li>]
-  
+  # input field will have label as placeholder
+  field = field.sub('input',"input placeholder=\"#{label}\"")
+  %Q[<li class="no-background">#{field}</li>]
 end
 
 ############################################################################
