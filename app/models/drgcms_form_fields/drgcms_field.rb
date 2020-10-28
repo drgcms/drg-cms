@@ -178,7 +178,7 @@ end
 
 ####################################################################
 # Returns style html code for DRGForm object if style directive is present in field definition.
-# Otherwiese returns empty string.
+# Otherwise returns empty string.
 # 
 # Style may be defined like:
 #    style:
@@ -216,7 +216,7 @@ end
 # Returns css code for the field if specified. It replaces all occurences of '# ' 
 # with field name id, as defined on form.
 ####################################################################
-def css_code
+def __css_code
   return '' if @css.blank?
   @css.gsub!('# ',"#td_record_#{@yaml['name']} ")
   "\n<style type=\"text/css\">#{@css}</style>"

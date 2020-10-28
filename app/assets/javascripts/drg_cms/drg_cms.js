@@ -213,7 +213,7 @@ process_json_result = function(json) {
             });
           // select field value
           } else {
-            field.val(value);
+            field.val(value).change();
           }
       // other input fields
       } else {

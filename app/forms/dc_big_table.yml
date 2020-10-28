@@ -21,6 +21,7 @@ result_set:
       name: key
     2:  
       name: description
+      width: 25%
     3:  
       name: site_id
       eval: dc_name4_id,dc_site,name
