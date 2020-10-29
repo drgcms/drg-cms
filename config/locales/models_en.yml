@@ -149,7 +149,7 @@ en:
 
       dc_poll_item:
         tabletitle: Poll items
-        choices4_type: Text:text_field,Text area:text_area,Select:select,Check box:check_box,Submit:submit_tag,Link:link_to,Password:password_field
+        choices4_type: Text:text_field,Text area:text_area,Select:select,Check box:check_box,Submit:submit_tag,Link:link_to,Password:password_field,Radio:radio
         choices4_separator: Space:&nbsp;,Empty line:<br />,Horizontal line:<hr>
 
         name: Name

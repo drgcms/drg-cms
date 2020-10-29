@@ -72,11 +72,11 @@ def render
   @html << "<div class=\"#{clas}\">"
   choices = get_choices
   # When error and boolean field
-  if choices.size == 1 and (@record[@yaml['name']].class == TrueClass or @record[@yaml['name']].class == FalseClass)
-    choices = [[I18n.t('drgcms.true'), true], [I18n.t('drgcms.false'), false]] 
-  end
+  #if choices.size == 1 and (@record[@yaml['name']].class == TrueClass or @record[@yaml['name']].class == FalseClass)
+  #  choices = [[I18n.t('drgcms.true'), true], [I18n.t('drgcms.false'), false]]
+  #end
   # Should select first button if no value provided
-  value = if @record[@yaml['name']].blank? 
+  value = if @record.nil? || @record[@yaml['name']].blank?
     choices.first.class == String ? choices.first :  choices.first.last
   else
     @record[@yaml['name']]

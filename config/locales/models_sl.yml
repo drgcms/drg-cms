@@ -151,7 +151,7 @@ sl:
 
       dc_poll_item:
         tabletitle: Vnosne vrstice
-        choices4_type: Podatek:text_field,Tekst:text_area,Izbirno:select,Izbirni gumb:check_box,Zaključek:submit_tag,Povezava:link_to,Geslo:password_field,Komentar:comment
+        choices4_type: Podatek:text_field,Tekst:text_area,Izbirno:select,Izbirni gumb:check_box,Zaključek:submit_tag,Povezava:link_to,Geslo:password_field,Komentar:comment,Radio:radio
         choices4_separator: Presledek:&nbsp;,Prazna vrstica:<br />,Ravnilo:<hr>
 
         name: Naziv
