@@ -199,22 +199,30 @@ process_json_result = function(json) {
       
 /**** update fields on form ****/
     case 'record':
-      field = $('#'+key);
+//      field = $('#'+key);
+      var name = key.replace('record_','record[') + ']';
+      var field = $('[name="' + name + '"]');
+      console.log(field.attr('type'));
+      console.log(field.is('select'));
       // checkbox field
-      if (field.is(':checkbox')) { 
+      if (field.is(':checkbox')) {
         field.prop('checked', value);
       // select field  
       } else if (field.is('select')) {
-          // options for select field
-          if (value && value.isArray) {
-            field.empty();
-            $.each(value, function(index, v) {
-              field.append( new Option(v[0], v[1]) );
-            });
-          // select field value
-          } else {
-            field.val(value).change();
-          }
+        // options for select field
+        if (value && value.isArray) {
+          field.empty();
+          $.each(value, function(index, v) {
+            field.append( new Option(v[0], v[1]) );
+          });
+        // select field value
+        } else {
+          field.val(value).change();
+        }
+      // radio field
+      } else if (field.attr('type') == 'radio') {
+        field.val([value])
+
       // other input fields
       } else {
         field.val(value);
