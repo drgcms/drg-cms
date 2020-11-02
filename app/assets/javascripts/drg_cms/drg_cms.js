@@ -175,9 +175,9 @@ $(function() {
  *  window_: Will force loading of url supplied in value into new window
  *  reload_: Will reload current window
  *  
- *  Operations can be chained and are executed sequentialy.
- *    render json: {'window_' => "/dokument.pdf", 'reload_' => 1}.to_json
- *  will open /dokument.pdf in new window and reload current window.
+ *  Operations can be chained and are executed sequential.
+ *    render json: {'window_' => "/document.pdf", 'reload_' => 1}.to_json
+ *  will open /document.pdf in new window and reload current window.
  *  
  *    render json: {'record_name' => "Damjan", 'record_surname' => 'Rems'}.to_json
  *  will replace values of two fields on the form.
@@ -201,7 +201,7 @@ process_json_result = function(json) {
     case 'record':
 //      field = $('#'+key);
       var name = key.replace('record_','record[') + ']';
-      var field = $('[name="' + name + '"]');
+      field = $('[name="' + name + '"]');
       console.log(field.attr('type'));
       console.log(field.is('select'));
       // checkbox field
