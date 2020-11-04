@@ -62,6 +62,8 @@ module DrgcmsFormFields
 #      name: company
 #      type: select
 #      choices: Audi,BMW,Mercedes
+#        or
+#      choices: helpers.label.model.choices4_field
 #    60:
 #      name: type
 #      type: select
@@ -75,8 +77,8 @@ class Select < DrgcmsField
 # helper.label.table_name.choices_for_fieldname or
 # choices4_tablename_fieldname
 ###########################################################################
-def choices_in_helper(all)
-  helper = "helpers.label.#{@form['table']}.choices4_#{@yaml['name']}"
+def choices_in_helper(helper = nil)
+  helper ||= "helpers.label.#{@form['table']}.choices4_#{@yaml['name']}"
   c = t(helper)
   if c.match( 'translation missing' )
     helper = "choices_for_#{@form['table']}_#{@yaml['name']}"
@@ -86,10 +88,10 @@ def choices_in_helper(all)
 end
 
 ###########################################################################
-# Choices are defined by evaluating an exspression. This is most common class
-# method defined in a class. SomeClass.get_choices4.
+# Choices are defined by evaluating an expression. This is most common class
+# method defined in a class. eg. SomeClass.get_choices4
 ###########################################################################
-def choices_in_eval(e, all=false)
+def choices_in_eval(e)
   e.strip!
   if @yaml['depend'].nil?
     method = e.split(/\ |\(/).first
@@ -99,19 +101,15 @@ def choices_in_eval(e, all=false)
     eval e
   else
     # add event listener to depend field
-    @js << %Q[
+    @js << %(
 $(document).ready(function() {
   $('#record_#{@yaml['depend']}').change( function(e) { update_select_depend('record_#{@yaml['name']}', 'record_#{@yaml['depend']}','#{e}');});
   $('#_record_#{@yaml['depend']}').change( function(e) { update_select_depend('record_#{@yaml['name']}', '_record_#{@yaml['depend']}','#{e}');});
 });
-]
-    # depend field might be virtual field. Its value should be set in params
-    depend_value = if @yaml['depend'][0] == '_'
-      @parent.params["p_#{@yaml['depend']}"]
-    else
-      @record[@yaml['depend']]
-    end
-    
+)
+    # depend field might be virtual field. It's value should be set in params
+    depend_value = @yaml['depend'][0] == '_' ? @parent.params["p_#{@yaml['depend']}"] : @record[@yaml['depend']]
+
     e << " '#{depend_value}'"
     eval e
   end
@@ -120,19 +118,19 @@ end
 ###########################################################################
 # Create choices array for select field.
 ###########################################################################
-def get_choices(all=false)
+def get_choices
   begin
     choices = case 
-    when @yaml['choices'] then 
-      @yaml['choices']
-    when @yaml['eval']    then
-      choices_in_eval(@yaml['eval'], all)
-    else
-      choices_in_helper(all)
-    end
+              when @yaml['choices'] then
+                @yaml['choices'].match('helpers.') ? choices_in_helper(@yaml['choices']) : @yaml['choices']
+              when @yaml['eval'] then
+                choices_in_eval(@yaml['eval'])
+              else
+                choices_in_helper()
+              end
   # Convert string to Array
     choices.class == String ?
-      choices.chomp.split(',').inject([]) {|r,v| r << (v.match(':') ? v.split(':') : v )} :
+      choices.chomp.split(',').inject([]) { |r,v| r << (v.match(':') ? v.split(':') : v ) } :
       choices
   rescue Exception => e 
     Rails.logger.debug "Error in select eval. #{e.message}\n"
@@ -143,23 +141,22 @@ end
 ###########################################################################
 # Will add code to view more data about selected option in a window
 ###########################################################################
-def add_view_code()
+def add_view_code
   return '' if (data = @record.send(@yaml['name'])).blank?
   ar = @yaml['view'].split(/\ |\,/).delete_if {|e| e.blank?}
   table, form_name = *ar
   url  = @parent.url_for(controller: :cmsedit, id: data, action: :edit, table: table, form_name: form_name, readonly: true, window_close: 1 )
   icon = @parent.fa_icon('eye')
-  %Q[<span class="dc-window-open" data-url="#{url}">#{icon}</span>]
+  %(<span class="dc-window-open" data-url="#{url}">#{icon}</span>)
 end
 
 ###########################################################################
 # Return value when readonly is required
 ###########################################################################
 def ro_standard
-  #value   = @yaml['html']['value'] ? @yaml['html']['value'] : nil
   value = @record.respond_to?(@yaml['name']) ? @record.send(@yaml['name']) : nil
   return self if value.blank?
-# 
+
   choices = get_choices()
   if value.class == Array   # multiple choices
     html = ''
@@ -190,7 +187,7 @@ end
 def render
   return ro_standard if @readonly
   set_initial_value('html','selected')
-# separate options and html part
+  # separate options and html part
   @yaml['html'].symbolize_keys!
   html_part = {}
   html_part[:class] = @yaml['html'].delete(:class)  if @yaml['html'][:class]
@@ -216,7 +213,8 @@ def self.get_data(params, name)
   if params['record'][name].class == Array
     params['record'][name].delete_if {|e| e.blank? }
     return nil if params['record'][name].size == 0
-# convert to BSON objects   
+
+    # convert to BSON objects
     is_id = BSON::ObjectId.legal?(params['record'][name].first)
     return params['record'][name].map{ |e| BSON::ObjectId.from_string(e) } if is_id
     return params['record'][name]
