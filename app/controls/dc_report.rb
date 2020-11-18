@@ -29,6 +29,13 @@ attr_accessor :report_id
 attr_accessor :bulk
 
 ######################################################################
+# Clear result if params[:clear] is 'yes' when form is first displayed
+######################################################################
+def dc_new_record
+  DcTemp.clear(temp_key) if params[:clear].to_s == 'yes'
+end
+
+######################################################################
 # Print to PDF action
 ######################################################################
 def print
@@ -49,7 +56,7 @@ end
 # Default filter to select data for result.
 ######################################################################
 def data_filter
-  DcTemp.where(key: temp_key).order_by(order: 1)
+  params['clear'].to_s == 'yes' ? DcTemp.where(key: false) : DcTemp.where(key: temp_key).order_by(order: 1)
 end
 
 private

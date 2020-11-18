@@ -786,7 +786,7 @@ element = $(this).find(':first').attr('id');
   *******************************************************************/
   $('#_record__filter_field').keydown( function(e) {
     if (e.which == '13' || e.which == '9') {
-      url = $(this).parents('span').attr("data-url");
+      var url = $(this).parents('span').attr("data-url");
       url = url + "&filter_value=" + this.value;
       location.href = url;
       return false;      
@@ -798,8 +798,8 @@ element = $(this).find(':first').attr('id');
   * work on all field types.
   *******************************************************************/
   $('.record_filter_field_icon').on('click', function(e) {
-    field = $('#_record__filter_field');
-    url = $(this).parents('span').attr("data-url");
+    var field = $('#_record__filter_field');
+    var url = $(this).parents('span').attr("data-url");
     url = url + "&filter_value=" + field.val();
     location.href = url;
   });
