@@ -321,8 +321,9 @@ def dc_header_for_result()
   if (columns = @form['result_set']['columns'])
     columns.sort.each do |k,v|
       session[:form_processing] = "result_set:columns: #{k}=#{v}"
-      th = %Q[<div class="th" style="width:#{v['width'] || '15%'};text-align:#{v['align'] || 'left'};" data-name="#{v['name']}"]
+      next if v['width'].to_s.match(/hidden|none/i)
 
+      th = %Q[<div class="th" style="width:#{v['width'] || '15%'};text-align:#{v['align'] || 'left'};" data-name="#{v['name']}"]
       label = v['caption'] || v['label']
       label = (v['name'] ? "helpers.label.#{@form['table']}.#{v['name']}" : '') if label.nil?
       label = t(label) if label.match(/helpers\./)
@@ -413,6 +414,8 @@ def dc_columns_for_result(document)
   html = ''  
   @form['result_set']['columns'].sort.each do |k,v|
     session[:form_processing] = "result_set:columns: #{k}=#{v}"
+    next if v['width'].to_s.match(/hidden|none/i)
+
     # convert shortcut to hash 
     v = {'name' => v} if v.class == String    
     begin

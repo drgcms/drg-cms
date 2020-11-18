@@ -103,6 +103,7 @@ result_set:
       name: name
       eval: dc_name4_id,dc_site,name
       width: 10%
+      width: none || hidden
       align: right (center)
       style: 'color: red;'
       td_class: class-name
