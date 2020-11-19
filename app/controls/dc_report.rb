@@ -49,7 +49,7 @@ def print
   pdf_file = "tmp/dokument-#{Time.now.to_i}.pdf"
   @pdf.render_file Rails.root.join('public', pdf_file)
 
-  render json: { window: "/#{pdf_file}" }
+  render json: print_response(pdf_file)
 end
 
 ######################################################################
@@ -67,6 +67,16 @@ def data_filter
 end
 
 private
+
+######################################################################
+# Will create response message for print action. Response consists of
+# opening pdf file in new browser tab and additional print_message if defined.
+######################################################################
+def print_response(pdf_file)
+  response = { window: "/#{pdf_file}" }
+  response.merge!(report_message) if respond_to?(:report_message, true)
+  response
+end
 
 ######################################################################
 # Temp key consists of report name and user's id. Key should be added
