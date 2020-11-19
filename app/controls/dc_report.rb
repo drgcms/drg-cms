@@ -39,9 +39,16 @@ end
 # Print to PDF action
 ######################################################################
 def print
-  pdf_do
+  begin
+    pdf_do
+  rescue Exception => e
+    dc_dump_exception(e)
+    render json: { msg_error: t('drgcms.runtime_error') } and return
+  end
+
   pdf_file = "tmp/dokument-#{Time.now.to_i}.pdf"
   @pdf.render_file Rails.root.join('public', pdf_file)
+
   render json: { window: "/#{pdf_file}" }
 end
 
@@ -148,8 +155,12 @@ end
 # Initialize PDF document for print
 ##############################################################################
 def pdf_init(opts={})
-  pdf = Prawn::Document.new( opts.merge(margin: [30,30,30,30], page_size: 'A4') )
+  opts[:margin] ||= [30,30,30,30]
+  opts[:page_size] ||= 'A4'
+
+  pdf = Prawn::Document.new(opts)
   pdf.font_size = opts[:font_size] if opts[:font_size]
+
   pdf.encrypt_document( owner_password: :random,
                         permissions: { print_document: true,
                                        modify_contents: false,

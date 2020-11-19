@@ -89,6 +89,7 @@ en:
     reload: Reload
     error: Error!
     errors_no: 'No. of errors:'
+    runtime_error: Runtime error!
     two_chars: type in at least two chars
 
     created_by: Created by
