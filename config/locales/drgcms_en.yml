@@ -34,8 +34,8 @@ en:
     doc_enabled: Document enabled!
     doc_saved: Document saved!
     doc_info: Info  
-    doc_copy_clipboard: Display document data in new window
-    doc_paste_clipboard: Start update
+    doc_copy_clipboard: Copy document data into new window
+    doc_paste_clipboard: Update or create document
     doc_paste_title: Insert (update) documents from JSON data
     doc_paste_update: Update existing document if document._id exists
     doc_no_delete: Document can not be deleted!

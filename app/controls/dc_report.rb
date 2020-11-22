@@ -32,7 +32,18 @@ attr_accessor :bulk
 # Clear result if params[:clear] is 'yes' when form is first displayed
 ######################################################################
 def dc_new_record
-  DcTemp.clear(temp_key) if params[:clear].to_s == 'yes'
+  DcTemp.clear(temp_key) unless params[:clear].to_s == 'no'
+end
+
+######################################################################
+# Check if report option is present in form and shuffle form, so it can
+# be used to display result.
+######################################################################
+def dc_update_form
+  return unless @form && @form['report'] && params[:table] = 'dc_temp'
+
+  # copy form data under report option to top
+  @form['report'].each { |key, data| @form[key] = data }
 end
 
 ######################################################################
@@ -124,7 +135,8 @@ end
 ######################################################################
 def export_to_excel(report_id)
   read_drg_cms_form if @form.blank?
-  columns = @form['result_set']['columns'].sort
+  # use report options if present
+  columns = (@form['report'] ? @form['report'] : @form)['result_set']['columns'].sort
 
   n, workbook = 0, Spreadsheet::Workbook.new
   excel = workbook.create_worksheet(name: report_id)

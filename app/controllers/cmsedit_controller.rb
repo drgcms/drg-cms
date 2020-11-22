@@ -625,6 +625,7 @@ def check_authorization
   end
   read_drg_cms_form
   return render( plain: t('drgcms.form_error') ) if @form.nil?
+
   # Permissions can be also defined on form
   #TODO So far only can_view is used. Think about if using other permissions has sense
   can_view = @form.dig('permissions','can_view')

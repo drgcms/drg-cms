@@ -27,14 +27,14 @@ sl:
     "true": "da"
     "false": "ne"    
     record_deleted: Dokument izbrisan!
-    confirm_delete: Potrditev izbrisa dokumenta!
+    confirm_delete: Potrdite izbris dokumenta!
     confirm_dup: Potrdite podvajanja dokumenta!
     not_authorized: Uporabnik nima pravic za to operacijo!
     doc_disabled: Dokument onemogočen!
     doc_enabled:  Dokument omogočen!
     doc_saved: Dokument zapisan!
     doc_info: Info  
-    doc_copy_clipboard: Pripravi vsebino dokumenta v novem oknu.
+    doc_copy_clipboard: Kopija vsebine dokumenta v novem oknu.
     doc_paste_clipboard: Obdelaj podatke    
     doc_paste_title: Ustvari (spremeni) dokumente iz JSON zapisa
     doc_paste_update: Spremeni obstoječ dokument, če dokument._id obstaja
