@@ -440,22 +440,42 @@ def run
   # extend with control file methods
   extend_with_control_module(control_name)
   if respond_to?(method_name)
+    # can method be called
+    return return_run_error t('drgcms.not_authorized') unless can_process_run
     # call method
     respond_to do |format|
       format.json { send method_name }
       format.html { send method_name }
     end    
-  else
-    # Error message
-    text = "Method #{method_name} not defined in #{control_name}_control"
-    respond_to do |format|
-      format.json { render json: { msg_error: text } }
-      format.html { render plain: text }
-    end    
+  else # Error message
+    return_run_error "Method #{method_name} not defined in #{control_name}_control"
   end
 end
 
 protected
+
+########################################################################
+# Respond with error on run action
+########################################################################
+def return_run_error(text)
+  respond_to do |format|
+    format.json { render json: { msg_error: text } }
+    format.html { render plain: text }
+  end
+end
+
+########################################################################
+# Can run call be processed
+########################################################################
+def can_process_run
+  if respond_to?('dc_can_process')
+    response = send(:dc_can_process)
+    return response unless response.class == Array
+  else
+    response = [DcPermission::CAN_VIEW, params[:table] || 'dc_memory']
+  end
+  dc_user_can response.first, response.last
+end
 
 ########################################################################
 # Checks if user has permissions to perform operation on table and if not
