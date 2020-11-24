@@ -3,7 +3,9 @@
 table: dc_poll_result
 
 index:
+  filter: data as text_field
   actions:
+    1: filter
     10: 
       type: field
       name: dc_poll_id
