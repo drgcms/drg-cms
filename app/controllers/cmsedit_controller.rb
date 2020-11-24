@@ -437,10 +437,10 @@ def run
     method_name  = control_name
     control_name = params[:table]   
   end
-  # extend with control file methods
+  # extend with control methods
   extend_with_control_module(control_name)
   if respond_to?(method_name)
-    # can method be called
+    # can it be called
     return return_run_error t('drgcms.not_authorized') unless can_process_run
     # call method
     respond_to do |format|
@@ -468,13 +468,13 @@ end
 # Can run call be processed
 ########################################################################
 def can_process_run
-  if respond_to?('dc_can_process')
+  if respond_to?(:dc_can_process)
     response = send(:dc_can_process)
     return response unless response.class == Array
   else
     response = [DcPermission::CAN_VIEW, params[:table] || 'dc_memory']
   end
-  dc_user_can response.first, response.last
+  dc_user_can *response
 end
 
 ########################################################################
