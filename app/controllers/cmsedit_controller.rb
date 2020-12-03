@@ -840,10 +840,10 @@ def save_data
 end
 
 ########################################################################
-# Will return commma separated data (field names) as hash. For usage 
+# Will return comma separated data (field names) as array of symbols. For usage
 # in select_fields and deny_fields
 ########################################################################
-def separated_to_hash(data)
+def separated_to_symbols(data)
   data.chomp.split(',').inject([]) {|r,element| r << element.strip.downcase.to_sym }
 end
   
@@ -852,11 +852,11 @@ end
 ########################################################################
 def process_select_and_deny_fields
   if @form['result_set']['select_fields']
-    @records = @records.only( separated_to_hash(@form['result_set']['select_fields']) )
+    @records = @records.only( separated_to_symbols(@form['result_set']['select_fields']) )
   end
 # deny fields specified
   if @form['result_set']['deny_fields']
-    @records = @records.without( separated_to_hash(@form['result_set']['deny_fields']) )
+    @records = @records.without( separated_to_symbols(@form['result_set']['deny_fields']) )
   end
 end
 
