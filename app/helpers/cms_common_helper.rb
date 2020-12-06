@@ -246,8 +246,12 @@ end
 # [format] String. strftime format mask. Defaults to locale's default format.
 ############################################################################
 def self.dc_format_date_time(value, format=nil)
-  return '' if value.nil?
+  return '' if value.blank?
+
   format ||= value.class == Date ? t('date.formats.default') : t('time.formats.default')
+  if format.size == 1
+    format = format.match(/d/i) ? t('date.formats.default') : t('time.formats.default')
+  end
   value.strftime(format)
 end
 
