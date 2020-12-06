@@ -317,9 +317,9 @@ def dc_header_for_result()
   if session[@form['table']]
     sort_field, sort_direction = session[@form['table']][:sort].to_s.split(' ')
   end
-  #  
+
   if (columns = @form['result_set']['columns'])
-    columns.sort.each do |k,v|
+    columns.sort.each do |k, v|
       session[:form_processing] = "result_set:columns: #{k}=#{v}"
       next if v['width'].to_s.match(/hidden|none/i)
 
@@ -330,6 +330,7 @@ def dc_header_for_result()
       # no sorting when embedded documents or custom filter is active 
       sort_ok = @form['result_set'].nil? || (@form['result_set'] && @form['result_set']['filter'].nil?)
       sort_ok = sort_ok || (@form['index'] && @form['index']['sort'])
+      sort_ok = sort_ok && !dc_dont?(v['sort'], false)
       if @tables.size == 1 and sort_ok
         icon = 'sort lg'
         if v['name'] == sort_field
@@ -377,14 +378,10 @@ end
 def dc_format_value(value, format=nil)
   return '' if value.nil?
 
-  klass  = value.class.to_s
-  case when klass.match('Time') then
-    format ||= t('time.formats.default')
-    value.strftime(format)  
-  when klass.match('Date') then
-    format ||= t('date.formats.default')
-    value.strftime(format)  
-  when format.to_s[0] == 'N' then
+  klass = value.class.to_s
+  if klass.match(/time|date/i)
+    CmsCommonHelper.dc_format_date_time(value, format)
+  elsif format.to_s[0] == 'N'
     return '' if value == 0 and format.match('z')
 
     dec = format[1].blank? ? nil : format[1].to_i

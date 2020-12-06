@@ -978,7 +978,8 @@ end
 ####################################################################
 def dc_dont?(what, default=false)
   return default if what.nil?
-  %w(0 no - false none).include?(what.to_s.downcase.strip)
+
+  %w(0 n - no none false).include?(what.to_s.downcase.strip)
 end
 
 ############################################################################
