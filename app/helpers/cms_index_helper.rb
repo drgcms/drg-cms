@@ -223,25 +223,25 @@ end
 ############################################################################
 # Determines actions and width of actions column
 ############################################################################
-def dc_actions_column()
+def dc_actions_column
   actions = @form['result_set']['actions']
-  return [{},0] if actions.nil? or dc_dont?(actions)
+  return [{}, 0] if actions.nil? or dc_dont?(actions)
 # standard actions  
   actions = {'standard' => true} if actions.class == String && actions == 'standard'
-  std_actions = {' 2' => 'edit', ' 3' => 'delete'}
+  std_actions = { 2 => 'edit', 5 => 'delete' }
   if actions['standard']
     actions.merge!(std_actions) 
     actions.delete('standard')
   end
 #  
   width = @form['result_set']['actions_width'] || 18*actions.size
-  [ actions, width ] 
+  [actions, width]
 end
 
 ############################################################################
 # Calculates (blank) space required for actions when @record_footer is rendered 
 ############################################################################
-def dc_actions_column_for_footer()
+def dc_actions_column_for_footer
   return '' unless @form['result_set']['actions']
 
   ignore, width = dc_actions_column
@@ -257,12 +257,11 @@ def dc_actions_for_result(document)
 
   actions, width = dc_actions_column()
   html = %Q[<ul class="actions" style="width: #{width}px;">]
-  actions.each do |k,v|
+  actions.sort_by(&:first).each do |k, v|
     session[:form_processing] = "result_set:actions: #{k}=#{v}"
-    next if k == 'standard' # ignore standard definition
-    parms = @parms.clone   
+    parms = @parms.clone
     # if single definition simulate type parameter
-    yaml = v.class == String ? {'type' => v} : v
+    yaml = v.class == String ? { 'type' => v } : v
     # code already includes li tag
     if %w(ajax link window submit).include?(yaml['type']) then
       @record = document # otherwise document fields can't be used as parameters
