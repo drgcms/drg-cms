@@ -224,8 +224,8 @@ form:
       100:
         name: css
         type: text_area
-        html:
-          size: 100x20
+        size: 100x20
+
 
       110:
         name: active
@@ -235,9 +235,9 @@ form:
       10:
         name: form
         type: text_area
+        size: 100x50
         html:
-          size: 100x50
-          style: 'font-family:courier;' 
+          style: 'font-family:courier;'
 
     tab3:
       20:
@@ -263,6 +263,7 @@ form:
           field: custumer_name
           method: search
         with_new: customer
+        is_id: false
         size: 50      
       50:
         name: kats
