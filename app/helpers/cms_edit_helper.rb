@@ -260,10 +260,9 @@ end
 # Creates input fields for one tab. Subroutine of dc_fields_for_form.
 ############################################################################
 def dc_fields_for_tab(fields_on_tab) #:nodoc:
-  html   = '<div class="dc-form">'
-  labels_pos = dc_check_and_default(@form['form']['labels_pos'], 'right', ['top','left','right'])
-  hidden_fields  = ''
-  odd_even       = nil
+  html = '<div class="dc-form">'
+  labels_pos = dc_check_and_default(@form['form']['labels_pos'], 'right', ['top', 'left', 'right'])
+  hidden_fields, odd_even = '', nil
   group_option, group_count = 0, 0
   reset_cycle()
   # Select form fields and sort them by key
@@ -334,22 +333,22 @@ def dc_fields_for_form()
   html, tabs, tab_data = '',[], ''
   @js  ||= ''
   @css ||= ''
-# Only fields defined  
+  # Only fields defined
   if (form_fields = @form['form']['fields'])
     html << "<div id='data_fields' " + (@form['form']['height'] ? "style=\"height: #{@form['form']['height']}px;\">" : '>')  
     html << dc_fields_for_tab(form_fields) + '</div>'
   else
-# there are multiple tabs on form 
+    # there are multiple tabs on form
     first = true # first tab 
     @form['form']['tabs'].keys.sort.each do |tab_name|
       next if tab_name.match('actions')
-# Tricky. If field name is not on the tab skip to next tab
+      # Tricky. If field name is not on the tab skip to next tab
       if params[:edit_only]
         is_on_tab = false
         @form['form']['tabs'][tab_name].each {|k,v| is_on_tab = true if params[:edit_only] == v['name'] }
         next unless is_on_tab
       end
-# first div is displayed, all others are hidden      
+      # first div is displayed, all others are hidden
       tab_data << "<div id=\"data_#{tab_name.delete("\s\n")}\""
       tab_data << ' class="div-hidden"' unless first
       tab_data << " style=\"height: #{@form['form']['height']}px;\"" if @form['form']['height']
@@ -358,13 +357,13 @@ def dc_fields_for_form()
       tabs << [tab_name, tab_label]
       first = false      
     end
-# make it all work together
+    # make it all work together
     html << '<ul class="dc-form-ul" >'
     first = true # first tab must be selected
     tabs.each do |tab_name, tab_label| 
       html << "<li id=\"li_#{tab_name}\" data-div=\"#{tab_name.delete("\s\n")}\" class=\"dc-form-li"
       html << ' dc-form-li-selected' if first 
-      html << "\">#{t(tab_label, t_name(tab_label,tab_label))}</li>" 
+      html << "\">#{t(tab_label, t_name(tab_label, tab_label))}</li>"
       first = false
     end
     html << '</ul>'
@@ -379,7 +378,6 @@ def dc_fields_for_form()
   @css << "\n#{@form['css']}" 
   html.html_safe
 end
-
 
 ############################################################################
 # Creates head form div. Head form div is used to display header data usefull
