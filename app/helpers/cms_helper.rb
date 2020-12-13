@@ -159,7 +159,8 @@ def dc_link_ajax_window_submit_action(yaml, record=nil, action_active=true)
   yaml['html'] ||= {}
   confirm = yaml['html']['data-confirm'] || yaml['confirm']
   yaml['html']['data-confirm'] = t(confirm) unless confirm.blank?
-  yaml['html']['title']  ||= yaml['title']
+  yaml['html']['title'] ||= yaml['title']
+  yaml['html']['title'] = t(yaml['title'])
   yaml['html']['target'] ||= yaml['target']
   # direct url
   if yaml['url']
@@ -203,7 +204,7 @@ def dc_link_ajax_window_submit_action(yaml, record=nil, action_active=true)
 
     elsif yaml['type'] == 'link'  # link button
       clas = "dc-link dc-animate"
-      link = dc_link_to(yaml['caption'], yaml['icon'], parms, yaml['html'] )
+      link = dc_link_to(yaml['caption'], yaml['icon'], parms, html_data )
       %Q[<li class="#{clas}">#{action_active ? link : caption}</li>]
 
     elsif yaml['type'] == 'window'
