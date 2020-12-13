@@ -61,7 +61,15 @@ def dc_is_action_active?(options)
   # usually only for test
   when option.class  == TrueClass || option['eval'].class == TrueClass then true    
   when option.class == String then
-    (@record.new_record? && option == 'new_record') || (!@record.new_record? && option == 'not_new_record')
+    if option.match(/new_record/i)
+      (@record.new_record? && option == 'new_record') || (!@record.new_record? && option == 'not_new_record')
+    elsif option.match(/\./)
+      # shortcut for method and eval option
+      parms = @record ? @record : params
+      dc_process_eval(option,parms)
+    else
+      eval(option['eval'])
+    end
   # direct evaluate expression
   when option['eval'] then
     eval(option['eval'])
