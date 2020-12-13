@@ -895,6 +895,17 @@ def user_filter_options(model) #:nodoc:
 end
 
 ########################################################################
+# Return current sort options for model (table)
+########################################################################
+def user_sort_options(model) #:nodoc:
+  table_name = (model.class == String ? model : model.to_s).underscore
+  return nil unless session[table_name][:sort]
+
+  field, direction = session[table_name][:sort].split(' ')
+  { field.to_sym => direction.to_i }
+end
+
+########################################################################
 # Will set session[table_name][:filter] and save last filter settings to session.
 # subroutine of check_filter_options.
 ########################################################################
