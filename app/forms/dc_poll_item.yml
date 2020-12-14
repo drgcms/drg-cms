@@ -10,7 +10,8 @@ index:
 result_set:
   actions: 
     1: edit
-    2: delete
+    2: duplicate
+    3: delete
 
   columns:
     1:  
