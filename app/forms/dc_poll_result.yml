@@ -55,6 +55,10 @@ result_set:
       name: created_at
       format: '%d.%m.%Y %H:%M'
       width: 10%
+    30:
+      name: confirmed
+      eval: dc_icon4_boolean
+      width: 5%
 
 form:
   actions: 
@@ -71,6 +75,9 @@ form:
       type: text_area
       size: 100x25
     30:
+      name: confirmed
+      type: check_box
+    40:
       name: created_at
       type: readonly
       format: '%d.%m.%Y %H:%M'

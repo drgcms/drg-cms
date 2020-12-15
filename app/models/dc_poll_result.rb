@@ -29,15 +29,17 @@
 #  _id                  BSON::ObjectId       _id
 #  dc_poll_id           BSON::ObjectId       poll id
 #  data                 String               Data saved as YAML
-# 
+#  confirmed            Boolean              Poll entry was confirmed
+#
 # Results of polls saved as YAML structure.
 ########################################################################
 class DcPollResult
   include Mongoid::Document
   include Mongoid::Timestamps
 
-  field :data,         type: String
   belongs_to :dc_poll
+  field :data,        type: String
+  field :confirmed,   type: Boolean, default: false
 
   index( { dc_poll_id: 1 } )
 

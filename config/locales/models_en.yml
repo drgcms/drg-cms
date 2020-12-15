@@ -168,6 +168,7 @@ en:
         dc_poll_id: Poll name
         created_at: Created date
         data: Data
+        confirmed: Confirmed
 
       dc_policy:
         tabletitle: Access policy declarations
@@ -680,6 +681,7 @@ en:
         dc_poll_id: Poll name 
         created_at: Date when poll result was submited
         data: Data saved in YAML format
+        confirmed: Poll data was confirmed. Ex. User must click on link in email.
 
       dc_policy:
         name: Unique policy name

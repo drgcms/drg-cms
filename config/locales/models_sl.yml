@@ -170,6 +170,7 @@ sl:
         dc_poll_id: Anketa
         created_at: Nastalo
         data: Podatki
+        confirmed: Potrjen
 
       dc_policy:
         tabletitle: Politike za dostop
@@ -684,6 +685,7 @@ sl:
         dc_poll_id: Naziv ankete
         created_at: Čas nastanka zapisa
         data: Podatki v YAML formatu
+        confirmed: Podatki potrjeni. Npr. Uporabnik mora klikniti povezavo v e-pošti.
 
       dc_policy:
         name: Naziv politike
