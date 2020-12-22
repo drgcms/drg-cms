@@ -56,8 +56,8 @@ field :valid_to,    type: Date
 field :created_by,  type: BSON::ObjectId
 field :updated_by,  type: BSON::ObjectId
 
-field :type,        type: Integer, default: 0 # 0 => User, 1 => Group
-field :members,     type: Array
+field :group,       type: Boolean, default: false # false => User, true => Group
+field :member,      type: Array
 
 embeds_many :dc_user_roles
 
@@ -73,23 +73,17 @@ has_secure_password
 
 index( { username: 1 }, { unique: true } )
 index( { email: 1 }, { unique: true } )
-index 'dc_user_roles.dc_policy_role_id' => 1  
-index 'members' => 1  
+index 'dc_user_roles.dc_policy_role_id' => 1
+index member: 1
+index group: 1
 
 validates_length_of :username, minimum: 4
 validates           :username, uniqueness: true  
-validates           :email,    uniqueness: true  
-before_save :do_before_save
+validates           :email,    uniqueness: true
+validate :do_validate
 
-##########################################################################
-# before_save callback takes care of name field and ensures that e-mail is unique 
-# when entry is left empty. 
-##########################################################################
-def do_before_save
-  self.name  = "#{self.title} #{self.first_name} #{self.middle_name + ' ' unless self.middle_name.blank?}#{self.last_name}".strip
-# to ensure unique e-mail            
-  self.email = "unknown@#{self.id}" if self.email.to_s.strip.size < 5
-end
+before_save :do_before_save
+before_validation :do_before_validation
 
 ##########################################################################
 # Checks if user has role 'role_id' defined in his roles.
@@ -111,7 +105,7 @@ end
 # Will return all possible values for country field ready for input in select field. 
 # Values are loaded from github when method is first called.
 ##########################################################################
-def self.choices4_country()
+def self.choices4_country
   if @@countries.nil?
     uri = URI.parse("https://raw.githubusercontent.com/umpirsky/country-list/master/country/cldr/en/country.json")
     http = Net::HTTP.new(uri.host, uri.port)
@@ -125,7 +119,7 @@ def self.choices4_country()
 end
 
 ##########################################################################
-# Performs ligically test on passed email parameter.
+# Performs logically test on passed email parameter.
 # 
 # Parameters:
 # [email] String: e-mail address
@@ -142,6 +136,52 @@ end
 def self.is_email?(email)
   email.to_s =~ /^[a-zA-Z0-9][\w\.-]*[a-zA-Z0-9]@[a-zA-Z0-9][\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]$/
 end
+
+##########################################################################
+# Will return list of available groups
+##########################################################################
+def self.groups_for_select
+  where(group: true, active: true).order_by(name: 1).inject([]) { |r, e| r << [e.name, e.id] }
+end
+
+private
+
+##########################################################################
+# before_save callback takes care of name field and ensures that e-mail is unique
+# when entry is left empty.
+##########################################################################
+def do_before_save
+  self.name  = "#{title} #{first_name} #{middle_name + ' ' unless middle_name.blank?}#{last_name}".strip
+  # to ensure unique e-mail
+  self.email = "unknown@#{id}" if email.blank?
+end
+
+##########################################################################
+# Create random password for groups. Must be done before validation
+##########################################################################
+def do_before_validation
+  if new_record? && group
+    self.password = random_password(30)
+    self.password_confirmation = password
+  end
+end
+
+##########################################################################
+# Perform some additional validations
+##########################################################################
+def do_validate
+  if group && member.present?
+    errors.add('member', I18n.t('errors.messages.present'))
+  end
+end
+##########################################################################
+# Will create random password
+##########################################################################
+def random_password(number)
+  charset = Array('A'..'Z') + Array('0'..'9') + Array('a'..'z')
+  Array.new(number) { charset.sample }.join
+end
+
 
 end
 end

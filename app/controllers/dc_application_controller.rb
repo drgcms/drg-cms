@@ -120,13 +120,12 @@ end
 # @return [String] Form file name including path or nil if not found.
 ########################################################################
 def dc_find_form_file(form_file)
-  form_path=nil
-  if form_file.match(/\.|\//)
-    form_path,form_file=form_file.split(/\.|\//)
-  end
+  form_path = nil
+  form_path, form_file = form_file.split(/\.|\//) if form_file.match(/\.|\//)
+
   DrgCms.paths(:forms).reverse.each do |path|
     f = "#{path}/#{form_file}.yml"
-    return f if File.exist?(f) and (form_path.nil? or path.to_s.match(/\/#{form_path}\//i))
+    return f if File.exist?(f) && (form_path.nil? || path.to_s.match(/\/#{form_path}\//i))
   end
   raise "Exception: Form file '#{form_file}' not found!"
 end
@@ -618,20 +617,20 @@ end
 
 ####################################################################
 # Fills session with data related to successful login.
-# 
+#
 # @param [DcUser] user : User's document
 # @param [Boolean] remember_me : false by default
 ####################################################################
 def fill_login_data(user, remember_me=false)
   session[:user_id]    = user.id if user
   session[:user_name]  = user.name if user
-  session[:edit_mode]  = 0 
+  session[:edit_mode]  = 0
   session[:user_roles] = []
   # Every user has guest role
-#  guest = DcPolicyRole.find_by(system_name: 'guest')
-#  session[:user_roles] << guest.id if guest
+  #  guest = DcPolicyRole.find_by(system_name: 'guest')
+  #  session[:user_roles] << guest.id if guest
   set_default_guest_user_role
-  return unless user and user.active  
+  return unless user and user.active
   # special for SUPERADMIN
   sa = DcPolicyRole.find_by(system_name: 'superadmin')
   if sa and (role = user.dc_user_roles.find_by(dc_policy_role_id: sa.id))
@@ -643,7 +642,7 @@ def fill_login_data(user, remember_me=false)
   policy_site = dc_get_site()
   policy_site = DcSite.find(policy_site.inherit_policy) if policy_site.inherit_policy
   default_policy = policy_site.dc_policies.find_by(is_default: true)
-  # load user roles      
+  # load user roles
   user.dc_user_roles.each do |role|
     next unless role.active
     next if role.valid_from and role.valid_from > Time.now.end_of_day.to_date
@@ -651,7 +650,7 @@ def fill_login_data(user, remember_me=false)
     # check if role is active in this site
     policy_role = default_policy.dc_policy_rules.find_by(dc_policy_role_id: role.dc_policy_role_id)
     next unless policy_role
-    # set edit_mode      
+    # set edit_mode
     session[:edit_mode] = 1 if policy_role.permission > 1
     session[:user_roles] << role.dc_policy_role_id
   end
@@ -661,8 +660,76 @@ def fill_login_data(user, remember_me=false)
   end
 end
 
+####################################################################
+# Fills session with data related to successful login.
+# 
+# @param [DcUser] user : User's document
+# @param [Boolean] remember_me : false by default
+####################################################################
+def fill_login_data(user, remember_me=false)
+  session[:user_id]    = user.id if user
+  session[:user_name]  = user.name if user
+  session[:edit_mode]  = 0 
+  session[:user_roles] = []
+  # Every user has guest role
+  set_default_guest_user_role
+  return unless user&.active
+  # special for SUPERADMIN
+  sa = DcPolicyRole.find_by(system_name: 'superadmin')
+  if sa && (role = user.dc_user_roles.find_by(dc_policy_role_id: sa.id))
+    session[:user_roles] << role.dc_policy_role_id
+    session[:edit_mode] = 2
+    return
+  end
+  # read default policy from site. Policy might be inherited from other site
+  policy_site = dc_get_site()
+  policy_site = DcSite.find(policy_site.inherit_policy) if policy_site.inherit_policy
+  default_policy = policy_site.dc_policies.find_by(is_default: true)
+
+  # load user roles from groups
+  roles = {}
+  user.member.each do |group_id|
+    group = DcUser.find(group_id)
+    next unless group.active
+
+    group.dc_user_roles.each do |role|
+      next if role.active ||
+        (role.valid_from && role.valid_from > Time.now.end_of_day.to_date) ||
+        (role.valid_to && role.valid_to < Time.now.to_date)
+
+      roles[role.dc_policy_role_id] = role
+    end
+  end unless user.member.blank?
+
+  # load user roles from user
+  user.dc_user_roles.each do |role|
+    if !role.active ||
+       (role.valid_from && role.valid_from > Time.now.end_of_day.to_date) ||
+       (role.valid_to && role.valid_to < Time.now.to_date)
+      # not active in user roles will remove role defined in groups
+      roles.delete(role.dc_policy_role_id) if roles[role.dc_policy_role_id]
+      next
+    end
+    roles[role.dc_policy_role_id] = role
+  end
+
+  # select only roles defined in default site policy and set edit_mode
+  roles.each do |key, role|
+    # check if role is active in this site
+    policy_role = default_policy.dc_policy_rules.find_by(dc_policy_role_id: role.dc_policy_role_id)
+    next unless policy_role
+    # set edit_mode      
+    session[:edit_mode] = 1 if policy_role.permission > 1
+    session[:user_roles] << role.dc_policy_role_id
+  end
+  # Save remember me cookie if not CMS user and remember me is selected
+  if session[:edit_mode] == 0 && remember_me
+    cookies.signed[:remember_me] = { :value => user.id, :expires => 180.days.from_now}
+  end
+end
+
 ##########################################################################
-# Will check if user's login data is stil valid and reload user roles.
+# Will check if user's login data is still valid and reload user roles.
 # 
 # @param [Time] repeat_after : Check is repeated after time. This is by default performed every 24 hours.
 ##########################################################################

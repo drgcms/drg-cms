@@ -86,19 +86,20 @@ sl:
 
       dc_user:
         tabletitle: Uporabniki
-        tab1: Osnova
+        1base: Osnova
 
         id: Id
         username: Uporabnik
         title: Titula
         first_name: Ime
+        middle_name: Srednje ime
         last_name: Priimek
         name: Naziv
         address: Naslov
         post: Pošta
         country: Država 
         phone: Telefon
-        email: e-Pošta
+        email: e-Naslov
         picture: Slika
         birthdate: Datum rojstva
         about: Več o
@@ -107,8 +108,8 @@ sl:
         valid_from: Velja od         
         valid_to: Velja do
         updated_by: Spremenil
-        type: Vrsta
-        members: Člani
+        group: Je skupina
+        member: Član v skupinah
         dc_user_roles: Uporabniške vloge 
         password: Geslo
         password_confirmation: Potrdi geslo
@@ -639,8 +640,8 @@ sl:
         valid_from: Začetni datum veljavnosti         
         valid_to: Končni datum veljavnosti
         updated_by: Spremenil
-        type: Vrsta uporabniškega računa
-        members: Člani (če skupina uporabnikov)
+        group: Račun predstavlja uporabniško skupino
+        member: Seznam skupin za uporabnika
         dc_user_roles: Vloge, ki pripadajo temu uporabniku 
         password: Geslo
         password_confirmation: Še enkrat vpišite geslo

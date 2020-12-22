@@ -196,7 +196,13 @@ form:
         eval: ModelName.choices4_site
         eval: dc_big_table 'key-name'
         html:
-          include_blank: true        
+          include_blank: true
+      90:
+        name: kats
+        type: multitext_autocomplete
+        search: dc_category.name
+        with_new: model_name
+        size: 30
 
       40:
         name: operation

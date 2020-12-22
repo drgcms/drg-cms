@@ -94,7 +94,7 @@ en:
 
       dc_user:
         tabletitle: Users
-        tab1: Base
+        1base: Base
 
         id: Id
         username: Username
@@ -116,8 +116,8 @@ en:
         valid_from: Valid from   
         valid_to: Valid to
         updated_by: Updated by
-        type: Type
-        members: Members
+        group: Is group
+        member: Member in groups
         dc_user_roles: Roles 
         password: Password
         password_confirmation: Confirm password
@@ -620,8 +620,8 @@ en:
         valid_from: Account is valid from    
         valid_to: Account is valid until
         updated_by: Account last updated by
-        type: Type of user account
-        members: Members (if type is group)
+        group: This is group account
+        member: User is member in selected groups
         dc_user_roles: Roles for this user
         password: Password
         password_confirmation: Password confirmation

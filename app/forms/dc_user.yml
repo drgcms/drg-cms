@@ -32,12 +32,18 @@ form:
   actions: standard
 
   tabs:
-    tab1:
+    1base:
 
       10:
         name: username
         type: text_field
         size: 10
+        group: 2
+        html:
+          autocomplete: 'off'
+      15:
+        name: group
+        type: check_box
       20:
         name: title
         type: text_field
@@ -45,7 +51,8 @@ form:
       30:
         name: first_name
         type: text_field
-        size: 20
+        size: 30
+        group: 3
 
       40:
         name: middle_name
@@ -65,12 +72,13 @@ form:
       70:
         name: address
         type: text_field
-        size: 50
+        size: 30
+        group: 2
 
       80:
         name: post
         type: text_field
-        size: 50
+        size: 30
 
       90:
         name: country
@@ -81,11 +89,12 @@ form:
         name: email
         type: text_field
         size: 30
+        group: 2
 
       110:
         name: phone
         type: text_field
-        size: 30
+        size: 20
 
       120:
         name: birthdate
@@ -101,12 +110,16 @@ form:
       140:
         name: about
         type: text_area
-        size: 100x10
+        size: 100x5
 
       150:
         name: password
         type: password_field
         size: 20
+        group: 2
+        line: top
+        html:
+          autocomplete: 'off'
 
       160:
         name: password_confirmation
@@ -120,6 +133,8 @@ form:
         size: 20
 
       180:
-        name: signature
-        type: text_area
-        size: 100x5
+        name: member
+        type: select
+        multiple: true
+        eval: DcUser.groups_for_select
+        size: 30

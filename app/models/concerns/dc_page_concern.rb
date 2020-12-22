@@ -94,7 +94,7 @@ end
    
 ######################################################################
 # Will return validation error if all images in body field do not have 
-# alt attribute pressent.
+# alt attribute present.
 ######################################################################
 def validate_images_alt_present
   errors.add('body', I18n.t('drgcms.img_alt_not_present')) unless DcPage.images_alt_present?(self.body)
