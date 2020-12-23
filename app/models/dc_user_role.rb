@@ -57,8 +57,8 @@ class DcUserRole
 # Determine of role is still active
 ###############################################################################
 def active?
-  now = Time.zone.local
-  self.active and (self.valid_from.nil? or now > self.valid_from) and (self.valid_to.nil? or now < self.valid_to)
+  now = Time.current
+  active && (valid_from.nil? || now > valid_from) && (valid_to.nil? || now < valid_to)
 end
 
 end

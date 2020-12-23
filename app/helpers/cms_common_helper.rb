@@ -44,7 +44,7 @@ module CmsCommonHelper
 # Returns: 
 # String. Translated text. 
 ####################################################################
-def self.t(key, default=nil) 
+def self.t(key, default=nil)
   c = I18n.t(key)
   if c.class == Hash or c.match( 'translation missing' )
     c = I18n.t(key, locale: 'en') 

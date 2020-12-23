@@ -125,6 +125,8 @@ def process_login
     if user and user.authenticate(params[:record][:password])
       fill_login_data(user, params[:record][:remember_me].to_i == 1)
       return redirect_to params[:return_to] ||  '/'
+    else
+      clear_login_data # on the safe side
     end
   end
   flash[:error] = t('drgcms.invalid_username')
@@ -149,7 +151,6 @@ def login
     if user and user.active
       fill_login_data(user, true)
       return redirect_to params[:return_to]
-
     else
       clear_login_data # on the safe side
     end

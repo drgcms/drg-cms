@@ -524,7 +524,7 @@ end
 # can be found in drg_cms.js file. 
 # 
 # @param [Hash] Options
-# 
+#
 # @return [JSON Response] Formatted to be used for ajax return.
 # 
 # @example
@@ -536,7 +536,7 @@ end
 ######################################################################
 def dc_render_ajax(opts)
   result = {}
-  if opts[:div] or opts[:class]
+  if opts[:div] || opts[:class]
     selector = opts[:div] ? '#' : '.' # for div . for class
     key = case
       when opts[:prepend] then "#{selector}+div"
@@ -558,7 +558,7 @@ end
 # @param [String] Table (collection) name. Could be dc_page;dc_part;... when searching for embedded document.
 # @param [String] Id of the document
 # @param [String] Ids of parent documents when document is embedded. Ids are separated by ; char. 
-# 
+#
 # @return [document]. Required document or nil if not found.
 # 
 # @example As used in Cmsedit_controller
@@ -603,7 +603,7 @@ def clear_login_data
   session[:edit_mode]   = 0
   session[:user_id]     = nil
   session[:user_name]   = nil
-  session[:user_roles]  = nil
+  set_default_guest_user_role
   cookies.delete :remember_me
 end
 
@@ -666,14 +666,13 @@ end
 # @param [DcUser] user : User's document
 # @param [Boolean] remember_me : false by default
 ####################################################################
-def fill_login_data(user, remember_me=false)
-  session[:user_id]    = user.id if user
-  session[:user_name]  = user.name if user
-  session[:edit_mode]  = 0 
-  session[:user_roles] = []
-  # Every user has guest role
+def fill_login_data(user, remember_me = false)
+  session[:user_id]   = user.id if user
+  session[:user_name] = user.name if user
+  session[:edit_mode] = 0
   set_default_guest_user_role
   return unless user&.active
+
   # special for SUPERADMIN
   sa = DcPolicyRole.find_by(system_name: 'superadmin')
   if sa && (role = user.dc_user_roles.find_by(dc_policy_role_id: sa.id))
@@ -693,25 +692,24 @@ def fill_login_data(user, remember_me=false)
     next unless group.active
 
     group.dc_user_roles.each do |role|
-      next if role.active ||
-        (role.valid_from && role.valid_from > Time.now.end_of_day.to_date) ||
-        (role.valid_to && role.valid_to < Time.now.to_date)
-
+      next unless role.active?
       roles[role.dc_policy_role_id] = role
     end
   end unless user.member.blank?
 
   # load user roles from user
   user.dc_user_roles.each do |role|
-    if !role.active ||
-       (role.valid_from && role.valid_from > Time.now.end_of_day.to_date) ||
-       (role.valid_to && role.valid_to < Time.now.to_date)
-      # not active in user roles will remove role defined in groups
+    # not active in user roles will remove role defined in groups
+    p 1
+    if !role.active?
+      p 2
+
       roles.delete(role.dc_policy_role_id) if roles[role.dc_policy_role_id]
       next
     end
     roles[role.dc_policy_role_id] = role
   end
+  p roles.inspect
 
   # select only roles defined in default site policy and set edit_mode
   roles.each do |key, role|
@@ -724,7 +722,7 @@ def fill_login_data(user, remember_me=false)
   end
   # Save remember me cookie if not CMS user and remember me is selected
   if session[:edit_mode] == 0 && remember_me
-    cookies.signed[:remember_me] = { :value => user.id, :expires => 180.days.from_now}
+    cookies.signed[:remember_me] = { value: user.id, expires: 180.days.from_now }
   end
 end
 
@@ -733,10 +731,9 @@ end
 # 
 # @param [Time] repeat_after : Check is repeated after time. This is by default performed every 24 hours.
 ##########################################################################
-def dc_check_user_still_valid(repeat_after=1.day)
-  # not needed
-  return if session[:user_id].nil? 
-  # last check more than a day ago
+def dc_check_user_still_valid(repeat_after = 1.day)
+  return if session[:user_id].nil?
+  # last check more than repeat_after ago
   if (session[:user_chk] ||= Time.now) < repeat_after.ago
     user_id = session[:user_id]
     clear_login_data
@@ -753,7 +750,7 @@ end
 # @param [String] class_method defined as MyClass.method_name
 # @param [Object] optional parameters send to class_method
 ##########################################################################
-def dc_eval_class_method(class_method, params=nil)
+def dc_eval_class_method(class_method, params = nil)
   klass, method = class_method.split('.')
   # check if class exists
   klass = klass.classify.constantize rescue nil
@@ -796,6 +793,7 @@ end
 ########################################################################
 def dc_add_meta_tag(type, name, content)
   return if content.blank?
+
   @meta_tags ||= {}
   key = "#{type}=\"#{name}\""
   @meta_tags[key] = content
@@ -836,8 +834,9 @@ end
 #   end
 #      
 ####################################################################
-def self.dc_check_model(document, crash=false)
+def self.dc_check_model(document, crash = false)
   return nil unless document.errors.any?
+
   msg = ""
   document.errors.each do |attribute, errors_array|
     msg << "#{attribute}: #{errors_array}\n"

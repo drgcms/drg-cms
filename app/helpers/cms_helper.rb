@@ -158,9 +158,9 @@ def dc_link_ajax_window_submit_action(yaml, record=nil, action_active=true)
   # set data-confirm when confirm 
   yaml['html'] ||= {}
   confirm = yaml['html']['data-confirm'] || yaml['confirm']
-  yaml['html']['data-confirm'] = t(confirm) unless confirm.blank?
+  yaml['html']['data-confirm'] = t(confirm) if confirm.present?
   yaml['html']['title'] ||= yaml['title']
-  yaml['html']['title'] = t(yaml['title'])
+  yaml['html']['title'] = t(yaml['title']) if yaml['title'].present?
   yaml['html']['target'] ||= yaml['target']
   # direct url
   if yaml['url']
