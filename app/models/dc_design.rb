@@ -87,25 +87,35 @@
 #    <style type="text/css"><%= @css.html_safe %></style><%= javascript_tag @js %>
 ########################################################################
 class DcDesign
-  include Mongoid::Document
-  include Mongoid::Timestamps
-  
-  field   :description, type: String,  default: ''
-  field   :body,        type: String,  default: ''
-  field   :css,         type: String,  default: ''
-  field   :rails_view,  type: String,  default: ''
-  field   :control,     type: String,  default: ''
-  field   :params,      type: String,  default: ''
-  field   :control_method,  type: String,  default: ''
-  field   :author,      type: String
-  field   :active,      type: Boolean, default: true 
-  field   :created_by,  type: BSON::ObjectId
-  field   :updated_by,  type: BSON::ObjectId
-  field   :site_id,     type: BSON::ObjectId
-  
-  embeds_many :dc_parts
-  
-  validates_length_of :description, minimum: 5
+include Mongoid::Document
+include Mongoid::Timestamps
+
+field   :description, type: String,  default: ''
+field   :body,        type: String,  default: ''
+field   :css,         type: String,  default: ''
+field   :rails_view,  type: String,  default: ''
+field   :control,     type: String,  default: ''
+field   :params,      type: String,  default: ''
+field   :control_method,  type: String,  default: ''
+field   :author,      type: String
+field   :active,      type: Boolean, default: true
+field   :created_by,  type: BSON::ObjectId
+field   :updated_by,  type: BSON::ObjectId
+field   :site_id,     type: BSON::ObjectId
+
+embeds_many :dc_parts
+
+validates_length_of :description, minimum: 5
+
+after_save :cache_clear
+after_destroy :cache_clear
+
+####################################################################
+# Clear cache if cache is configured
+####################################################################
+def cache_clear
+  DrgCms.cache_clear(:dc_design)
+end
   
 ########################################################################
 # Return choices for select for design_id. 

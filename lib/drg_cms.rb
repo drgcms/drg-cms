@@ -118,6 +118,59 @@ def self.from_root(file=nil)
   File.expand_path("../../#{file}", __FILE__).to_s
 end
 
+####################################################################
+# Checks if any errors exist on document and writes error log. It can also
+# crash if requested. This is mostly usefull in development for debuging
+# model errors or when updating multiple collections and each save must be
+# checked if succesfull.
+#
+# @param [Document] Document object which will be checked
+# @param [Boolean] If true method should end in runtime error. Default = false.
+#
+# @return [String] Error messages or empty string if everything is OK.
+#
+# @Example Check for error when data is saved.
+#   model.save
+#   if (msg = DrgCms.model_check(model) ).size > 0
+#     p msg
+#     error process ......
+#   end
+#
+####################################################################
+def self.model_check(document, crash = false)
+  return nil unless document.errors.any?
+
+  msg = ""
+  document.errors.each do |attribute, errors_array|
+    msg << "#{attribute}: #{errors_array}\n"
+  end
+  #
+  if crash and msg.size > 0
+    msg = "Validation errors in #{document.class}:\n" + msg
+    pp msg
+    Rails.logger.error(msg)
+    raise "Validation error. See log for more information."
+  end
+  msg
+end
+
+####################################################################
+# Clear cache. If key is specified only this key will be deleted.
+#
+# @param [String] Optional key to be deleted
+####################################################################
+def self.cache_clear(key = nil)
+  return Rails.cache.clear if key.nil?
+
+  if ((Rails.application.config.cache_store.first == :redis_cache_store) rescue false)
+    p 'pred', Rails.cache.redis.hget(key).size
+    Rails.cache.redis.del(key)
+    p 'potem', Rails.cache.redis.hget(key).size
+  else
+    Rails.cache.delete_matched("#{key}*")
+  end
+end
+
 ###############################################################################
 # All Routes required by DrgCms. 
 # 

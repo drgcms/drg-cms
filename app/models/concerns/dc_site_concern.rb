@@ -27,44 +27,55 @@
 module DcSiteConcern
 extend ActiveSupport::Concern
 included do
-  include Mongoid::Document
-  include Mongoid::Timestamps
-  
-  field :name,                type: String
-  field :description,         type: String
-  field :homepage_link,       type: String
-  field :error_link,          type: String
-  field :header,              type: String, default: ''
-  field :css,                 type: String, default: ''
-  field :route_name,          type: String, default: ''
-  field :page_title,          type: String  
-  field :document_extension,  type: String  
-  field :page_table,          type: String
-  field :page_class,          type: String, default: 'DcPage'
-  field :site_layout,         type: String, default: 'content'
-  field :menu_class,          type: String, default: 'DcSimpleMenu'
-  field :request_processor,   type: String
-  field :files_directory,     type: String
-  field :logo,                type: String
-  field :active,              type: Boolean, default: true
-  field :created_by,          type: BSON::ObjectId
-  field :updated_by,          type: BSON::ObjectId  
-  field :menu_name,           type: String
-  field :menu_id,             type: BSON::ObjectId
-  field :settings,            type: String
-  field :alias_for,           type: String  
-  field :rails_view,          type: String,  default: ''
-  field :design,              type: String,  default: ''
-  field :inherit_policy,      type: BSON::ObjectId 
-  
-  embeds_many :dc_policies
-  embeds_many :dc_parts
-  
-  index( { name: 1 }, { unique: true } )
-  index( { alias_for: 1 } )
-  
-  validates :name, presence: true
-  validates :name, uniqueness: true      
+
+include Mongoid::Document
+include Mongoid::Timestamps
+
+field :name,                type: String
+field :description,         type: String
+field :homepage_link,       type: String
+field :error_link,          type: String
+field :header,              type: String, default: ''
+field :css,                 type: String, default: ''
+field :route_name,          type: String, default: ''
+field :page_title,          type: String
+field :document_extension,  type: String
+field :page_table,          type: String
+field :page_class,          type: String, default: 'DcPage'
+field :site_layout,         type: String, default: 'content'
+field :menu_class,          type: String, default: 'DcSimpleMenu'
+field :request_processor,   type: String
+field :files_directory,     type: String
+field :logo,                type: String
+field :active,              type: Boolean, default: true
+field :created_by,          type: BSON::ObjectId
+field :updated_by,          type: BSON::ObjectId
+field :menu_name,           type: String
+field :menu_id,             type: BSON::ObjectId
+field :settings,            type: String
+field :alias_for,           type: String
+field :rails_view,          type: String,  default: ''
+field :design,              type: String,  default: ''
+field :inherit_policy,      type: BSON::ObjectId
+
+embeds_many :dc_policies
+embeds_many :dc_parts
+
+index( { name: 1 }, { unique: true } )
+index( { alias_for: 1 } )
+
+validates :name, presence: true
+validates :name, uniqueness: true
+
+after_save :cache_clear
+after_destroy :cache_clear
+
+####################################################################
+# Clear cache if cache is configured
+####################################################################
+def cache_clear
+  DrgCms.cache_clear(:dc_permission)
+end
 
 ########################################################################
 # Returns value of site setting. If no value is send as parameter it returns 

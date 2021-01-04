@@ -75,7 +75,17 @@ embeds_many :dc_policy_rules, as: :policy_rules
 index( { table_name: 1 }, { unique: true } )    
 
 validates :table_name, presence: true
-validates :table_name, uniqueness: true  
+validates :table_name, uniqueness: true
+
+after_save :cache_clear
+after_destroy :cache_clear
+
+####################################################################
+# Clear cache if cache is configured
+####################################################################
+def cache_clear
+  DrgCms.cache_clear(:dc_permission)
+end
 
 ########################################################################
 # Will return choices for permissions prepared for usega in select input field.

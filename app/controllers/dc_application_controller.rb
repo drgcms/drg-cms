@@ -1,4 +1,3 @@
-#coding: utf-8
 #--
 # Copyright (c) 2012+ Damjan Rems
 #
@@ -66,8 +65,8 @@ end
 ####################################################################
 def dc_user_has_role(role)
   role = DcPolicyRole.get_role(role)
-  return false if role.nil? or session[:user_roles].nil?
-# role is found in user_roles
+  return false if role.nil? || session[:user_roles].nil?
+  # role exists in user_roles
   session[:user_roles].include?(role._id)
 end
 
@@ -82,21 +81,27 @@ end
 #    settings = dc_get_site.params['ga_acc']
 ####################################################################
 def dc_get_site()
-  return @site if @site 
+  return @site if @site
+
   uri  = URI.parse(request.url)
+  cache_key = ['dc_site', uri.host]
+  Rails.cache.clear
+  @site = dc_cache_read(cache_key)
+  return @site if @site
+
   @site = DcSite.find_by(name: uri.host)
-# Site can be aliased
-  if @site and !@site.alias_for.blank?
+  # Site can be aliased
+  if @site && !@site.alias_for.blank?
     @site = DcSite.find_by(name: @site.alias_for)
   end
-# Development environment. Check if site with name test exists and use 
-# alias_for as pointer to real site.
-  if @site.nil? and ENV["RAILS_ENV"] != 'production'
+  # Development environment. Check if site with name test exists and use
+  # alias_for as pointer to real site.
+  if @site.nil? && ENV["RAILS_ENV"] != 'production'
     @site = DcSite.find_by(name: 'test')
     @site = DcSite.find_by(name: @site.alias_for) if @site
-  end 
-  @site = nil if @site and !@site.active # site is disabled
-  @site
+  end
+  @site = nil if @site && !@site.active # site is disabled
+  dc_cache_write(cache_key, @site)
 end
 
 ##########################################################################
@@ -164,42 +169,6 @@ end
 
 protected
 
-#############################################################################
-# Add permissions. Subroutine of dc_user_can
-############################################################################
-def __add_permissions_for(table_name=nil) # :nodoc:
-  perm = table_name.nil? ? DcPermission.find_by(is_default: true) : DcPermission.find_by(table_name: table_name, active: true)
-  (perm.dc_policy_rules.each {|p1| @permissions[p1.dc_policy_role_id] = p1.permission }) if perm
-end
-
-############################################################################
-# Checks if user can perform (read, create, edit, delete) document in specified
-# table (collection).
-# 
-# @param [Integer] Required permission level
-# @param [String] Collection (table) name for which permission is queried. Defaults to params[table].
-# 
-# @return [Boolean] true if user's role permits (is higher or equal then required) operation on a table (collection). 
-# 
-# @Example True when user has view permission on the table
-#   if dc_user_can(DcPermission::CAN_VIEW, params[:table]) then ...
-############################################################################
-def __dc_user_can(permission, table=params[:table])
-  if @permissions.nil?
-    @permissions = {}
-    add_permissions_for # default permission
-    table_name = ''
-# permission can be set for table or object embedded in table. Read all possible values  
-    table.strip.downcase.split(';').each do |t|
-      table_name << (table_name.size > 0 ? ';' : '') + t # table;embedded;another;...
-      add_permissions_for table_name
-    end
-  end
-# Return true if any of the permissions user has is higher or equal to requested permission 
-  session[:user_roles].each {|r| return true if @permissions[r] and @permissions[r] >= permission }
-  false
-end  
-
 ###########################################################################
 # Checks if user can perform (read, create, edit, delete) document in specified
 # table (collection).
@@ -212,17 +181,61 @@ end
 # @Example True when user has view permission on the table
 #   if dc_user_can(DcPermission::CAN_VIEW, params[:table]) then ...
 ############################################################################
-def dc_user_can(permission, table=params[:table])
-  @permissions ||= DcPermission.permissions_for_table(table)
-# Return true if any of the permissions user has is higher or equal to requested permission 
-  session[:user_roles].each {|r| return true if @permissions[r] and @permissions[r] >= permission }
+def dc_user_can(permission, table = params[:table])
+  permissions = DcPermission.permissions_for_table(table)
+  session[:user_roles].each {|r| return true if permissions[r] && permissions[r] >= permission }
+  false
+end
+
+def dc_user_can(permission, table = params[:table])
+  cache_key = ['dc_permission', table, session[:user_id], dc_get_site.id]
+  permissions = dc_cache_read(cache_key)
+  if permissions.nil?
+    permissions = DcPermission.permissions_for_table(table)
+    dc_cache_write(cache_key, permissions)
+  end
+  session[:user_roles].each {|r| return true if permissions[r] && permissions[r] >= permission }
   false
 end
 
 ####################################################################
-# Detects if called from mobile agent according to http://detectmobilebrowsers.com/ 
+# Read from cache
+#
+# @keys [Array] Array of keys
+#
+# @return [Object] Data returned from cache
+####################################################################
+def dc_cache_read(keys)
+  if redis_cache_store?
+    first = keys.shift
+    redis.hget(first, keys.join(''))
+  else
+    Rails.cache.read(keys.join(''))
+  end
+end
+
+####################################################################
+# Write data to cache
+#
+# @param [Array] Array of keys
+# @param [Object] Data written to cache
+#
+# @return [Object] data so dc_cache_write can be used as last statement in method.
+####################################################################
+def dc_cache_write(key, data)
+  if redis_cache_store?
+    first = keys.shift
+    redis.hset(first, keys.join(''), data)
+  else
+    Rails.cache.write(key.join(''), data)
+  end
+  data
+end
+
+####################################################################
+# Detects if called from mobile agent according to http://detectmobilebrowsers.com/
 # and set session[:is_mobile]
-# 
+#
 # Detect also if caller is a robot and set session[:is_robot]
 ####################################################################
 def dc_set_is_mobile
@@ -230,7 +243,7 @@ def dc_set_is_mobile
                                  : false
   session[:is_mobile] = is_mobile ? 1 : 0
 #
-  if request.env["HTTP_USER_AGENT"] and request.env["HTTP_USER_AGENT"].match(/\(.*https?:\/\/.*\)/)
+  if request.env["HTTP_USER_AGENT "] and request.env["HTTP_USER_AGENT"].match(/\(.*https?:\/\/.*\)/)
     logger.info "ROBOT: #{Time.now.strftime('%Y.%m.%d %H:%M:%S')} id=#{@page.id} ip=#{request.remote_ip}."
     session[:is_robot] = true
   end
@@ -298,7 +311,7 @@ def get_design_and_render(design_doc)
   site_top    = '<%= dc_page_top %>'
   site_bottom = '<%= dc_page_bottom %>'
 # lets try the rails way
- if @options[:control] and @options[:action]
+ if @options[:control] && @options[:action]
     controller = "#{@options[:control]}_control".classify.constantize rescue nil
     extend controller if controller
     return send @options[:action] if respond_to?(@options[:action])
@@ -306,7 +319,7 @@ def get_design_and_render(design_doc)
 # design doc present 
   if design_doc
     # defined as rails view
-    design = if design_doc.rails_view.blank? or design_doc.rails_view == 'site'
+    design = if design_doc.rails_view.blank? || design_doc.rails_view == 'site'
       @site.rails_view
     else
       design_doc.rails_view
@@ -318,7 +331,7 @@ def get_design_and_render(design_doc)
     return render(inline: design, layout: layout) unless design.blank?
   end
 # Design doc not defined
-  if @site.rails_view.blank? 
+  if @site.rails_view.blank?
     design = site_top + @site.design + site_bottom
     render(inline: design, layout: layout)
   else
@@ -340,34 +353,34 @@ end
 #     dc_process_default_request
 #   end
 ##########################################################################
-def dc_process_default_request() 
+def dc_process_default_request
   session[:edit_mode] ||= 0
-# Initialize parts
+  # Initialize parts
   @parts    = nil
   @js, @css = '', ''
-# find domain name in sites
+  # find domain name in sites
   @site = dc_get_site
-# site not defined. render 404 error
+  # site not defined. render 404 error
   return dc_render_404('Site!') if @site.nil?
+
   dc_set_options(@site.settings)
-# HOMEPAGE. When no parameters is set
+  # HOMEPAGE. When no parameters is set
   params[:path]   = @site.homepage_link if params[:id].nil? and params[:path].nil?
   @options[:path] = params[:path].to_s.downcase.split('/')
   params[:path]   = @options[:path].first if @options[:path].size > 1
-# some other process request. It should fail if not defined
+  # some other process request. It should fail if not defined
   return send(@site.request_processor) unless @site.request_processor.blank?
-
-# Search for page 
+  # Search for page
   pageclass = @site.page_klass
   if params[:id]
     #Page.where(id: params[:id]).or(subject_link: params[:id]).first    
     @page = pageclass.find_by(:dc_site_id.in => [@site._id, nil], subject_link: params[:id], active: true)
     @page = pageclass.find(params[:id]) if @page.nil? # I think that there will be more subject_link searchers than id
   elsif params[:path]
-# path may point direct to page's subject_link
+    # path may point direct to page's subject_link
     @page = pageclass.find_by(:dc_site_id.in => [@site._id, nil], subject_link: params[:path], active: true)
     if @page.nil?
-# no. Find if defined in links
+      # no. Find if defined in links
       link = DcLink.find_by(:dc_site_id.in => [@site._id, nil], name: params[:path])
       if link
         #pageclass.find_by(alt_link: params[:path])   
@@ -376,10 +389,10 @@ def dc_process_default_request()
       end
     end
   end
-# if @page is not found render 404 error
+  # if @page is not found render 404 error
   return dc_render_404('Page!') unless @page
   dc_set_is_mobile unless session[:is_mobile] # do it only once per session
-# find design if defined. Otherwise design MUST be declared in site
+  # find design if defined. Otherwise design MUST be declared in site
   if @page.dc_design_id
     @design = DcDesign.find(@page.dc_design_id)
     return dc_render_404('Design!') unless @design
@@ -387,20 +400,21 @@ def dc_process_default_request()
   dc_set_options @design.params if @design
   dc_set_options @page.params
   dc_add_json_ld(@page.get_json_ld)
-# Add edit menu
+  # Add edit menu
   if session[:edit_mode] > 0
     session[:site_id]         = @site.id
     session[:site_page_class] = @site.page_class
     session[:page_id]         = @page.id
-  else 
-# Log only visits from non-editors
+  else
+    # Log only visits from non-editors
     dc_log_visit()
   end
   set_page_title()
   get_design_and_render @design
 end
 
-##########################################################################
+######
+# ####################################################################
 # Single site document kind of request handler.
 # 
 # This request handler assumes that all data for the site is saved in the site document. 
@@ -500,7 +514,7 @@ end
 #      
 ####################################################################
 def dc_check_model(document, crash=false)
-  DcApplicationController.dc_check_model(document, crash=false)
+  DrgCms.check_model(document, crash=false)
 end
 
 ######################################################################
@@ -700,17 +714,12 @@ def fill_login_data(user, remember_me = false)
   # load user roles from user
   user.dc_user_roles.each do |role|
     # not active in user roles will remove role defined in groups
-    p 1
-    if !role.active?
-      p 2
-
+    unless role.active?
       roles.delete(role.dc_policy_role_id) if roles[role.dc_policy_role_id]
       next
     end
     roles[role.dc_policy_role_id] = role
   end
-  p roles.inspect
-
   # select only roles defined in default site policy and set edit_mode
   roles.each do |key, role|
     # check if role is active in this site
@@ -835,20 +844,7 @@ end
 #      
 ####################################################################
 def self.dc_check_model(document, crash = false)
-  return nil unless document.errors.any?
-
-  msg = ""
-  document.errors.each do |attribute, errors_array|
-    msg << "#{attribute}: #{errors_array}\n"
-  end
-  #
-  if crash and msg.size > 0
-    msg = "Validation errors in #{document.class}:\n" + msg
-    pp msg
-    Rails.logger.error(msg)
-    raise "Validation error. See log for more information."
-  end
-  msg
+  DrgCms.model_check(document, crash)
 end
 
 ########################################################################
@@ -864,5 +860,24 @@ def dc_dump_exception(exception)
   Rails.logger.error msg
 end
 
+private
+
+########################################################################
+# Determines if redis cache store is active
+#
+# @return [Boolean] : True if  redis cache store is active
+########################################################################
+def redis_cache_store?
+  (Rails.application.config.cache_store.first == :redis_cache_store) rescue false
+end
+
+########################################################################
+# Returns redis object
+#
+# @return [Object] : Redis object
+########################################################################
+def redis
+  Rails.cache.redis
+end
 
 end

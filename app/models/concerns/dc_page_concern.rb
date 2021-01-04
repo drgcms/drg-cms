@@ -1,4 +1,3 @@
-#coding: utf-8
 #--
 # Copyright (c) 2012+ Damjan Rems
 #
@@ -83,6 +82,16 @@ before_save :do_before_save
 
 validates :publish_date, presence: true
 validate  :validate_images_alt_present
+
+after_save :cache_clear
+after_destroy :cache_clear
+
+####################################################################
+# Clear cache if cache is configured
+####################################################################
+def cache_clear
+  DrgCms.cache_clear(:dc_page)
+end
   
 ######################################################################
 # Will return subject_link. Field name link should be common for all documents

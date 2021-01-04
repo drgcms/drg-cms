@@ -25,17 +25,20 @@
 # ActiveSupport::Concern definition for DcPolicyRule class. 
 #########################################################################
 module DcPolicyRuleConcern
-  extend ActiveSupport::Concern
-  included do
+extend ActiveSupport::Concern
+included do
 
-  include Mongoid::Document
-  include Mongoid::Timestamps
+include Mongoid::Document
+include Mongoid::Timestamps
 
-  belongs_to :dc_policy_role
+belongs_to :dc_policy_role
 
-  field      :permission,    type: Integer, default: 0
+field      :permission,    type: Integer, default: 0
 
-  embedded_in :policy_rules, polymorphic: true 
+embedded_in :policy_rules, polymorphic: true
+
+after_save :cache_clear
+after_destroy :cache_clear
 
 #########################################################################
 # Returns values for permissions ready to be used in select field.
@@ -50,7 +53,7 @@ def self.values_for_permissions
   key = 'helpers.label.dc_policy_rule.choices4_permission'
   c = I18n.t(key)  
   c = I18n.t(key, locale: 'en') if c.class == Hash or c.match( 'translation missing' )
-  c.split(',').inject([]) {|r,e| r << (ar = e.split(':'); [ar.first, ar.last.to_i]) }
+  c.split(',').inject([]) { |r,e| r << (ar = e.split(':'); [ar.first, ar.last.to_i]) }
 end
 
 #########################################################################
@@ -72,6 +75,15 @@ end
 def self.permission_name_for_value(value)
   values_for_permissions.each {|v| return v.first if v.last.to_i == value.to_i}
   'error'
+end
+
+private
+
+####################################################################
+# Clear cache if cache is configured
+####################################################################
+def cache_clear
+  _parent.send(:cache_clear) if _parent.respond_to?(:cache_clear)
 end
 
 end

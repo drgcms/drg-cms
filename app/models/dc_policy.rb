@@ -45,22 +45,33 @@
 # other policies. Default policy is also used when document has no access policy assigned.
 #########################################################################
 class DcPolicy
-  include Mongoid::Document
-  include Mongoid::Timestamps
+include Mongoid::Document
+include Mongoid::Timestamps
 
-  field :name,        type: String
-  field :description, type: String,  default: ''
-  field :is_default,  type: Boolean, default: false
-  field :active,      type: Boolean, default: true
-  field :updated_by,  type: BSON::ObjectId
-  field :message,     type: String,  default: ''
-  
-  embeds_many :dc_policy_rules, as: :policy_rules  
-  embedded_in :dc_site
+field :name,        type: String
+field :description, type: String,  default: ''
+field :is_default,  type: Boolean, default: false
+field :active,      type: Boolean, default: true
+field :updated_by,  type: BSON::ObjectId
+field :message,     type: String,  default: ''
 
-  validates :name, :length => { :minimum => 4 }  
-  validates :message, :length => { :minimum => 5 }  
-  
+embeds_many :dc_policy_rules, as: :policy_rules
+embedded_in :dc_site
+
+validates :name, length: { minimum: 4 }
+validates :message, length: { minimum: 5 }
+
+after_save :cache_clear
+after_destroy :cache_clear
+
+####################################################################
+# Clear cache if cache is configured
+####################################################################
+def cache_clear
+  DrgCms.cache_clear(:dc_permission)
+  DrgCms.cache_clear(:dc_site)
+end
+
 =begin  
 #########################################################################
 # Returns values for permissions ready to be used in select field.
