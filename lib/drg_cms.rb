@@ -163,12 +163,16 @@ def self.cache_clear(key = nil)
   return Rails.cache.clear if key.nil?
 
   if ((Rails.application.config.cache_store.first == :redis_cache_store) rescue false)
-    p 'pred', Rails.cache.redis.hget(key).size
     Rails.cache.redis.del(key)
-    p 'potem', Rails.cache.redis.hget(key).size
   else
     Rails.cache.delete_matched("#{key}*")
   end
+end
+
+def self.__cache_clear(key = nil)
+  return Rails.cache.clear if key.nil?
+
+  Rails.cache.delete_matched("#{key}*")
 end
 
 ###############################################################################

@@ -74,7 +74,7 @@ after_destroy :cache_clear
 # Clear cache if cache is configured
 ####################################################################
 def cache_clear
-  DrgCms.cache_clear(:dc_permission)
+  DrgCms.cache_clear(:dc_site)
 end
 
 ########################################################################

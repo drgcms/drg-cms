@@ -38,18 +38,29 @@
 # which can be persistent, when application is used as Rails plugin. 
 #########################################################################
 class DcPolicyRole
-  include Mongoid::Document
-  include Mongoid::Timestamps
+include Mongoid::Document
+include Mongoid::Timestamps
 
-  field   :name,        type: String
-  field   :system_name, type: String
-  field   :active,      type: Boolean, default: true  
-  
-  index( { name: 1 }, { unique: true } )
-  index( system_name: 1 )
-  
-  validates :name, :length => { :minimum => 4 }  
-  validates :name, uniqueness: true    
+field   :name,        type: String
+field   :system_name, type: String
+field   :active,      type: Boolean, default: true
+
+index( { name: 1 }, { unique: true } )
+index( system_name: 1 )
+
+validates :name, :length => { :minimum => 4 }
+validates :name, uniqueness: true
+
+after_save :cache_clear
+after_destroy :cache_clear
+
+####################################################################
+# Clear cache if cache is configured
+####################################################################
+def cache_clear
+  DrgCms.cache_clear(:dc_permission)
+  DrgCms.cache_clear(:dc_site)
+end
 
 ########################################################################
 # Return all defined roles as choices for use in select field.

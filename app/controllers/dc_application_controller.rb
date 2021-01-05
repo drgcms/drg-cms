@@ -80,12 +80,12 @@ end
 # @example Returns Google analytics code from site settings
 #    settings = dc_get_site.params['ga_acc']
 ####################################################################
-def dc_get_site()
+def dc_get_site
   return @site if @site
 
   uri  = URI.parse(request.url)
   cache_key = ['dc_site', uri.host]
-  Rails.cache.clear
+
   @site = dc_cache_read(cache_key)
   return @site if @site
 
@@ -109,7 +109,7 @@ end
 #
 # Sets internal @page_title variable.
 ##########################################################################
-def set_page_title()
+def set_page_title
   @page_title = @page.title.blank? ? @page.subject : @page.title
   dc_add_meta_tag(:name, 'description', @page.meta_description)
 end
@@ -207,11 +207,18 @@ end
 ####################################################################
 def dc_cache_read(keys)
   if redis_cache_store?
+    keys  = keys.dup
     first = keys.shift
-    redis.hget(first, keys.join(''))
+    data  = redis.hget(first, keys.join(''))
+    data ? Marshal.load(data) : nil
   else
     Rails.cache.read(keys.join(''))
   end
+end
+
+def __dc_cache_read(keys)
+  p 'read', keys.join(''), Rails.cache.instance_variable_get(:@data).keys
+  pp Rails.cache.read(keys.join(''))
 end
 
 ####################################################################
@@ -222,13 +229,20 @@ end
 #
 # @return [Object] data so dc_cache_write can be used as last statement in method.
 ####################################################################
-def dc_cache_write(key, data)
-  if redis_cache_store?
-    first = keys.shift
-    redis.hset(first, keys.join(''), data)
-  else
-    Rails.cache.write(key.join(''), data)
+  def dc_cache_write(keys, data)
+    if redis_cache_store?
+      keys  = keys.dup
+      first = keys.shift
+      redis.hset(first, keys.join(''), Marshal.dump(data))
+    else
+      Rails.cache.write(keys.join(''), data)
+    end
+    data
   end
+
+def __dc_cache_write(keys, data)
+  p 'write', keys.join('')
+  pp Rails.cache.write(keys.join(''), data)
   data
 end
 
