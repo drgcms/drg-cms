@@ -89,14 +89,14 @@ end
 ########################################################################
 # Returns class object of collection name
 ########################################################################
-def page_klass()
+def page_klass
   (self.page_table.blank? ? self.page_class : self.page_table).classify.constantize
 end
 
 ########################################################################
 # Returns class object of menu collection name
 ########################################################################
-def menu_klass()
+def menu_klass
   (menu_class.blank? ? 'DcMenu' : menu_class).classify.constantize
 end
 
@@ -110,12 +110,13 @@ end
 
 ########################################################################
 # Return choices for selecting policies for the site
+# @deprecated
 ########################################################################
-def self.choices4_policies
-  site = ApplicationController.dc_get_site_()
+#def self.choices4_policies
+#  site = ApplicationController.dc_get_site_()
   #all.inject([]) { |r,site| r << [ (site.active ? '' : t('drgcms.disabled') ) + site.name, site._id] }
-  [['a','b']]
-end
+#  [['a','b']]
+#end
 
 ########################################################################
 # Return choices for selecting policies for the site

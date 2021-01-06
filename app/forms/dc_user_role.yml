@@ -14,13 +14,16 @@ result_set:
   columns:
     1:  
       name: dc_policy_role_id
+      width: 25%
       eval: dc_name4_id,dc_policy_role,name
 
     2: 
       name: valid_from
+      width: 10%
 
     3: 
       name: valid_to
+      width: 10%
 
     4: 
       name: active
