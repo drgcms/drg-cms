@@ -204,7 +204,7 @@ def dc_link_ajax_window_submit_action(yaml, record=nil, action_active=true)
 
     elsif yaml['type'] == 'link'  # link button
       clas = "dc-link dc-animate"
-      link = dc_link_to(yaml['caption'], yaml['icon'], parms, html_data )
+      link = dc_link_to(yaml['caption'], yaml['icon'], parms, yaml['html'] )
       %Q[<li class="#{clas}">#{action_active ? link : caption}</li>]
 
     elsif yaml['type'] == 'window'
