@@ -143,6 +143,7 @@ end
 ###########################################################################
 def add_view_code
   return '' if (data = @record.send(@yaml['name'])).blank?
+
   ar = @yaml['view'].split(/\ |\,/).delete_if {|e| e.blank?}
   table, form_name = *ar
   url  = @parent.url_for(controller: :cmsedit, id: data, action: :edit, table: table, form_name: form_name, readonly: true, window_close: 1 )
@@ -186,16 +187,16 @@ end
 ###########################################################################
 def render
   return ro_standard if @readonly
+
   set_initial_value('html','selected')
   # separate options and html part
-  @yaml['html'].symbolize_keys!
   html_part = {}
-  html_part[:class] = @yaml['html'].delete(:class)  if @yaml['html'][:class]
-  html_part[:id]    = @yaml['html'].delete(:id)     if @yaml['html'][:id]
-  html_part[:style] = @yaml['html'].delete(:style)  if @yaml['html'][:style]
+  @yaml['html'].symbolize_keys!
+  %i(class id style).each { |sym| html_part[sym] = @yaml['html'].delete(sym) if html_part[sym]}
+  html_part[:multiple] = true if @yaml['multiple']
+
   record = record_text_for(@yaml['name'])
-  if @yaml['multiple']
-    html_part[:multiple] = true
+  if html_part[:multiple]
     @html << @parent.select(record, @yaml['name'], get_choices, @yaml['html'], html_part)
     @js   << "$('##{record}_#{@yaml['name']}').selectMultiple();"
   else
