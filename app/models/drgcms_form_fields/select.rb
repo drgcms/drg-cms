@@ -186,16 +186,16 @@ end
 ###########################################################################
 def render
   return ro_standard if @readonly
+
   set_initial_value('html','selected')
   # separate options and html part
-  @yaml['html'].symbolize_keys!
   html_part = {}
-  html_part[:class] = @yaml['html'].delete(:class)  if @yaml['html'][:class]
-  html_part[:id]    = @yaml['html'].delete(:id)     if @yaml['html'][:id]
-  html_part[:style] = @yaml['html'].delete(:style)  if @yaml['html'][:style]
+  @yaml['html'].symbolize_keys!
+  %i(class id style required).each { |sym| html_part[sym] = @yaml['html'].delete(sym) if html_part[sym]}
+  html_part[:multiple] = true if @yaml['multiple']
+
   record = record_text_for(@yaml['name'])
-  if @yaml['multiple']
-    html_part[:multiple] = true
+  if html_part[:multiple]
     @html << @parent.select(record, @yaml['name'], get_choices, @yaml['html'], html_part)
     @js   << "$('##{record}_#{@yaml['name']}').selectMultiple();"
   else
@@ -212,12 +212,11 @@ end
 def self.get_data(params, name)
   if params['record'][name].class == Array
     params['record'][name].delete_if {|e| e.blank? }
-    return nil if params['record'][name].size == 0
+    return if params['record'][name].size == 0
 
     # convert to BSON objects
     is_id = BSON::ObjectId.legal?(params['record'][name].first)
     return params['record'][name].map{ |e| BSON::ObjectId.from_string(e) } if is_id
-    return params['record'][name]
   end
   params['record'][name]
 end
