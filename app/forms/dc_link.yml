@@ -51,7 +51,7 @@ form:
       name: page_id
       type: text_autocomplete
       table: 
-        eval: '@parent.session[:site_page_table]'
+        eval: '@parent.dc_get_site.page_class'
       search: subject
       size: 60
      

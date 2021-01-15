@@ -74,7 +74,7 @@ def render
       nil
     end
   end
-  return 'Table or field keyword not defined!' unless (table and ret_name)
+  return ro_standard 'Table or field keyword not defined!' unless (table && ret_name)
   # TODO check if table exists
   t = table.classify.constantize
   # find record and return value of field
