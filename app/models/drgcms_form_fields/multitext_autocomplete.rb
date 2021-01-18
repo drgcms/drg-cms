@@ -77,7 +77,7 @@ def render
     method   = @yaml['search']['method']
     search = method.nil? ? field_name : "#{field_name}.#{method}"
   elsif @yaml['search'].to_s.match(/\./)
-    table, field_name, method = @yaml['search'].split(/\.|\,/) 
+    table, field_name, method = @yaml['search'].split(/\.|\,/).map(&:strip)
     search = method.nil? ? field_name : "#{field_name}.#{method}"
   else # search and table name are separated
     search = field_name = @yaml['search']

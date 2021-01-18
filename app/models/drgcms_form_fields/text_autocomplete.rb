@@ -59,7 +59,7 @@ def render
     ret_name = @yaml['search']['field']
     method   = @yaml['search']['method']
   elsif @yaml['search'].match(/\./)
-    table, ret_name, method = @yaml['search'].split('.') 
+    table, ret_name, method = @yaml['search'].split(/\.|\,/).map(&:strip)
   else
     ret_name = @yaml['search']
   end
