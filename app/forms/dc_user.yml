@@ -22,8 +22,9 @@ result_set:
       name: last_name
       width: 20%
     4: 
-      name: last_visit
-      width: 10%
+      name: active
+      eval: dc_icon4_boolean
+      width: 5%
 
 form:
   title: 

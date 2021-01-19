@@ -323,7 +323,7 @@ display: inline-table;
 font-weight: 600;
 color: #666;
 text-align: center;
-border-radius: 2px;
+border-radius: 3px;
 background: transparent linear-gradient(to bottom, #fff 0%, #e2e2e2 100%);
 border: 1px solid #ddd;
 }
@@ -351,7 +351,7 @@ border: 1px solid #ddd;
   padding: 7px;
   vertical-align: bottom;
   border: 1px solid #ddd;
-  border-radius: 2px;
+  border-radius: 3px;
   color: #888;
   background: #eee !important;
 }
@@ -360,7 +360,7 @@ border: 1px solid #ddd;
   text-align: left;
   font-weight: 600;
   padding: 8px 8px 6px;
-  border-radius: 2px;
+  border-radius: 3px;
   color: #666;
   background: transparent linear-gradient(to bottom, #fff 0%, #e2e2e2 100%) repeat scroll 0% 0%;
   border: 1px solid #ddd;
@@ -403,7 +403,7 @@ transition: 0.3s;
 
 .dc-link-icon {
 padding: 3px;
-border-radius: 2px;
+border-radius: 3px;
 background: transparent linear-gradient(to bottom, #fff 0%, #e2e2e2 100%) repeat scroll 0% 0%;
 border: solid 1px #ccc;;
 }
@@ -427,7 +427,7 @@ border: solid 1px #ccc;;
   padding: 5px 4px 4px;
   background: #fff;
   border: 2px solid #222;
-  border-radius: 5px;
+  border-radius: 3px;
 }
 
 .dc-inline-link:hover {
@@ -439,7 +439,7 @@ border: solid 1px #ccc;;
   text-align: center;
   border:1px solid #888;
   padding:1px 4px 1px 4px;
-  border-radius: 5px;
+  border-radius: 3px;
   box-shadow: 2px 2px 5px #aaa;
   width: 13px; 
   margin-left: 350px;
@@ -464,7 +464,7 @@ border: solid 1px #ccc;;
   padding: 1px 8px 0.5px; 
 /* Exo  padding: 0 8px; */
   
-  border-radius: 2px;
+  border-radius: 3px;
   background-color: #eee;
   background: transparent linear-gradient(to bottom, #fff 0%, #e2e2e2 100%) repeat scroll 0% 0%;
   border: 1px solid #ddd;
@@ -1082,7 +1082,7 @@ white-space: nowrap;
 list-style:none;
 padding: 7px;
 margin-right: 4px;
-border-radius:2px;
+border-radius: 3px;
 z-index: 1;
 
 background: transparent linear-gradient(to bottom, #fff 0%, #e2e2e2 100%) repeat scroll 0% 0%;
@@ -1133,7 +1133,6 @@ color: #222;
 .dc-action-menu li:hover ul li:hover {
 border:  0;
 background: #eee;
-border-radius: 2px;
 }
 
 .menu-filter {
@@ -1207,6 +1206,7 @@ cursor: pointer;
 #dc-document-info-popup {
 text-align: left;
 padding:4px;
+font-size: 0.9em;
 position:absolute;
 background-color: #f8f8f8;
 border: solid 1px #ccc;;
@@ -1220,7 +1220,7 @@ z-index: 100;
   width: 80px;
   padding: 1px;
 }
-#dc-document-info-popup div span:last-child {font-weight: bold;}
+#dc-document-info-popup div span:last-child {font-weight: 600;}
 
 
 /************************** filter popup *************************/

@@ -24,9 +24,10 @@ module DrgcmsFormFields
 
 ###########################################################################
 # Implementation of custom DRG CMS form field. Method field will call method or class method
-# defined in eval option and add returned code to HTML output code. This might prove usefull in 
-# cases where form contains complex dta stgructer or set of pictures which can not
-# be simply displayed by any other field.
+# defined in eval option and add returned code to HTML output code.
+#
+# It can be used in case when form contains complex data structure. For example set of pictures which can not
+# be simply displayed by any other DRG Forms field.
 #   
 # Form example:
 #    50:
@@ -44,7 +45,7 @@ class Method < DrgcmsField
 ###########################################################################
 def render
   # might be defined as my_method or MyClass.my_method
-  clas, method = @yaml['eval'].split('.')
+  clas, method = @yaml['eval'].split(/\.|\,/).map(&:strip)
   if method.nil?
     if @parent.respond_to?(clas)
       @html << @parent.send(clas, @record, @yaml, @readonly) 
