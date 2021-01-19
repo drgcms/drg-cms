@@ -130,7 +130,7 @@ menu:
       500: 
         caption: helpers.label.dc_journal.tabletitle
         controller: cmsedit
-        icon: undo lg
+        icon: history lg
         table: dc_journal
 
       600: 

@@ -14,9 +14,11 @@ result_set:
   columns:
     10: 
       name: operation
+      width: 10%
     15: 
       name: time
-    20: 
+      width: 10%
+    20:
       name: user_id
       eval: dc_name4_id,dc_user,first_name
     30: 

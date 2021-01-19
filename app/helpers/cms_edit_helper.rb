@@ -471,8 +471,14 @@ def dc_document_statistics
   parms[:controller] = 'dc_common'
   parms[:action]     = 'copy_clipboard'
   url = url_for(parms.permit!)
-  html << fa_icon('copy 2x', class: 'dc-link-img dc-link-ajax dc-animate', 
+  html << fa_icon('copy lg', class: 'dc-link-img dc-link-ajax dc-animate',
                   'data-url' => url, 'data-request' => 'get', title: t('drgcms.doc_copy_clipboard') )
+
+  url = url_for(controller: :cmsedit, action: :index, table: 'dc_journal', filter: 'on',
+                filter_oper: 'eq', filter_field: 'doc_id', filter_value: @record.id)
+  html << fa_icon('history lg', class: 'dc-link-img dc-animate dc-window-open',
+                  'data-url' => url, title: t('helpers.label.dc_journal.tabletitle') )
+
   (html << '</div></div>').html_safe
 end
 
