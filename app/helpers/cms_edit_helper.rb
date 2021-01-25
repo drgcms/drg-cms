@@ -36,8 +36,10 @@ module CmsEditHelper
 def dc_value_for_parameter(param)#:nodoc:
   if param.class == Hash
     dc_internal_var(param['object'] || 'record', param['method'])
+  elsif param.to_s.match(/record|document/)
+    @record
   else
-    param    
+    param
   end
 end
 

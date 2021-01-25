@@ -194,12 +194,13 @@ end
 ############################################################################
 def dc_name_for_id(model, field, field_name, id=nil)
   return '' if id.nil?
+
   field_name = (field_name || 'id').strip.to_sym
   field = field.strip.to_sym
-  
   model = model.strip.classify.constantize if model.class == String
-  rec = Mongoid::QueryCache.cache { model.find_by(field_name => id) }
-  rec.nil? ? '' : (rec.send(field) rescue 'not defined')
+  doc = Mongoid::QueryCache.cache { model.find_by(field_name => id) }
+
+  doc.nil? ? '' : (doc.send(field) rescue 'not defined')
 end
 
 ############################################################################
