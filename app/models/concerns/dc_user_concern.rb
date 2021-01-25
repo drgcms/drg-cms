@@ -92,7 +92,7 @@ before_validation :do_before_validation
 ##########################################################################
 def has_role?(role_id)
   return false unless role_id
-#
+
   unless BSON::ObjectId.legal?(role_id)
     role    = DcPolicyRole.get_role(role_id)
     role_id = role.id if role
@@ -161,7 +161,7 @@ end
 ##########################################################################
 def do_before_validation
   if new_record? && group
-    self.password = random_password(30)
+    self.password = DcUser.random_password(30)
     self.password_confirmation = password
   end
 end
@@ -177,11 +177,10 @@ end
 ##########################################################################
 # Will create random password
 ##########################################################################
-def random_password(number)
+def self.random_password(number)
   charset = Array('A'..'Z') + Array('0'..'9') + Array('a'..'z')
   Array.new(number) { charset.sample }.join
 end
-
 
 end
 end
