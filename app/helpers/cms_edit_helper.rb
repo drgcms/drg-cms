@@ -53,9 +53,10 @@ end
 def dc_is_action_active?(options)
   if options['when_new']
     dc_deprecate("when_option will be deprecated and replaced by active: not_new_record! Form #{params[:form_name]}") 
-    return !(dc_dont?(options['when_new']) and @record.new_record?)
+    return !(dc_dont?(options['when_new']) && @record.new_record?)
   end
   return true unless options['active']
+
   # alias record and document so both can be used in eval
   record = document = @record
   option = options['active']
@@ -67,8 +68,7 @@ def dc_is_action_active?(options)
       (@record.new_record? && option == 'new_record') || (!@record.new_record? && option == 'not_new_record')
     elsif option.match(/\./)
       # shortcut for method and eval option
-      parms = @record ? @record : params
-      dc_process_eval(option,parms)
+      dc_process_eval(option, self)
     else
       eval(option['eval'])
     end
@@ -76,9 +76,8 @@ def dc_is_action_active?(options)
   when option['eval'] then
     eval(option['eval'])
   when option['method'] then
-    # if record present send record otherwise send params as parameter
-    parms = @record ? @record : params
-    dc_process_eval(option['method'],parms)
+    # if record present send record otherwise send self as parameter
+    dc_process_eval(option['method'], self)
   else
     false
   end  
