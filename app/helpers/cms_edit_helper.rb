@@ -33,11 +33,11 @@ module CmsEditHelper
 # Will return value when internal or additional parameters are defined in action
 # Subroutine of dc_actions_for_form.
 ############################################################################
-def dc_value_for_parameter(param)#:nodoc:
+def dc_value_for_parameter(param, current_document = nil)#:nodoc:
   if param.class == Hash
     dc_internal_var(param['object'] || 'record', param['method'])
   elsif param.to_s.match(/record|document/)
-    @record
+    current_document ? current_document : @record
   else
     param
   end

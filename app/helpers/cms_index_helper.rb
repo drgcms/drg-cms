@@ -519,7 +519,7 @@ def dc_process_column_eval(yaml, document)
   else
     parms = {}
     if yaml['params'].class == String
-      parms = dc_value_for_parameter(yaml['params'])
+      parms = dc_value_for_parameter(yaml['params'], document)
     elsif yaml['params'].class == Hash
       yaml['params'].each { |k, v| parms[k] = dc_value_for_parameter(v) }
     else
