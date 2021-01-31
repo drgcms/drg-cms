@@ -43,7 +43,7 @@ class FileField < DrgcmsField
 ###########################################################################
 def render
   return self if @readonly 
-  #record = record_text_for(@yaml['name'])
+
   @html << @parent.file_field(nil,@yaml['name'], @yaml['html']) 
   self
 end

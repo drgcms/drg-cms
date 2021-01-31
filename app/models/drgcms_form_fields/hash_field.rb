@@ -45,6 +45,7 @@ class HashField < DrgcmsField
 ###########################################################################
 def ro_standard()
   return self if @record[@yaml['name']].nil?
+
   html = ''
   @record[@yaml['name']].each do |key, value|
     html << "#{key}:#{value}<br>"
@@ -57,10 +58,10 @@ end
 ###########################################################################
 def render
   return ro_standard if @readonly
+
   set_initial_value
-#
   record = record_text_for(@yaml['name'])
-# Convert Hash to values separated by colon  
+  # Convert Hash to values separated by colon
   if @record[@yaml['name']]
     @yaml['html']['value'] = @record[@yaml['name']].to_a.inject('') {|r, e| r << "#{e.first}:#{e.last}\n"}
   end
@@ -73,12 +74,15 @@ end
 ###########################################################################
 def self.get_data(params, name)
   return nil if params['record'][name].blank?
-#
-  result = params['record'][name].split("\n").select {|e| !e.blank? }
-  return nil if result.size == 0
-# convert to Hash
+
+  result = params['record'][name].split("\n").select { |e| !e.blank? }
+  return if result.size == 0
+  # convert to Hash
   ret = {}
-  result.map { |e| key,value = e.chomp.split(':'); ret[key.strip] = value.strip unless value.blank? }
+  result.map do |e|
+    key, value = e.chomp.split(':')
+    ret[key.strip] = value.strip if value.present?
+  end
   ret
 end
 

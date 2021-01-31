@@ -50,10 +50,10 @@ class FileSelect < DrgcmsField
 ###########################################################################
 def render
   return ro_standard if @readonly  
-# retrieve html editor from page settings
+  # retrieve file_select component from site settings
   selector_string = @parent.dc_get_site.params['file_select'] if @parent.dc_get_site 
   selector_string ||= 'elfinder' 
-# 
+
   klas_string = selector_string.camelize
   if DrgcmsFormFields.const_defined?(klas_string)
     klas = DrgcmsFormFields::const_get(klas_string)

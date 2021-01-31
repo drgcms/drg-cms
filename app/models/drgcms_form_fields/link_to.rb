@@ -53,13 +53,13 @@ def render
   @yaml['html'] ||= {}
   @yaml['html']['class'] ||= 'dc-link dc-animate'
   @yaml['html'].symbolize_keys!
-#
+
   @yaml[:id] = record._id if @yaml[:id] == 'id'
   url = @yaml['url'] || "#{@yaml[:controller]}/#{@yaml[:action]}/#{@yaml[:id]}"
   url.gsub!('//','/')                             # no action and id
   url = '/' + @yaml['url'] unless url[0,1] == '/' # no leading /
   url.chop if url[0,-1] == '/'                    # remove trailing /
-#
+
   caption = @yaml['caption'] || @yaml['text']
   @html << @parent.dc_link_to(caption, @yaml['icon'], url, @yaml['html'])
   self
