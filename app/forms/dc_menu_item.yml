@@ -73,6 +73,7 @@ form:
       10:
         name: dc_menu_items
         type: embedded
+        caption: false
         form_name: dc_menu_item
         html:
           height: 1000

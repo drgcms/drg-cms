@@ -102,12 +102,14 @@ form:
       10:
         name: js
         type: text_area
+        caption: false
         html:
           size: 100x50
           style: 'font-family:courier;'
     tab3:
       20:
         name: dc_poll_items
+        caption: false
         type: embedded
         form_name: dc_poll_item
         html:
@@ -115,6 +117,7 @@ form:
     tab4:
       10:
         name: form
+        caption: false
         type: text_area
         html:
           size: 100x50

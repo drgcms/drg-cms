@@ -143,12 +143,14 @@ form:
       20:
         name: dc_policies
         type: embedded
+        caption: false
         form_name: dc_policy
         html:
           height: 800
     6parts:
       10:
         name: dc_parts
+        caption: false
         type: embedded
         form_name: dc_part
         html:

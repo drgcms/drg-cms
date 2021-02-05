@@ -62,6 +62,7 @@ form:
       10:
         name: dc_menu_items
         type: embedded
+        caption: false
         form_name: dc_menu_item
         html:
           height: 1000
@@ -69,6 +70,7 @@ form:
     tab3:
       20:
         name: css
+        caption: false
         type: text_area
         html:
           size: 100x50

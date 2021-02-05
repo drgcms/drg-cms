@@ -143,12 +143,14 @@ form:
     3content:
       10:
         name: body
+        caption: false
         type: html_field
         options: 'height: 1000'
        
     4parts:
       10:
         name: dc_parts
+        caption: false
         type: embedded
         form_name: dc_part
         html:

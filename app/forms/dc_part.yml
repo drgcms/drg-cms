@@ -81,6 +81,7 @@ form:
     2content:
       10:
         name: body
+        caption: false
         type: html_field
         options: 'height: 800'
 
