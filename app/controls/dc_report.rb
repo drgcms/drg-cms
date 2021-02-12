@@ -36,14 +36,12 @@ def dc_new_record
 end
 
 ######################################################################
-# Check if report option is present in form and shuffle form, so it can
-# be used to display result.
+# If exists, set report section as form, so it can be used to display result.
 ######################################################################
 def dc_update_form
-  return unless @form && @form['report'] && params[:table] = 'dc_temp'
+  return unless @form && @form['report'] && params[:table] == 'dc_temp'
 
-  # copy form data under report option to top
-  @form['report'].each { |key, data| @form[key] = data }
+  @form = @form['report']
 end
 
 ######################################################################
@@ -118,7 +116,7 @@ end
 # Will write bulk data to dc_temp collection.
 ######################################################################
 def bulk_write(doc, the_end = false)
-  if doc.class == TrueClass
+  if doc.nil? || doc.class == TrueClass
     the_end = true
   else
     @bulk << doc
@@ -134,7 +132,7 @@ end
 # Export data to Excel
 ######################################################################
 def export_to_excel(report_id)
-  read_drg_cms_form if @form.blank?
+  read_drg_form if @form.blank?
   # use report options if present
   columns = (@form['report'] ? @form['report'] : @form)['result_set']['columns'].sort
 
