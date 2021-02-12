@@ -371,9 +371,9 @@ def dc_clicks_for_result(document)
     html << ' data-dblclick=' + url_for(opts) 
   else
      html << (' data-dblclick=' +
-       url_for(action: 'show', controller: 'cmsedit', id: document.id, 
-       readonly: (params[:readonly] ? 2 : 1), table: params[:table],
-       form_name: params[:form_name], ids: params[:ids])  ) if @form['form'] 
+                url_for(action: 'show', controller: 'cmsedit', id: document.id, ids: params[:ids],
+                        readonly: (params[:readonly] ? 2 : 1), table: params[:table],
+                        form_name: params[:form_name]) ) if @form['form']
   end
   html
 end

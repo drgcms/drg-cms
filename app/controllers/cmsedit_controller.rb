@@ -88,7 +88,7 @@ def index
   @form['result_set'] ||= {}
   redirected = (@form['table'] == 'dc_memory' ? process_in_memory : process_collections)
   return if redirected
-#  
+
   call_callback_method(@form['result_set']['footer'] || 'dc_footer')
   respond_to do |format|
     format.html { render action:  :index }
@@ -108,9 +108,9 @@ end
 ########################################################################
 def show
   find_record
+  # before_show callback
   if (m = callback_method('before_show') )
     ret = call_callback_method(m)
-# Don't do anything if return is false
     if ret.class == FalseClass
       @form['readonly'] = nil # must be
       return index 
@@ -148,20 +148,21 @@ def logout
 end
 
 ########################################################################
-# Logout action. Used to logout direct from CMS.
-# 
-# Logout can be called directly with url http://site.com/cmsedit/logout
+# Shortcut for setting currently selected site in development. Will search
+# for dc_site document with site name 'test' and set alias_for to site
+# url parameter.
 ########################################################################
 def set_test_site 
   # only in development
-  return dc_render_404 if !Rails.env.development?
+  return dc_render_404 unless Rails.env.development?
+
   alias_site = DcSite.find_by(:name => params[:site])
   return dc_render_404 unless alias_site
+
   # update alias for  
-  site           = DcSite.find_by(:name => 'test')
+  site = DcSite.find_by(:name => 'test')
   site.alias_for = params[:site]
   site.save
-  # redirect to root  
   redirect_to '/'
 end
 
@@ -169,17 +170,17 @@ end
 # New action.
 ########################################################################
 def new
-# clear flash messages.
+  # clear flash messages.
   flash[:error] = flash[:warning] = flash[:info] = nil 
   create_new_empty_record
+  # before_new callback
   if (m = callback_method('before_new') )
     ret = call_callback_method(m)
-# Don't do anything if return is false
     return index if ret.class == FalseClass
   end  
   table = @tables.last[1] + '.'
-# initial values set on page
-  if cookies[:record] and cookies[:record].size > 0
+  # initial values set on page
+  if cookies[:record] && cookies[:record].size > 0
     Marshal.load(cookies[:record]).each do |k,v|
       k = k.to_s
       if k.match(table)
@@ -188,15 +189,14 @@ def new
       end
     end
   end
-# initial values set in url
+  # initial values set in url (params)
   params.each do |k,v|
     if k.match(table)
       field = k.split('.').last
       @record.send("#{field}=", v) if @record.respond_to?(field)
     end
   end
-# This is how we set default values for new record
-  #dc_new_record() if respond_to?('dc_new_record') 
+  # new_record callback. Set default values for new record
   if (m = callback_method('new_record') ) then call_callback_method(m)  end
   @parms['action'] = 'create'
 end
@@ -204,19 +204,21 @@ end
 ########################################################################
 # Duplicate embedded document. Since embedded documents are returned differently 
 # then top level document. Subroutine of duplicate_socument.
+#
+#TODO Works for two embedded levels. Dies with third and more levels.
 ########################################################################
 def duplicate_embedded(source) #:nodoc:
-# TODO Works for two embedded levels. Dies with third and more levels.
   dest = {}
   source.each do |attribute_name, value|
     next if attribute_name == '_id' # don't duplicate _id
+
     if value.class == Array
       dest[attribute_name] = []
       value.each do |ar|
         dest[attribute_name] << duplicate_embedded(ar)
       end
-    else      
-# if duplicate string must be added. Useful for unique attributes
+    else
+      # if duplicate, string dup is added. For unique fields
       add_duplicate = params['dup_fields'].to_s.match(attribute_name + ',')
       dest[attribute_name] = value
       dest[attribute_name] << ' dup' if add_duplicate
@@ -229,20 +231,22 @@ end
 
 ########################################################################
 # Will create duplicate document of source document. This method is used for 
-# duplicating document and is called from create action.
+# duplicating document and is subroutine of create action.
 ########################################################################
 def duplicate_document(source)
   dest = {}
   source.attribute_names.each do |attribute_name|
     next if attribute_name == '_id' # don't duplicate _id
-# if duplicate, string must be added. Useful for unique attributes
+
+    # if duplicate, string dup is added. For unique fields
     add_duplicate = params['dup_fields'].to_s.match(attribute_name + ',')
     dest[attribute_name] = source[attribute_name]
     dest[attribute_name] << ' dup' if add_duplicate
   end
-# embedded documents
+  # embedded documents
   source.embedded_relations.keys.each do |embedded_name|
     next if source[embedded_name].nil? # it happens
+
     dest[embedded_name] = []
     source[embedded_name].each do |embedded|
       dest[embedded_name] << duplicate_embedded(embedded)
@@ -257,32 +261,35 @@ end
 # Create (or duplicate) action. Action is also used for turning filter on.
 ########################################################################
 def create
-# abusing create for turning filter on
+  # abusing create for turning filter on
   return index if params[:filter].to_s == 'on'
-# not authorized
+
+  # not authorized
   unless dc_user_can(DcPermission::CAN_CREATE)
     flash[:error] = t('drgcms.not_authorized')
     return index
   end
-#
-  if params['id'].nil? # create record
-# Prevent double form submit
+
+  # create document
+  if params['id'].nil?
+    # Prevent double form submit
     params[:form_time_stamp] = params[:form_time_stamp].to_i
     session[:form_time_stamp] ||= 0
     return index if params[:form_time_stamp] <= session[:form_time_stamp]
+
     session[:form_time_stamp] = params[:form_time_stamp]
-#    
     create_new_empty_record
     if save_data
       flash[:info] = t('drgcms.doc_saved')
       params[:return_to] = 'index' if params[:commit] == t('drgcms.save&back') # save & back
       return process_return_to(params[:return_to]) if params[:return_to]
       
-      @parms['id']     = @record.id     # must be set, for proper update link
-      params[:id]      = @record.id     # must be set, for find_record
+      @parms['id'] = @record.id # must be set, for proper update link
+      params[:id]  = @record.id # must be set, for find_record
       edit
     else # error
       return process_return_to(params[:return_to]) if params[:return_to]
+
       render action: :new
     end
   else # duplicate record
@@ -304,7 +311,7 @@ def edit
   find_record
   if (m = callback_method('before_edit') )
     ret = call_callback_method(m)
-# Don't do anything if return is false
+    # don't do anything if return is false
     return index if ret.class == FalseClass
   end
   @parms['action'] = 'update'
@@ -316,29 +323,27 @@ end
 ########################################################################
 def update
   find_record
-# check if record was not updated in mean time
+  # check if record was not updated in mean time
   if @record.respond_to?(:updated_at)
     if params[:last_updated_at].to_i != @record.updated_at.to_i
       flash[:error] = t('drgcms.updated_by_other')
       return render(action: :edit)
     end
   end
-#   
+
   if dc_user_can(DcPermission::CAN_EDIT_ALL) or
     ( @record.respond_to?('created_by') and
       @record.created_by == session[:user_id] and
       dc_user_can(DcPermission::CAN_EDIT) )
-#
+
     if save_data
       params[:return_to] = 'index' if params[:commit] == t('drgcms.save&back') # save & back
       @parms['action'] = 'update'
-# Process return_to link
+      # Process return_to
       return process_return_to(params[:return_to]) if params[:return_to]
     else
       # do not forget before_edit callback
-      if m = callback_method('before_edit')
-        call_callback_method(m)
-      end
+      if m = callback_method('before_edit') then call_callback_method(m) end
       return render action: :edit
     end
   else
@@ -352,7 +357,7 @@ end
 ########################################################################
 def destroy
   find_record
-# Which permission is required to delete 
+  # check permission required to delete
   permission = if params['operation'].nil?
     if @record.respond_to?('created_by') # needs can_delete_all if created_by is present and not owner
       (@record.created_by == session[:user_id]) ? DcPermission::CAN_DELETE : DcPermission::CAN_DELETE_ALL
@@ -367,38 +372,39 @@ def destroy
     end
   end
   ok2delete = dc_user_can(permission)
-#
+
   case
-# not authorized    
+  # not authorized
   when !ok2delete then
     flash[:error] = t('drgcms.not_authorized')
     return index
-    
+
+  # delete document
   when params['operation'].nil? then
-# Process before delete callback
+    # before_delete callback
     if (m = callback_method('before_delete') )
       ret = call_callback_method(m)
-# Don't do anything if return is false
+      # don't do anything if return is false
       return index if ret.class == FalseClass
     end
-# document deleted
+
     if @record.destroy
       save_journal(:delete)
       flash[:info] = t('drgcms.record_deleted')
-# Process after delete callback
+      # after_delete callback
       if (m = callback_method('after_delete') ) 
         call_callback_method(m)
       elsif params['after-delete'].to_s.match('return_to')
         params[:return_to] = params['after-delete']
       end
-# Process return_to link
+      # Process return_to link
       return process_return_to(params[:return_to]) if params[:return_to]
     else
       flash[:error] = dc_error_messages_for(@record)
     end
     return index
     
-# deaktivate document    
+  # deactivate document
   when params['operation'] == 'disable' then
     if @record.respond_to?('active')
       @record.active = false
@@ -408,7 +414,7 @@ def destroy
       flash[:info] = t('drgcms.doc_disabled')
     end
     
-# reaktivate document
+  # reactivate document
   when params['operation'] == 'enable' then
     if @record.respond_to?('active')
       @record.active = true
@@ -418,11 +424,11 @@ def destroy
       flash[:info] = t('drgcms.doc_enabled')
     end
 
-# reorder documents
+  #TODO reorder documents
   when params['operation'] == 'reorder' then
 
   end
-#
+
   @parms['action'] = 'update'
   render action: :edit
 end
@@ -498,7 +504,7 @@ def user_has_permission?(permission, collection_name)
 end
 
 ########################################################################
-# Merges two forms when current form extends other form. Subroutine of read_drg_cms_form.
+# Merges two forms when current form extends other form. Subroutine of read_drg_form.
 # With a little help of https://www.ruby-forum.com/topic/142809 
 ########################################################################
 def forms_merge(hash1, hash2)
@@ -510,8 +516,8 @@ def forms_merge(hash1, hash2)
     end
     target[key] = hash2[key] == '/' ? nil :  hash2[key]
   end
-# delete keys with nil value  
-  target.delete_if{ |k,v| v.nil? }
+  # delete keys with nil value
+  target.delete_if { |k, v| v.nil? }
 end
 
 ########################################################################
@@ -521,13 +527,13 @@ end
 # [Parameters:]
 # [extend_option] : Value of @form['extend'] option
 ########################################################################
-def extend_drg_cms_form(extend_option)
+def extend_drg_form(extend_option)
   form_file_name = dc_find_form_file(extend_option) 
-  @form_js << read_js_drg_cms_form(form_file_name)
+  @form_js << read_js_drg_form(form_file_name)
   form  = YAML.load_file( form_file_name )
   @form = forms_merge(form, @form)
-# If combined form contains tabs and fields options, merge fields into tabs
-  if @form['form']['tabs'] and @form['form']['fields']
+  # If combined form contains tabs and fields options, merge fields into tabs
+  if @form['form']['tabs'] && @form['form']['fields']
     @form['form']['tabs']['fields'] = @form['form']['fields']
     @form['form']['fields'] = nil
   end
@@ -540,54 +546,59 @@ end
 # [Parameters:]
 # [include_option] : Value of @form['include'] option
 ########################################################################
-def include_drg_cms_form(include_option)
+def include_drg_form(include_option)
   includes = include_option.class == Array ? include_option : include_option.split(/\,|\;/)
   includes.each do |include_file|
     form_file_name = dc_find_form_file(include_file)    
-    @form_js << read_js_drg_cms_form(form_file_name)
+    @form_js << read_js_drg_form(form_file_name)
     form  = YAML.load_file(form_file_name)    
     @form = forms_merge(@form, form)
   end
 end
 
 ########################################################################
-# Will read data from form_file_name.js if it exists.
+# Will read data from form_file_name.js if exists.
 # 
 # [Parameters:]
 # [form_file_name] : Physical form filename
 ########################################################################
-def read_js_drg_cms_form(form_file_name)
+def read_js_drg_form(form_file_name)
   js_form_file_name = form_file_name.sub('.yml','.js')
   File.read(js_form_file_name) rescue ''
 end
 
 ########################################################################
-# Read drgcms form into yaml object. Subroutine of check_authorization.
+# Read DRG form into @form object. Subroutine of check_authorization.
 ########################################################################
-def read_drg_cms_form
+def read_drg_form
   table_name = decamelize_type(params[:table].strip)
   @tables = table_name.split(';').inject([]) { |r,v| r << [(v.classify.constantize rescue nil), v] }
-# split ids passed when embedded document
+
+  # split ids passed when embedded document
   ids = params[:ids].to_s.strip.downcase
   @ids = ids.split(';').inject([]) { |r,v| r << v }
-# form_name defaults to last table specified
+
+  # form_name defaults to last table specified
   form_name = params[:form_name] || @tables.last[1]
   @form_js = ''
-# dynamicaly generated form  
+
+  # dynamically generated form
   @form = if params[:form_name] == 'method'
-    dc_eval_class_method(params[:form_method], params)
-  else
-    form_file_name = dc_find_form_file(form_name)
-    @form_js = read_js_drg_cms_form(form_file_name)
-    YAML.load_file(form_file_name)
-  end
-# form includes or extends another form file
-  include_drg_cms_form(@form['include']) if @form['include']
-  extend_drg_cms_form(@form['extend'])   if @form['extend']
+            dc_eval_class_method(params[:form_method], params)
+          else
+            form_file_name = dc_find_form_file(form_name)
+            @form_js = read_js_drg_form(form_file_name)
+            YAML.load_file(form_file_name)
+          end
+
+  # form includes or extends another form file
+  include_drg_form(@form['include']) if @form['include']
+  extend_drg_form(@form['extend'])   if @form['extend']
   @form['script'] = (@form['script'].blank? ? @form_js : @form['script'] + @form_js)
-# add readonly key to form if readonly parameter is passed in url
+  # add readonly key to form if readonly parameter is passed in url
   @form['readonly'] = 1 if params['readonly'] #and %w(1 yes true).include?(params['readonly'].to_s.downcase.strip)
-# !!!!!! Always use strings for key names since @parms['table'] != @parms[:table]
+
+  # !!!!!! Always use strings for key names since @parms['table'] != @parms[:table]
   @parms = { 'table' => table_name, 'ids' => params[:ids], 'form_name' => form_name,
              'return_to' => params['return_to'], 'edit_only' => params['edit_only'],
              'readonly' => params['readonly'] 
@@ -643,7 +654,7 @@ def check_authorization
      (table.size < 3 or !dc_user_can(DcPermission::CAN_VIEW))
     return render(action: 'error', locals: { error: t('drgcms.not_authorized')} )
   end
-  read_drg_cms_form
+  read_drg_form
   return render( plain: t('drgcms.form_error') ) if @form.nil?
 
   # Permissions can be also defined on form
@@ -672,7 +683,7 @@ end
 ########################################################################
 # Creates new empty record for new and create action.
 ########################################################################
-def create_new_empty_record(initial_data=nil) #:nodoc:
+def create_new_empty_record(initial_data = nil) #:nodoc:
   if @tables.size == 1
     @record = @tables.first[0].new(initial_data)
   else
@@ -689,9 +700,9 @@ def update_standards(record = @record)
   record.updated_by = session[:user_id] if record.respond_to?('updated_by')
   if record.new_record?
     record.created_by = session[:user_id] if record.respond_to?('created_by')
-# set this only initialy. Allow to be set to nil on updates. This documents can then belong to all sites
-# and will be directly visible only to admins
-    record.dc_site_id = dc_get_site._id if record.respond_to?('dc_site_id') and record.dc_site_id.nil?
+    # set this only initialy. Allow to be set to nil on updates. Document can then belong to all sites
+    # and will be directly visible only to admins
+    record.dc_site_id = dc_get_site.id if record.respond_to?('dc_site_id') && record.dc_site_id.nil?
   end
 end
 
@@ -703,17 +714,15 @@ end
 # [changes] Current document changed fields.
 ########################################################################
 def save_journal(operation, changes = {})
-#  return unless session[:save_journal]
   if operation == :delete
     @record.attributes.each {|k,v| changes[k] = v}
-#  elsif operation == :new
-#    changes = {}
   end
-#
-  if (operation != :update) or changes.size > 0
-# determine site_id
+
+  if (operation != :update) || changes.size > 0
+    # determine site_id
     site_id = @record.site_id if @record.respond_to?('site_id')
-    site_id = dc_get_site._id if site_id.nil? and dc_get_site
+    site_id = dc_get_site._id if site_id.nil? && dc_get_site
+
     DcJournal.create(site_id: site_id,
                      operation: operation,
                      user_id: session[:user_id],
@@ -731,23 +740,23 @@ end
 # Returns callback method name or nil if not defined.
 ########################################################################
 def callback_method(key) #:nodoc:
-  data_key = key.gsub('_','-') # data fields translate _ to -
-  cb = case
+  data_key = key.gsub('_','-') # convert _ to -
+  callback = case
     when params['data'] && params['data'][data_key] then params['data'][data_key]
-# if dc_ + key method is present in model then it will be called automatically     
+    # dc_ + key method is present then call it automatically
     when @form['form'][key] then @form['form'][key]
     when respond_to?('dc_' + key) then 'dc_' + key
     when params[data_key] then params[data_key]
     else nil
   end
-#  
+
   ret = case
-    when cb.nil? then cb # otherwise there will be errors in next lines
-    when cb.match('eval ') then cb.sub('eval ','')
-    when cb.match('return_to ')
-      params[:return_to] = cb.sub('return_to ','')
+    when callback.nil? then callback # otherwise there will be errors in next lines
+    when callback.match('eval ') then callback.sub('eval ','')
+    when callback.match('return_to ')
+      params[:return_to] = callback.sub('return_to ','')
       return nil
-    else cb
+    else callback
   end
   ret
 end
@@ -786,16 +795,16 @@ end
 
 ########################################################################
 # Since tabs have been introduced on form it is a little more complicated
-# to get all edit fields on form. This method does it. Subroutine of save_data.
+# to collect all edit fields on form. This method does it. Subroutine of save_data.
 ########################################################################
-def fields_on_form() #:nodoc:
+def fields_on_form #:nodoc:
   form_fields = []
   if @form['form']['fields']
-# read only field elements (key is Integer)
-    @form['form']['fields'].each {|key,options| form_fields << options if key.class == Integer }
+    # read only field elements (key is Integer)
+    @form['form']['fields'].each { |key, options| form_fields << options if key.class == Integer }
   else
     @form['form']['tabs'].keys.each do |tab|
-      @form['form']['tabs'][tab].each {|key,options| form_fields << options if key.class == Integer }
+      @form['form']['tabs'][tab].each { |key, options| form_fields << options if key.class == Integer }
     end  
   end
   form_fields
@@ -808,7 +817,7 @@ end
 def save_data
   form_fields = fields_on_form()
   return true if form_fields.size == 0
-#
+
   form_fields.each do |v|
     session[:form_processing] = v['name'] # for debuging
     next if v['type'].nil? or v['name'].nil? or
@@ -821,20 +830,21 @@ def save_data
     value = DrgcmsFormFields.const_get(v['type'].camelize).get_data(params, v['name'])
     @record.send("#{v['name']}=", value)
   end
-# controls callback method
+  # before_save callback
   if (m = callback_method('before_save') )
     ret = call_callback_method(m)
-# dont's save if callback method returns false    
+    # don't save if callback returns false
     return false if ret.class == FalseClass
   end
-# save data  
+
+  # save data
   changes = @record.changes
   update_standards() if changes.size > 0  # update only if there has been some changes
   if (saved = @record.save)
     operation = @record.new_record? ? :new : :update
     save_journal(operation, changes)
-# callback methods
-    if (m = callback_method('after_save') ) then call_callback_method(m)  end
+    # after_save callback
+    if (m = callback_method('after_save') ) then call_callback_method(m) end
   end
   saved
 end
@@ -844,20 +854,18 @@ end
 # in select_fields and deny_fields
 ########################################################################
 def separated_to_symbols(data)
-  data.chomp.split(',').inject([]) {|r,element| r << element.strip.downcase.to_sym }
+  data.chomp.split(',').map { |e| e.strip.downcase.to_sym }
 end
   
 ########################################################################
-# Will process select_fields and deny_fields if specified
+# Will process only (select_fields) and without (deny_fields) option
 ########################################################################
 def process_select_and_deny_fields
-  if @form['result_set']['select_fields']
-    @records = @records.only( separated_to_symbols(@form['result_set']['select_fields']) )
-  end
-# deny fields specified
-  if @form['result_set']['deny_fields']
-    @records = @records.without( separated_to_symbols(@form['result_set']['deny_fields']) )
-  end
+  only = @form['result_set']['select_fields'] || @form['result_set']['only']
+  @records = @records.only( separated_to_symbols(only) ) if only
+
+  without = @form['result_set']['deny_fields'] || @form['result_set']['without']
+  @records = @records.without( separated_to_symbols(without) ) if without
 end
 
 ########################################################################
@@ -867,13 +875,13 @@ def check_sort_options() #:nodoc:
   table_name = @tables.first[1]
   old_sort = session[table_name][:sort].to_s
   sort, direction = old_sort.split(' ')
-# sort is requested
+
   if params['sort']
     # reverse sort if same selected
     if params['sort'] == sort
       direction = (direction == '1') ? '-1' : '1'
     end
-    direction ||= 1
+    direction ||= '1'
     sort = params[:sort]
     session[table_name][:sort] = "#{params['sort']} #{direction}"
     session[table_name][:page] = 1
@@ -921,45 +929,45 @@ def set_session_filter(table_name)
   return if params[:filter_oper] && params[:filter_field].blank?
 
   filter_value = if params[:filter_value].nil?
-# NIL indicates that no filtering is needed        
+    #NIL indicates that no filtering is needed
     '#NIL'
   else     
     if params[:filter_value].class == String and params[:filter_value][0] == '@'
-# Internal value. Remove leading @ and evaluate expression
+      # Internal value. Remove leading @ and evaluate expression
       expression = DcInternals.get(params[:filter_value])
       eval(expression) rescue nil
     else
-# No filter when empty      
+      # No filter when empty
       params[:filter_value] == '' ? '#NIL' : params[:filter_value] 
     end
   end
-# if filter field parameter is omitted then just set filter value
+  # if filter field parameter is omitted then just set filter value
   session[table_name][:filter] =
   if params[:filter_field].nil?
     saved = YAML.load(session[table_name][:filter])
     saved['value'] = filter_value
     saved.to_yaml
   else 
-# As field defined. Split name and alternative input field
+    # as field defined. Split name and alternative input field
     field = if params[:filter_field].match(' as ')
       params[:filter_input] = params[:filter_field].split(' as ').last.strip
       params[:filter_field].split(' as ').first.strip
     else
       params[:filter_field]
     end
-#    
+
     {'field'     => field, 
      'operation' => params[:filter_oper], 
      'value'     => filter_value,
      'input'     => params[:filter_input],
      'table'     => table_name }.to_yaml
   end
-# must be. Otherwise kaminari includes parameter on paging
-   params[:filter]        = nil 
-   params[:filter_id]     = nil 
-   params[:filter_oper]   = nil  
-   params[:filter_input]  = nil 
-   params[:filter_field]  = nil 
+  # must be. Otherwise kaminari includes parames on paging links
+  params[:filter]        = nil
+  params[:filter_id]     = nil
+  params[:filter_oper]   = nil
+  params[:filter_input]  = nil
+  params[:filter_field]  = nil
 end
 
 ########################################################################
@@ -969,31 +977,27 @@ def check_filter_options() #:nodoc:
   table_name = @tables.first[1]
   model      = @tables.first[0]
   session[table_name] ||= {}
-# process page
+  # page is set
   session[table_name][:page] = params[:page] if params[:page]
-# new filter is applied
+  # new filter is applied
   if params[:filter]
     set_session_filter(table_name)
     session[table_name][:page] = 1
   end
-# if data model has field dc_site_id ensure that only documents which belong to the site are selected.
+  # if data model has field dc_site_id ensure that only documents which belong to the site are selected.
   site_id = dc_get_site._id if dc_get_site
-# dont't filter site if no dc_site_id field or user is ADMIN
+
+  # don't filter site if no dc_site_id field or user is ADMIN
   site_id = nil if !model.method_defined?('dc_site_id') or dc_user_can(DcPermission::CAN_ADMIN)
   site_id = nil if session[table_name][:filter].to_s.match('dc_site_id')
-#  
+
   if @records = DcFilter.get_filter(session[table_name][:filter])
     @records = @records.and(dc_site_id: site_id) if site_id
   else
-    @records = if site_id
-      model.where(dc_site_id: site_id)
-    else
-      model
-    end
+    @records = site_id ? model.where(dc_site_id: site_id) : model
   end
-# select only fields or deny fields specified
   process_select_and_deny_fields
-# pagination if required
+  # pagination if required
   per_page = (@form['result_set']['per_page'] || 30).to_i
   @records = @records.page(session[table_name][:page]).per(per_page) if per_page > 0
 end
