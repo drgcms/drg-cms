@@ -247,6 +247,9 @@ padding: 0;
   color: #fff;
   background-color: #666;
 }
+.dc-result-header .th:last-child {
+  flex-grow: 1;
+}
 
 .dc-result-header .spacer, .dc-result-data .spacer {
   width: 2px;
