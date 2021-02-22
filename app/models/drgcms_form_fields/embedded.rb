@@ -52,15 +52,13 @@ class Embedded < DrgcmsField
 def render
   # HTML defaults. Some must be set    
   @yaml['html'] ||= {}
-  @yaml['html']['height'] ||= 300
-  @yaml['html']['width']  ||= '99%'
+  @yaml['html']['width'] ||= '99%'
+  html = @yaml['html'].inject('') { |r, val| r << "#{val.first}=\"#{val.last}\" " }
+
   @yaml['action'] ||= 'index'
   # defaults both way 
   @yaml['table']     ||= @yaml['form_name'] if @yaml['form_name']
   @yaml['form_name'] ||= @yaml['table'] if @yaml['table']
-
-  html = ''  
-  @yaml['html'].each {|k,v| html << "#{k}=\"#{v}\" "}
 
   if @yaml['name'] == @yaml['table'] or @yaml['table'] == 'dc_memory'
     tables = @yaml['table']

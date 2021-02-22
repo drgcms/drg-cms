@@ -476,10 +476,10 @@ $(document).ready( function() {
  * unless on initial display.
  *******************************************************************/
   $('#iframe_cms').on('load', function() {
-    new_height = this.contentWindow.document.body.offsetHeight + 50;
+    let new_height = this.contentWindow.document.body.offsetHeight + 50;
     if (new_height < 500 && new_height > 60) new_height = 500;
     this.style.height = new_height + 'px'; 
-// scroll to top
+    // scroll to top
     $('#iframe_cms').dc_scroll_view();
   });
 
@@ -488,14 +488,24 @@ $(document).ready( function() {
  * unless on initial display with no data 
  *******************************************************************/
   $('#iframe_edit').on('load', function() {
-//    console.log(this.contentWindow.document.body.offsetHeight);
     if (this.contentWindow.document.body.offsetHeight > 10) {
       this.style.height = (this.contentWindow.document.body.offsetHeight + 30) + 'px'; 
-// scroll to top
+
       $('#iframe_edit').dc_scroll_view();
     }
   });
-  
+
+  /*******************************************************************
+   * Same goes for iframe_embedded. Resize it + 30px
+   *******************************************************************/
+  $('.iframe_embedded').on('load', function() {
+    this.style.height = (this.contentWindow.document.body.offsetHeight + 30) + 'px';
+    // resize parent window too
+    let parentWindow = this.contentWindow.parent;
+    let parent_height = (parentWindow.document.body.offsetHeight + 30) + 'px';
+    window.parent.document.getElementById('iframe_edit').style.height = parent_height;
+  });
+
 /*******************************************************************
  * Process Ajax call on cmsedit form actions
  *******************************************************************/
