@@ -231,12 +231,13 @@ process_json_result = function(json) {
 
 /**** display message ****/
     case 'msg': 
-      msg_div = 'dc-form-' + selector;
-      if ( $('.'+msg_div).length == 0 ) {
+      let msg_div = 'dc-form-' + selector;
+      if ( $('.' + msg_div).length == 0 ) {
         value = '<div class="' + msg_div + '">' + value + '</div>';
         $('.dc-title').after(value);
       } else {
-        $('.'+msg_div).html(value);
+        $('.' + msg_div).html(value);
+        $('.' + msg_div).show();
       }
       break;
       

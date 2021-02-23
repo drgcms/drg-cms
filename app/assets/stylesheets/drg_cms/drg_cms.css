@@ -1285,10 +1285,11 @@ color: #669;
 /**  Radio button input field **/
 
 .dc-radio {
-  padding: 5px 0 7px 0;
+  padding: 6px 0 12px 0;
   display: inline-table;
   border: 1px dashed #666;
   margin-left: 1px;
+  background-color: #fff;
 }
 .dc-radio div {
   font-size: 1.1em;
