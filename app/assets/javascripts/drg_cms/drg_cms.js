@@ -47,16 +47,16 @@ dumpAttributes = function(obj) {
  * selected tab and triggers iframe reload.
  *******************************************************************/
 update_embedded_on_tab_select = function(div_name) {
-  var iframes = $(div_name).find("iframe");
+  let iframes = $(div_name).find("iframe");
   $.each(iframes, function(index, iframe) {
     // delayed load
-    var src_delay = iframe.getAttribute('data-src-delay'); 
+    let src_delay = iframe.getAttribute('data-src-delay');
     if (src_delay != null && src_delay != '') {
       iframe.setAttribute('data-src-delay', '');
       iframe.setAttribute('src', src_delay);
     }
     // always load on tab select
-    var src_always = iframe.getAttribute('data-src-always');
+    let src_always = iframe.getAttribute('data-src-always');
     if (src_always != null) {
       iframe.setAttribute('src', src_always);
     }    
@@ -500,11 +500,15 @@ $(document).ready( function() {
    * Same goes for iframe_embedded. Resize it + 30px
    *******************************************************************/
   $('.iframe_embedded').on('load', function() {
-    this.style.height = (this.contentWindow.document.body.offsetHeight + 30) + 'px';
-    // resize parent window too
+    let embedded_height = this.contentWindow.document.body.offsetHeight;
+    // workaround. It gets tricky when embedded field is on tab
+    if (embedded_height == 0) embedded_height = 500;
+    this.style.height = (embedded_height + 30) + 'px';
+    // resize parent iframe window too
     let parentWindow = this.contentWindow.parent;
     let parent_height = (parentWindow.document.body.offsetHeight + 30) + 'px';
-    window.parent.document.getElementById('iframe_edit').style.height = parent_height;
+    //parentWindow.frameElement.setAttribute('style', 'height:' + parent_height);
+    parentWindow.frameElement.style.height = parent_height;
   });
 
 /*******************************************************************
