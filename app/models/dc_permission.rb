@@ -51,10 +51,10 @@ CAN_VIEW      = 1
 CAN_CREATE    = 2 
 # User can edit his own documents
 CAN_EDIT      = 4 
-# User can edit all documents in collection
-CAN_EDIT_ALL  = 8 
 # User can delete his own documents
-CAN_DELETE    = 16 
+CAN_DELETE    = 8
+# User can edit all documents in collection
+CAN_EDIT_ALL  = 16
 # User can delete all documents in collection
 CAN_DELETE_ALL = 32
 # User can admin collection (same as can_delete_all, but can see documents which do not belong to current site)

@@ -182,7 +182,7 @@ en:
 
       dc_policy_rule:
         tabletitle: Access policy rules
-        choices4_permission: NO_ACCESS:0,CAN_VIEW:1,CAN_CREATE:2,CAN_EDIT:4,CAN_EDIT_ALL:8,CAN_DELETE:16,CAN_DELETE_ALL:32,CAN_ADMIN:64,SUPERADMIN:128
+        choices4_permission: NO_ACCESS:0,CAN_VIEW:1,CAN_CREATE:2,CAN_EDIT:4,CAN_DELETE:8,CAN_EDIT_ALL:16,CAN_DELETE_ALL:32,CAN_ADMIN:64,SUPERADMIN:128
         choices4_site_permission: NO_ACCESS:0,CAN_VIEW:1,CAN_EDIT:4
 
         active: Active
