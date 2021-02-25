@@ -523,7 +523,7 @@ $(document).ready( function() {
       $("form")[0].reportValidity();
       return false;
     }
-    var req = this.getAttribute("data-request");
+    let req = this.getAttribute("data-request");
     // Get values from elements on the page:
     if (req == "script") {
       eval (this.getAttribute("data-script"));
@@ -536,19 +536,21 @@ $(document).ready( function() {
       data = {}; 
       req = 'get'; // by default
     }
-    
+
+    let url = this.getAttribute("data-url");
+    if (url.length < 5) return false;
+
     $('.dc-spinner').show();   
     $.ajax({
-      url: this.getAttribute("data-url"),
+      url: url,
       type: req,
       dataType: "json",
       data: data,
       success: function(data) {
         process_json_result(data);
-        $('.dc-spinner').hide();
       }
-      
-    });  
+    });
+    $('.dc-spinner').hide();
   });
   
 /*******************************************************************
