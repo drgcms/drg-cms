@@ -149,7 +149,8 @@ end
 ############################################################################
 def dc_link_ajax_window_submit_action(yaml, record=nil, action_active=true)
   parms = {}
-  caption = yaml['caption'] ? t("#{yaml['caption'].downcase}", yaml['caption']) : nil
+  caption = yaml['caption'] || yaml['text']
+  caption = caption ? t("#{caption.downcase}", caption) : nil
   icon    = yaml['icon'] ? "#{fa_icon(yaml['icon'])}" : ''
   # action is not active
   unless dc_is_action_active?(yaml)
@@ -164,8 +165,8 @@ def dc_link_ajax_window_submit_action(yaml, record=nil, action_active=true)
   yaml['html']['target'] ||= yaml['target']
   # direct url
   if yaml['url']
-    parms['controller'] = yaml['url'] 
-    parms['idr']        = dc_document_path(record) if record
+    parms['url'] = yaml['url']
+    parms['idr'] = dc_document_path(record) if record
   # make url from action controller
   else
     parms['controller'] = yaml['controller'] || 'cmsedit'
@@ -184,10 +185,11 @@ def dc_link_ajax_window_submit_action(yaml, record=nil, action_active=true)
   if parms['controller'].nil? && parms['url'].nil?
     "<li>#{'Controller not defined'}</li>"
   else
-    yaml['caption'] ||= yaml['text']
+    #yaml['caption'] ||= yaml['text']
     html_data = dc_html_data(yaml['html'])
-    #
     url = url_for(parms) rescue 'URL error'
+    url = nil if parms['url'] == '#'
+
     request = yaml['request'] || yaml['method'] || 'get'
     if yaml['type'] == 'ajax' # ajax button
       clas = "dc-link-ajax dc-animate"
@@ -204,7 +206,7 @@ def dc_link_ajax_window_submit_action(yaml, record=nil, action_active=true)
 
     elsif yaml['type'] == 'link'  # link button
       clas = "dc-link dc-animate"
-      link = dc_link_to(yaml['caption'], yaml['icon'], parms, yaml['html'] )
+      link = dc_link_to(caption, yaml['icon'], parms, yaml['html'] )
       %Q[<li class="#{clas}">#{action_active ? link : caption}</li>]
 
     elsif yaml['type'] == 'window'
