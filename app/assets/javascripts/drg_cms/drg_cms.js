@@ -184,7 +184,7 @@ $(function() {
  *******************************************************************/
 
 process_json_result = function(json) {
-  var i,w,operation,selector, msg_div, field;
+  var i, w, operation, selector, msg_div, field;
   $.each(json, function(key, value) {
     i = key.search('_');
     if (i > 1) {
@@ -194,12 +194,11 @@ process_json_result = function(json) {
       operation = key;
       selector  = '';
     }
-//  
+
     switch (operation) {
       
 /**** update fields on form ****/
     case 'record':
-//      field = $('#'+key);
       let name = key.replace('record_','record[') + ']';
       field = $('[name="' + name + '"]');
       // checkbox field
@@ -273,7 +272,8 @@ process_json_result = function(json) {
       break;
     case 'window':
       if (value == 'close') { window.close(); 
-      } else if (value == 'reload') { location.reload(); 
+      } else if (value == 'reload') {
+        location.reload();
       } else {
         w = window.open(value, selector);
         w.focus();
@@ -291,11 +291,12 @@ process_json_result = function(json) {
       eval (value);
       break; 
     case 'reload':
+      value = value.toString();
       if (value == 'parent') {
         parent.location.reload();
 /*** this would be current window (reload: true) ****/
       } else if (value.length < 5) {
-        window.location.href = window.location.href;
+        location.reload();
 /*** reload iframe ****/
       } else {
         $( '#' + value ).attr('src', $( '#' + value ).attr('src'));
