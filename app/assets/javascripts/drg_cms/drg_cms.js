@@ -344,13 +344,23 @@ $.fn.dc_scroll_view = function () {
  * Updates single field on parent iframe form of embedded form.
  *******************************************************************/
 process_parent_form_updates = function(element) {
-  var field = element.getAttribute("data-field");
-  var value = element.getAttribute("data-value");
-  if ( window.parent.$('#'+field).length > 0 ) {
-    if (field.substring(0,3) === 'td_') {   // readonly field
-      window.parent.$('#'+field+' > div').html(value);
-    } else { // input field
-      window.parent.$('#'+field).val(value);
+  let field = element.getAttribute("data-field");
+  let value = element.getAttribute("data-value");
+  let selector = '#' + field;
+
+  // update record
+  if (field.match(/record/)) {
+    if (window.parent.$(selector).length > 0) {
+      if (field.substring(0, 3) === 'td_') {   // readonly field
+        window.parent.$(selector + ' > div').html(value);
+      } else { // input field
+        window.parent.$(selector).val(value);
+      }
+    }
+  // any div
+  } else {
+    if (window.parent.$(selector).length > 0) {
+      window.parent.$(selector).html(value);
     }
   }
 };

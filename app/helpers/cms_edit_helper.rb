@@ -430,7 +430,7 @@ def dc_head_for_form()
     style = dc_style_or_class(nil, options['style'], field, @record)
     html << %Q[<div class="dc-column #{klass}" style="width:#{percent*span}%;#{style}">
   #{label.blank? ? '' : "<span class=\"label\">#{label}</span>"}
-  <span class="field">#{field}</span>
+  <span id="head-#{options['name']}" class="field">#{field}</span>
 </div>]
     current += span
     if current == split
