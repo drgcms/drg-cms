@@ -200,10 +200,8 @@ process_json_result = function(json) {
 /**** update fields on form ****/
     case 'record':
 //      field = $('#'+key);
-      var name = key.replace('record_','record[') + ']';
+      let name = key.replace('record_','record[') + ']';
       field = $('[name="' + name + '"]');
-      console.log(field.attr('type'));
-      console.log(field.is('select'));
       // checkbox field
       if (field.is(':checkbox')) {
         field.prop('checked', value);
@@ -444,7 +442,7 @@ $(document).ready( function() {
   *******************************************************************/
   $('.dc-form-li').on('click', function(e) { 
     // find li with dc-form-li-selected class. This is our old tab
-    var old_tab_id = null;
+    let old_tab_id = null;
     $(e.target).parents('ul').find('li').each( function() {
       if ($(this).hasClass('dc-form-li-selected')) {
         // when not already selected toggle dc-form-li-selected class and save old tab
@@ -462,11 +460,11 @@ $(document).ready( function() {
       $('#data_' + e.target.getAttribute("data-div")).toggleClass('div-hidden');
       
       // resize parent iframe to fit selected tab size
-//      var div_height = document.getElementById('data_' + e.target.getAttribute("data-div")).clientHeight + 130;
-//      var div_height = document.getElementById('cmsform').clientHeight + 50;
-      var div_height = document.body.scrollHeight;
-      window.frameElement.style.height = div_height.toString() + 'px';
-// it would be too easy      $('#cmsform :input:enabled:visible:first').focus();
+      let div_height = document.body.scrollHeight;
+      let frame = window.frameElement
+      if (frame === null) frame = document.body;
+      frame.style.height = div_height.toString() + 'px';
+
       select_first_input_field('#data_' + e.target.getAttribute("data-div"));
       update_embedded_on_tab_select('#data_' + e.target.getAttribute("data-div"));
     }
@@ -1019,8 +1017,8 @@ element = $(this).find(':first').attr('id');
       return;
     }
     // retrieve name of current field and set it in popup
-    var header = $(this).closest('.th');
-    var field_name = header.attr("data-name");    
+    let header = $(this).closest('.th');
+    let field_name = header.attr("data-name");
     $('.filter-popup').attr('data-name', field_name);
     // change popup position and show
     $('.filter-popup').css({'top':e.pageY+5,'left':e.pageX, 'position':'absolute'});
@@ -1032,10 +1030,10 @@ element = $(this).find(':first').attr('id');
   * filter on action.
   *******************************************************************/
   $('.filter-popup li').click( function(e) {
-    var url      = $(this).data('url')
-    var operator = $(this).data('operator');
-    var parent   = $(this).closest('.filter-popup')
-    var field_name = parent.data("name");
+    let url = $(this).data('url');
+    let operator = $(this).data('operator');
+    let parent = $(this).closest('.filter-popup');
+    let field_name = parent.data("name");
     
     url = url + '&filter_field=' + field_name + '&filter_oper=' + operator;
     window.location.href = url;
