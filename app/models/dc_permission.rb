@@ -44,23 +44,23 @@ class DcPermission
 #- Available permissions settings
 
 # User has no access 
-NO_ACCESS     = 0 
+NO_ACCESS = 0
 # User can view documents
-CAN_VIEW      = 1 
+CAN_VIEW  = 1
 # User can create new documents  
-CAN_CREATE    = 2 
+CAN_CREATE = 2
 # User can edit his own documents
-CAN_EDIT      = 4 
-# User can delete his own documents
-CAN_DELETE    = 8
+CAN_EDIT = 4
 # User can edit all documents in collection
-CAN_EDIT_ALL  = 16
+CAN_EDIT_ALL = 8
+# User can delete his own documents
+CAN_DELETE = 16
 # User can delete all documents in collection
 CAN_DELETE_ALL = 32
 # User can admin collection (same as can_delete_all, but can see documents which do not belong to current site)
-CAN_ADMIN     = 64 
+CAN_ADMIN = 64
 # User is superadmin. Basicly same as admin.
-SUPERADMIN    = 128 
+SUPERADMIN = 128
 
 include Mongoid::Document
 include Mongoid::Timestamps
