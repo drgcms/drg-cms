@@ -33,14 +33,44 @@ def project_refresh
   DcTemp.clear(temp_key)
   if params[:record][:select_project].present?
     session[:help_project] = params[:record][:select_project]
-    DcTemp.new(key: temp_key,
-               model: 'test',
-               form_name: nil,
-               updated_at: 1.week.ago).save
+    help_dir_name = "#{session[:help_project]}help/"
+    FileUtils.mkdir(help_dir_name) unless File.exist?(help_dir_name)
+
+    Dir["#{help_dir_name}*"].each do |file_name|
+      DcTemp.new(key: temp_key,
+                 project: session[:help_project],
+                 form_name: File.basename(file_name,'.*'),
+                 locale: File.extname(file_name).sub('.',''),
+                 updated_at: File.mtime(file_name)).save
+    end
+
   end
   url = "/cmsedit?form_name=dc_help_1&table=dc_temp&p_select_project=#{params[:record][:select_project]}"
   render json: { url: url }
 end
+
+######################################################################
+# Will save data to help file
+######################################################################
+def dc_before_save
+  rec = params[:record]
+  file_name = "#{@record.project}help/#{@record.form_name}.#{@record.locale}"
+  data = { 'index' => @record.index, 'form' => @record.form }
+  File.write(file_name, data.to_yaml)
+end
+
+######################################################################
+# Will save data to help file
+######################################################################
+def dc_before_edit
+  return if @record.new_record?
+
+  file_name = "#{@record.project}help/#{@record.form_name}.#{@record.locale}"
+  data = YAML.load_file(file_name)
+  @record.index = data['index']
+  @record.form = data['form']
+end
+
 
 ######################################################################
 # Will return query to report data
