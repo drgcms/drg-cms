@@ -1,0 +1,110 @@
+## Form for creating help files
+---
+table: dc_temp
+title: dc_help.title1
+control: dc_help
+
+index:
+  actions:
+
+    10:
+      type: field
+      name: select_project
+      field_type: select
+      caption: dc_help.project
+      eval: DcHelpControl.choices_for_project
+
+    20:
+      type: ajax
+      caption: dc_help.project_refresh
+      title: dc_help.project_refresh_title
+      icon: refresh
+      controller: cmsedit
+      action: run
+      method: post
+#      table: dc_temp
+#      form_name: dc_help_1
+      control: dc_help.project_refresh
+      #      params:
+      #        mo_kandidati_id:
+      #          object: params
+      #          method: ids
+
+    30:
+      type: link
+      caption: Nov
+      title: dc_help.project_refresh_title
+      icon: plus
+      controller: cmsedit
+      table: dc_temp
+      form_name: dc_help_1
+      action: new
+      params:
+        p_project:
+          object: session
+          method: help_project
+
+result_set:
+  filter: data_filter
+  actions:
+    1: edit
+
+  # _id,created_at,updated_at,mo_kandidati_id,razpis_nazivi,mo_rok_id,st_evidencna,st_knjiga,st_spricevalo,status,datum_vloge,podaljsan_rok,nov_nacin,datum_rok,datum_zakljucek,datum_podelitev,datum_odjava,izobrazba_dokazila,izobrazba_izkusnje,izobrazba_izkusnje_cas,izobrazba_spricevalo,izobrazba_stopnja,izobrazba_vrsta,dokazila,opomba,konto,sms,mo_placnik_a_id,mo_placnik_p_id,inet_objava,active,created_by,updated_by
+  columns:
+    10:
+      name: model
+      caption: dc_help.model
+      width: 10%
+    20:
+      name: form_name
+      caption: dc_help.form_name
+      width: 10%
+    30:
+      name: updated_at
+      caption: dc_help.updated_at
+      width: 10%
+      format: T
+
+form:
+  actions: 
+    1:
+      type: link
+      caption: back
+      title: dc_help.project_refresh_title
+      icon: arrow-left
+      controller: cmsedit
+      action: new
+      table: dc_temp
+      form_name: dc_help_1
+      params:
+        p_project:
+          object: session
+          method: help_project
+    1: back
+    2: save
+#    3: save&back
+ 
+  fields:
+    5:
+      name: project
+      type: text_field
+      size: 20
+      default:
+        eval: '@parent.params[:record][:select_project]'
+    10:
+      name: model
+      caption: dc_help.model
+      type: text_field
+      size: 20
+    20:
+      name: form_name
+      caption: dc_help.form_name
+      type: text_field
+      size: 20
+    30:
+      name: body
+      caption: false
+      line: top
+      type: html_field
+#      options: "height: 800, width: 620, toolbar: 'basic'"
+      options: "height: 800"

@@ -46,7 +46,7 @@ class DcTemp
 ########################################################################
 def initialize(parms = {})
   super()
-  parms.stringify_keys!
+  parms = parms.nil? ? {} : parms.stringify_keys
   self.key    = parms.delete('key')  if parms['key']
   self.active = parms.delete('active') if parms['active']
   self.order  = parms.delete('order') if parms['order']

@@ -127,6 +127,12 @@ menu:
         controller: cmsedit
         icon: trash-o lg
         table: dc_removed_url
+      400:
+        caption: helpers.dc_help.cmsmenu_title
+        controller: cmsedit
+        icon: question-circle lg
+        table: dc_temp
+        form_name: dc_help_1
       500: 
         caption: helpers.label.dc_journal.tabletitle
         controller: cmsedit
