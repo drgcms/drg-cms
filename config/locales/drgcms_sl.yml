@@ -114,3 +114,17 @@ sl:
       
     filters:
       this_site_only: Dokumenti samo trenutno izbrane strani
+
+    dc_help:
+      title: Urejanje dokumentov pomoči
+      project: Projekt
+      lang: Jezik
+      project_refresh: Osveži
+      project_refresh_title: Osveži seznam že pripravljenih dokumentov
+      form_name: Forma
+      updated_at: Spremenjeno
+      1basic: Osnovno
+      2index: Index
+      3form: Forma
+
+

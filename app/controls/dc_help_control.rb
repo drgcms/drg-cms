@@ -32,21 +32,43 @@ module DcHelpControl
 def project_refresh
   DcTemp.clear(temp_key)
   if params[:record][:select_project].present?
+    # far less complicated if saved to session
     session[:help_project] = params[:record][:select_project]
-    help_dir_name = "#{session[:help_project]}help/"
+    session[:help_lang] = params[:record][:lang_1]
+    help_dir_name = "#{session[:help_project]}/help/"
+    # create help directory if not yet exists
     FileUtils.mkdir(help_dir_name) unless File.exist?(help_dir_name)
-
     Dir["#{help_dir_name}*"].each do |file_name|
+      lang = File.extname(file_name).sub('.','')
+      next unless lang == session[:help_lang]
+
       DcTemp.new(key: temp_key,
                  project: session[:help_project],
                  form_name: File.basename(file_name,'.*'),
-                 locale: File.extname(file_name).sub('.',''),
+                 lang: lang,
                  updated_at: File.mtime(file_name)).save
     end
-
   end
-  url = "/cmsedit?form_name=dc_help_1&table=dc_temp&p_select_project=#{params[:record][:select_project]}"
-  render json: { url: url }
+  render json: { url: url_for(controller: :cmsedit, table: :dc_temp, form_name: :dc_help_1) }
+end
+
+######################################################################
+# Will populate fields with default values
+######################################################################
+def dc_new_record
+  @record.project = session[:help_project]
+  @record.lang = session[:help_lang]
+end
+
+######################################################################
+# Will read data from help file
+######################################################################
+def dc_before_edit
+  file_name = "#{session[:help_project]}/help/#{@record.form_name}.#{session[:help_lang]}"
+  data = YAML.load_file(file_name)
+  @record.index = data['index']
+  @record.form = data['form']
+  flash[:warning] = "Use only in development!" if Rails.env.development?
 end
 
 ######################################################################
@@ -54,29 +76,16 @@ end
 ######################################################################
 def dc_before_save
   rec = params[:record]
-  file_name = "#{@record.project}help/#{@record.form_name}.#{@record.locale}"
+  file_name = "#{session[:help_project]}/help/#{@record.form_name}.#{@record.lang}"
   data = { 'index' => @record.index, 'form' => @record.form }
   File.write(file_name, data.to_yaml)
 end
 
 ######################################################################
-# Will save data to help file
-######################################################################
-def dc_before_edit
-  return if @record.new_record?
-
-  file_name = "#{@record.project}help/#{@record.form_name}.#{@record.locale}"
-  data = YAML.load_file(file_name)
-  @record.index = data['index']
-  @record.form = data['form']
-end
-
-
-######################################################################
 # Will return query to report data
 ######################################################################
 def data_filter
-  DcTemp.where(key: temp_key).order_by(order: 1).collation(locale: 'sl')
+  DcTemp.where(key: temp_key).order_by(order: 1)
 end
 
 private
@@ -86,13 +95,25 @@ private
 ######################################################################
 def self.choices_for_project
   r = DrgCms.paths(:forms).map do |path|
-    path = path.to_s.delete_suffix('forms')
+    path = path.to_s
     a = path.split('/')
-    project = a[a.size - 2]
-    project = nil if project == 'app'
+    project = a[a.size - 3]
+    project = if project == 'app'
+                a[a.size - 4] + ' : ' + a.last(2).join('/')
+              else
+                project + ' : ' + a.last
+              end
     [project, path]
   end
-  [['Project', nil]] + r.select(&:first).sort
+  [[I18n.t('drgcms.dc_help.project'), nil]] + r.sort
+end
+
+######################################################################
+# Will return choices for selecting help file name, based on forms already
+# present in forms directory.
+######################################################################
+def self.choices_for_form_name(session)
+  Dir["#{session[:help_project]}/*.yml"].map { |file_name| File.basename(file_name,'.*') }.sort
 end
 
 ######################################################################

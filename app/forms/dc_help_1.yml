@@ -1,7 +1,7 @@
 ## Form for creating help files
 ---
 table: dc_temp
-title: dc_help.title1
+title: drgcms.dc_help.title
 control: dc_help
 
 index:
@@ -11,30 +11,32 @@ index:
       type: field
       name: select_project
       field_type: select
-      caption: dc_help.project
+      caption: drgcms.dc_help.project
       eval: DcHelpControl.choices_for_project
       default:
         eval: '@parent.session[:help_project]'
 
     20:
+      type: field
+      name: lang_1
+      caption: drgcms.dc_help.lang
+      field_type: text_field
+      size: 5
+      default:
+        eval: '@parent.session[:help_lang]'
+      html:
+        placeholder: drgcms.dc_help.lang
+
+    50:
       type: ajax
-      caption: dc_help.project_refresh
-      title: dc_help.project_refresh_title
+      caption: drgcms.dc_help.project_refresh
+      title: drgcms.dc_help.project_refresh_title
       icon: refresh
-      controller: cmsedit
       action: run
       method: post
       control: dc_help.project_refresh
 
-    30:
-      type: link
-      caption: Nov
-      title: dc_help.project_refresh_title
-      icon: plus
-      controller: cmsedit
-      table: dc_temp
-      form_name: dc_help_1
-      action: new
+    60: new
 
 result_set:
   filter: data_filter
@@ -43,15 +45,15 @@ result_set:
   columns:
     10:
       name: form_name
-      caption: dc_help.form_name
+      caption: drgcms.dc_help.form_name
       width: 10%
     20:
-      name: locale
-      caption: dc_help.locale
+      name: lang
+      caption: drgcms.dc_help.lang
       width: 10%
     30:
       name: updated_at
-      caption: dc_help.updated_at
+      caption: drgcms.dc_help.updated_at
       width: 10%
       format: T
 
@@ -66,38 +68,42 @@ form:
 
   tabs:
     1basic:
-      caption: dc_help.1basic
+      caption: drgcms.dc_help.1basic
       10:
         name: project
-        type: text_field
+        type: readonly
         size: 20
-        default:
-          eval: '@parent.session[:help_project]'
       20:
         name: form_name
-        caption: dc_help.form_name
-        type: text_field
+        caption: drgcms.dc_help.form_name
+        type: text_with_select
+        eval: DcHelpControl.choices_for_form_name(@parent.session)
         size: 20
+        html:
+          minlength: 4
       30:
-        name: locale
-        caption: dc_help.locale
+        name: lang
+        caption: drgcms.dc_help.lang
         type: text_field
         size: 2
+        html:
+          minlength: 2
+          maxlength: 2
 
     2index:
-      caption: dc_help.2index
+      caption: drgcms.dc_help.2index
       10:
         name: index
         caption: false
         line: top
         type: html_field
-        options: "height: 800"
+        options: "height: 600"
 
     3form:
-      caption: dc_help.3form
+      caption: drgcms.dc_help.3form
       10:
         name: form
         caption: false
         line: top
         type: html_field
-        options: "height: 800"
+        options: "height: 600"

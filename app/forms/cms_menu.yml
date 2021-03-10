@@ -128,7 +128,7 @@ menu:
         icon: trash-o lg
         table: dc_removed_url
       400:
-        caption: helpers.dc_help.cmsmenu_title
+        caption: drgcms.dc_help.title
         controller: cmsedit
         icon: question-circle lg
         table: dc_temp

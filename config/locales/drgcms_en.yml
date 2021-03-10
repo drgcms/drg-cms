@@ -118,3 +118,14 @@ en:
     filters:
       this_site_only: Documents for currently selected site only
 
+    dc_help:
+      title: Manage help documents
+      project: Project
+      lang: Locale
+      project_refresh: Refresh
+      project_refresh_title: Refresh list of available documents
+      form_name: Form
+      updated_at: Updated
+      1basic: Basic
+      2index: Index
+      3form: Form
