@@ -3,3 +3,5 @@
 <%= form_tag( @parms, method: :post, id: 'cmsform', multipart: @form['form']['multipart'] ) do %>
   <%= render partial: 'form' %>
 <% end %>
+
+<div id="popup" style="display: none;"></div>

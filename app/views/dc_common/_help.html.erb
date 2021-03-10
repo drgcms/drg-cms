@@ -1,0 +1,7 @@
+<div class="dc-help">
+  <h1><%= t('drgcms.dc_help.help') %>: <%= params[:form_name] %></h1>
+
+  <div class="help-body">
+    <%= @yaml[params[:type]].html_safe %>
+  </div>
+</div>

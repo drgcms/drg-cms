@@ -239,9 +239,14 @@ process_json_result = function(json) {
       break;
       
 /**** display popup message ****/
-    case 'popup':
+      case 'popup':
+      console.log(1);
+      console.log($('#popup'));
+      console.log(2);
       $('#popup').html(value);
-      $('#popup').bPopup({ speed: 650, transition: 'slideDown' });            
+        console.log(3);
+      $('#popup').bPopup({ speed: 650, transition: 'slideUp'});
+        console.log(4);
 
 /**** update div ****/
     case '#div+':

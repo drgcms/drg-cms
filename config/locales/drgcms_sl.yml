@@ -116,6 +116,7 @@ sl:
       this_site_only: Dokumenti samo trenutno izbrane strani
 
     dc_help:
+      help: POMOČ
       title: Urejanje dokumentov pomoči
       project: Projekt
       lang: Jezik

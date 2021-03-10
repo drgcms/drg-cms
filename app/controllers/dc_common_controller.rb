@@ -270,7 +270,28 @@ def add_json_ld_schema
   render json: {'reload_' => 1}
 end
 
+########################################################################
+# Will provide help window data
+########################################################################
+def help
+  help_file = find_help_file
+  @yaml = help_file ? YAML.load_file(find_help_file) : {}
+  
+  render json: { popup: render_to_string(partial: 'help') }
+end
+
 protected
+
+########################################################################
+def find_help_file
+  help_file_name = params[:form_name] || params[:table]
+  file_name = nil
+  DrgCms.paths(:forms).reverse.each do |path|
+    f = "#{path}/help/#{help_file_name}.#{I18n.locale}"
+    file_name = f and break if File.exist?(f)
+  end
+  file_name
+end
 
 ########################################################################
 # Subroutine of add_json_ld_schema for adding one element

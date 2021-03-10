@@ -243,8 +243,8 @@ end
 # Helper for adding additional css and javascript code added by documents
 # and renderers during page rendering.
 ########################################################################
-def dc_page_bottom()
-  %Q[<style type="text/css">#{@css}</style>#{javascript_tag @js}].html_safe
+def dc_page_bottom
+  %(<style type="text/css">#{@css}</style>#{javascript_tag @js}).html_safe
 end
 
 ############################################################################
@@ -258,10 +258,16 @@ end
 # Returns:
 # String. HTML code for title.
 ############################################################################
-def dc_table_title(text, result_set=nil)
-  c = %Q[<div class="dc-title">#{text}]
+def dc_table_title(text, result_set = nil)
+  c = %(<div class="dc-title">#{text})
+  # help button
+  type = result_set.nil? ? 'form' : 'index'
+  form_name = params[:form_name] || params[:table]
+  url = url_for(controller: :dc_common, action: :help, type: type, form_name: form_name)
+  c << %(<div class="dc-help dc-link-ajax" data-url=#{url}>#{fa_icon('question-circle')}</div>)
+
   if result_set and result_set.respond_to?(:current_page)
-    c << %Q[<div class="dc-paginate">#{paginate(result_set, :params => {action: 'index', clear: 'no', filter: nil})}</div>]
+    c << %(<div class="dc-paginate">#{paginate(result_set, :params => {action: 'index', clear: 'no', filter: nil})}</div>)
   end
   c << '<div style="clear: both;"></div></div>'
   c.html_safe
@@ -273,7 +279,7 @@ end
 # Returns:
 # String. HTML code for title.
 ############################################################################
-def dc_edit_title()
+def dc_edit_title
   session[:form_processing] = "form:title:"
   title = @form['form']['title']
 # defined as form:title:edit

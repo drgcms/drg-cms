@@ -588,6 +588,15 @@ color: #aaa;
   font-size: 0.8em;
 }
 
+.dc-title .dc-help {
+  float:right;
+  padding: 4px 0 0 4px;
+  font-size: 1.1em;
+  height: 1em;
+  border: none;
+  background: none;
+}
+
 .dc-form-frame {
   width: 99.9%;
   margin:  0;
@@ -1194,6 +1203,28 @@ background-color: transparent;
   cursor: pointer;
   color: #ccc;
 }
+
+#popup {
+  min-width: 50%;
+}
+
+#popup .dc-help {
+  background: #fff;
+  border: 1px solid #444;
+}
+
+#popup .dc-help h1 {
+  background: darkred;
+  color: #fff;
+  font-weight: 600;
+  padding: 4px
+}
+
+#popup .dc-help .help-body {
+  padding: 4px
+}
+
+
 .filter-popup {
   background-color: #fff;
   box-shadow: 2px 2px 5px #666;

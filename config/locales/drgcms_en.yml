@@ -119,6 +119,7 @@ en:
       this_site_only: Documents for currently selected site only
 
     dc_help:
+      help: HELP
       title: Manage help documents
       project: Project
       lang: Locale

@@ -195,6 +195,7 @@ def self.routes
       match 'dc_common/paste_clipboard' => :paste_clipboard, via: [:get, :post]
       put 'dc_common/restore_from_journal'  => :restore_from_journal
       get 'dc_common/add_json_ld_schema'    => :add_json_ld_schema
+      get 'dc_common/help' => :help
     end
     match 'elfinder' => 'dc_elfinder#connector', via: [:get, :post]
     match 'cmsedit/run' => 'cmsedit#run', via: [:get, :put, :post]
