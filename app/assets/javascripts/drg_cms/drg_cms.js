@@ -554,7 +554,7 @@ $(document).ready( function() {
     let url = this.getAttribute("data-url");
     if (url.length < 5) return false;
 
-    $('.dc-spinner').show();   
+    $('.dc-spinner').show();
     $.ajax({
       url: url,
       type: req,
@@ -562,9 +562,9 @@ $(document).ready( function() {
       data: data,
       success: function(data) {
         process_json_result(data);
+        $('.dc-spinner').hide();
       }
     });
-    $('.dc-spinner').hide();
   });
   
 /*******************************************************************
@@ -667,8 +667,8 @@ $(document).ready( function() {
   * data from with text_autocomplete and data doesn't exist in belongs_to table.
   *******************************************************************/
   $('.in-edit-add').on('click', function(e) { 
-    url = '/cmsedit/new?table=' + this.getAttribute("data-table");
-/* I know. It doesn't work as expected. But it will do for now. */
+    let url = '/cmsedit/new?table=' + this.getAttribute("data-table");
+    // I know. It doesn't work as expected. But it will do for now.
     w = window.open(url, '', 'chrome=yes,width=800,height=600,resizable,scrollbars=yes,status=1,centerscreen=yes,modal=yes');
     w.focus();    
   });  
@@ -679,13 +679,9 @@ $(document).ready( function() {
  **********************************************************************/
   $('#filter_field').on('change', function() {
     if (this.value.length > 0) { 
-      name = 'filter_' + this.value;
+      let name = 'filter_' + this.value;
       $(this).parents('form').find('span').each( function() {
-/*
-element = $(this).find(':first').attr('id');
- sometimes it is the second element         
-        if (element == nil) { element = $(this).find(':first').next().attr('id');}
- */   
+
         if ($(this).attr('id') == name) {
           if ( $(this).hasClass('div-hidden') ) { $(this).toggleClass('div-hidden'); }
         } else {
@@ -767,8 +763,8 @@ element = $(this).find(':first').attr('id');
   * Fire action (by default show document) when doubleclicked on result row
   *******************************************************************/
   $('.dc-result tr').on('dblclick', function(e) {
-    url = String( this.getAttribute("data-dblclick") );
-// prevent when data-dblclick not set
+    let url = String( this.getAttribute("data-dblclick") );
+    // prevent when data-dblclick not set
     if (url.length > 5) { 
       e.preventDefault();
       location.href = url;
@@ -779,8 +775,8 @@ element = $(this).find(':first').attr('id');
   * Fire action (by default show document) when doubleclicked on result row
   *******************************************************************/
   $('.dc-result-data').on('dblclick', function(e) {
-    url = String( this.getAttribute("data-dblclick") );
-// prevent when data-dblclick not set
+    let url = String( this.getAttribute("data-dblclick") );
+    // prevent when data-dblclick not set
     if (url.length > 5) { 
       e.preventDefault();
       location.href = url;
