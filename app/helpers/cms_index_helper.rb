@@ -270,7 +270,7 @@ def dc_actions_for_result(document)
     # if single definition simulate type parameter
     yaml = v.class == String ? { 'type' => v } : v
     # code already includes li tag
-    if %w(ajax link window submit).include?(yaml['type']) then
+    if %w(ajax link window submit).include?(yaml['type'])
       @record = document # otherwise document fields can't be used as parameters
       html << dc_link_ajax_window_submit_action(yaml, document)
     else

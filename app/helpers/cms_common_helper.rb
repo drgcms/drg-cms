@@ -256,6 +256,13 @@ def self.dc_format_date_time(value, format=nil)
   value.strftime(format)
 end
 
+############################################################################
+# Returns html code for displaying date/time formatted by strftime. Will return '' if value is nil.
+#
+# Parameters:
+# [value] Date/DateTime/Time.
+# [format] String. strftime format mask. Defaults to locale's default format.
+############################################################################
 def dc_format_date_time(value, format=nil) #:nodoc:
   CmsCommonHelper.dc_format_date_time(value, format)
 end
@@ -305,8 +312,25 @@ def self.dc_format_number(value=0, decimals=nil, separator=nil, delimiter=nil, c
   "#{sign}#{ar.reverse.join(delimiter)}#{separator}#{dec}" 
 end
 
+############################################################################
+# Returns html code for displaying formatted number.
+#
+# Parameters:
+# [value] Numeric number.
+# [decimals] Integer. Number of decimals
+# [separator] String. Decimals separator
+# [delimiter] String. Thousands delimiter.
+# [currency] String. Currency symbol if applied to result string.
+############################################################################
 def dc_format_number(value=0, decimals=nil, separator=nil, delimiter=nil, currency=nil) #:nodoc:
   CmsCommonHelper.dc_format_number(value, decimals, separator, delimiter, currency)
+end
+
+####################################################################
+# Will provide title text for help dialog
+####################################################################
+def dc_help_title
+
 end
 
 end

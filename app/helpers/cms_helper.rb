@@ -179,7 +179,8 @@ def dc_link_ajax_window_submit_action(yaml, record=nil, action_active=true)
   # add current id to parameters
   parms['id'] = dc_document_path(record) if record
   # overwrite with or add additional parameters from environment or record
-  yaml['params'].each { |k,v| parms[k] = dc_value_for_parameter(v) } if yaml['params']
+  yaml['params'].each { |k, v| parms[k] = dc_value_for_parameter(v, record) } if yaml['params']
+
   parms['table'] = parms['table'].underscore if parms['table'] # might be CamelCase
   # error if controller parameter is missing
   if parms['controller'].nil? && parms['url'].nil?

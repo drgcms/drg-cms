@@ -1089,12 +1089,13 @@ def dc_iframe_edit(table, opts={})
 end
 
 ########################################################################
-# Will return value from internal DRG variables.
-# This objects can be params, session, ...
+# Will return value from Rails and DRG internal objects.
+# This objects can be params, session, record, site, page
 # 
 # Parameters:
-# [object] String: Internal object holding variable. Current values can be session, params, site, page, class
+# [object] String: Internal object holding variable. Possible values are session, params, record, site, page, class
 # [var_name] String[symbol]: Variable name (:user_name, 'user_id', ...)
+# [current_document] Object: If passed and object is 'record' then it will be used for retrieving data.
 # 
 # Example:
 #    # called when constructing iframe for display
@@ -1106,26 +1107,28 @@ end
 #    
 # 
 # Returns:
-# Value of variable or nil when not found
+# Value of variable or error when not found
 ########################################################################
-def dc_internal_var(object, var_name)
+def dc_internal_var(object, var_name, current_document = nil)
   begin
     case
-      when object == 'session' then _origin.session[var_name]
-      when object == 'params'  then _origin.params[var_name]
-      when object == 'site'    then _origin.dc_get_site.send(var_name)
-      when object == 'page'    then _origin.page.send(var_name)
-      when object == 'record'  then _origin.record.send(var_name)
-      when object == 'class'   then
-        clas, method_name = var_name.split('.')
-        klas = clas.classify.constantize
-        # call method. Error will be cought below.
-        klas.send(method_name)
-      else
-        'VARIABLE: UNKNOWN OBJECT'
+    when object == 'session' then _origin.session[var_name]
+    when object == 'params'  then _origin.params[var_name]
+    when object == 'site'    then _origin.dc_get_site.send(var_name)
+    when object == 'page'    then _origin.page.send(var_name)
+    when object == 'record'  then
+      current_document ? current_document.send(var_name) : _origin.record.send(var_name)
+    when object == 'class'   then
+      clas, method_name = var_name.split('.')
+      klas = clas.classify.constantize
+      # call method. Error will be caught below.
+      klas.send(method_name)
+    else
+      'VARIABLE: UNKNOWN OBJECT'
     end
   rescue Exception => e
-    logger.error "Method dc_internal_var. Runtime error. #{e.message}"
+    Rails.logger.debug "\ndc_internal_var. Runtime error. #{e.message}\n"
+    Rails.logger.debug(e.backtrace.join($/)) if Rails.env.development?
     'VARIABLE: ERROR'
   end
 end
