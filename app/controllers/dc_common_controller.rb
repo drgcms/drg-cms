@@ -274,17 +274,22 @@ end
 # Will provide help window data
 ########################################################################
 def help
-  help_file = find_help_file
-  @yaml = help_file ? YAML.load_file(find_help_file) : {}
-  
+  form_name = params[:form_name] || params[:table]
+  @form = form_name ? YAML.load_file(dc_find_form_file(form_name)) : {}
+  return render json: {} if @form.nil?
+
+  help_file_name = @form['help'] || @form['extend'] || params[:form_name] || params[:table]
+  @help = help_file_name ? YAML.load_file(find_help_file(help_file_name)) : {}
+
   render json: { popup: render_to_string(partial: 'help') }
 end
 
 protected
 
 ########################################################################
-def find_help_file
-  help_file_name = params[:form_name] || params[:table]
+# Will search for help file and return it's path if found
+########################################################################
+def find_help_file(help_file_name)
   file_name = nil
   DrgCms.paths(:forms).reverse.each do |path|
     f = "#{path}/help/#{help_file_name}.#{I18n.locale}"
