@@ -240,13 +240,9 @@ process_json_result = function(json) {
       
 /**** display popup message ****/
       case 'popup':
-      console.log(1);
-      console.log($('#popup'));
-      console.log(2);
       $('#popup').html(value);
-        console.log(3);
       $('#popup').bPopup({ speed: 650, transition: 'slideUp'});
-        console.log(4);
+      break;
 
 /**** update div ****/
     case '#div+':
@@ -367,6 +363,17 @@ process_parent_form_updates = function(element) {
     if (window.parent.$(selector).length > 0) {
       window.parent.$(selector).html(value);
     }
+  }
+};
+
+/*****************************************************************
+ * Toggle show and hide div
+ ******************************************************************/
+dc_toggle_div = function(div) {
+  if ($(div).is(":visible")) {
+    $(div).slideUp();
+  } else {
+    $(div).slideDown();
   }
 };
 
@@ -1049,6 +1056,14 @@ $(document).ready( function() {
     
     url = url + '&filter_field=' + field_name + '&filter_oper=' + operator;
     window.location.href = url;
+  });
+
+  /*****************************************************************
+   * Toggle div
+   ******************************************************************/
+  $(".dc-handle").click(function() {
+    let div = this.getAttribute("data-div");
+    dc_toggle_div(div);
   });
 
 });

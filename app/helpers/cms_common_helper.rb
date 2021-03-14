@@ -326,11 +326,48 @@ def dc_format_number(value=0, decimals=nil, separator=nil, delimiter=nil, curren
   CmsCommonHelper.dc_format_number(value, decimals, separator, delimiter, currency)
 end
 
-####################################################################
-# Will provide title text for help dialog
-####################################################################
-def dc_help_title
+############################################################################
+# Create help text for fields on single tab
+############################################################################
+def dc_help_for_tab(tab)
+  return '' if tab.nil?
 
+  html = ''
+  if tab.class == Array
+    tab_label = tab.last['caption'] || tab.first
+    tab_label = t(tab_label, t_name(tab_label, tab_label))
+    html << %(<div class="help-tab">#{tab_label}</div>)
+    tab = tab.last
+  end
+
+  tab.each do |field|
+    label, help = dc_label_help(field.last)
+    html << %(<div class="help-field"><div class="help-label">#{label}</div><div class="help-text">#{help}</div></div>)
+  end
+  html
+end
+
+############################################################################
+# Will scoop fields and help text associated with them to create basic help text.
+############################################################################
+def dc_help_fields
+  return '' if @form['form'].nil?
+
+  html = '<div class="dc-handle" data-div="#the1"></div><div id="the1">'
+  if @form['form']['tabs']
+    @form['form']['tabs'].each { |tab| html << dc_help_for_tab(tab) }
+  else
+    html << dc_help_for_tab(@form['form']['fields'])
+  end
+  html << '</div>'
+  html.html_safe
+end
+
+############################################################################
+# Will return text from help files
+############################################################################
+def dc_help_body
+  (params[:type] == 'index' ? @help['index'] : @help['form']).html_safe
 end
 
 end

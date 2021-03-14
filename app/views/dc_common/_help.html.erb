@@ -1,6 +1,8 @@
-<div class="dc-help">
-  <h1><%= t('drgcms.dc_help.help') %>: <%= dc_help_title %></h1>
+<%= javascript_include_tag "cms" %>
 
-  <div class="help-fields"><%= dc_help_fields %></div>
-  <div class="help-body"><%= dc_help_body %></div>
+<div class="dc-help">
+  <h1><%= t('drgcms.dc_help.help') %>: <%= dc_form_title %></h1>
+
+  <div class="help-fields"><%= dc_help_fields if params[:type] == 'form' %></div>
+  <div class="help-body"><%= dc_help_body if @help %></div>
 </div>

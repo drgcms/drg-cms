@@ -831,6 +831,15 @@ display: flex;
   color: lightcoral;
 }
 
+.dc-handle:before {
+  font-family: 'FontAwesome';
+  content: '\f0dc\20';
+  color: #000;
+  cursor: pointer;
+  padding-top: 2px;
+  font-size: 1.1em;
+}
+
 #cmsedit-div {
 font-family: Exo,Arial, sans-serif;
 font-size: 13px;
@@ -1210,7 +1219,7 @@ background-color: transparent;
 
 #popup .dc-help {
   background: #fff;
-  border: 1px solid #444;
+  padding: 8px;
 }
 
 #popup .dc-help h1 {
@@ -1224,6 +1233,37 @@ background-color: transparent;
   padding: 4px
 }
 
+#popup .dc-help .help-tab {
+  display: table;
+  padding-top: 4px;
+  border-bottom: 3px solid #000;
+  margin: 0 0 1rem 0;
+  font-weight: 600;
+}
+
+#popup .dc-help .help-field {
+  display: flex;
+  background-color: #eee;
+  padding: 3px;
+}
+
+#popup .dc-help .help-field:nth-child(odd) {
+  background-color: #f8f8f8;
+}
+
+#popup .dc-help .help-label {
+  width: 25%;
+}
+
+#popup .dc-help .help-text {
+  max-width: 75%;
+}
+
+#popup .dc-help .help-body {
+  margin-top: 8px;
+  border-top: 1px solid #222;
+  padding-top: 8px;
+}
 
 .filter-popup {
   background-color: #fff;

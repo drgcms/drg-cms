@@ -1,6 +1,5 @@
-#coding: utf-8
 #--
-# Copyright (c) 2012-2013 Damjan Rems
+# Copyright (c) 2012+ Damjan Rems
 #
 # Permission is hereby granted, free of charge, to any person obtaining
 # a copy of this software and associated documentation files (the
@@ -271,7 +270,7 @@ def add_json_ld_schema
 end
 
 ########################################################################
-# Will provide help window data
+# Will provide help data
 ########################################################################
 def help
   form_name = params[:form_name] || params[:table]
@@ -279,7 +278,10 @@ def help
   return render json: {} if @form.nil?
 
   help_file_name = @form['help'] || @form['extend'] || params[:form_name] || params[:table]
-  @help = help_file_name ? YAML.load_file(find_help_file(help_file_name)) : {}
+  help_file_name = find_help_file(help_file_name)
+  @help = YAML.load_file(help_file_name) if help_file_name
+  # no auto generated help on index action
+  return render json: {} if params[:type] == 'index' && @help.nil?
 
   render json: { popup: render_to_string(partial: 'help') }
 end

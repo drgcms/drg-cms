@@ -210,20 +210,22 @@ def dc_filter_popup
 end
 
 ############################################################################
-# Creates title div for cmsedit index result set records. Title div also includes paging 
-# options.
+# Will return title based on @form['title']
 ############################################################################
-def dc_table_title_for_result(result=nil)
-  title = if @form['title'] # form has title section
-    if @form['title'].class == Hash
-      dc_process_eval(@form['title']['eval'], [@form['title']['caption'] || @form['title']['text'], params])
-    else
-      t(@form['title'], @form['title'])
-    end
-  else # get name from translations
-    t("helpers.label.#{@form['table']}.tabletitle", @form['table'])
-  end
-  dc_table_title(title, result)
+def dc_form_title
+  return t("helpers.label.#{@form['table']}.tabletitle", @form['table'])  if @form['title'].nil?
+  return t(@form['title'], @form['title']) if @form['title'].class == String
+
+  # Hash
+  dc_process_eval(@form['title']['eval'], [@form['title']['caption'] || @form['title']['text'], params])
+end
+
+############################################################################
+# Creates title div for index action. Title div also includes paging options
+# and help link
+############################################################################
+def dc_title_for_index(result = nil)
+  dc_table_title(dc_form_title(), result)
 end
 
 ############################################################################

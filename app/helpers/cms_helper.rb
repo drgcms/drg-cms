@@ -46,7 +46,7 @@ end
 # Field definition will be used for input field on the form.
 ############################################################################
 def dc_get_field_form_definition(name) #:nodoc:
-  return nil if @form['form'].nil?
+  return if @form['form'].nil?
   
   @form['form']['tabs'].each do |tab|
 # Array with 2 elements. First is tabname, second is data      
@@ -73,20 +73,8 @@ end
 #   help : String : Help text
 ############################################################################
 def dc_field_label_help(options)
-  # no label or help in comments
-  unless %w(comment action).include?(options['type'])
-    label = options['caption'] || options['text'] || options['label']
-    label = if label.blank?
-      t_name(options['name'], options['name'].capitalize.gsub('_',' ') )
-    elsif options['name']
-      t(label, label)
-    end
-    # help text can be defined in form or in translations starting with helpers. or as helpers.help.collection.field
-    help = options['help']
-    help ||= "helpers.help.#{@form['table']}.#{options['name']}" if options['name']
-    help = t(help, ' ') if help.to_s.match(/helpers\./)
-  end
-  # create field object from type option and call its render method
+  label, help = dc_label_help(options)
+  # create field object from type and call its render method
   if options['type'].present?
     klass_string = options['type'].camelize
     field_html = if DrgcmsFormFields.const_defined?(klass_string) # when field type defined
@@ -101,8 +89,35 @@ def dc_field_label_help(options)
   else
     "Error: Field type missing!"
   end
-
   [field_html, label, help]
+end
+
+############################################################################
+# Return label and help text for a field defined on Form.
+#
+# Parameters:
+# options : Hash : Field definition
+#
+# Returns:
+#   label : String : Label text
+#   help : String : Help text
+############################################################################
+def dc_label_help(options)
+  p options
+  # no label or help in comments
+  return ['', ''] if %w(comment action).include?(options['type'])
+
+  label = options['caption'] || options['text'] || options['label']
+  label = if label.blank?
+            t_name(options['name'], options['name'].capitalize.gsub('_',' ') )
+          elsif options['name']
+            t(label, label)
+          end
+  # help text can be defined in form or in translations starting with helpers. or as helpers.help.collection.field
+  help = options['help']
+  help ||= "helpers.help.#{@form['table']}.#{options['name']}" if options['name']
+  help = t(help, ' ') if help.to_s.match(/helpers\./)
+  [label, help]
 end
 
 ############################################################################
