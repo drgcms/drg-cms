@@ -886,7 +886,7 @@ def check_sort_options() #:nodoc:
     session[table_name][:sort] = "#{params['sort']} #{direction}"
     session[table_name][:page] = 1
   end
-  @records.sort( sort => direction.to_i ) if session[table_name][:sort]
+  @records.sort( sort => direction.to_i ) if session[table_name][:sort] && @records.class == Mongoid::Criteria
   params['sort'] = nil # otherwise there is problem with other links
 end
 
