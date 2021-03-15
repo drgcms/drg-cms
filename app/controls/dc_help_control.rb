@@ -68,7 +68,7 @@ def dc_before_edit
   data = YAML.load_file(file_name)
   @record.index = data['index']
   @record.form = data['form']
-  flash[:warning] = "Use only in development!" if Rails.env.development?
+  flash[:warning] = "Use only in development!" unless Rails.env.development?
 end
 
 ######################################################################
