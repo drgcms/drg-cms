@@ -342,6 +342,8 @@ def dc_help_for_tab(tab)
 
   tab.each do |field|
     label, help = dc_label_help(field.last)
+    next if help.blank?
+
     html << %(<div class="help-field"><div class="help-label">#{label}</div><div class="help-text">#{help}</div></div>)
   end
   html

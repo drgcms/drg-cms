@@ -67,7 +67,7 @@ end
 # Parameters:
 # options : Hash : Field definition
 # 
-# Returns: 
+# Returns: Array[3]
 #   field_html : String : HTML code for field definition
 #   label : String : Label text
 #   help : String : Help text
@@ -103,9 +103,8 @@ end
 #   help : String : Help text
 ############################################################################
 def dc_label_help(options)
-  p options
   # no label or help in comments
-  return ['', ''] if %w(comment action).include?(options['type'])
+  return [nil, nil] if %w(comment action).include?(options['type'])
 
   label = options['caption'] || options['text'] || options['label']
   label = if label.blank?

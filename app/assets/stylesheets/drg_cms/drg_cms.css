@@ -1220,6 +1220,8 @@ background-color: transparent;
 #popup .dc-help {
   background: #fff;
   padding: 8px;
+  max-height: 600px;
+  overflow-y: auto;
 }
 
 #popup .dc-help h1 {
@@ -1233,11 +1235,22 @@ background-color: transparent;
   padding: 4px
 }
 
+/*
 #popup .dc-help .help-tab {
   display: table;
   padding-top: 4px;
   border-bottom: 3px solid #000;
-  margin: 0 0 1rem 0;
+  margin: 8px 0;
+  font-weight: 600;
+}
+*/
+#popup .dc-help .help-tab {
+  display: table;
+  margin: 8px 0;
+  padding: 3px 12px;
+  color: #fff;
+  background: #444;
+  border-radius: 5px 5px 0 0;
   font-weight: 600;
 }
 
