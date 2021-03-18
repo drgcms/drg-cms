@@ -128,6 +128,7 @@ def self.set_value(value, *keys)
   else
     create(key:  keys.join('-'), value: value)
   end
+  value
 end
 
 end
