@@ -334,9 +334,10 @@ def dc_help_for_tab(tab)
 
   html = ''
   if tab.class == Array
-    tab_label = tab.last['caption'] || tab.first
-    tab_label = t(tab_label, t_name(tab_label, tab_label))
-    html << %(<div class="help-tab">#{tab_label}</div>)
+    tab_name = tab.last['caption'] || tab.first
+    tab_label, tab_help = dc_tab_label_help(tab_name)
+    html << %(<div class="help-tab">#{tab_label}</div><div class="help-tab-help">#{tab_help}</div>)
+
     tab = tab.last
   end
 

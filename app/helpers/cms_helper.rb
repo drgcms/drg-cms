@@ -120,6 +120,27 @@ def dc_label_help(options)
 end
 
 ############################################################################
+# Return label and help for tab on Form.
+#
+# Parameters:
+# options : String : Tab name on form
+#
+# Returns:
+#   label : String : Label text
+#   help : String : Help text
+############################################################################
+def dc_tab_label_help(tab_name)
+  label = @form['form']['tabs'][tab_name]['caption'] || tab_name
+  label = t(label, t_name(label, label))
+
+  help = @form['form']['tabs'][tab_name]['help'] || "helpers.help.#{@form['table']}.#{tab_name}"
+  help = t(help, t_name(help, help))
+  help = nil if help.match('helpers.') # help not found in translation
+
+  [label, help]
+end
+
+############################################################################
 # Creates code for including data entry field in index actions.
 ############################################################################
 def dc_field_action(yaml)

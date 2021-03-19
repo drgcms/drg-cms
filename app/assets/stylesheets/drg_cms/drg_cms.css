@@ -168,17 +168,17 @@ img { vertical-align:bottom; }
 .dc-link a:link, .dc-link a:active, .dc-link a:visited, 
 .dc-animate a:link, .dc-animate a:active, .dc-animate a:visited, 
 .dc-result a:link, .dc-result a:active, .dc-result a:visited { 
-color: #666;
-font-weight: 600;
-text-decoration: none; 
-background: transparent;
-padding: 7px;
+  color: #666;
+  font-weight: 600;
+  text-decoration: none;
+  background: transparent;
+  padding: 7px;
 }
 
 .dc-link a:hover, .dc-animate a:hover, .dc-result a:hover  { 
-background: #f8f8f8;
-transition: 0.3s;
-color: #000;
+  background: #f8f8f8;
+  transition: 0.3s;
+  color: #000;
 }
 
 a.dc-animate:hover { color: #000; background: transparent;}
@@ -1220,15 +1220,26 @@ background-color: transparent;
 #popup .dc-help {
   background: #fff;
   padding: 8px;
-  max-height: 600px;
+  max-height: 700px;
   overflow-y: auto;
+  max-width: 800px;
 }
 
 #popup .dc-help h1 {
   background: darkred;
   color: #fff;
-  font-weight: 600;
+  font-weight: 700;
   padding: 4px
+}
+
+#popup .dc-help h2 {
+  font-size: 1.4em;
+  font-weight: 600;
+}
+
+#popup .dc-help h3 {
+  font-size: 1.2em;
+  font-weight: 600;
 }
 
 #popup .dc-help .help-body {
@@ -1246,12 +1257,19 @@ background-color: transparent;
 */
 #popup .dc-help .help-tab {
   display: table;
-  margin: 8px 0;
+  margin: 8px 0 0;
   padding: 3px 12px;
   color: #fff;
   background: #444;
   border-radius: 5px 5px 0 0;
   font-weight: 600;
+}
+
+#popup .dc-help .help-tab-help {
+  font-weight: 600;
+  color: #fff;
+  background: #666;
+  padding: 3px 12px;
 }
 
 #popup .dc-help .help-field {
@@ -1276,6 +1294,10 @@ background-color: transparent;
   margin-top: 8px;
   border-top: 1px solid #222;
   padding-top: 8px;
+}
+
+#popup .dc-help .dc-link {
+  display: inline-flex;
 }
 
 .filter-popup {

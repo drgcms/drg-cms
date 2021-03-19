@@ -234,7 +234,7 @@ def dc_background_for_result(start)
   if start == :start
     html = '<div class="dc-result-div" ' 
     html << (@form['result_set']['table_style'] ? 'style="overflow-x: scroll;" >' : '>')
-  #
+
     html << "\n<div class=\"dc-result #{@form['result_set']['table_class']}\" "
     html << (@form['result_set']['table_style'] ? "style=\"#{@form['result_set']['table_style']}\" >" : '>')
   else
@@ -336,9 +336,9 @@ def dc_fields_for_tab(fields_on_tab) #:nodoc:
 end
 
 ############################################################################
-# Creates edit form div. 
+# Creates edit form from fields or tabs options
 ############################################################################
-def dc_fields_for_form()
+def dc_fields_for_form
   html, tabs, tab_data = '',[], ''
   @js  ||= ''
   @css ||= ''
@@ -351,10 +351,10 @@ def dc_fields_for_form()
     first = true # first tab 
     @form['form']['tabs'].keys.sort.each do |tab_name|
       next if tab_name.match('actions')
-      # Tricky. If field name is not on the tab skip to next tab
+      # Tricky when editing single field. If field is not present on the tab skip to next tab
       if params[:edit_only]
         is_on_tab = false
-        @form['form']['tabs'][tab_name].each {|k,v| is_on_tab = true if params[:edit_only] == v['name'] }
+        @form['form']['tabs'][tab_name].each { |k, v| is_on_tab = true if params[:edit_only] == v['name'] }
         next unless is_on_tab
       end
       # first div is displayed, all others are hidden
@@ -362,17 +362,18 @@ def dc_fields_for_form()
       tab_data << ' class="div-hidden"' unless first
       tab_data << " style=\"height: #{@form['form']['height']}px;\"" if @form['form']['height']
       tab_data << ">#{dc_fields_for_tab(@form['form']['tabs'][tab_name])}</div>"
-      tab_label = @form['form']['tabs'][tab_name]['caption'] || tab_name 
-      tabs << [tab_name, tab_label]
+
+      tab_label, tab_title = dc_tab_label_help(tab_name)
+      tabs << [tab_name, tab_label, tab_title]
       first = false      
     end
     # make it all work together
     html << '<ul class="dc-form-ul" >'
     first = true # first tab must be selected
-    tabs.each do |tab_name, tab_label| 
-      html << "<li id=\"li_#{tab_name}\" data-div=\"#{tab_name.delete("\s\n")}\" class=\"dc-form-li"
-      html << ' dc-form-li-selected' if first 
-      html << "\">#{t(tab_label, t_name(tab_label, tab_label))}</li>"
+    tabs.each do |tab_name, tab_label, tab_title|
+      html << %(<li id="li_#{tab_name}" data-div="#{tab_name.delete("\s\n")}" title="#{tab_title}" class="dc-form-li)
+      html << ' dc-form-li-selected' if first
+      html << "\">#{tab_label}</li>"
       first = false
     end
     html << '</ul>'
@@ -392,11 +393,11 @@ end
 # Creates head form div. Head form div is used to display header data usefull
 # to be seen even when tabs are switched.
 ############################################################################
-def dc_head_for_form()
+def dc_head_for_form
   @css ||= ''
   head = @form['form']['head']
   return '' if head.nil?
-  html    = %Q[<div class="dc-head #{head['class']}">\n<div class="dc-row">]
+  html    = %(<div class="dc-head #{head['class']}">\n<div class="dc-row">)
   split   = head['split'] || 4
   percent = 100/split
   current = 0
