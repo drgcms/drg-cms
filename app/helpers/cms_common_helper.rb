@@ -356,13 +356,12 @@ end
 def dc_help_fields
   return '' if @form['form'].nil?
 
-  html = '<div class="dc-handle" data-div="#the1"></div><div id="the1">'
+  html = '<a id="fields"></a>'
   if @form['form']['tabs']
     @form['form']['tabs'].each { |tab| html << dc_help_for_tab(tab) }
   else
     html << dc_help_for_tab(@form['form']['fields'])
   end
-  html << '</div>'
   html.html_safe
 end
 

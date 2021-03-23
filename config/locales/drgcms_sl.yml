@@ -117,6 +117,8 @@ sl:
 
     dc_help:
       help: POMOČ
+      fields_button: Opis podatkov
+      comments_button: Opombe
       title: Urejanje dokumentov pomoči
       project: Projekt
       lang: Jezik

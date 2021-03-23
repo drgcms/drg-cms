@@ -1217,6 +1217,16 @@ background-color: transparent;
   min-width: 50%;
 }
 
+#popup .dc-help .help-top {
+  position: absolute;
+  bottom: 1rem;
+  right: 1rem;
+  padding: 2px 4px;
+  border: 1px dotted #ccc;
+  border-radius: 4px;
+  background: rgba(76,154,255,0.2);
+}
+
 #popup .dc-help {
   background: #fff;
   padding: 8px;
@@ -1228,8 +1238,10 @@ background-color: transparent;
 #popup .dc-help h1 {
   background: darkred;
   color: #fff;
-  font-weight: 700;
-  padding: 4px
+  font-weight: 600;
+  padding: 4px;
+  font-size: 1.2em;
+  border-radius: 2px;
 }
 
 #popup .dc-help h2 {
@@ -1246,21 +1258,12 @@ background-color: transparent;
   padding: 4px
 }
 
-/*
-#popup .dc-help .help-tab {
-  display: table;
-  padding-top: 4px;
-  border-bottom: 3px solid #000;
-  margin: 8px 0;
-  font-weight: 600;
-}
-*/
 #popup .dc-help .help-tab {
   display: table;
   margin: 8px 0 0;
   padding: 3px 12px;
   color: #fff;
-  background: #444;
+  background: #555;
   border-radius: 5px 5px 0 0;
   font-weight: 600;
 }
@@ -1268,8 +1271,13 @@ background-color: transparent;
 #popup .dc-help .help-tab-help {
   font-weight: 600;
   color: #fff;
-  background: #666;
+  background: #777;
   padding: 3px 12px;
+}
+
+#popup .dc-help .help-fields {
+  margin-top: 1rem;
+  border-top: 1px solid #222;
 }
 
 #popup .dc-help .help-field {
@@ -1291,9 +1299,12 @@ background-color: transparent;
 }
 
 #popup .dc-help .help-body {
-  margin-top: 8px;
   border-top: 1px solid #222;
   padding-top: 8px;
+}
+
+#popup .dc-help .help-buttons {
+  padding: 4px 0;
 }
 
 #popup .dc-help .dc-link {

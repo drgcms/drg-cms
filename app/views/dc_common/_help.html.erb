@@ -1,8 +1,17 @@
-<%= javascript_include_tag "cms" %>
 
-<div class="dc-help">
+<div class="dc-help"><a id="help-top"></a>
   <h1><%= t('drgcms.dc_help.help') %>: <%= dc_form_title %></h1>
+  <div class="help-buttons">
+    <% if params[:type] == 'form' %>
+      <button onclick="location.href='#fields'; return false;"><%= t('drgcms.dc_help.fields_button') %></button>
+    <% end %>
+    <% if @commnets %>
+      <button onclick="location.href='#comments'; return false;"><%= t('drgcms.dc_help.comments_button') %></button>
+    <% end %>
+  </div>
 
-  <div class="help-fields"><%= dc_help_fields if params[:type] == 'form' %></div>
   <div class="help-body"><%= dc_help_body if @help %></div>
+  <div class="help-fields"><%= dc_help_fields if params[:type] == 'form' %></div>
+
+  <div class="help-top" onclick="location.href='#help-top'; return false;"><%= fa_icon('arrow-up') %></div>
 </div>

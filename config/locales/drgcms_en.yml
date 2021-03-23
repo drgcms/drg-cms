@@ -120,6 +120,8 @@ en:
 
     dc_help:
       help: HELP
+      fields_button: Data description
+      comments_button: Comments
       title: Manage help documents
       project: Project
       lang: Locale
