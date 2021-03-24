@@ -596,10 +596,11 @@ end
 # Returns: 
 # String. HTML code required for manipulation of currently processed document.
 ########################################################################
-def dc_page_edit_menu(opts=@opts)
+def dc_page_edit_menu(opts = @opts)
   opts[:edit_mode] ||= _origin.session[:edit_mode]
   return '' if opts[:edit_mode] < 2
-# save some data to cookie. This can not go to session.
+
+  # save some data to cookie. This can not go to session.
   page  = opts[:page] || @page
   table = _origin.site.page_class.underscore
   kukis = { "#{table}.dc_design_id" => page.dc_design_id,
@@ -616,11 +617,9 @@ def dc_page_edit_menu(opts=@opts)
     opts[:editparams].merge!( :id => page.id, :table => _origin.site.page_class.underscore, form_name: opts[:form_name], edit_only: 'body' )
     html << dc_link_for_edit1( opts[:editparams], t('drgcms.edit_content') )
     
-#    opts[:editparams][:edit_only] = nil
     opts[:editparams].merge!( edit_only: nil, 'icon' => 'pencil' )
     html << dc_link_for_edit1( opts[:editparams], t('drgcms.edit_advanced') )
     
-#    opts[:editparams][:action] = 'new'
     opts[:editparams].merge!( action: 'new', 'icon' => 'plus' )
     html << dc_link_for_edit1( opts[:editparams], t('drgcms.edit_new_page') )
 
@@ -642,8 +641,7 @@ end
 #      type: text_with_select
 #      eval: 'dc_page_class.all_pages_for_site(@parent.dc_get_site)'
 ########################################################################
-def dc_page_class()
-#  dc_get_site.page_class.classify.constantize  
+def dc_page_class
   dc_get_site.page_klass
 end
 
@@ -658,7 +656,7 @@ end
 #      type: tree_view
 #      eval: 'dc_menu_class.all_menus_for_site(@parent.dc_get_site)'
 ########################################################################
-def dc_menu_class()
+def dc_menu_class
   dc_get_site.menu_class.classify.constantize
 end
 
@@ -672,23 +670,20 @@ end
 # Returns:
 # DCSite. Site document.
 ####################################################################
-def dc_get_site()
+def dc_get_site
   return @site if @site # already cached
-#
+
   req = _origin.request.url # different when called from renderer
   uri  = URI.parse(req)
   @site = DcSite.find_by(name: uri.host)
-# Site can be aliased
-  if @site and !@site.alias_for.blank?
-    @site = DcSite.find_by(name: @site.alias_for)
-  end
-# Development environment. Check if site with name test exists and use 
-# alias_for field as pointer to real site name.
-  if @site.nil? and ENV["RAILS_ENV"] != 'production'
+  # Site can be aliased
+  @site = DcSite.find_by(name: @site.alias_for) if @site&.alias_for.present?
+  # Development. If site with name test exists use alias_for field as pointer to real site data
+  if @site.nil? && ENV["RAILS_ENV"] != 'production'
     @site = DcSite.find_by(name: 'test')
     @site = DcSite.find_by(name: @site.alias_for) if @site
   end 
-  @site = nil if @site and !@site.active # site is disabled
+  @site = nil if @site && !@site.active # site is disabled
   @site
 end
 
@@ -704,9 +699,9 @@ end
 #    html:
 #      include_blank: true      
 ############################################################################
-def dc_choices4_site_policies()
+def dc_choices4_site_policies
   site = dc_get_site()
-  site.dc_policies.all.inject([]) { |r, policy| r << [ policy.name, policy.id] if policy.active }
+  site.dc_policies.where(active: true).order_by(name: 1).map { |policy| [ policy.name, policy.id] }
 end
 
 ############################################################################
@@ -727,7 +722,7 @@ def dc_choices4_all_collections
   DrgCms.paths(:forms).reverse.each do |path|
     filename = "#{path}/cms_menu.yml"
     next unless File.exist?(filename)
-#
+
     menu = YAML.load_file(filename) rescue nil      # load menu
     next if menu.nil? or !menu['menu']              # not menu or error
     menu['menu'].each do |section|
@@ -754,8 +749,8 @@ def forms_merge(hash1, hash2) #:nodoc:
     end
     target[key] = hash2[key] == '/' ? nil :  hash2[key]
   end
-# delete keys with nil value  
-  target.delete_if{ |k,v| v.nil? }
+  # delete keys with nil value
+  target.delete_if{ |k, v| v.nil? }
 end
 
 ##########################################################################
@@ -770,7 +765,7 @@ def dc_choices4_cmsmenu()
     next if menu.nil? or !menu['menu']              # not menu or error
     menus = forms_merge(menu['menu'], menus)        # ignore top level part
  end
-#
+
   html = '<ul>'
   menus.to_a.sort.each do |index, menu|    # sort menus, result is array of sorted hashes
     next unless menu['caption']
@@ -835,9 +830,11 @@ def dc_choices4(model, name, id='_id', options = {})
     sites << nil if param == :with_nil 
     qry   = qry.in(dc_site_id: sites) if sites
   end
-  qry   = qry.and(active: true) if model.method_defined?(:active)
-  choices = qry.inject([]) {|result,e| result << [ e[name], e[id] ]}
-  choices.sort_alphabetical_by(&:first) # use UTF-8 sort
+  qry = qry.and(active: true) if model.method_defined?(:active)
+  qry = qry.order_by(name => 1).collation(locale: I18n.locale.to_s)
+  #choices = qry.inject([]) {|result,e| result << [ e[name], e[id] ]}
+  #choices.sort_alphabetical_by(&:first) # use UTF-8 sort
+  qry.map { |e| [e[name], e[id]] }
 end
 
 ############################################################################
@@ -898,35 +895,35 @@ end
 ############################################################################
 def dc_user_can_view(ctrl, policy_id)
   policy_id = policy_id.policy_id if policy_id and policy_id.respond_to?(:policy_id)
-# Eventualy object without policy_id will be checked. This is to prevent error
+  # Eventualy object without policy_id will be checked. This is to prevent error
   policy_id = nil unless policy_id.class == BSON::ObjectId
-#
+
   site = ctrl.site
   policies = if site.inherit_policy.blank? 
     site.dc_policies
   else
     Mongoid::QueryCache.cache { DcSite.find(site.inherit_policy) }.dc_policies
   end
-# permission defined by default policy
+  # permission defined by default policy
   default_policy = Mongoid::QueryCache.cache { policies.find_by(is_default: true) }
   return false, 'Default access policy not found for the site!' unless default_policy
-#  
+
   permissions = {}
   default_policy.dc_policy_rules.to_a.each { |v| permissions[v.dc_policy_role_id] = v.permission }
-# update permissions with defined policy 
+  # update permissions with defined policy
   part_policy = nil
   if policy_id
     part_policy = Mongoid::QueryCache.cache { policies.find(policy_id) }
     return false, 'Access policy not found for part!' unless part_policy
     part_policy.dc_policy_rules.to_a.each { |v| permissions[v.dc_policy_role_id] = v.permission }
   end
-# apply guest role if no roles defined
+  # apply guest role if no roles defined
   if ctrl.session[:user_roles].nil?
     role = Mongoid::QueryCache.cache { DcPolicyRole.find_by(system_name: 'guest', active: true) }
     return false, 'System guest role not defined!' unless role
     ctrl.session[:user_roles] = [role.id]
   end
-# Check if user has any role that allows him to view part
+  # Check if user has any role that allows him to view part
   can_view, msg = false,''
   ctrl.session[:user_roles].each do |role|
     next unless permissions[role]          # role not yet defined. Will die in next line.
@@ -962,10 +959,10 @@ def dc_user_has_role( role, user=nil, roles=nil )
   roles = _origin.session[:user_roles] if roles.nil?
   user  = _origin.session[:user_id] if user.nil?
   return false if user.nil? or roles.nil?
-#  
+
   role = DcPolicyRole.get_role(role)
   return false if role.nil?
-# role is included in roles array
+  # role is included in roles array
   roles.include?(role._id)
 end
 
@@ -1004,6 +1001,7 @@ end
 ############################################################################
 def dc_limit_string(string, size)
   return string if string.size < size
+
   string = string[0,size]
   string.chop! until (string[-1,1] == ' ' or string == '')
   string << '...'
@@ -1031,10 +1029,11 @@ def dc_big_table(key)
   bt = DcBigTable.find_by(key: key, site: dc_get_site._id, active: true)
   bt = DcBigTable.find_by(key: key, site: nil, active: true) if bt.nil?
   return ret if bt.nil? 
-# 
+
   locale = I18n.locale.to_s
   bt.dc_big_table_values.each do |v|   # iterate each value
     next unless v.active
+
     desc = ''
     v.dc_big_table_locales.each do |l| # iterate each locale
       if l.locale == locale
