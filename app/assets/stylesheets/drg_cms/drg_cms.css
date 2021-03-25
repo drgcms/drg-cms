@@ -795,6 +795,9 @@ border-top: 1px solid #ddd;
 display: flex;
 }
 .dc-head .dc-column {
+  white-space: nowrap;
+  overflow: hidden;
+  margin-right: 2px;
 }
 .dc-head .text {
   font-weight: normal;  
