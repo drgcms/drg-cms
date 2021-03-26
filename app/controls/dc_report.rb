@@ -200,15 +200,12 @@ end
 # @param [Object] txt : Text or object. Result of to_s method of the object is
 # @param [Hash] opts
 ###############################################################################
-def pdf_text(txt, opts={})
-  box_opts = {}
+def pdf_text(txt, opts = {})
+  box_opts = opts.dup
   ypos = @pdf.cursor
   xpos = opts.delete(:atx) || 0
-  box_opts.merge!(single_line: (opts.delete(:single_line) || true))
-  box_opts.merge!(at: (opts.delete(:at) || [xpos, ypos]))
-  box_opts.merge!(width: opts[:width]) if opts[:width]
-  box_opts.merge!(align: opts[:align]) if opts[:align]
-  box_opts.merge!(inline_format: opts[:inline_format]) if opts[:inline_format]
+  box_opts[:single_line] ||= true
+  box_opts[:at] ||= [xpos, ypos]
 
   @pdf.text_box(txt.to_s, box_opts)
 end
