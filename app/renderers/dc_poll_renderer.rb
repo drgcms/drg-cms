@@ -60,7 +60,7 @@ def do_one_item(poll, yaml)
   # label
   text = yaml['text'].match(/\./) ? t(yaml['text']) : yaml['text'] 
   if yaml['mandatory']
-    text << ( poll.display == 'in' ? ' *' : '<font color="red"> *</font>' )
+    text << ( poll.display == 'in' ? ' *' : '<span class="required"> *</span>' )
     yaml['html'] ||= {}
     yaml['html']['required'] = true
   else
