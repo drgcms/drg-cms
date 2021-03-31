@@ -108,11 +108,7 @@ def do_one_item(poll, yaml)
   if yaml['type'].match(/submit_tag|link_to/)
     # There can be more than one links on form. End the data at first link or submit.
     if !@end_of_data 
-      html << if poll.display == 'lr'
-        "</div><br>\n"
-      else
-        "</div>\n"
-      end
+      html << (poll.display == 'lr' ? "</div><br>\n" : "</div>\n")
       # captcha
       if poll.captcha_type.to_s.size > 1
         @opts.merge!(:captcha_type => poll.captcha_type)
@@ -166,18 +162,18 @@ def default
 
   poll = DcPoll.find(poll_id)
   poll = DcPoll.find_by(name: poll_id) if poll.nil? # name instead of id
-  return "<div class=\"dc-form-error\">Invalid Poll id #{poll_id}</div>" if poll.nil?
+  return %(<div class="dc-form-error">Invalid Poll id #{poll_id}</div>) if poll.nil?
   # If parent cant be seen. so cant be polls
   can_view, message = dc_user_can_view(@parent, @parent.page)
-  return "<div class=\"dc-form-error\">#{message}</div>" unless can_view
+  return %(<div class="dc-form-error">#{message}</div>) unless can_view
 
-  html = @opts[:div] ? "<div id='#{@opts[:div]}'>" : ''
+  html = @opts[:div] ? %(<div id="#{@opts[:div]}"'>) : ''
   html << '<a name="poll-top"></a>'
   unless poll.pre_display.blank?
     begin
       continue, message = eval_pre_display(poll.pre_display)
     rescue Exception => e
-      return "<div class=\"dc-form-error\">Error! Poll pre display. Error: #{e.message}</div>" 
+      return %(<div class="dc-form-error">Error! Poll pre display. Error: #{e.message}</div>)
     end
     return message unless continue
 
@@ -188,11 +184,11 @@ def default
     # If flash[:record] is present copy content to params record hash
     @parent.flash[:record].each {|k,v| @parent.params["p_#{k}"] = v } if @parent.flash[:record]  
     # Error during procesing request
-    html << "<div class=\"dc-form-error\">#{@parent.flash[:error]}</div>\n" if @parent.flash[:error].to_s.size > 0
-    html << "<div class=\"dc-form-info\">#{@parent.flash[:info]}</div>\n" if @parent.flash[:info]
+    html << %(<div class="dc-form-error">#{@parent.flash[:error]}</div>\n) if @parent.flash[:error].to_s.size > 0
+    html << %(<div class="dc-form-info">#{@parent.flash[:info]}</div>\n) if @parent.flash[:info]
   end
   # div and form tag
-  html <<  "<div class=\"poll-div\">\n"
+  html <<  %(<div class="poll-div">\n)
   # edit link
   if @opts[:edit_mode] > 1
     @opts[:editparams].merge!( controller: 'cmsedit', action: 'edit', id: poll._id, table: 'dc_poll', form_name: 'dc_poll' )
@@ -208,13 +204,13 @@ def default
     @parent.form_tag( poll.parameters, method: :put)
   end
   # header, - on first position will not display title
-  html << "<div class='poll-title'>#{poll.title}</div>" unless poll.title[0] == '-'
-  html << poll.sub_text.to_s
+  html << %(<div class="poll-title">#{poll.title}</div>) unless poll.title[0] == '-'
+  html << %(<div class="poll-text">#{poll.sub_text}</div>)
   html << if poll.display == 'lr'
-    "\n" + '<div class="poll-data-table">'
-  else
-    '<div class="poll-data-div">' + "\n"
-  end
+            %(\n<div class="poll-data-table">)
+          else
+            %(<div class="poll-data-div">\n)
+          end
   # items. Convert each item to yaml
   @end_od_data = false
   if poll.form.to_s.size < 10
@@ -232,9 +228,9 @@ def default
       yaml['text'] = item.text
       yaml['mandatory'] = item.mandatory
       yaml['type'] = item.type
+
       html << do_one_item(poll, yaml)
     end
-  # FORM. Just call do_one_item for each form item
   else
     yaml = YAML.load(poll.form.gsub('&nbsp;',' ')) # very annoying. They come with copy&paste ;-)
     # if entered without numbering yaml is returned as Hash otherwise as Array
