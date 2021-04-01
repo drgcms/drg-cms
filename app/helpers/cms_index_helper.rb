@@ -291,7 +291,7 @@ def dc_actions_for_result(document)
       when yaml['type'] == 'delete' then
         parms['action'] = 'destroy'
         parms['id']     = document.id
-        parms['return_to'] = request.url
+        #parms['return_to'] = request.url
         dc_link_to( nil, 'remove lg', parms, data: { confirm: t('drgcms.confirm_delete') }, method: :delete )
       # undocumented so far
       when yaml['type'] == 'edit_embedded'
