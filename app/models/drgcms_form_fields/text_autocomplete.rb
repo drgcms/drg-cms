@@ -131,11 +131,13 @@ $(document).ready(function() {
         }
       });
     },
+
     change: function (event, ui) { 
       #{not_id_code}
+      if (ui.item == null) return;
       $("##{record}_#{@yaml['name']}").val(ui.item.id);
-      
     },
+
     minLength: 2
   });
 });
