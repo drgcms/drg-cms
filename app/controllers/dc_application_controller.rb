@@ -528,7 +528,7 @@ end
 #      
 ####################################################################
 def dc_check_model(document, crash=false)
-  DrgCms.check_model(document, crash=false)
+  DrgCms.model_check(document, crash)
 end
 
 ######################################################################
