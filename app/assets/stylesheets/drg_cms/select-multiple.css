@@ -28,7 +28,7 @@
   -ms-transition: border linear 0.2s, box-shadow linear 0.2s;
   -o-transition: border linear 0.2s, box-shadow linear 0.2s;
   transition: border linear 0.2s, box-shadow linear 0.2s;
-  border: 1px solid #ddd;
+  border: 1px dashed #888;
   -webkit-border-radius: 1px;
   -moz-border-radius: 1px;
   border-radius: 1px;
