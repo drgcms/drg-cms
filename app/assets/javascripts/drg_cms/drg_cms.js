@@ -832,9 +832,16 @@ $(document).ready( function() {
   * work on all field types.
   *******************************************************************/
   $('.record_filter_field_icon').on('click', function(e) {
-    var field = $('#_record__filter_field');
-    var url = $(this).parents('span').attr("data-url");
-    url = url + "&filter_value=" + field.val();
+    let field = $('#_record__filter_field');
+    let url = $(this).parents('span').attr("data-url");
+    let value = null;
+
+    if (field.is(':checkbox')) {
+      value = field.is(':checked'); }
+    else {
+      value = field.val();
+    }
+    url = url + "&filter_value=" + value;
     location.href = url;
   });
 
