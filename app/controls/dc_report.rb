@@ -153,8 +153,9 @@ def export_to_excel(report_id)
       excel[n, i] = value
     end
   end
-  workbook.write Rails.root.join("public/tmp/#{report_id}.xls")
-  dc_render_ajax(operation: :window, value: "/tmp/#{report_id}.xls")
+  file_name = "#{report_id}-#{Time.now.to_i}.xls"
+  workbook.write Rails.root.join('public', 'tmp', file_name)
+  dc_render_ajax(operation: :window, value: "/tmp/#{file_name}")
 end
 
 ############################################################################
