@@ -256,10 +256,10 @@ def dc_link_ajax_window_submit_action(yaml, record=nil, action_active=true)
 end
 
 ############################################################################
-#
+# Log exception to rails log. Usefull for debugging eval errors.
 ############################################################################
-def dc_log_exception(exception)
-  log = exception ? "\n!!!Error: #{exception.message}\n#{exception.backtrace.first.inspect}\n" : ''
+def dc_log_exception(exception, where = '')
+  log = exception ? "\n*** Error:#{where + ':'} #{exception.message}\n#{exception.backtrace.first.inspect}\n" : ''
   log << "DRG Form processing line: #{session[:form_processing]}\n"
   
   logger.error log

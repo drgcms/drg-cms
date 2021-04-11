@@ -423,7 +423,7 @@ def dc_head_for_form
         @record.send(options['name'])
       end
     rescue Exception => e
-      dc_log_exception(e)
+      dc_log_exception(e, 'dc_head_for_form')
       field = '!!!Error'
     end
     #

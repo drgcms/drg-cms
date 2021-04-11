@@ -438,7 +438,7 @@ def dc_columns_for_result(document)
         "??? #{v['name']}"
       end
     rescue Exception => e
-      dc_log_exception(e)
+      dc_log_exception(e, 'dc_columns_for_result')
       value = '!!!Error'
     end
     html << '<div class="spacer"></div>'
@@ -540,15 +540,19 @@ def dc_style_or_class(selector, yaml, value, record)
   # alias record and value so both names can be used in eval
   field, document = value, record
   html = selector ? "#{selector}=\"" : ''
-  html << if yaml.class == String
-    yaml
-  # direct evaluate expression
-  elsif yaml['eval']
-    eval(yaml['eval']) rescue 'background-color:red;'
-  elsif yaml['method']
-    dc_process_eval(yaml['method'], record)
+  begin
+    html << if yaml.class == String
+              yaml
+              # direct evaluate expression
+            elsif yaml['eval']
+              eval(yaml['eval'])
+            elsif yaml['method']
+              dc_process_eval(yaml['method'], record)
+            end
+  rescue Exception => e
+    dc_log_exception(e, 'dc_style_or_class')
   end
-  html << '"' if selector 
+  html << '"' if selector
   html
 end 
 
