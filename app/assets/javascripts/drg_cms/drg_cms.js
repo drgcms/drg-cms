@@ -317,6 +317,15 @@ function dc_reload_window() {
 }
 
 /*******************************************************************
+ * Will open popup window
+ *******************************************************************/
+function popup_window(url, window_name, win, w, h) {
+  let y = win.top.outerHeight / 2 + win.top.screenY - ( h / 2);
+  let x = win.top.outerWidth / 2 + win.top.screenX - ( w / 2);
+  return win.open(url, window_name, `toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width=${w}, height=${h}, top=${y}, left=${x}`);
+}
+
+/*******************************************************************
  * Will select first editable input field on form. Works only when tab
  * is selected. Still have to find out, what to do on initial display.
  *******************************************************************/
@@ -674,9 +683,8 @@ $(document).ready( function() {
   * data from with text_autocomplete and data doesn't exist in belongs_to table.
   *******************************************************************/
   $('.in-edit-add').on('click', function(e) { 
-    let url = '/cmsedit/new?table=' + this.getAttribute("data-table");
-    // I know. It doesn't work as expected. But it will do for now.
-    w = window.open(url, '', 'chrome=yes,width=800,height=600,resizable,scrollbars=yes,status=1,centerscreen=yes,modal=yes');
+    let url = '/cmsedit/new?window_close=0&table=' + this.getAttribute("data-table");
+    let w = popup_window(url, '', window, 1000, 800);
     w.focus();    
   });  
   
