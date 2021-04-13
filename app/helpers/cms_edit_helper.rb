@@ -91,32 +91,39 @@ end
 # normal link.
 ############################################################################
 def dc_actions_for_form(position)
-# create standard actions  
+  # create standard actions
   std_actions = {1 => 'back', 2 => {'type' => 'submit', 'caption' => 'drgcms.save'},
                  3 => {'type' => 'submit', 'caption' => 'drgcms.save&back'} }
-# when edit only  
+  # when edit only
   unless @record.try(:id).nil?
     std_actions.merge!({6 => 'new'} )
     std_actions.merge!(@record.active ? {5 => 'disable'} : {5 => 'enable'} ) if @record.respond_to?('active')
     std_actions.merge!({7 => 'refresh'} )
   end
   actions = @form['form']['actions']
-# shortcut for actions: standard 
+  # shortcut for actions: standard
   actions = nil if actions.class == String && actions == 'standard'
-# standard actions
+  # standard actions
   actions = std_actions if actions.nil?
-# readonly 
-  actions = {1 => 'back'} if @form['readonly']
-  actions = {1 => 'close'} if params[:window_close]
-# Actions are strictly forbidden 
+  # readonly
+  actions = { 1 => 'back' } if @form['readonly']
+  # Actions are strictly forbidden
   if @form['form']['actions'] and dc_dont?(@form['form']['actions'])
     actions = []
   elsif actions['standard']
     actions.merge!(std_actions)
     actions['standard'] = nil
   end
-# Update save and save&back
-  actions.each do |k,v| 
+  # request for close window button present
+  if actions.class == Hash
+    case params[:window_close]
+    when '0' then actions[1] = 'close'; actions[3] = nil
+    when '1' then actions = { 1 => 'close' }
+    when '2' then actions = { 1 => 'close' }
+    end
+  end
+  # Update save and save&back
+  actions.each do |k, v|
     if v.class == String 
       if v.match(/save\&back/i)
         actions[k] = {'type' => 'submit', 'caption' => 'drgcms.save&back'}
@@ -125,10 +132,10 @@ def dc_actions_for_form(position)
       end
     end
   end
-# remove standard option and sort so that standard actions come first
+  # remove standard option and sort so that standard actions come first
   actions.delete('standard')
   actions = actions.to_a.sort {|x,y| x[0] <=> y[0]} 
-# Add spinner to the beginning
+  # Add spinner to the beginning
   html = %Q[<span class="dc-spinner">#{fa_icon('spinner lg spin')}</span><ul class="dc-menu #{position}">]
   
   actions.each do |key, options|
@@ -141,7 +148,7 @@ def dc_actions_for_form(position)
       html << '<li class="dc-link dc-animate">'
       html << case 
         when (options == 'back' or options == 'cancle') then
-# If return_to is present link directly to URL        
+          # If return_to is present link directly to URL
           if parms['xreturn_to'] # disabled for now
             dc_link_to( 'drgcms.back','arrow-left', parms['return_to'] )
           else
