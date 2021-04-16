@@ -1,7 +1,8 @@
 <%= dc_head_for_form %>
 <%= dc_table_title dc_edit_title() %>
 
-<%= form_tag( @parms, method: :put, id: 'cmsform', multipart: @form['form']['multipart'] ) do %>
+<%= form_tag( @parms, method: :put, id: params['form_name'] || params['table'],
+              class: 'cmsform', multipart: @form['form']['multipart'] ) do %>
   <%= render partial: 'form' %>
 <% end %>
 

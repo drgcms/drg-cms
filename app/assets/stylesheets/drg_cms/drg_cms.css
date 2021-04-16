@@ -380,7 +380,7 @@ border: 1px solid #ddd;
 }
 
 .dc-link-ajax.with-link {padding: 7px}
-#cmsform .dc-link-ajax.with-link {padding: 0}
+.cmsform .dc-link-ajax.with-link {padding: 0}
 
 .dc-link-ajax i, .dc-link-no i {
   padding: 1px 3px 0 0;
