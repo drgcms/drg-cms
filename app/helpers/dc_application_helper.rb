@@ -468,11 +468,12 @@ end
 # String. HTML code formatted for display.
 ####################################################################
 def dc_error_messages_for(doc)
-  return '' unless doc and doc.errors.any?
+  return '' unless doc && doc.errors.any?
+
   msgs = ''
-  doc.errors.each do |attribute, errors_array|
-    label = t("helpers.label.#{decamelize_type(doc.class)}.#{attribute}", attribute)
-    msgs << "<li>#{label} : #{errors_array}</li>"
+  doc.errors.each do |error|
+    label = t("helpers.label.#{decamelize_type(doc.class)}.#{error.attribute}", error.attribute)
+    msgs << "<li>#{label} : #{error.message}</li>"
   end
   
 c = <<eot

@@ -488,24 +488,23 @@ end
 # Return's error messages for the document formated for display on edit form.
 # 
 # @param [Document] Document object which will be examined for errors.
-# 
+#
 # @return [String] HTML code for displaying error on edit form.
 ####################################################################
 def dc_error_messages_for(document)
   return '' unless document.errors.any?
+
   msg = ''
-  document.errors.each do |attribute, errors_array|
-    label = t("helpers.label.#{decamelize_type(document.class)}.#{attribute}")
-    msg << "<li>#{label} : #{errors_array}</li>"
+  document.errors.each do |error|
+    label = t("helpers.label.#{decamelize_type(document.class)}.#{error.attribute}", error.attribute)
+    msg << "<li>#{label} : #{error.message}</li>"
   end
 
-html = <<eot
+  %(
 <div class="dc-form-error"> 
   <h2>#{t('drgcms.errors_no')} #{document.errors.size}</h2>  
   <ul>#{msg}</ul>  
-</div>
-eot
-  html.html_safe
+</div>).html_safe
 end
 
 ####################################################################
