@@ -36,7 +36,7 @@ field :subject_link, type: String,  default: ''
 field :alt_link,     type: String,  default: ''
 field :sub_subject,  type: String,  default: ''
 field :picture,      type: String   
-field :gallery,      type: Boolean, default: false   
+field :gallery,      type: Mongoid::Boolean, default: false
 field :body,         type: String,  default: ''
 field :css,          type: String,  default: ''
 field :script,       type: String,  default: ''
@@ -50,7 +50,7 @@ field :user_name,    type: String
 field :valid_from,   type: DateTime
 field :valid_to,     type: DateTime
 field :comments,     type: Integer, default: 1  # 0 => not allowed, 1 => allowed
-field :active,       type: Boolean, default: true 
+field :active,       type: Mongoid::Boolean, default: true
 field :created_by,   type: BSON::ObjectId
 field :updated_by,   type: BSON::ObjectId
 field :kats,         type: Array         # Categories

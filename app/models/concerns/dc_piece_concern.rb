@@ -45,7 +45,7 @@ module DcPieceConcern
   field :div_id,        type: String
   field :site_id,       type: BSON::ObjectId
   field :order,         type: Integer, default: 0
-  field :active,        type: Boolean, default: true  
+  field :active,        type: Mongoid::Boolean, default: true
   field :valid_from,    type: DateTime
   field :valid_to,      type: DateTime
   

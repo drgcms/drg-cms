@@ -50,13 +50,13 @@ field :picture,     type: String
 field :birthdate,   type: Date
 field :about,       type: String
 field :last_visit,  type: Time
-field :active,      type: Boolean, default: true
+field :active,      type: Mongoid::Boolean, default: true
 field :valid_from,  type: Date
 field :valid_to,    type: Date
 field :created_by,  type: BSON::ObjectId
 field :updated_by,  type: BSON::ObjectId
 
-field :group,       type: Boolean, default: false # false => User, true => Group
+field :group,       type: Mongoid::Boolean, default: false # false => User, true => Group
 field :member,      type: Array
 
 embeds_many :dc_user_roles

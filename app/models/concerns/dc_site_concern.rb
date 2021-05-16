@@ -47,7 +47,7 @@ field :menu_class,          type: String, default: 'DcSimpleMenu'
 field :request_processor,   type: String
 field :files_directory,     type: String
 field :logo,                type: String
-field :active,              type: Boolean, default: true
+field :active,              type: Mongoid::Boolean, default: true
 field :created_by,          type: BSON::ObjectId
 field :updated_by,          type: BSON::ObjectId
 field :menu_name,           type: String
