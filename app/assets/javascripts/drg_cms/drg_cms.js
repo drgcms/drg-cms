@@ -184,12 +184,12 @@ $(function() {
  *******************************************************************/
 
 process_json_result = function(json) {
-  var i, w, operation, selector, msg_div, field;
+  let i, w, operation, selector, msg_div, field;
   $.each(json, function(key, value) {
     i = key.search('_');
     if (i > 1) {
-      operation = key.substring(0,i);
-      selector  = key.substring(i+1,100);
+      operation = key.substring(0, i);
+      selector  = key.substring(i+1, 100);
     } else {
       operation = key;
       selector  = '';
@@ -224,6 +224,11 @@ process_json_result = function(json) {
       } else {
         field.val(value);
       }
+      break;
+
+/**** transfer focus to field ****/
+    case 'focus':
+      $('#' + value).focus();
       break;
 
 /**** display message ****/
