@@ -96,7 +96,7 @@ def choices_in_eval(e)
   if @yaml['depend'].nil?
     method = e.split(/\ |\(/).first
     return eval(e) if respond_to?(method) # id method defined here
-    return eval('@parent.'+e) if @parent.respond_to?(method) # is method defined in helpers
+    return eval('@parent.' + e) if @parent.respond_to?(method) # is method defined in helpers
     # eval whatever it is there
     eval e
   else
@@ -120,19 +120,18 @@ end
 ###########################################################################
 def get_choices
   begin
-    choices = case 
-              when @yaml['choices'] then
-                @yaml['choices'].match('helpers.') ? choices_in_helper(@yaml['choices']) : @yaml['choices']
+    choices = case
               when @yaml['eval'] then
                 choices_in_eval(@yaml['eval'])
+              when @yaml['choices'] then
+                @yaml['choices'].match('helpers.') ? choices_in_helper(@yaml['choices']) : @yaml['choices']
               else
                 choices_in_helper()
               end
-  # Convert string to Array
-    choices.class == String ?
-      choices.chomp.split(',').inject([]) { |r,v| r << (v.match(':') ? v.split(':') : v ) } :
-      choices
-  rescue Exception => e 
+    return choices unless choices.class == String
+
+    choices.chomp.split(',').map { |e| e.match(':') ? e.split(':') : e }
+  rescue Exception => e
     Rails.logger.debug "\nError in select eval. #{e.message}\n"
     Rails.logger.debug(e.backtrace.join($/)) if Rails.env.development?
     ['error'] # return empty array when error occures
