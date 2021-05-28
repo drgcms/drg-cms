@@ -78,6 +78,8 @@ def render
   @yaml['options']['lang']   ||= "'#{I18n.locale}'"
   @yaml['options']['format'] ||= "'#{t('datetimepicker.formats.date')}'"
   @yaml['options']['timepicker'] = false
+  @yaml['options']['scrollMonth'] ||= false
+  @yaml['options']['scrollInput'] ||= false
 
   record = record_text_for(@yaml['name'])
   @html << @parent.text_field(record, @yaml['name'], @yaml['html'])
