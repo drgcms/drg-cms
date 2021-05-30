@@ -279,7 +279,7 @@ process_json_result = function(json) {
     case 'window':
       if (value == 'close') { window.close(); 
       } else if (value == 'reload') {
-        location.reload();
+        window.location.href = window.location.href;
       } else {
         w = window.open(value, selector);
         w.focus();
@@ -299,10 +299,12 @@ process_json_result = function(json) {
     case 'reload':
       value = value.toString();
       if (value == 'parent') {
-        parent.location.reload();
+        //parent.location.reload();
+        parent.location.href = parent.location.href;
+
 /*** this would be current window (reload: true) ****/
       } else if (value.length < 5) {
-        location.reload();
+        window.location.href = window.location.href;
 /*** reload iframe ****/
       } else {
         $( '#' + value ).attr('src', $( '#' + value ).attr('src'));
