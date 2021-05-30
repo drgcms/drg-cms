@@ -135,7 +135,8 @@ def ro_standard(value=nil)
       @record.respond_to?(@yaml['name']) ? @record.send(@yaml['name']) : nil
     end
   end
-  @html << (value.blank? ? '' : "<div class='dc-readonly'>#{value}</div>")
+  #@html << (value.blank? ? '' : "<div class='dc-readonly'>#{value}</div>")
+  @html << %(<div id="#{@yaml['name']}" class="dc-readonly">#{value}</div>)
   self
 end
 

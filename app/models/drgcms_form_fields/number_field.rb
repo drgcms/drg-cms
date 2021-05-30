@@ -76,7 +76,7 @@ def render
 
   @yaml['html']['autocomplete'] ||= 'off'
   @html << @parent.hidden_field( record, @yaml['name'], value: value )
-  @html << @parent.text_field( nil,"record_#{@yaml['name']}_", @yaml['html']) 
+  @html << @parent.text_field( nil, "record_#{@yaml['name']}_", @yaml['html'])
   self
 end
 
@@ -85,7 +85,8 @@ end
 ###########################################################################
 def self.get_data(params, name)
   return 0 if params['record'][name].blank?
-  params['record'][name].match('.') ? params['record'][name].to_f : Integer.new(params['record'][name])
+
+  params['record'][name].match('.') ? params['record'][name].to_f : params['record'][name].to_i
 end
 
 end
