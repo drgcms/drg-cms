@@ -69,7 +69,7 @@ def render
   @yaml['html']['data-delimiter'] = @yaml.dig('format','delimiter') || I18n.t('number.currency.format.delimiter')
   @yaml['html']['data-separator'] = @yaml.dig('format','separator') || I18n.t('number.currency.format.separator')
  # @yaml['html']['data-currency']  = @yaml.dig('format','currency') == 'yes' ? I18n.t('number.currency.format.currency') : @yaml.dig('format','currency')
-  value = @record[@yaml['name']] || 0 
+  value = @yaml['html']['value'] || @record[@yaml['name']] || 0
   @yaml['html']['value'] = @parent.dc_format_number(value, @yaml['html']['data-decimal'], @yaml['html']['data-separator'], @yaml['html']['data-delimiter'] )
   
   return ro_standard(@yaml['html']['value']) if @readonly
