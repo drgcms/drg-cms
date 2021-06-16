@@ -99,6 +99,10 @@ form:
         eval: DcDesign.choices4_design(@parent.dc_get_site)
         html:
           include_blank: true
+      15:
+        name: div_class
+        type: text_field
+        size: 20
 
       20:
         name: menu_id

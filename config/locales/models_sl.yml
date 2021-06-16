@@ -333,7 +333,8 @@ sl:
         if_id: CSS id
         if_class: CSS class 
         _update_menu: Spremeni meni
-        
+        div_class: DIV class
+
       dc_seo:
         seo: SEO
         title: Naslov za brskalnik
@@ -779,7 +780,6 @@ sl:
         subject_link: Povezava (link) do sestavka
         sub_subject: Povzetek, kratek opis vsebine
         alt_link: Alternativna povezava do sestavka
-        picture: Slika v povezavi s stranjo
         gallery: Dokument vsebuje slikovno galerijo.
         css: CSS
         script: Skript
@@ -800,7 +800,7 @@ sl:
         dc_design_id: Dizajn, mu pripada sestavek
         dc_site_id: Spletišče. ki mu pripada stran
         kats: Kategorije, ki jim pripada članek
-        picture: Slika uporabljena za prikaz sestavka
+        picture: Slika uporabljena v zvezi s sestavkom
         dc_poll_id: Anketa, če sestavek vsebuje tudi anketo
         if_url: URL naslov od koder bo naložena vsebina IFrame-a
         if_width:  Širina IFrame področja
@@ -811,6 +811,7 @@ sl:
         if_id: CSS id IFrame objekta
         if_class: CSS class IFrame objekta
         _update_menu: Popravi tudi povezavo do dokumenta v menuju
+        div_class: Class, ki bo določen na vrhnem razdelku (DIV)
         
       dc_seo:
         title: Naslov, ki se izpiše v gornji vrstici brskalnika. Optimiziraj za SEO.

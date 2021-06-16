@@ -72,6 +72,7 @@ end
 #########################################################################
 def iframe
   return '' if @page.if_url.blank?
+
   html =  "\n<iframe"
   html << " id=\"#{@page.if_id}\"" unless @page.if_id.blank?
   html << " class=\"#{@page.if_class}\"" unless @page.if_class.blank?
@@ -79,7 +80,7 @@ def iframe
   html << " height=\"#{@page.if_height}\"" unless @page.if_height.blank?
   html << " width=\"#{@page.if_width}\"" unless @page.if_width.blank?
   html << " scrolling=\"#{@page.if_scroll}\""
-# Parameters
+  # Parameters
   parameters = @page.if_url.match(/\?/) ? '' : '?' 
   params = YAML.load(@page.if_params) rescue {}
   params = {} unless params.class == Hash
@@ -98,20 +99,20 @@ end
 def default
   can_view, msg = dc_user_can_view(@parent, @page)
   return msg unless can_view
-# 
-  html = ''
+
+  html = "<div class=\"#{@page.div_class}\">"
   html << dc_page_edit_menu() if @opts[:edit_mode] > 1
   @parent.page_title = @page.title.blank? ? @page.subject : @page.title
   html << @page.body
-# render poll if defined
+  # render poll if defined
   if @page.dc_poll_id
     @opts.merge!(:poll_id => @page.dc_poll_id, :return_to => @parent.request.url, method: nil)
     comment = DcPollRenderer.new(@parent, @opts)
     html << "<div class='wrap row'>#{comment.render_html}</div>"
     @css << "\n#{comment.render_css}"
   end
-# also add iframe
-  html << iframe()
+  # also add iframe
+  html << iframe() << '</div>'
 end
 
 #########################################################################

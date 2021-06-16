@@ -302,6 +302,7 @@ en:
         if_id: CSS id
         if_class: CSS class 
         _update_menu: Update menu
+        div_class: DIV class
 
       dc_seo:
         seo: SEO
@@ -780,6 +781,7 @@ en:
         if_id: CSS id of IFrame object
         if_class: CSS class of IFrame object
         _update_menu: Update link in selected menu to point to this document
+        div_class: Class name given to top level div
 
       dc_seo:
         title: SEO optimised page title

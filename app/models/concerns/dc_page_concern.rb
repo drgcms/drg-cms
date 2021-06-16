@@ -41,6 +41,7 @@ field :body,         type: String,  default: ''
 field :css,          type: String,  default: ''
 field :script,       type: String,  default: ''
 field :params,       type: String
+field :div_class,    type: String
 field :menu_id,      type: String
 field :author_id,    type: BSON::ObjectId
 field :dc_poll_id,   type: BSON::ObjectId
