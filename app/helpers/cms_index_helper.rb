@@ -455,6 +455,14 @@ def dc_columns_for_result(document)
   html.html_safe
 end
 
+############################################################################
+# Split eval expression to array by parameters.
+# Ex. Will split dc_name4_value(one ,"two") => ['dc_name4_value', 'one', 'two']
+############################################################################
+def dc_eval_to_array(expression)
+  expression.split(/\ |\,|\(|\)/).delete_if {|e| e.blank? }.map {|e| e.gsub(/\'|\"/,'').strip }
+end
+
 private
 
 ############################################################################
@@ -472,14 +480,6 @@ def dc_process_eval(evaluate, parameters)
     klass = clas.camelize.constantize
     klass.send(method, *parameters)
   end  
-end
-
-############################################################################
-# Split eval expression to array by parameters.
-# Will split dc_name4_value(one ,"two") => ['dc_name4_value', 'one', 'two']
-############################################################################
-def dc_eval_to_array(expression)
-  expression.split(/\ |\,|\(|\)/).delete_if {|e| e.blank? }.map {|e| e.gsub(/\'|\"/,'').strip }
 end
 
 ############################################################################
