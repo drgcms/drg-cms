@@ -58,11 +58,8 @@ def render
   @html << if @yaml['eval']
              if @yaml['eval'].match(/dc_name4_id|dc_name_for_id/)
                parms = @parent.dc_eval_to_array(@yaml['eval'])
-               if parms.size == 3
-                 @parent.dc_name_for_id(parms[1], parms[2], nil, @record[@yaml['name']])
-               else
-                 @parent.dc_name_for_id(parms[1], parms[2], parms[3], @record[@yaml['name']])
-               end
+               parms << nil if parms.size == 3
+               @parent.dc_name_for_id(parms[1], parms[2], parms[3], @record[@yaml['name']])
              else
                eval( "#{@yaml['eval']} '#{@record.send(@yaml['name'])}'")
              end
