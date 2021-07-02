@@ -49,24 +49,23 @@ def autocomplete
     name = params['search'].split('.').first
     params['table'] = name.underscore
   end
-  
   return render plain: t('drgcms.not_authorized') unless dc_user_can(DcPermission::CAN_VIEW)
-# TODO Double check if previous line works as it should.
+
   table = params['table'].classify.constantize
-  id = [params['id']] || '_id'
-# call method in class if search parameter has . This is for user defined searches
-# result must be returned as array of [id, search_field_value]
+  id    = [params['id']] || '_id'
+  input = params['input'].gsub(/\(|\)|\[|\]|\{|\}/, '')
+  # call method in class if search parameter contains . This is for user defined searches
   a = if params['search'].match(/\./)
-    name, method = params['search'].split('.')
-    table.send(method, params['input']).inject([]) do |r,v|
-      r << { label: v[0], value: v[0], id: (v[1] || v[0]).to_s }
-    end
-# simply search which will search and return field_name defined in params['search']
-  else
-    table.where(params['search'] => /#{params['input']}/i).limit(20).inject([]) do |r,v|
-      r << { label: v[params['search']], value: v[params['search']], id: v.id.to_s }
-    end
-  end
+        name, method = params['search'].split('.')
+        table.send(method, input).map do |v|
+          { label: v[0], value: v[0], id: (v[1] || v[0]).to_s }
+        end
+      # will search and return field_name defined in params['search']
+      else
+        table.where(params['search'] => /#{input}/i).limit(20).map do |v|
+          { label: v[params['search']], value: v[params['search']], id: v.id.to_s }
+        end
+      end
 
   render plain: a.to_json
 end
@@ -92,18 +91,19 @@ end
 ##########################################################################
 def toggle_edit_mode
   session[:edit_mode] ||= 0 
-# error when not logged in  
-  return dc_render_404 if session[:edit_mode] < 1 
-# if return_to_ypos parameter is present it will forward it and thus scroll to
-# aproximate position it was when toggle was clicked
+  # error when not logged in
+  return dc_render_404 if session[:edit_mode] < 1
+
+  # if return_to_ypos parameter is present it will forward it and thus scroll to
+  # aproximate position it was when toggle was clicked
   session[:edit_mode] = (session[:edit_mode] == 1) ? 2 : 1
   uri = Rack::Utils.parse_nested_query(request.url)
-# it parses only on & so first (return_to) parameter also contains url
+  # it parses only on & so first (return_to) parameter also contains url
   url = uri.first.last
   if (i = url.index('return_to_ypos')).to_i > 0
-    url = url[0,i-1]
+    url = url[0, i-1]
   end 
-# offset CMS menu
+  # offset CMS menu
   if (ypos = uri['return_to_ypos'].to_i) > 0
     ypos += session[:edit_mode] == 2 ? 250 : -250
   end
@@ -116,8 +116,8 @@ end
 # Default user login action.
 ####################################################################
 def process_login
-# Somebody is probably playing
-  return dc_render_404 unless ( params[:record] and params[:record][:username] and params[:record][:password] )
+  # Somebody is probably playing
+  return dc_render_404 unless ( params[:record] && params[:record][:username] && params[:record][:password] )
 
   unless params[:record][:password].blank? #password must not be empty
     user  = DcUser.find_by(username: params[:record][:username], active: true)
@@ -154,7 +154,7 @@ def login
       clear_login_data # on the safe side
     end
   end
-# Display login 
+  # Display login
   route = params[:route] || 'poll'
   redirect_to "/#{route}?poll_id=login&return_to=#{params[:return_to]}"
 end
@@ -163,23 +163,23 @@ end
 # Action for restoring document data from journal document.
 ####################################################################
 def restore_from_journal
-# Only administrators can perform this operation  
+  # Only administrators can perform this operation
   unless dc_user_has_role('admin')
     return render plain: { 'msg_info' => (t ('drgcms.not_authorized')) }.to_json
   end
-# selected fields to hash  
+  # selected fields to hash
   restore = {} 
-  params[:select].each {|key,value| restore[key] = value if value == '1' }
+  params[:select].each { |key,value| restore[key] = value if value == '1' }
   result = if restore.size == 0
     { 'msg_error' => (t ('drgcms.dc_journal.zero_selected')) }
   else
     journal_doc = DcJournal.find(params[:id])
-# update hash with data to be restored    
+    # update hash with data to be restored
     JSON.parse(journal_doc.diff).each {|k,v| restore[k] = v.first if restore[k] }
-# determine tables and document ids    
+    # determine tables and document ids
     tables = journal_doc.tables.split(';')
     ids = (journal_doc.ids.blank? ? [] : journal_doc.ids.split(';') ) << journal_doc.doc_id
-# find document
+    # find document
     doc = nil
     tables.each_index do |i|
       doc = if doc.nil?
@@ -188,10 +188,10 @@ def restore_from_journal
         doc.send(tables[i].pluralize).find(ids[i])
       end
     end
-# restore and save values
+    # restore and save values
     restore.each { |field,value| doc.send("#{field}=",value) }
     doc.save
-# TODO Error checking    
+    # TODO Error checking
     { 'msg_info' => (t ('drgcms.dc_journal.restored')) }
   end
   render plain: result.to_json
@@ -202,10 +202,11 @@ end
 # window with data formatted as json.
 ########################################################################
 def copy_clipboard
-# Only administrators can perform this operation  
+  # Only administrators can perform this operation
   return render(plain: t('drgcms.not_authorized') )  unless dc_user_can(DcPermission::CAN_ADMIN,'dc_site')
+
   respond_to do |format|
-# just open new window to same url and come back with html request    
+    # just open new window to same url and come back with html request
     format.json { dc_render_ajax(operation: 'window', url: request.url ) }
     
     format.html do
@@ -213,7 +214,6 @@ def copy_clipboard
       text = "<br><br>[#{params[:table]},#{params[:id]},#{params[:ids]}]<br>"
       render plain: text + doc.as_document.to_json
     end
-    
   end  
 end
 
@@ -223,17 +223,19 @@ end
 # ajax call for processing data.
 ########################################################################
 def paste_clipboard
-# Only administrators can perform this operation  
+  # Only administrators can perform this operation
   return render(plain: t('drgcms.not_authorized') )  unless dc_user_can(DcPermission::CAN_ADMIN,'dc_site')
+
   result = ''
   respond_to do |format|
-# just open new window to same url and come back with html request    
+    # just open new window to same url and come back with html request
     format.html { return render('paste_clipboard', layout: 'cms') }
     format.json {
       table, id, ids = nil
       params[:data].split("\n").each do |line|
         line.chomp!
         next if line.size < 5                 # empty line. Skip
+
         begin
           if line[0] == '['                   # id(s)
             result << "<br>#{line}"
@@ -260,7 +262,7 @@ def add_json_ld_schema
   edited_document = DcJsonLd.find_document_by_ids(params[:table], params[:ids])
   yaml = YAML.load_file( dc_find_form_file('json_ld_schema') )
   schema_data = yaml[params[:schema]]
-# Existing document  
+  # Existing document
   if edited_document.dc_json_lds.find_by(type: "@#{params[:schema]}")
     return render json: {'msg_error' => t('helpers.help.dc_json_ld.add_error', schema: params[:schema] ) }
   else
@@ -337,7 +339,7 @@ def update_json(json, is_update=false) #:nodoc:
   json.each do |k,v|
     if v.class == Hash
       result[k] = v['$oid'] unless is_update
-#TODO Double check if unless works as expected
+      # TODO Double check if unless works as expected
     elsif v.class == Array
       result[k] = []
       v.each {|e| result[k] << update_json(e, is_update)}
@@ -354,22 +356,22 @@ end
 def process_document(line, table, id, ids)
   if params[:do_update] == '1' 
     doc = dc_find_document(table, id, ids)
-# document found. Update it and return
+    # document found. Update it and return
     if doc
       doc.update( update_json(ActiveSupport::JSON.decode(line), true) )
       msg = dc_check_model(doc)
       return (msg ? " ERROR! #{msg}" : " UPDATE. OK.")
     end
   end
-# document will be added to collection      
+  # document will be added to collection
   if ids.to_s.size > 5
-#TODO Add embedded document
+    #TODO Add embedded document
     " NOT SUPPORTED YET!"
   else
     doc = table.classify.constantize.new( update_json(ActiveSupport::JSON.decode(line)) )
     doc.save
   end
-  msg = dc_check_model(doc)
+  msg = DrgCms.model_check(doc)
   msg ? " ERROR! #{msg}" : " NEW. OK." 
 end
 
