@@ -154,6 +154,15 @@ def self.model_check(document, crash = false)
   msg
 end
 
+########################################################################
+# Determines if redis cache store is active
+#
+# @return [Boolean] : True if  redis cache store is active
+########################################################################
+def self.redis_cache_store?
+  (Rails.application.config.cache_store.first == :redis_cache_store) rescue false
+end
+
 ####################################################################
 # Clear cache. If key is specified only this key will be deleted.
 #
@@ -162,17 +171,48 @@ end
 def self.cache_clear(key = nil)
   return Rails.cache.clear if key.nil?
 
-  if ((Rails.application.config.cache_store.first == :redis_cache_store) rescue false)
+  if redis_cache_store?
     Rails.cache.redis.del(key)
   else
     Rails.cache.delete_matched("#{key}*")
   end
 end
 
-def self.__cache_clear(key = nil)
-  return Rails.cache.clear if key.nil?
+####################################################################
+# Read from cache
+#
+# @keys [Array] Array of keys
+#
+# @return [Object] Data returned from cache
+####################################################################
+def self.cache_read(keys)
+  if redis_cache_store?
+    keys  = keys.dup
+    first = keys.shift
+    data  = Rails.cache.redis.hget(first, keys.join(''))
+    data ? Marshal.load(data) : nil
+  else
+    Rails.cache.read(keys.join(''))
+  end
+end
 
-  Rails.cache.delete_matched("#{key}*")
+####################################################################
+# Write data to cache
+#
+# @param [Array] keys : array of keys
+# @param [Object] data : Document object
+#
+# @return [Object] data so dc_cache_write can be used as last statement in method.
+####################################################################
+def self.cache_write(keys, data)
+  if redis_cache_store?
+    keys  = keys.dup
+    first = keys.shift
+    Rails.cache.redis.hset(first, keys.join(''), Marshal.dump(data))
+  else
+    Rails.cache.write(keys.join(''), data)
+  end
+  data
 end
 
 ###############################################################################
