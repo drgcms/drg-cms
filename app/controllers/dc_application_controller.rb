@@ -182,7 +182,7 @@ protected
 #   if dc_user_can(DcPermission::CAN_VIEW, params[:table]) then ...
 ############################################################################
 def dc_user_can(permission, table = params[:table])
-  table.downcase!
+  table = table.underscore
   cache_key = ['dc_permission', table, session[:user_id], dc_get_site.id]
   permissions = dc_cache_read(cache_key)
   if permissions.nil?
@@ -635,51 +635,6 @@ end
 def set_default_guest_user_role
   guest = DcPolicyRole.find_by(system_name: 'guest')
   session[:user_roles] = [guest.id] if guest
-end
-
-####################################################################
-# Fills session with data related to successful login.
-#
-# @param [DcUser] user : User's document
-# @param [Boolean] remember_me : false by default
-####################################################################
-def fill_login_data(user, remember_me=false)
-  session[:user_id]    = user.id if user
-  session[:user_name]  = user.name if user
-  session[:edit_mode]  = 0
-  session[:user_roles] = []
-  # Every user has guest role
-  #  guest = DcPolicyRole.find_by(system_name: 'guest')
-  #  session[:user_roles] << guest.id if guest
-  set_default_guest_user_role
-  return unless user and user.active
-  # special for SUPERADMIN
-  sa = DcPolicyRole.find_by(system_name: 'superadmin')
-  if sa and (role = user.dc_user_roles.find_by(dc_policy_role_id: sa.id))
-    session[:user_roles] << role.dc_policy_role_id
-    session[:edit_mode]  = 2
-    return
-  end
-  # read default policy from site. Policy might be inherited
-  policy_site = dc_get_site()
-  policy_site = DcSite.find(policy_site.inherit_policy) if policy_site.inherit_policy
-  default_policy = policy_site.dc_policies.find_by(is_default: true)
-  # load user roles
-  user.dc_user_roles.each do |role|
-    next unless role.active
-    next if role.valid_from and role.valid_from > Time.now.end_of_day.to_date
-    next if role.valid_to   and role.valid_to < Time.now.to_date
-    # check if role is active in this site
-    policy_role = default_policy.dc_policy_rules.find_by(dc_policy_role_id: role.dc_policy_role_id)
-    next unless policy_role
-    # set edit_mode
-    session[:edit_mode] = 1 if policy_role.permission > 1
-    session[:user_roles] << role.dc_policy_role_id
-  end
-  # Save remember me cookie if not CMS user and remember me is selected
-  if session[:edit_mode] == 0 and remember_me
-    cookies.signed[:remember_me] = { :value => user.id, :expires => 180.days.from_now}
-  end
 end
 
 ####################################################################
