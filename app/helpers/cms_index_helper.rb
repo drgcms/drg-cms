@@ -32,7 +32,7 @@ module CmsIndexHelper
 ############################################################################
 # Creates action div for cmsedit index action. 
 ############################################################################
-def dc_actions_for_index()
+def dc_actions_for_index
   @js  = @form['script'] || @form['js'] || ''
   @css = @form['css'] || ''
   return '' if @form['index'].nil? or @form['readonly']
@@ -60,6 +60,7 @@ def dc_actions_for_index()
   only_actions.each do |key, options|
     session[:form_processing] = "index:actions: #{key}=#{options}"
     next if options.nil? # must be
+
     url = @parms.clone
     yaml = options.class == String ? {'type' => options} : options # if single definition simulate type parameter
     action = yaml['type'].to_s.downcase 
@@ -114,9 +115,13 @@ def dc_actions_for_index()
       dc_link_to(caption,'plus', url, yhtml )
 
     # menu
-    when action == 'menu' then  
-      caption = t(options['caption'], options['caption']) + '&nbsp;' + fa_icon('caret-down lg')
-      caption + eval(options['eval'])      
+    when action == 'menu' then
+      if options['caption']
+        caption = t(options['caption'], options['caption']) + '&nbsp;' + fa_icon('caret-down lg')
+        caption + eval(options['eval'])
+      else # when caption is false, provide own actions
+        eval(options['eval'])
+      end
 =begin
 # reorder      
     when action == 'reorder' then  

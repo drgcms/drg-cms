@@ -175,11 +175,13 @@ img { vertical-align:bottom; }
   padding: 7px;
 }
 
+/*
 .dc-link a:hover, .dc-animate a:hover, .dc-result a:hover  { 
   background: #f8f8f8;
   transition: 0.3s;
   color: #000;
 }
+*/
 
 a.dc-animate:hover { color: #000; background: transparent;}
 
