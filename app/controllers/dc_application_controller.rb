@@ -182,19 +182,14 @@ protected
 #   if dc_user_can(DcPermission::CAN_VIEW, params[:table]) then ...
 ############################################################################
 def dc_user_can(permission, table = params[:table])
-  permissions = DcPermission.permissions_for_table(table)
-  session[:user_roles].each {|r| return true if permissions[r] && permissions[r] >= permission }
-  false
-end
-
-def dc_user_can(permission, table = params[:table])
+  table.downcase!
   cache_key = ['dc_permission', table, session[:user_id], dc_get_site.id]
   permissions = dc_cache_read(cache_key)
   if permissions.nil?
     permissions = DcPermission.permissions_for_table(table)
     dc_cache_write(cache_key, permissions)
   end
-  session[:user_roles].each {|r| return true if permissions[r] && permissions[r] >= permission }
+  session[:user_roles].each { |r| return true if permissions[r] && permissions[r] >= permission }
   false
 end
 
