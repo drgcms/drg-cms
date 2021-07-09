@@ -278,6 +278,10 @@ padding: 0;
   align-items: center;
 }
 
+.dc-result-data .td:last-child {
+  flex-grow: 1;
+}
+
 .dc-result-data .actions, .dc-result-header .actions {
   padding-right: 4px;
   display: flex;

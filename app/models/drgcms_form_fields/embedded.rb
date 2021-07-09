@@ -67,9 +67,11 @@ def render
     tables = @parent.tables.inject('') { |r,v| r << "#{v[1]};" } + @yaml['table']
     ids    = @parent.ids.inject('') { |r,v| r << "#{v};" } + @record.id
   end
-  opts = { controller: 'cmsedit', action: @yaml['action'], 
+  # edit enabled embedded form on a readonly form
+  readonly = @yaml['readonly'].class == FalseClass ? nil : @readonly
+  opts = { controller: 'cmsedit', action: @yaml['action'],
            ids: ids, table: tables, form_name: @yaml['form_name'], 
-           field_name: @yaml['name'], iframe: "if_#{@yaml['name']}", readonly: @readonly }
+           field_name: @yaml['name'], iframe: "if_#{@yaml['name']}", readonly: readonly }
   # additional parameters if specified
   @yaml['params'].each { |k,v| opts[k] = @parent.dc_value_for_parameter(v) } if @yaml['params']         
          

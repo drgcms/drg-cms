@@ -251,6 +251,7 @@ form:
         type: embedded
         load: default,delay,always
         form_name: dc_poll_item
+        readonly: no
         html:
           height: 800      
       20:
