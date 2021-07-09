@@ -475,7 +475,41 @@ $(document).ready( function() {
     e.target.value = null;
     window.location.href = "/cmsedit?sort=" + sort + "&table=" + table +  "&form_name=" + form;
   });
-  
+
+  /*******************************************************************
+   * Click on dc-check-all icon. Check or uncheck all checkboxes
+   *******************************************************************/
+  $('.dc-check-all').on('click',function(e) {
+    let checkboxes = $('.dc-check');
+    if ($(this).hasClass('fa-check-square-o')) {
+      // check all checkboxes
+      checkboxes.each( function() {
+        $(this).prop('checked', true);
+        $(this).parent().closest('div').addClass('dc-checked');
+      });
+      $(this).removeClass('fa-check-square-o').addClass('fa-square-o');
+    } else {
+      // uncheck all checkboxes
+      checkboxes.each( function() {
+        $(this).prop('checked', false);
+        $(this).parent().closest('div').removeClass('dc-checked');
+      });
+      $(this).removeClass('fa-square-o').addClass('fa-check-square-o');
+    }
+  });
+
+  /*******************************************************************
+   * Click on dc-check icon. Change color of background of element
+   *******************************************************************/
+  $('.dc-check').on('click',function(e) {
+    let parent = $(this).parent().closest('div');
+    if ($(this).prop('checked')) {
+      parent.addClass('dc-checked');
+    } else {
+      parent.removeClass('dc-checked');
+    }
+  });
+
  /*******************************************************************
   * Tab clicked on form. Hide old and show selected div.
   *******************************************************************/
@@ -554,33 +588,46 @@ $(document).ready( function() {
   $('.dc-link-ajax').on('click', function(e) {
     // confirmation if required
     if (confirmation_is_cancled(this)) {return false;}
-   
+
+    // url must be specified in data-url
+    let url = this.getAttribute("data-url");
+    if (url.length < 5) return false;
+
     // check HTML5 validations
     if ($("form")[0] && !$("form")[0].checkValidity() ) {
       $("form")[0].reportValidity();
       return false;
     }
-    let req = this.getAttribute("data-request");
-    // Get values from elements on the page:
-    if (req == "script") {
-      eval (this.getAttribute("data-script"));
-      return false;
-    }
-    else if (req == "post") { 
-      data = $('form').serialize(); 
-    }
-    else { 
-      data = {}; 
-      req = 'get'; // by default
+
+    let data = {};
+    let request = this.getAttribute("data-request");
+    switch (request) {
+      case 'script':
+        eval(this.getAttribute("data-script"));
+        return false;
+
+      case 'post':
+        data = $('form').serialize();
+        break;
+
+      default:
+        request = 'get'; // by default
     }
 
-    let url = this.getAttribute("data-url");
-    if (url.length < 5) return false;
+    // add checkbox id-s to data if checkboxes present
+    let checkboxes = $('.dc-check');
+    if (checkboxes.length > 0) {
+      let checked = [];
+      checkboxes.each( function() {
+        if ($(this).prop('checked')) checked.push($(this).attr("id"));
+      })
+      data['checked'] = checked;
+    }
 
     $('.dc-spinner').show();
     $.ajax({
       url: url,
-      type: req,
+      type: request,
       dataType: "json",
       data: data,
       success: function(data) {

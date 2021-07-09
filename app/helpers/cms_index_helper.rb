@@ -283,21 +283,27 @@ def dc_actions_for_result(document)
     else
       html << '<li class="dc-link">'
       html << case
+      when yaml['type'] == 'check' then
+        check_box_tag("check-#{document.id}", false,false,{ class: 'dc-check' })
+
       when yaml['type'] == 'edit' then
         parms['action'] = 'edit'
         parms['id']     = document.id
         dc_link_to( nil, 'pencil lg', parms )
+
       when yaml['type'] == 'duplicate' then
         parms['id']     = document.id
         # duplicate string will be added to these fields.
         parms['dup_fields'] = yaml['dup_fields'] 
         parms['action'] = 'create'
         dc_link_to( nil, 'copy lg', parms, data: { confirm: t('drgcms.confirm_dup') }, method: :post )
+
       when yaml['type'] == 'delete' then
         parms['action'] = 'destroy'
         parms['id']     = document.id
         #parms['return_to'] = request.url
         dc_link_to( nil, 'remove lg', parms, data: { confirm: t('drgcms.confirm_delete') }, method: :delete )
+
       # undocumented so far
       when yaml['type'] == 'edit_embedded'
         parms['controller'] = 'cmsedit'
@@ -319,11 +325,14 @@ end
 ############################################################################
 # Creates header div for result set.
 ############################################################################
-def dc_header_for_result()
+def dc_header_for_result
   html = '<div class="dc-result-header">'
   if @form['result_set']['actions'] and !@form['readonly']
     ignore, width = dc_actions_column()
-    html << %Q[<div class="actions" style="width:#{width}px;"></div>]
+    if width > 0 && @form['result_set']['actions'][0].to_s == 'check'
+      check_all = fa_icon('check-square-o', class: 'dc-check-all')
+    end
+    html << %Q[<div class="actions" style="width:#{width}px;">#{check_all}</div>]
   end
   # preparation for sort icon  
   sort_field, sort_direction = nil, nil
