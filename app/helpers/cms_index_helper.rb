@@ -401,11 +401,13 @@ def dc_format_value(value, format=nil)
   return '' if value.nil?
 
   klass = value.class.to_s
-  if klass.match(/time|date/i)
-    CmsCommonHelper.dc_format_date_time(value, format)
-  elsif format.to_s[0] == 'N'
-    return '' if value == 0 and format.match('z')
+  return CmsCommonHelper.dc_format_date_time(value, format) if klass.match(/time|date/i)
 
+  format = format.to_s.upcase
+  if format[0] == 'N'
+    return '' if value == 0 && format.match('Z')
+
+    format.gsub!('Z', '')
     dec = format[1].blank? ? nil : format[1].to_i
     sep = format[2].blank? ? nil : format[2]
     del = format[3].blank? ? nil : format[3]
@@ -430,6 +432,7 @@ end
 ############################################################################
 def dc_columns_for_result(document)
   return '' unless @form['result_set']['columns']
+
   html = ''  
   @form['result_set']['columns'].sort.each do |k,v|
     session[:form_processing] = "result_set:columns: #{k}=#{v}"
