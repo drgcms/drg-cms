@@ -100,7 +100,7 @@ def default
   can_view, msg = dc_user_can_view(@parent, @page)
   return msg unless can_view
 
-  html = "<div class=\"#{@page.div_class}\">"
+  html = "<div class=\"#{@page.div_class} #{@opts[:div_class]}\">"
   html << dc_page_edit_menu() if @opts[:edit_mode] > 1
   @parent.page_title = @page.title.blank? ? @page.subject : @page.title
   html << @page.body
