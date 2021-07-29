@@ -469,9 +469,10 @@ $(document).ready( function() {
   * Sort action clicked on cmsedit
   *******************************************************************/
   $('.drgcms_sort').change( function(e) {
-    var table = e.target.getAttribute("data-table");
-    var form  = e.target.getAttribute("data-form");
-    var sort = e.target.value;
+    let table = e.target.getAttribute("data-table");
+    let form  = e.target.getAttribute("data-form");
+    if (form === null) form = table;
+    let sort = e.target.value;
     e.target.value = null;
     window.location.href = "/cmsedit?sort=" + sort + "&table=" + table +  "&form_name=" + form;
   });
