@@ -85,8 +85,9 @@ def render
     @record[@yaml['name']]
   end
   # Found value to be written in field. If field is not found write out value.
+  not_id = @parent.dc_dont?(@yaml['is_id'], false)
   if value
-    record = t.find(value) unless @yaml['not_id'] # don't if it's is not an id
+    record = t.find(value) unless not_id # don't if it's is not an id
     value_displayed = record ? record.send(ret_name) : value
   end
   # return if readonly
@@ -108,7 +109,6 @@ def render
   @html << '</span>' + @parent.hidden_field(record, @yaml['name'], value: value)        # actual value will be in hidden field
   # JS stuff
   # allow unselected values on is_id: false option
-  not_id = @parent.dc_dont?(@yaml['is_id'], false)
   not_id_code = %(
 if (ui.item == null) {  
 $("##{record}_#{@yaml['name']}").val($("##{record}__#{@yaml['name']}").val() );
@@ -120,7 +120,7 @@ $(document).ready(function() {
   $("##{record}_#{_name}").autocomplete( {
     source: function(request, response) {
       $.ajax({
-        url: '/dc_common/autocomplete',
+        url: "/dc_common/autocomplete",
         type: "POST",
         dataType: "json",
         data: { input: request.term, table: "#{table}", search: "#{ret_name}" #{(',id: "'+@yaml['id'] + '"') if @yaml['id']} },

@@ -26,7 +26,7 @@
 # application controllers.
 ##########################################################################
 class DcApplicationController < ActionController::Base
-  protect_from_forgery
+  protect_from_forgery with: :null_session, only: Proc.new { |c| c.request.format.json? }
   
   before_action :dc_reload_patches if Rails.env.development?
   

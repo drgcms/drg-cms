@@ -45,19 +45,19 @@ layout false
 ########################################################################
 def autocomplete
   # table parameter must be defined. If not, get it from search parameter
-  if params['table'].nil? and params['search'].match(/\./)
+  if params['table'].nil? && params['search'].match(/\./)
     name = params['search'].split('.').first
     params['table'] = name.underscore
   end
   return render plain: t('drgcms.not_authorized') unless dc_user_can(DcPermission::CAN_VIEW)
 
   table = params['table'].classify.constantize
-  id    = [params['id']] || '_id'
-  input = params['input'].gsub(/\(|\)|\[|\]|\{|\}/, '')
+  input = params['input'].gsub(/\(|\)|\[|\]|\{|\|\.|\,}/, '')
   # call method in class if search parameter contains . This is for user defined searches
   a = if params['search'].match(/\./)
-        name, method = params['search'].split('.')
-        table.send(method, input).map do |v|
+        method, additional_params = params['search'].split('.')
+        data = additional_params ? table.send(method, input, additional_params, self) : table.send(method, input)
+        data.map do |v|
           { label: v[0], value: v[0], id: (v[1] || v[0]).to_s }
         end
       # will search and return field_name defined in params['search']

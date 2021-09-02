@@ -265,7 +265,8 @@ form:
       40:
         name: customer_id
         type: text_autocomplete
-        search: 
+        search: model_name.method.additional_parameter
+        search:
           table: customer
           field: custumer_name
           method: search
