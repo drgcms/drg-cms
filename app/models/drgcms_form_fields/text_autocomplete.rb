@@ -76,22 +76,27 @@ def render
   end
   return ro_standard 'Table or field keyword not defined!' unless (table && ret_name)
   # TODO check if table exists
-  t = table.classify.constantize
+  model_klass = table.classify.constantize
   # find record and return value of field
   value_send_as = 'p_' + @yaml['name']
   value = if @parent.params[value_send_as]
-    @parent.params[value_send_as]
-  elsif @record and @record[@yaml['name']]
-    @record[@yaml['name']]
-  end
-  # Found value to be written in field. If field is not found write out value.
+            @parent.params[value_send_as]
+          elsif @record && @record[@yaml['name']]
+            @record[@yaml['name']]
+          end
   not_id = @parent.dc_dont?(@yaml['is_id'], false)
-  if value
-    record = t.find(value) unless not_id # don't if it's is not an id
-    value_displayed = record ? record.send(ret_name) : value
+  # Found value to be written in field. If field is not found write out value.
+  value_displayed = value
+  if value && !not_id
+    if BSON::ObjectId.legal?(value)
+      record = model_klass.find(value)
+      value_displayed = record.send(ret_name) if record
+    else
+      value_displayed = model_klass.send(ret_name, method, @parent, value)
+    end
   end
-  # return if readonly
   return ro_standard(value_displayed) if @readonly
+
   # Add method back, so autocomplete will know that it must search for method inside class
   ret_name = "#{ret_name}.#{method}" if method
   @yaml['html'] ||= {}
@@ -154,4 +159,5 @@ def self.get_data(params, name)
 end
 
 end
+
 end

@@ -55,8 +55,10 @@ def autocomplete
   input = params['input'].gsub(/\(|\)|\[|\]|\{|\|\.|\,}/, '')
   # call method in class if search parameter contains . This is for user defined searches
   a = if params['search'].match(/\./)
-        method, additional_params = params['search'].split('.')
-        data = additional_params ? table.send(method, input, additional_params, self) : table.send(method, input)
+        #method, additional_params = params['search'].split('.')
+        #data = additional_params ? table.send(method, input, additional_params, self) : table.send(method, input)
+        name, method = params['search'].split('.')
+        data = table.send(method, input)
         data.map do |v|
           { label: v[0], value: v[0], id: (v[1] || v[0]).to_s }
         end
