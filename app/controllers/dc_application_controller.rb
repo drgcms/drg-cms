@@ -772,27 +772,8 @@ def dc_add_meta_tag(type, name, content)
 end
 
 ########################################################################
-# Will prepare flash[:update] data, which will be used for updating fields
-# on forms parent form fields.
-# 
-# Parameters:
-# [field_name] String: Field name
-# [value] String: New value
-# [readonly] Boolean: Field is readonly
-# 
-########################################################################
-def dc_update_form_field(field_name, value, readonly=false)
-  dc_deprecate('dc_update_form_field will be deprecated. Use dc_update_form_element instead.')
-  key_name = (readonly ? 'td_' : '') + "record_#{field_name}"
-  flash[:update] ||= {}
-  flash[:update][key_name] = value
-end
-
-########################################################################
-# Will prepare flash[:update] data, which will be used for updating elements
+# Will prepare flash[:update] data, which is used for updating elements
 # on parent form.
-#
-# dc_update_form_field will be deprecated eventually.
 #
 # Parameters passed as hash:
 # [field] String: Field name
@@ -807,11 +788,10 @@ def dc_update_form_element(field: nil, head: nil, value:, readonly: true)
   elsif head
     "head-#{head}"
   end
+  return if key.nil?
 
-  if key
-    flash[:update] ||= {}
-    flash[:update][key] = value
-  end
+  flash[:update] ||= {}
+  flash[:update][key] = value
 end
 
 ####################################################################
