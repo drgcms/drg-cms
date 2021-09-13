@@ -26,9 +26,8 @@
 # application controllers.
 ##########################################################################
 class DcApplicationController < ActionController::Base
-  protect_from_forgery with: :null_session, only: Proc.new { |c| c.request.format.json? }
-  
-  before_action :dc_reload_patches if Rails.env.development?
+protect_from_forgery with: :null_session, only: Proc.new { |c| c.request.format.json? }
+before_action :dc_reload_patches if Rails.env.development?
   
 ########################################################################
 # Writes anything passed as parameter to logger file. 
@@ -54,9 +53,9 @@ end
 ####################################################################
 # Checks if user has required role.
 # 
-# @param [DcPolicyRole] role can be passed as DcPolicyRole object or 
-# @param [String] role as role name. If passed as name, dc_policy_roles is searched for appropriate role.
-# 
+# @param [DcPolicyRole or String] role can be passed as DcPolicyRole object or
+# as role name. If passed as name, dc_policy_roles is searched for appropriate role.
+#
 # @return [Boolean] True if user has required role added to his profile.
 # 
 # @example If user has required role
@@ -153,7 +152,7 @@ end
 # Will write document to dc_visits collection unless visit comes from robot. 
 # It also sets session[is_robot] variable to true if robot.
 ########################################################################
-def dc_log_visit()
+def dc_log_visit
   if request.env["HTTP_USER_AGENT"] and request.env["HTTP_USER_AGENT"].match(/\(.*https?:\/\/.*\)/)
     logger.info "ROBOT: #{Time.now.strftime('%Y.%m.%d %H:%M:%S')} id=#{@page.id} ip=#{request.remote_ip}."
     session[:is_robot] = true
@@ -173,8 +172,8 @@ protected
 # Checks if user can perform (read, create, edit, delete) document in specified
 # table (collection).
 # 
-# @param [Integer] Required permission level
-# @param [String] Collection (table) name for which permission is queried. Defaults to params[table].
+# @param [Integer] permission: Required permission level
+# @param [String] table: Collection (table) name for which permission is queried. Defaults to params[table].
 # 
 # @return [Boolean] true if user's role permits (is higher or equal then required) operation on a table (collection). 
 # 
@@ -211,33 +210,22 @@ def dc_cache_read(keys)
   end
 end
 
-def __dc_cache_read(keys)
-  p 'read', keys.join(''), Rails.cache.instance_variable_get(:@data).keys
-  pp Rails.cache.read(keys.join(''))
-end
-
 ####################################################################
 # Write data to cache
 #
-# @param [Array] Array of keys
-# @param [Object] Data written to cache
+# @param [Array] keys: Array of keys
+# @param [Object] data: Data written to cache
 #
 # @return [Object] data so dc_cache_write can be used as last statement in method.
 ####################################################################
-  def dc_cache_write(keys, data)
-    if redis_cache_store?
-      keys  = keys.dup
-      first = keys.shift
-      redis.hset(first, keys.join(''), Marshal.dump(data))
-    else
-      Rails.cache.write(keys.join(''), data)
-    end
-    data
+def dc_cache_write(keys, data)
+  if redis_cache_store?
+    keys  = keys.dup
+    first = keys.shift
+    redis.hset(first, keys.join(''), Marshal.dump(data))
+  else
+    Rails.cache.write(keys.join(''), data)
   end
-
-def __dc_cache_write(keys, data)
-  p 'write', keys.join('')
-  pp Rails.cache.write(keys.join(''), data)
   data
 end
 
@@ -251,8 +239,8 @@ def dc_set_is_mobile
   is_mobile = request.user_agent ? /(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino/i.match(request.user_agent) || /1207|6310|6590|3gso|4thp|50[1-6]i|770s|802s|a wa|abac|ac(er|oo|s\-)|ai(ko|rn)|al(av|ca|co)|amoi|an(ex|ny|yw)|aptu|ar(ch|go)|as(te|us)|attw|au(di|\-m|r |s )|avan|be(ck|ll|nq)|bi(lb|rd)|bl(ac|az)|br(e|v)w|bumb|bw\-(n|u)|c55\/|capi|ccwa|cdm\-|cell|chtm|cldc|cmd\-|co(mp|nd)|craw|da(it|ll|ng)|dbte|dc\-s|devi|dica|dmob|do(c|p)o|ds(12|\-d)|el(49|ai)|em(l2|ul)|er(ic|k0)|esl8|ez([4-7]0|os|wa|ze)|fetc|fly(\-|_)|g1 u|g560|gene|gf\-5|g\-mo|go(\.w|od)|gr(ad|un)|haie|hcit|hd\-(m|p|t)|hei\-|hi(pt|ta)|hp( i|ip)|hs\-c|ht(c(\-| |_|a|g|p|s|t)|tp)|hu(aw|tc)|i\-(20|go|ma)|i230|iac( |\-|\/)|ibro|idea|ig01|ikom|im1k|inno|ipaq|iris|ja(t|v)a|jbro|jemu|jigs|kddi|keji|kgt( |\/)|klon|kpt |kwc\-|kyo(c|k)|le(no|xi)|lg( g|\/(k|l|u)|50|54|\-[a-w])|libw|lynx|m1\-w|m3ga|m50\/|ma(te|ui|xo)|mc(01|21|ca)|m\-cr|me(rc|ri)|mi(o8|oa|ts)|mmef|mo(01|02|bi|de|do|t(\-| |o|v)|zz)|mt(50|p1|v )|mwbp|mywa|n10[0-2]|n20[2-3]|n30(0|2)|n50(0|2|5)|n7(0(0|1)|10)|ne((c|m)\-|on|tf|wf|wg|wt)|nok(6|i)|nzph|o2im|op(ti|wv)|oran|owg1|p800|pan(a|d|t)|pdxg|pg(13|\-([1-8]|c))|phil|pire|pl(ay|uc)|pn\-2|po(ck|rt|se)|prox|psio|pt\-g|qa\-a|qc(07|12|21|32|60|\-[2-7]|i\-)|qtek|r380|r600|raks|rim9|ro(ve|zo)|s55\/|sa(ge|ma|mm|ms|ny|va)|sc(01|h\-|oo|p\-)|sdk\/|se(c(\-|0|1)|47|mc|nd|ri)|sgh\-|shar|sie(\-|m)|sk\-0|sl(45|id)|sm(al|ar|b3|it|t5)|so(ft|ny)|sp(01|h\-|v\-|v )|sy(01|mb)|t2(18|50)|t6(00|10|18)|ta(gt|lk)|tcl\-|tdg\-|tel(i|m)|tim\-|t\-mo|to(pl|sh)|ts(70|m\-|m3|m5)|tx\-9|up(\.b|g1|si)|utst|v400|v750|veri|vi(rg|te)|vk(40|5[0-3]|\-v)|vm40|voda|vulc|vx(52|53|60|61|70|80|81|83|85|98)|w3c(\-| )|webc|whit|wi(g |nc|nw)|wmlb|wonu|x700|yas\-|your|zeto|zte\-/i.match(request.user_agent[0..3])
                                  : false
   session[:is_mobile] = is_mobile ? 1 : 0
-#
-  if request.env["HTTP_USER_AGENT "] and request.env["HTTP_USER_AGENT"].match(/\(.*https?:\/\/.*\)/)
+
+  if request.env["HTTP_USER_AGENT "] && request.env["HTTP_USER_AGENT"].match(/\(.*https?:\/\/.*\)/)
     logger.info "ROBOT: #{Time.now.strftime('%Y.%m.%d %H:%M:%S')} id=#{@page.id} ip=#{request.remote_ip}."
     session[:is_robot] = true
   end
@@ -261,23 +249,13 @@ end
 ##########################################################################
 # Merge values from parameters fields (from site, page ...) into internal @options hash.
 # 
-# @param [String] YAML string.
+# @param [String] parameters: passed as YAML string.
 ##########################################################################
 def dc_set_options(parameters)
   @options ||= {}
   return if parameters.to_s.size < 3
-# parameters are set az YAML. This should be default in future.
-  parms = YAML.load(parameters) rescue nil
-  if parms.nil? # error when loadnig yaml, try the old way parsing manually
-    parms = {}
-    parameters.split("\n").each do |line|
-      line.chomp.split(',').each do |parm|
-        key, value = parm.split(':')
-        value = value.to_s.strip.gsub(/\'|\"/,'')
-        parms[key.strip] = (value == '/' ? nil : value)
-      end
-    end
-  end
+  # parameters are set as YAML. This should be default in future.
+  parms = YAML.load(parameters) rescue {}
   @options.merge!(parms)
 end
 
@@ -291,7 +269,6 @@ end
 # @return [Boolean] true when none of documents is changed.
 ##########################################################################
 def dc_not_modified?(*documents)
-#  request.env.each {|k,v| p k,'*',v}
   return false unless request.env.include? 'HTTP_IF_MODIFIED_SINCE'
 
   since_date = Time.parse request.env['HTTP_IF_MODIFIED_SINCE']
@@ -300,7 +277,7 @@ def dc_not_modified?(*documents)
     next unless doc.respond_to?(:updated_at)
     last_modified = doc.updated_at if doc.updated_at > last_modified
   end
-#  p last_modified, since_date
+
   if last_modified >= since_date then
     render :nothing => true, :status => 304
     return true
@@ -319,13 +296,13 @@ def get_design_and_render(design_doc)
   layout      = @site.site_layout.blank? ? 'content' : @site.site_layout
   site_top    = '<%= dc_page_top %>'
   site_bottom = '<%= dc_page_bottom %>'
-# lets try the rails way
+  # lets try the rails way
  if @options[:control] && @options[:action]
     controller = "#{@options[:control]}_control".classify.constantize rescue nil
     extend controller if controller
     return send @options[:action] if respond_to?(@options[:action])
   end
-# design doc present 
+  # design doc present
   if design_doc
     # defined as rails view
     design = if design_doc.rails_view.blank? || design_doc.rails_view == 'site'
@@ -339,7 +316,7 @@ def get_design_and_render(design_doc)
     design = site_top + design + site_bottom
     return render(inline: design, layout: layout) unless design.blank?
   end
-# Design doc not defined
+  # Design doc not defined
   if @site.rails_view.blank?
     design = site_top + @site.design + site_bottom
     render(inline: design, layout: layout)
@@ -379,6 +356,7 @@ def dc_process_default_request
   params[:path]   = @options[:path].first if @options[:path].size > 1
   # some other process request. It should fail if not defined
   return send(@site.request_processor) unless @site.request_processor.blank?
+
   # Search for page
   pageclass = @site.page_klass
   if params[:id]
@@ -400,6 +378,7 @@ def dc_process_default_request
   end
   # if @page is not found render 404 error
   return dc_render_404('Page!') unless @page
+
   dc_set_is_mobile unless session[:is_mobile] # do it only once per session
   # find design if defined. Otherwise design MUST be declared in site
   if @page.dc_design_id
@@ -422,8 +401,7 @@ def dc_process_default_request
   get_design_and_render @design
 end
 
-######
-# ####################################################################
+###########################################################################
 # Single site document kind of request handler.
 # 
 # This request handler assumes that all data for the site is saved in the site document. 
@@ -439,18 +417,17 @@ def dc_single_sitedoc_request
   if @site.nil?
     session[:edit_mode] ||= 0
     @site = dc_get_site
-  # @site is not defined. render 404 error
+    # @site is not defined. render 404 error
     return dc_render_404('Site!') unless @site
+
     dc_set_options(@site.settings)
   end
-# HOMEPAGE. When no parameters is set
+  # HOMEPAGE. When no parameters is set
   params[:path] = @site.homepage_link if params[:path].nil?  
   @parts = @site.dc_parts
   @part  = @parts.find_by(link: params[:path])
   return dc_render_404('Part!') unless @part
-# Document was not modified since last visit  
-#  return if dc_not_modified?(@site, @part)
-#  
+
   @page_title = "#{@site.page_title} #{@part.name}"
   @js, @css = '', ''
   get_design_and_render nil
@@ -461,28 +438,19 @@ end
 # very good with non ascii chars. Since this method is used for converting from model
 # to collection names it is very unwise to use non ascii chars for table (collection) names.
 # 
-# @param [String] String to be converted 
-# 
+# @param [Object] model_string to be converted
+#
 # @example
 #   decamelize_type(ModelName) # 'ModelName' => 'model_name'
 ########################################################################
-def decamelize_type(string)
-  return nil unless string
-  r = ''
-  string.to_s.each_char do |c|
-    r << case 
-      when r.size == 0     then c.downcase
-      when c.downcase != c then '_' + c.downcase
-      else c      
-    end
-  end
-  r
+def decamelize_type(model_string)
+  model_string ? model_string.underscore : nil
 end
 
 ####################################################################
 # Return's error messages for the document formated for display on edit form.
 # 
-# @param [Document] Document object which will be examined for errors.
+# @param [Document] document object which will be examined for errors.
 #
 # @return [String] HTML code for displaying error on edit form.
 ####################################################################
@@ -508,8 +476,8 @@ end
 # model errors or when saving to multiple collections and where each save must be 
 # checked if succesfull.
 # 
-# @param [Document] Document object which will be checked
-# @param [Boolean] If true method should end in runtime error. Default = false.
+# @param [Document] document: Document object to be checked
+# @param [Boolean] crash: If true method should end in runtime error. Default = false.
 # 
 # @return [String] Error messages or empty string if everything is OK.
 # 
@@ -521,16 +489,16 @@ end
 #   end
 #      
 ####################################################################
-def dc_check_model(document, crash=false)
+def dc_check_model(document, crash = false)
   DrgCms.model_check(document, crash)
 end
 
 ######################################################################
 # Call rake task from controller.
 # 
-# @param [String] Rake task name
-# @param [Hash] Options that will be send to task as environment variables
-# 
+# @param [String] task: Rake task name
+# @param [Hash] options: Options that will be send to task as environment variables
+#
 # @example Call rake task from application
 #   dc_call_rake('clear:all', some_parm: some_id)
 ######################################################################
@@ -545,7 +513,7 @@ end
 # made from DRG CMS form return may be quite complicated. All ajax return combinations 
 # can be found in drg_cms.js file. 
 # 
-# @param [Hash] Options
+# @param [Hash] opts: Options
 #
 # @return [JSON Response] Formatted to be used for ajax return.
 # 
@@ -720,7 +688,7 @@ end
 # Evaluates Class.method in more predictable context then just calling eval
 # 
 # @param [String] class_method defined as MyClass.method_name
-# @param [Object] optional parameters send to class_method
+# @param [Object] params: optional parameters send to class_method
 ##########################################################################
 def dc_eval_class_method(class_method, params = nil)
   klass, method = class_method.split('.')

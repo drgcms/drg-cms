@@ -1,4 +1,3 @@
-#coding: utf-8
 #--
 # Copyright (c) 2012+ Damjan Rems
 #
@@ -95,17 +94,17 @@ end
 ############################################################################
 def dc_render(renderer, opts={})
   return dc_render_design_part(renderer[:part]) if renderer.class == Hash
-# 
+
   opts[:edit_mode]  = session[:edit_mode] 
   opts[:editparams] = {}
   
   opts = @options.merge(opts) # merge options with parameters passed on site, page, design ...
   opts.symbolize_keys!        # this makes lots of things easier
-# Create renderer object
+  # Create renderer object
   klass = renderer.to_s.downcase
   klass += '_renderer' unless klass.match('_renderer') #
   obj = Kernel.const_get(klass.classify, Class.new).new(self, opts) rescue nil
-# 
+
   if obj
     html = obj.render_html
     @css  << obj.render_css.to_s
@@ -133,7 +132,7 @@ def dc_replace_in_design(opts={})
   design = opts[:piece] ? DcPiece.find(name: opts[:piece]).script : dc_get_site.design
   layout = opts[:layout] || (dc_get_site.site_layout.size > 2 ? dc_get_site.site_layout : nil)
   if opts[:replace]
-# replace more than one part of code
+    # replace more than one part of code
     if opts[:replace].class == Array
       0.upto(opts[:replace].size - 1) {|i| design.sub!(opts[:replace][i], opts[:with][i])}
     else
@@ -179,13 +178,12 @@ end
 # 
 # This helper is replacement dc_render_from_site method which will soon be deprecated. 
 ########################################################################
-def dc_render_design_part(part) 
-  
+def dc_render_design_part(part)
   case
   when part.nil? then logger.error('ERROR dc_render_design_part! part is NIL !'); ''
-# Send as array. Part may be defined with options on page. First element has
-# name of element which defines what to do. If not defined default behaviour is 
-# called. That is what is defined in second part of array.
+  # Send as array. Part may be defined with options on page. First element has
+  # name of element which defines what to do. If not defined default behaviour is
+  # called. That is what is defined in second part of array.
   when part.class == Array then
     if @options.dig(:settings, part.first)
       #TODO to be defined 
@@ -196,9 +194,9 @@ def dc_render_design_part(part)
   when part.class == Proc then
     result = part.call
     result.class == Array ? result.first : result
-# Send as string. Evaluate content of string    
+  # Send as string. Evaluate content of string
   when part.class == String then eval part
-# For future maybe. Just call objects to_s method.
+  # For future maybe. Just call objects to_s method.
   else
     part.to_s
   end.html_safe
@@ -231,9 +229,9 @@ end
 ########################################################################
 # Helper for rendering top CMS menu when in editing mode
 ########################################################################
-def dc_page_top()
-  if @design and !@design.rails_view.blank?
-# Evaluate parameters in design body    
+def dc_page_top
+  if @design && @design.rails_view.present?
+    # Evaluate parameters in design body
     eval(@design.body)
   end
   session[:edit_mode] > 0 ? render(partial: 'cmsedit/edit_stuff') : ''
@@ -282,18 +280,18 @@ end
 def dc_edit_title
   session[:form_processing] = "form:title:"
   title = @form['form']['title']
-# defined as form:title:edit
+  # defined as form:title:edit
   if title and title['edit'] and !@form['readonly']
     t( title['edit'], title['edit'] )
   elsif title and title['show'] and @form['readonly']
     t( title['show'], title['show'] )
   else
-# concatenate title 
+    # concatenate title
     c = (@form['readonly'] ? t('drgcms.show') : t('drgcms.edit')) + " : "
     c << (@form['title'] ? t( @form['title'], @form['title'] ) : t_tablename(@form['table'])) + ' : '
     title = (title and title['field']) ? title['field'] : @form['form']['edit_title']
     dc_deprecate('form:edit_title will be deprecated. Use form:title:field instead.') if @form['form']['edit_title']
-#
+
     c << "#{@record[ title ]} : " if title and @record.respond_to?(title)
     c << @record.id if @record
   end
@@ -309,15 +307,11 @@ end
 def dc_new_title()
   session[:form_processing] = "form:title:"
   title = @form['form']['title']
-# defined as form:title:new
+  # defined as form:title:new
   if title and title['new']
     t( title['new'], title['new'] )
   else
-    if @form['table'] == 'dc_dummy'
-      dc_deprecate('dc_dummy will be deprecated. Use dc_memory instead.')
-      @form['table'] = 'dc_memory'
-    end
-# in memory variables    
+    # in memory structures
     if @form['table'] == 'dc_memory'
       t( @form['title'], @form['title'] )
     else
@@ -366,7 +360,8 @@ end
 # Returns icon code if icon is specified
 ############################################################################
 def dc_icon_for_link(icon)
-  return nil unless icon
+  return nil if icon.nil?
+
   if icon.match(/\./)
     _origin.image_tag(icon, class: 'dc-link-img dc-animate')
   elsif icon.match('<i')
@@ -439,22 +434,13 @@ end
 # Therefore it is very unwise to use non ascii chars for table (collection) names.
 # 
 # Parameters: 
-# [string] String. String to be converted into decamelized string.
+# [Object] model_string. String or model to be converted into decamelized string.
 # 
 # Returns:
 # String. Decamelized string.
 ########################################################################
-def decamelize_type(string)
-  return nil if string.nil?
-  r = ''
-  string.to_s.each_char do |c|
-    r << case 
-      when r.size == 0     then c.downcase
-      when c.downcase != c then '_' + c.downcase
-      else c      
-    end
-  end
-  r
+def decamelize_type(model_string)
+  model_string ? model_string.to_s.underscore : nil
 end
 
 ####################################################################
@@ -556,14 +542,14 @@ end
 # Create edit link with edit picture. Subroutine of dc_page_edit_menu.
 ####################################################################
 def dc_link_menu_tag(title) #:nodoc:
-  html = %Q[
+  html = %(
 <dl>
   <dt><div class='drgcms_popmenu' href="#">
     #{_origin.fa_icon('file-text-o lg', class: 'dc-inline-link', title: title)}
   </div></dt>
   <dd>
     <ul class=' div-hidden drgcms_popmenu_class'>
-]
+)
 
   yield html
   html << "</ul></dd></dl>"
@@ -757,7 +743,7 @@ end
 ##########################################################################
 # Returns choices for creating collection edit select field on CMS top menu.
 ##########################################################################
-def dc_choices4_cmsmenu()
+def dc_choices4_cmsmenu
   menus = {}
   DrgCms.paths(:forms).reverse.each do |path|
     filename = "#{path}/cms_menu.yml"
