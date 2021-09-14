@@ -100,15 +100,16 @@ def dc_actions_for_form(position)
     std_actions.merge!(@record.active ? {5 => 'disable'} : {5 => 'enable'} ) if @record.respond_to?('active')
     std_actions.merge!({7 => 'refresh'} )
   end
+  # readonly
+  std_actions = { 1 => 'back' } if @form['readonly']
+
   actions = @form['form']['actions']
   # shortcut for actions: standard
   actions = nil if actions.class == String && actions == 'standard'
-  # standard actions
   actions = std_actions if actions.nil?
-  # readonly
-  actions = { 1 => 'back' } if @form['readonly']
+
   # Actions are strictly forbidden
-  if @form['form']['actions'] and dc_dont?(@form['form']['actions'])
+  if @form['form']['actions'] && dc_dont?(@form['form']['actions'])
     actions = []
   elsif actions['standard']
     actions.merge!(std_actions)
@@ -134,7 +135,7 @@ def dc_actions_for_form(position)
   end
   # remove standard option and sort so that standard actions come first
   actions.delete('standard')
-  actions = actions.to_a.sort {|x,y| x[0] <=> y[0]} 
+  actions = actions.to_a.sort { |x, y| x[0] <=> y[0] }
   # Add spinner to the beginning
   html = %Q[<span class="dc-spinner">#{fa_icon('spinner lg spin')}</span><ul class="dc-menu #{position}">]
   
@@ -143,7 +144,7 @@ def dc_actions_for_form(position)
     next if options.nil?  # yes it happends
     parms = @parms.clone
     if options.class == String
-      next if params[:readonly] and !options.match(/back|close/)
+      next if @form['readonly'] and !options.match(/back|close/)
       
       html << '<li class="dc-link dc-animate">'
       html << case 
@@ -193,6 +194,9 @@ def dc_actions_for_form(position)
       html << '</td>'
     # non standard actions      
     else
+      # action will be displayed when show: always or readonly option is declared and form is readonly
+      next if @form['readonly'] && !%w[readonly always].include?(options['show'].to_s)
+
       options['title'] = t("#{options['title'].downcase}", options['title']) if options['title']
       html << case 
       # submit button
@@ -454,11 +458,10 @@ end
 # Returns username for id. Subroutine of dc_document_statistics
 ###########################################################################
 def dc_document_user_for(field_name) #:nodoc:
-  if @record[field_name]
-    u = DcUser.find(@record[field_name])
-    return u ? u.name : @record[field_name]
-  end
-#  nil
+  return if @record[field_name].nil?
+
+  user = DcUser.find(@record[field_name])
+  user ? user.name : @record[field_name]
 end
 
 ############################################################################
@@ -508,6 +511,5 @@ def dc_top_bottom_line(location, options)
     ''
   end
 end
-
 
 end

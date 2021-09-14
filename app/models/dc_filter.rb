@@ -106,8 +106,10 @@ end
 ############################################################################
 # Return filter input field for entering variable filter values on index form 
 ############################################################################
-def self.get_filter_field(parent) 
+def self.get_filter_field(parent)
   return '' if parent.session[ parent.form['table'] ].nil?
+  parent.form['readonly'] = nil # must be
+
   filter = parent.session[ parent.form['table'] ][:filter]
   return '' if filter.nil?
 
@@ -115,8 +117,9 @@ def self.get_filter_field(parent)
   return '' if filter.nil?
 
   field = get_field_form_definition(filter['field'], parent)
-  return '' if field.nil? and filter['input'].nil?
-  field = {} if field.nil?
+  return '' if field.nil? && filter['input'].nil?
+
+  field ||= {}
   # If field has choices available in labels, use them. This is most likely select input field.
   if field['name']
     choices = parent.t('helpers.label.' + parent.form['table'] + '.choices4_' + field['name'] )
@@ -129,23 +132,24 @@ def self.get_filter_field(parent)
   field['type']     = filter['input'] if filter['input'].to_s.size > 5
   field['type']   ||= 'text_field'
   field['readonly'] = false   # must be
-  field['html']   ||= {} 
-  field['html']['size']  = 20
+  field['html']   ||= {}
+  field['html']['size'] = 20
   # Start with last entered value
   field['html']['value']    = filter['value'] unless filter['value'] == '#NIL'
   field['html']['selected'] = field['html']['value'] # for select field
   # url for filter ON action
   field['html']['data-url'] = parent.url_for(
-    controller: 'cmsedit',action: :index, filter: 'on',
+    controller: 'cmsedit', action: :index, filter: 'on',
     table: parent.form['table'], form_name: parent.params['form_name'])
   url = field['html']['data-url']
   # remove if present
   field['with_new'] = nil if field['with_new']
-# create input field object
+  # create input field object
   klas_string = field['type'].camelize
   klas = DrgcmsFormFields::const_get(klas_string) rescue nil
   return '' if klas.nil?
-# return data from object and create html code to display field
+
+  # return data from object and create html code to display field
   object = klas.new(parent, nil, field).render rescue nil
   # Error. Forget filter and return 
   if object.nil?
@@ -153,11 +157,11 @@ def self.get_filter_field(parent)
     return ''
   end
   js = object.js.blank? ? '' : parent.javascript_tag(object.js)
-%Q[<li class="no-background">
+%(<li class="no-background">
 <span class="filter_field" data-url="#{url}">#{object.html}
 #{parent.fa_icon('search lg', class: 'record_filter_field_icon')}
 #{js}</span>
-</li>]
+</li>)
 end
 
 ######################################################################

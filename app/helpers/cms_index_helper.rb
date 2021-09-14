@@ -35,11 +35,14 @@ module CmsIndexHelper
 def dc_actions_for_index
   @js  = @form['script'] || @form['js'] || ''
   @css = @form['css'] || ''
-  return '' if @form['index'].nil? or @form['readonly']
+  return '' if @form['index'].nil?
+
   actions = @form['index']['actions']
   return '' if actions.blank?
   
   std_actions = {2 => 'new', 3 => 'sort', 4 => 'filter' }
+  std_actions.delete(2) if @form['readonly']
+
   if actions.class == String
     actions = dc_define_standard_actions(actions, std_actions)
   elsif actions['standard']
@@ -267,7 +270,7 @@ end
 ############################################################################
 def dc_actions_for_result(document)
   actions = @form['result_set']['actions']
-  return '' if actions.nil? or @form['readonly']
+  return '' if actions.nil? || @form['readonly']
 
   actions, width = dc_actions_column()
   html = %Q[<ul class="actions" style="width: #{width}px;">]

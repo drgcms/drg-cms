@@ -141,6 +141,7 @@ form:
       caption: ajax_call
       control: control_name.method_to_call
       when_new: false
+      show: default always readonly
     5: 
       type: window
       controller: cmsedit
