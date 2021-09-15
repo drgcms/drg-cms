@@ -108,7 +108,6 @@ end
 ############################################################################
 def self.get_filter_field(parent)
   return '' if parent.session[ parent.form['table'] ].nil?
-  parent.form['readonly'] = nil # must be
 
   filter = parent.session[ parent.form['table'] ][:filter]
   return '' if filter.nil?
@@ -119,6 +118,8 @@ def self.get_filter_field(parent)
   field = get_field_form_definition(filter['field'], parent)
   return '' if field.nil? && filter['input'].nil?
 
+  saved_readonly = parent.form['readonly']
+  parent.form['readonly'] = nil # must be
   field ||= {}
   # If field has choices available in labels, use them. This is most likely select input field.
   if field['name']
@@ -147,6 +148,7 @@ def self.get_filter_field(parent)
   # create input field object
   klas_string = field['type'].camelize
   klas = DrgcmsFormFields::const_get(klas_string) rescue nil
+  parent.form['readonly'] = saved_readonly
   return '' if klas.nil?
 
   # return data from object and create html code to display field

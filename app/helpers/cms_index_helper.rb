@@ -353,7 +353,8 @@ def dc_header_for_result
       label = (v['name'] ? "helpers.label.#{@form['table']}.#{v['name']}" : '') if label.nil?
       label = t(label) if label.match(/\./)
       # no sorting when embedded documents or custom filter is active 
-      sort_ok = @form['result_set'].nil? || (@form['result_set'] && @form['result_set']['filter'].nil?)
+      #sort_ok = @form['result_set'].nil? || (@form['result_set'] && @form['result_set']['filter'].nil?)
+      sort_ok = true
       sort_ok = sort_ok || (@form['index'] && @form['index']['sort'])
       sort_ok = sort_ok && !dc_dont?(v['sort'], false)
       if @tables.size == 1 and sort_ok
