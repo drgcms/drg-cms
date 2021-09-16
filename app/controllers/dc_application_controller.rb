@@ -613,7 +613,7 @@ end
 ####################################################################
 def fill_login_data(user, remember_me = false)
   session[:user_id]   = user.id if user
-  session[:user_name] = user.name if user
+  session[:user_name] = user.name.squish if user
   session[:edit_mode] = 0
   set_default_guest_user_role
   return unless user&.active

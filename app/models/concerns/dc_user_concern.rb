@@ -151,7 +151,7 @@ private
 # when entry is left empty.
 ##########################################################################
 def do_before_save
-  self.name  = "#{title} #{first_name} #{middle_name + ' ' unless middle_name.blank?}#{last_name}".strip
+  self.name  = "#{title} #{first_name} #{middle_name + ' ' unless middle_name.blank?}#{last_name}".squish
   # to ensure unique e-mail
   self.email = "unknown@#{id}" if email.blank?
 end
