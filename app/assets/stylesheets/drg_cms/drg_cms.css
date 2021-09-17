@@ -744,7 +744,6 @@ color: #aaa;
 }
 .dc-form-ul {
 padding: 2px 0;
-margin-top: 6px;
 margin-bottom: -3px;
 }
 
@@ -769,12 +768,10 @@ margin-bottom: -3px;
   text-decoration: none;
   text-align: center;
   font-weight: 600;
-  line-height: 1.2rem;
-
-  padding:4px 15px;
-  background: #e8e8e8;
+  line-height: 1.2em;
+  padding: 0.4em 1em;
   background: #666;
-  margin-right: 2px;
+  margin: 0 1px 1px 0;
   border-left: 1px solid #ddd;
   border-right: 1px solid #ddd;
   border-radius: 4px 4px 0  0;
@@ -1459,7 +1456,7 @@ color: #669;
 }
 
 /****** MOBILE DEVICE *****/
-@media only screen and (max-width: 600px) {
+@media only screen and (max-device-width: 600px) {
   .dc-form .row-div {
     display: block;
   }
@@ -1472,7 +1469,7 @@ color: #669;
   }
   
   .dc-form-li {margin-top: 3px;}
-  .dc-menu li {margin-top: 2px;}
+  .dc-menu li {margin-bottom: 4px;}
   
   .dc-width-10, .dc-width-14, .dc-width-21, .dc-width-85, .dc-width-100 {width: 100%;}
 }
