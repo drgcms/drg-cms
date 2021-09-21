@@ -1136,6 +1136,13 @@ $(document).ready( function() {
     dc_toggle_div(div);
   });
 
+  /*******************************************************************
+   * Show-Hide CMS menu on hamburger click
+   *******************************************************************/
+  $('#menu-hamburger').on('click', function(e) {
+    $('.cmsedit-container #menu').toggleClass('visible');
+  });
+
 });
 
 /*******************************************************************
