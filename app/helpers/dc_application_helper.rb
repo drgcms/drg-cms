@@ -456,19 +456,47 @@ end
 def dc_error_messages_for(doc)
   return '' unless doc && doc.errors.any?
 
-  msgs = ''
-  doc.errors.each do |error|
+  msgs = doc.errors.inject('') do |r, error|
     label = t("helpers.label.#{decamelize_type(doc.class)}.#{error.attribute}", error.attribute)
-    msgs << "<li>#{label} : #{error.message}</li>"
+    r << "<li>#{label} : #{error.message}</li>"
   end
-  
-c = <<eot
+
+  html = <<eot
 <div class="dc-form-error"> 
   <h2>#{t('drgcms.errors_no')} #{doc.errors.size}</h2>  
   <ul>#{msgs}</ul>  
 </div>
 eot
-  c.html_safe
+  html.html_safe
+end
+
+####################################################################
+# Returns warning messages if any set in a model.
+#
+# When warnings array is added to model its content can be written on top of the form.
+#
+# Parameters:
+# [doc] Document. Document record which will be checked for errors.
+#
+# Returns:
+# String. HTML code formatted for display.
+####################################################################
+def dc_warning_messages_for(doc)
+  return ''
+  return '' unless doc && doc.respond_to?(:warnings)
+
+  msgs = doc.warnings.inject('') do |r, error|
+    label = t("helpers.label.#{decamelize_type(doc.class)}.#{error.attribute}", error.attribute)
+    msgs << "<li>#{label} : #{error.message}</li>"
+  end
+
+  html = <<eot
+<div class="dc-form-warning"> 
+  <h2>#{t('drgcms.warnings_no')} #{doc.warnings.size}</h2>  
+  <ul>#{msgs}</ul>  
+</div>
+eot
+  html.html_safe
 end
 
 ####################################################################
