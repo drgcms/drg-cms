@@ -84,7 +84,6 @@ def dc_actions_for_index
     # html link options
     yhtml = yaml['html'] || {}
     yhtml['title'] = yaml['title'] if yaml['title']
-
     code = case
     # sort
     when action == 'sort' then 
@@ -113,9 +112,10 @@ def dc_actions_for_index
       caption
 
     # new
-    when action == 'new' then 
+    when action == 'new' then
       caption = yaml['caption'] || 'drgcms.new'
-      dc_link_to(caption,'plus', url, yhtml )
+      html << "<li class=\"dc-link plus-link dc-animate\">#{dc_link_to(caption, 'plus', url, yhtml )}</li>"
+      next
 
     # menu
     when action == 'menu' then
