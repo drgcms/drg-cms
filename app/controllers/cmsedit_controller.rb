@@ -715,8 +715,9 @@ end
 ########################################################################
 def save_journal(operation, changes = {})
   if operation == :delete
-    @record.attributes.each {|k,v| changes[k] = v}
+    @record.attributes.each { |k, v| changes[k] = v }
   end
+  changes.except!('created_at', 'updated_at', 'created_by', 'updated_by')
 
   if (operation != :update) || changes.size > 0
     # determine site_id
@@ -740,7 +741,7 @@ end
 # Returns callback method name or nil if not defined.
 ########################################################################
 def callback_method(key) #:nodoc:
-  data_key = key.gsub('_','-') # convert _ to -
+  data_key = key.gsub('_', '-') # convert _ to -
   callback = case
     when params['data'] && params['data'][data_key] then params['data'][data_key]
     # dc_ + key method is present then call it automatically
@@ -842,7 +843,7 @@ def save_data
   update_standards() if changes.size > 0  # update only if there has been some changes
   if (saved = @record.save)
     operation = @record.new_record? ? :new : :update
-    save_journal(operation, changes)
+    save_journal(operation, @record.previous_changes)
     # after_save callback
     if (m = callback_method('after_save') ) then call_callback_method(m) end
   end

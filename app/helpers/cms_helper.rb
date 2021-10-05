@@ -182,7 +182,7 @@ end
 # Returns:
 #   String : HTML code for action
 ############################################################################
-def dc_link_ajax_window_submit_action(yaml, record=nil, action_active=true)
+def dc_link_ajax_window_submit_action(yaml, record = nil, action_active = true)
   parms = {}
   caption = yaml['caption'] || yaml['text']
   caption = caption ? t("#{caption.downcase}", caption) : nil
@@ -241,7 +241,7 @@ def dc_link_ajax_window_submit_action(yaml, record=nil, action_active=true)
          data-request="#{request}" title="#{yaml['title']}">#{icon}#{caption}</li>]
 
     elsif yaml['type'] == 'link'  # link button
-      clas = "dc-link dc-animate"
+      clas = "dc-link plus-link dc-animate"
       link = dc_link_to(caption, yaml['icon'], parms, yaml['html'] )
       %Q[<li class="#{clas}">#{action_active ? link : caption}</li>]
 

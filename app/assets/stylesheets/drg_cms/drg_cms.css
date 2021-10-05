@@ -389,6 +389,10 @@ border: 1px solid #ddd;
   background: #ddd !important;
 }
 
+.dc-action-menu li.dc-link.plus-link {
+  padding: 7px 0;
+}
+
 .dc-link-ajax {
   text-align: left;
   font-weight: 600;
@@ -638,7 +642,7 @@ color: #aaa;
 
 .dc-form-info {
   padding: 8px;
-  background-image: linear-gradient(to bottom, #dff0d8 0px, #c8e5bc 100%);
+  background-image: linear-gradient(to bottom, #dff0d8 0, #c8e5bc 100%);
   background-repeat: repeat-x;
   color: darkgreen;  
   border: 1px solid #b2dba1;  
@@ -648,19 +652,17 @@ color: #aaa;
 
 .dc-form-warning {
   padding: 8px;
-  background-image: linear-gradient(to bottom, #fcf8e3 0px, #f8efc0 100%);
+  background-image: linear-gradient(to bottom, rgba(213, 143, 218, 0.1) 0, rgba(213, 143, 218, 0.5) 100%);
   background-repeat: repeat-x;
-  color: #c84;  
-  border: 1px solid #f5e79e;  
+  color: rgba(102, 51, 153, 1);
+  border: 1px solid rgba(102, 51, 153, 0.3);
   border-radius: 2px;
   margin: 2px 0;
 }
 
 .dc-form-error {
   padding: 8px;
-  background-image: linear-gradient(to bottom, #f2dede 0px, #e7c3c3 100%);
-  background-repeat: repeat-x;
-  background-color: #f2dede;
+  background-image: linear-gradient(to bottom, #f2dede 0, #e7c3c3 100%);
   color: #a94442;
   border: 1px solid #dca7a7;
   border-radius: 2px;
@@ -771,7 +773,7 @@ margin-bottom: -3px;
   line-height: 1.2em;
   padding: 0.4em 1em;
   background: #666;
-  margin: 0 1px 1px 0;
+  margin: 0 1px 0 0;
   border-left: 1px solid #ddd;
   border-right: 1px solid #ddd;
   border-radius: 4px 4px 0  0;
