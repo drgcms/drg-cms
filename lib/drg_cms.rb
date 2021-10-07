@@ -140,12 +140,8 @@ end
 def self.model_check(document, crash = false)
   return nil unless document.errors.any?
 
-  msg = ""
-  document.errors.each do |attribute, errors_array|
-    msg << "#{attribute}: #{errors_array}\n"
-  end
-  #
-  if crash and msg.size > 0
+  msg = document.errors.inject('') { |r, error| r << "#{error.attribute}: #{error.message}\n" }
+  if crash && msg.size > 0
     msg = "Validation errors in #{document.class}:\n" + msg
     pp msg
     Rails.logger.error(msg)
