@@ -273,6 +273,9 @@ process_json_result = function(json) {
     case 'url':
       window.location.href = value;
       break;
+    case 'parenturl':
+      parent.location.href = value;
+      break;
     case 'alert':
       alert(value);
       break;
