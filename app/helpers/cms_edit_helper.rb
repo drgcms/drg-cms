@@ -138,10 +138,10 @@ def dc_actions_for_form(position)
   actions = actions.to_a.sort { |x, y| x[0] <=> y[0] }
   # Add spinner to the beginning
   html = %Q[<span class="dc-spinner">#{fa_icon('spinner lg spin')}</span><ul class="dc-menu #{position}">]
-  
+
   actions.each do |key, options|
     session[:form_processing] = "form:actions: #{key} #{options}"
-    next if options.nil?  # yes it happends
+    next if options.nil?  # yes it happens
     parms = @parms.clone
     if options.class == String
       next if @form['readonly'] and !options.match(/back|close/)

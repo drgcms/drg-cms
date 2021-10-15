@@ -117,6 +117,10 @@ def dc_actions_for_index
       html << "<li class=\"dc-link plus-link dc-animate\">#{dc_link_to(caption, 'plus', url, yhtml )}</li>"
       next
 
+    when action == 'close' then
+      html << %(<li class="dc-link dc-animate" onclick="window.close();"'>#{fa_icon('close')} #{t('drgcms.close')}</li>)
+      next
+
     # menu
     when action == 'menu' then
       if options['caption']
