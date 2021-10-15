@@ -37,7 +37,7 @@ def dc_script_action(yaml)
 #  data = {'request' => 'script', 'script' => yaml['js'] || yaml['script'] }
 #  %Q[<li class="dc-link-ajax with-link dc-animate">#{ dc_link_to(yaml['caption'], yaml['icon'], '#', data: data ) }</li>]
   icon = dc_icon_for_link yaml['icon']
-  data = %Q[data-request="script" data-script="#{yaml['js'] || yaml['script']}"]
+  data = %(data-request="script" data-script="#{yaml['js'] || yaml['script']}" data-url="script")
   %Q[<li class="dc-link-ajax dc-animate" #{data}>#{icon} #{ t(yaml['caption'],yaml['caption']) }</li>]
 end
 
