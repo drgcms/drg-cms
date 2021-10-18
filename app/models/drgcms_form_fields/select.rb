@@ -144,8 +144,7 @@ end
 def add_view_code
   return '' if (data = @record.send(@yaml['name'])).blank?
 
-  ar = @yaml['view'].split(/\ |\,/).delete_if {|e| e.blank?}
-  table, form_name = *ar
+  table, form_name = @yaml['view'].split(/\ |\,/).delete_if { |e| e.blank? }
   url  = @parent.url_for(controller: :cmsedit, id: data, action: :edit, table: table, form_name: form_name, readonly: true, window_close: 1 )
   icon = @parent.fa_icon('eye')
   %(<span class="dc-window-open" data-url="#{url}">#{icon}</span>)
@@ -158,9 +157,9 @@ def ro_standard
   value = @record.respond_to?(@yaml['name']) ? @record.send(@yaml['name']) : nil
   return self if value.blank?
 
+  html = ''
   choices = get_choices()
   if value.class == Array   # multiple choices
-    html = ''
     value.each do |element|
       choices.each do |choice|
         if choice.to_s == element.to_s
@@ -169,17 +168,17 @@ def ro_standard
         end
       end       
     end
-    return super(html)
   else
     choices.each do |choice|
       if choice.class == Array
-        return super(choice.first) if choice.last.to_s == value.to_s
+        (html = choice.first; break) if choice.last.to_s == value.to_s
       else
-        return super(choice) if choice.to_s == value.to_s
+        (html = choice; break) if choice.to_s == value.to_s
       end 
     end
+    html << add_view_code if @yaml['view']
   end
-  super('')
+  super(html)
 end
 
 ###########################################################################
