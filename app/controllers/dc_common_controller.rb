@@ -49,7 +49,7 @@ def autocomplete
     name = params['search'].split('.').first
     params['table'] = name.underscore
   end
-  return render plain: t('drgcms.not_authorized') unless dc_user_can(DcPermission::CAN_VIEW)
+  return render json: { label: t('drgcms.not_authorized') } unless dc_user_can(DcPermission::CAN_VIEW)
 
   table = params['table'].classify.constantize
   input = params['input'].gsub(/\(|\)|\[|\]|\{|\|\.|\,}/, '')
@@ -69,7 +69,7 @@ def autocomplete
         end
       end
 
-  render plain: a.to_json
+  render json: a
 end
 
 ########################################################################
