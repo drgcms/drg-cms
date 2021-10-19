@@ -582,7 +582,7 @@ $(document).ready( function() {
   $('.iframe_embedded').on('load', function() {
     let embedded_height = this.contentWindow.document.body.offsetHeight;
     // workaround. It gets tricky when embedded field is on tab
-    if (embedded_height == 0) embedded_height = 500;
+    if (embedded_height == 0) embedded_height = 50;
     this.style.height = (embedded_height + 30) + 'px';
     // resize parent iframe window too
     let parentWindow = this.contentWindow.parent;
