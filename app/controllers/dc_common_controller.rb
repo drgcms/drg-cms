@@ -49,7 +49,12 @@ def autocomplete
     name = params['search'].split('.').first
     params['table'] = name.underscore
   end
-  return render json: { label: t('drgcms.not_authorized') } unless dc_user_can(DcPermission::CAN_VIEW)
+  if params['table'].match('_control')
+    # it must be at least logged on
+    return render json: { label: t('drgcms.not_authorized') } unless dc_user_can(DcPermission::CAN_VIEW, 'dc_memory')
+  else
+    return render json: { label: t('drgcms.not_authorized') } unless dc_user_can(DcPermission::CAN_VIEW)
+  end
 
   table = params['table'].classify.constantize
   input = params['input'].gsub(/\(|\)|\[|\]|\{|\|\.|\,}/, '')
