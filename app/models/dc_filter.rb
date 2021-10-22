@@ -119,7 +119,7 @@ def self.get_filter_field(parent)
   return '' if field.nil? && filter['input'].nil?
 
   saved_readonly = parent.form['readonly']
-  parent.form['readonly'] = nil # must be
+  parent.form['readonly'] = false # must be
   field ||= {}
   # If field has choices available in labels, use them. This is most likely select input field.
   if field['name']
@@ -146,24 +146,24 @@ def self.get_filter_field(parent)
   # remove if present
   field['with_new'] = nil if field['with_new']
   # create input field object
-  klas_string = field['type'].camelize
-  klas = DrgcmsFormFields::const_get(klas_string) rescue nil
-  parent.form['readonly'] = saved_readonly
-  return '' if klas.nil?
-
+  html = ''
+  klass_string = field['type'].camelize
+  klass = DrgcmsFormFields::const_get(klass_string) rescue nil
   # return data from object and create html code to display field
-  object = klas.new(parent, nil, field).render rescue nil
-  # Error. Forget filter and return 
-  if object.nil?
-    parent.session[ parent.form['table'] ][:filter] = nil
-    return ''
+  if klass
+    if drg_field = klass.new(parent, nil, field).render rescue nil
+      js = drg_field.js.blank? ? '' : parent.javascript_tag(object.js)
+      html = %(<li class="no-background">
+<span class="filter_field" data-url="#{url}">#{drg_field.html}
+  #{parent.fa_icon('search lg', class: 'record_filter_field_icon')}
+  #{js}</span></li>)
+    else
+      # Error. Forget filter
+      parent.session[ parent.form['table'] ][:filter] = nil
+    end
   end
-  js = object.js.blank? ? '' : parent.javascript_tag(object.js)
-%(<li class="no-background">
-<span class="filter_field" data-url="#{url}">#{object.html}
-#{parent.fa_icon('search lg', class: 'record_filter_field_icon')}
-#{js}</span>
-</li>)
+  parent.form['readonly'] = saved_readonly
+  html
 end
 
 ######################################################################
