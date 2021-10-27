@@ -152,7 +152,7 @@ def self.get_filter_field(parent)
   # return data from object and create html code to display field
   if klass
     if drg_field = klass.new(parent, nil, field).render rescue nil
-      js = drg_field.js.blank? ? '' : parent.javascript_tag(object.js)
+      js = drg_field.js.blank? ? '' : parent.javascript_tag(drg_field.js)
       html = %(<li class="no-background">
 <span class="filter_field" data-url="#{url}">#{drg_field.html}
   #{parent.fa_icon('search lg', class: 'record_filter_field_icon')}
