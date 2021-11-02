@@ -28,7 +28,8 @@
 class DcApplicationController < ActionController::Base
 protect_from_forgery with: :null_session, only: Proc.new { |c| c.request.format.json? }
 before_action :dc_reload_patches if Rails.env.development?
-  
+before_action :dc_set_locale
+
 ########################################################################
 # Writes anything passed as parameter to logger file. 
 # Very useful for debuging strange errors.
@@ -576,6 +577,20 @@ def dc_reload_patches
   DrgCms.paths(:patches).each do |patches| 
     Dir["#{patches}/**/*.rb"].each { |file| require_dependency(file) }
   end
+end
+
+########################################################################
+# Will set new default locale for application
+#
+# @param [String] new_locale : New locale value. If omitted it will be provided from params[:locale].
+#  if new_locale value is 00, application's default_locale will be used.
+########################################################################
+def dc_set_locale(new_locale = nil)
+  new_locale ||= params[:locale]
+  if new_locale && new_locale != session[:locale]
+    session[:locale] = new_locale == '00' ? nil : new_locale.to_sym
+  end
+  I18n.locale = session[:locale] ? session[:locale] : I18n.default_locale
 end
 
 ############################################################################
