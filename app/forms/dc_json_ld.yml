@@ -54,6 +54,3 @@ form:
       name: dc_json_lds
       type: embedded
       table: dc_json_ld
-      html:
-        height: 400
-      

@@ -29,5 +29,4 @@ form:
         help: helpers.help.dc_seo.dc_json_lds
         type: embedded
         table: dc_json_ld
-        html:
-          height: 600
+        load: delay

@@ -132,8 +132,7 @@ form:
         type: text_area
         size: 130x40
 
-    5permissions:        
-
+    5permissions:
       10:
         name: inherit_policy
         type: select
@@ -145,6 +144,8 @@ form:
         type: embedded
         caption: false
         form_name: dc_policy
+        load: delay
+
     6parts:
       10:
         name: dc_parts

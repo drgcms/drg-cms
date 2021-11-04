@@ -37,14 +37,12 @@ form:
       10:
         name: name
         type: text_field
-        html:
-          size: 50
+        size: 50
 
       20:
         name: title
         type: text_field
-        html:
-          size: 50
+        size: 50
 
       30:
         name: sub_text
@@ -54,8 +52,7 @@ form:
       35:
         name: pre_display
         type: text_field
-        html:
-          size: 50
+        size: 50
       40:
         name: operation
         type: select
@@ -63,8 +60,7 @@ form:
       50:
         name: parameters
         type: text_field
-        html:
-          size: 50
+        size: 50
 
       60:
         name: display
@@ -73,8 +69,7 @@ form:
       70:
         name: captcha_type
         type: text_field
-        html:
-          size: 10
+        size: 10
 
       80:
         name: valid_from
@@ -92,8 +87,7 @@ form:
       100:
         name: css
         type: text_area
-        html:
-          size: 100x20
+        size: 100x20
 
       110:
         name: active
@@ -103,8 +97,8 @@ form:
         name: js
         type: text_area
         caption: false
+        size: 100x50
         html:
-          size: 100x50
           style: 'font-family:courier;'
     tab3:
       20:
@@ -112,13 +106,13 @@ form:
         caption: false
         type: embedded
         form_name: dc_poll_item
-        html:
-          height: 800      
+        load: delay
+
     tab4:
       10:
         name: form
         caption: false
         type: text_area
+        size: 100x50
         html:
-          size: 100x50
           style: 'font-family:courier;'

@@ -59,5 +59,3 @@ form:
       name: dc_big_table_values
       type: embedded
       form_name: dc_big_table_value
-      html:
-        height: 600      

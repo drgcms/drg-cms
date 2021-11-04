@@ -63,8 +63,7 @@ form:
         type: embedded
         caption: false
         form_name: dc_simple_menu_item
-        html:
-          height: 800
+        load: delay
 
     tab3:
       20:

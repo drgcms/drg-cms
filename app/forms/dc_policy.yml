@@ -40,8 +40,7 @@ form:
     40:
       name: message
       type: text_area
-      html:
-        size: 100x5
+      size: 100x5
 
     50:
       name: active
@@ -51,6 +50,4 @@ form:
       name: dc_policy_rules
       type: embedded
       form_name: dc_policy_rule
-      html:
-        height: 400
-        
+

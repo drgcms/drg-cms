@@ -48,5 +48,3 @@ form:
       name: dc_big_table_locales
       type: embedded
       form_name: dc_big_table_locale
-      html:
-        height: 300      

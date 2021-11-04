@@ -79,5 +79,4 @@ form:
         type: embedded
         caption: false
         form_name: dc_part
-        html:
-          height: 1000
+        load: delay

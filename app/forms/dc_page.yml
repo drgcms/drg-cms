@@ -157,8 +157,7 @@ form:
         caption: false
         type: embedded
         form_name: dc_part
-        html:
-          height: 600
+        load: delay
           
     5iframe:
       10:

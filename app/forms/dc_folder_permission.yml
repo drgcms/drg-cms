@@ -46,5 +46,3 @@ form:
       type: embedded
       table: dc_policy_rule
       form_name: dc_policy_rule_nocms
-      html:
-        height: 400

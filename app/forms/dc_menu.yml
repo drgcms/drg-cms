@@ -32,25 +32,21 @@ form:
       10:
         name: name
         type: text_field
-        html:
-          size: 20
+        size: 20
 
       20:
         name: description
         type: text_field
-        html:
-          size: 20
+        size: 20
 
       30:
         name: div_name
         type: text_field
-        html:
-          size: 20
+        size: 20
       40:
         name: link_prepend
         type: text_field
-        html:
-          size: 20
+        size: 20
       50:
         name: dc_site_id
         type: select
@@ -64,13 +60,11 @@ form:
         type: embedded
         caption: false
         form_name: dc_menu_item
-        html:
-          height: 1000
+        load: delay
 
     tab3:
       20:
         name: css
         caption: false
         type: text_area
-        html:
-          size: 100x50
+        size: 100x50
