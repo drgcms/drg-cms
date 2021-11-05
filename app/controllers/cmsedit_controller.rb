@@ -41,9 +41,10 @@
 # its control's would be found in model_embedded_controls.rb. By convention module names
 # are declared in camel case, so our dc_page_controls.rb declares DrgcmsControls::DcPageControls module.
 # 
-# Controls (among other) may contain 6 fixed callback methods.
+# Controls (among other) may contain 7 callback methods.
 # These methods are:
 # * dc_new_record
+# * dc_dup_record
 # * dc_before_edit
 # * dc_before_save
 # * dc_after_save
@@ -67,7 +68,7 @@
 #      if dc_user_can(DcPermission::CAN_READ)
 #        dc_page.where(created_by: session[:user_id])
 #      else
-#        flash[:error] = 'You can not perform this operation!'
+#        flash[:error] = 'User can not perform this operation!'
 #        nil
 #      end
 #    end
@@ -233,6 +234,7 @@ end
 # duplicating document and is subroutine of create action.
 ########################################################################
 def duplicate_document(source)
+  params['dup_fields'] += ',' if params['dup_fields'] # for easier field matching
   dest = {}
   source.attribute_names.each do |attribute_name|
     next if attribute_name == '_id' # don't duplicate _id
@@ -293,12 +295,11 @@ def create
     end
   else # duplicate record
     find_record
-    params['dup_fields'] += ',' if params['dup_fields'] # for easier field matching
     new_doc = duplicate_document(@record)
     create_new_empty_record(new_doc)
-    update_standards()
+    if (m = callback_method('dup_record')) then call_callback_method(m) end
+    update_standards
     @record.save!
-
     index
   end
 end
@@ -330,10 +331,8 @@ def update
     end
   end
 
-  if dc_user_can(DcPermission::CAN_EDIT_ALL) or
-    ( @record.respond_to?('created_by') and
-      @record.created_by == session[:user_id] and
-      dc_user_can(DcPermission::CAN_EDIT) )
+  if dc_user_can(DcPermission::CAN_EDIT_ALL) ||
+    (@record.respond_to?('created_by') && @record.created_by == session[:user_id] && dc_user_can(DcPermission::CAN_EDIT))
 
     if save_data
       params[:return_to] = 'index' if params[:commit] == t('drgcms.save&back') # save & back
@@ -687,7 +686,7 @@ def create_new_empty_record(initial_data = nil) #:nodoc:
     @record = @tables.first[0].new(initial_data)
   else
     rec = @tables.first[0].find(@ids.first)             # top most record
-    1.upto(@tables.size - 2) { |i| rec = rec.send(@tables[i][1].pluralize).find(@ids[i]) }  # find embedded childrens by ids
+    1.upto(@tables.size - 2) { |i| rec = rec.send(@tables[i][1].pluralize).find(@ids[i]) }  # find embedded children by ids
     @record = rec.send(@tables.last[1].pluralize).new(initial_data)   # new record
   end
 end
