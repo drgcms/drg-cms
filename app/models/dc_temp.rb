@@ -137,4 +137,11 @@ def self.prepare(key:, clear: nil)
   self.where(key: key) 
 end
 
+########################################################################
+# Order data by new key. Will update order field with values from new field
+########################################################################
+def self.reorder_by(key, new_order)
+  self.where(key: key).each { |doc| doc.order = data[key]; doc.save }
+end
+
 end
