@@ -345,7 +345,7 @@ def dc_help_for_tab(tab)
     label, help = dc_label_help(field.last)
     next if help.blank?
 
-    html << %(<div class="help-field"><div class="help-label">#{label}</div><div class="help-text">#{help}</div></div>)
+    html << %(<div class="help-field"><div class="help-label">#{label}</div><div class="help-text">#{help.gsub("\n",'<br>')}</div></div>)
   end
   html
 end
