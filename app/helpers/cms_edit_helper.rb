@@ -307,7 +307,7 @@ def dc_fields_for_tab(fields_on_tab) #:nodoc:
       group_count  = options['group'] || 1 
       group_option = options['group'] || 1 
     end
-        
+
     html << if labels_pos == 'top'
 %(
 <div class="dc-form-label-top dc-color-#{odd_even} dc-align-left" title="#{help}">
@@ -327,7 +327,7 @@ def dc_fields_for_tab(fields_on_tab) #:nodoc:
         label_width = 14
         data_width  = 85      
       end
-      help.gsub!('<br>',"\n")
+      help.gsub!('<br>',"\n") if help.present?
 %(
 <div class="dc-form-label dc-color-#{odd_even} dc-align-#{labels_pos} dc-width-#{label_width}" title="#{help}">
   <label for="record_#{options['name']}">#{label} </label>
