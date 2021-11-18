@@ -31,12 +31,17 @@ module DrgcmsFormFields
 # * +type:+ comment (required)
 # * +caption:+ Caption text written in label place. If set to false comment 
 # will occupy whole row. (required)
-# 
+# * +html:+ Optional html attributes will be added to div surrounding the comment.
+#
 # Form example:
 #    30:
 #      type: comment
 #      text: myapp.comment_text
 #      caption: false
+#      html:
+#        style: 'color: red'
+#        class: some_class
+#        id: some_id
 ###########################################################################
 class Comment < DrgcmsField
   
@@ -45,7 +50,11 @@ class Comment < DrgcmsField
 ###########################################################################
 def render
   comment = @yaml['comment'] || @yaml['text']
-  @html << "<div class=\"dc-comment\">#{t(comment, comment).gsub("\n",'<br>')}</div>"
+  @yaml['html'] ||= {}
+  @yaml['html']['class'] = 'dc-comment ' + @yaml['html']['class'].to_s
+  html = @yaml['html'].inject('') { |r, e| r << %( #{e[0]}="#{e[1]}") }
+
+  @html << %(<div #{html}>#{t(comment, comment).gsub("\n",'<br>')}</div>)
   self
 end
 end
