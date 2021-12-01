@@ -78,10 +78,10 @@ class DcBigTable
 ########################################################################
 # Will return possible choices for specified key prepared for usega in select input field.
 ########################################################################
-def self.choices4(key, site, locale=nil)
+def self.choices4(key, site = nil, locale = nil)
   result = []
   choices = find_by(key: key, site: site)
-  choices = find_by(key: key, site: nil) if choices.nil?
+  choices = find_by(key: key, site: nil) if site && choices.nil?
   if choices
     choices.dc_big_table_values.each do |choice| 
       description = choice.description
