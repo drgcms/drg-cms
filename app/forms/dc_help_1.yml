@@ -20,8 +20,9 @@ index:
       type: field
       name: lang_1
       caption: drgcms.dc_help.lang
-      field_type: text_field
+      field_type: text_with_select
       size: 5
+      eval: DcHelpControl.choices_for_locales
       default:
         eval: '@parent.session[:help_lang]'
       html:

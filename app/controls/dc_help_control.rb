@@ -117,6 +117,18 @@ def self.choices_for_form_name(session)
 end
 
 ######################################################################
+# Will return choices for language select on form. Choices can be either set by dc_locales document in dc_big_table
+# or can be acquired from Rails default locale
+######################################################################
+def self.choices_for_locales
+  choices = DcBigTable.choices4('dc_locales')
+  return choices unless choices[0,0] == I18n.t('drgcms.error')
+
+  choices = [I18n.default_locale] + I18n.fallbacks.inject([]) { |r, e| r << e.first }
+  choices.map(&:to_s).uniq
+end
+
+######################################################################
 # Will return temp key for data saved in dc_temp file
 ######################################################################
 def temp_key
