@@ -250,7 +250,7 @@ process_json_result = function(json) {
         }
         else {
           $('#popup').html(value);
-          $('#popup').bPopup({speed: 650, transition: 'slideUp'});
+          $('#popup').bPopup({speed: 650, transition: 'slideUp', position: ['auto',1]});
         }
         break;
 
