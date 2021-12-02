@@ -1,24 +1,27 @@
 
 <div class="dc-table-frame">
 
-  <% unless @records.nil? %>
-      <%= dc_background_for_result(:start) %>
-  
-      <%= dc_header_for_result %>
-      <% for document in @records %>
-        <%= dc_row_for_result(document) %>
-        <%= dc_actions_for_result(document) %>
-        <%= dc_columns_for_result(document) %>
-        </div>
-      <% end %>
-      <% if @record_footer %>
-        <div class="dc-result-data footer">
-        <%= dc_actions_column_for_footer() %>
-        <%= dc_columns_for_result(@record_footer) %>
-        </div>
-      <% end %>
-        
-      <%= dc_background_for_result(:end) %>
+  <% if @form['result_set']['type'] == 'eval' %>
+    <%= dc_process_result_set_eval %>
+  <% elsif @records %>
+    <%= dc_background_for_result(:start) %>
+    <%= dc_header_for_result %>
+
+    <% for document in @records %>
+      <%= dc_row_for_result(document) %>
+      <%= dc_actions_for_result(document) %>
+      <%= dc_columns_for_result(document) %>
+      </div>
+    <% end %>
+
+    <% if @record_footer %>
+      <div class="dc-result-data footer">
+      <%= dc_actions_column_for_footer() %>
+      <%= dc_columns_for_result(@record_footer) %>
+      </div>
+    <% end %>
+
+    <%= dc_background_for_result(:end) %>
   <% end %>
   <%= dc_filter_popup() %>
   

@@ -60,9 +60,10 @@ sl:
     login: Prijava v CMS
     username: Uporabnik
     password: Geslo
-    form_error: Napaka pri branju forme #{form_name}
+    form_error: Napaka pri branju forme %{form_name}
     img_large: Klik za večjo sliko
-    no_class: Class %{class} ni definiran!
+    no_class: Razred (class) [%{class}] ni definiran!
+    no_method: Metoda (helper) [%{method}] ne obstaja!
     img_alt_not_present: Vse slike v vsebini morajo imeti vpisano nadomestno besedilo    
 
     toggle_cms: Preklopi med CMS urejanjem in prikazom

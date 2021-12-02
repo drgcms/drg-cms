@@ -60,9 +60,10 @@ en:
     login: Login into CMS
     username: User name
     password: Password
-    form_error: Error loading form #{form_name}
+    form_error: Error loading form %{form_name}
     img_large: Click for larger image
-    no_class: Class %{class} not defined!
+    no_class: Class [%{class}] not defined!
+    no_method: Method (helper) [%{method}] not defined!
     img_alt_not_present: All images in body must have alternative text entered
     
     toggle_cms: Toggle CMS edit/view mode

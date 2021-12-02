@@ -602,4 +602,16 @@ def dc_define_standard_actions(actions_params, standard)
   actions
 end
 
+############################################################################
+# When result set is to be drawn by Rails helper method.
+############################################################################
+def dc_process_result_set_eval
+  method = @form['result_set']['method']
+  if respond_to?(method)
+    send method
+  else
+    I18n.t('drgcms.no_method', method: method)
+  end
+end
+
 end

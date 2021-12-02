@@ -1005,30 +1005,34 @@ end
 # Process index action for normal collections.
 ########################################################################
 def process_collections #:nodoc
-# If result_set is not defined on form, then it will fail. :return_to should know where to go
+  # If result_set is not defined on form, then it will fail. :return_to should know where to go
   if @form['result_set'].nil?
-    process_return_to(params[:return_to] || 'reload') 
+    process_return_to(params[:return_to] || 'reload')
     return true
   end
-# for now enable only filtering of top level documents
+  # when result set is evaluated as Rails helper
+  @form['result_set']['type'] ||= 'default'
+  return unless @form['result_set']['type'] == 'default'
+
+  # for now enable only filtering of top level documents
   if @tables.size == 1 
     check_filter_options()
     check_sort_options()
   end  
-# result set is defined by filter method in control object
+  # result set is defined by filter method in control object
   form_filter = @form['result_set']['filter']
   if form_filter
     if respond_to?(form_filter)
       @records = send(form_filter)
-# something went wrong. flash[] should have explanation.
+      # something went wrong. flash[] should have explanation.
       if @records.class == FalseClass
         @records = []
         render(action: :index)
         return true
       end
       process_select_and_deny_fields           
-# pagination but only if not already set
-      unless (@form['table'] == 'dc_memory' or @records.options[:limit])
+      # pagination but only if not already set
+      unless (@form['table'] == 'dc_memory' || @records.options[:limit])
         per_page = (@form['result_set']['per_page'] || 30).to_i
         @records = @records.page(params[:page]).per(per_page) if per_page > 0
       end
@@ -1039,10 +1043,10 @@ def process_collections #:nodoc
     if @tables.size > 1 
       rec = @tables.first[0].find(@ids.first)          # top most document.id
       1.upto(@tables.size - 2) { |i| rec = rec.send(@tables[i][1].pluralize).find(@ids[i]) }  # find embedded childrens by ids
-# TO DO. When field name is different then pluralized class name. Not working yet.
+      # TO DO. When field name is different then pluralized class name. Not working yet.
       embedded_field_name = @tables.last[0] ? @tables.last[1].pluralize : @tables.last[1]
       @records = rec.send(embedded_field_name)   # current embedded set
-# sort by order if order field is present in model
+      # sort by order if order field is present in model
       if @tables.last[1].classify.constantize.respond_to?(:order)
         @records = @records.order_by('order asc')
       end

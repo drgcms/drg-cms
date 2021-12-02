@@ -357,7 +357,7 @@ color: #666;
 text-align: center;
 border-radius: 3px;
 background: transparent linear-gradient(to bottom, #fff 0%, #e2e2e2 100%);
-border: 1px solid #ddd;
+border: 1px solid #eee;
 }
 
 .dc-link:hover {
@@ -400,7 +400,7 @@ border: 1px solid #ddd;
   border-radius: 3px;
   color: #666;
   background: transparent linear-gradient(to bottom, #fff 0%, #e2e2e2 100%) repeat scroll 0% 0%;
-  border: 1px solid #ddd;
+  border: 1px solid #eee;
 }
 
 .dc-link-ajax.with-link {padding: 7px}
@@ -498,16 +498,12 @@ border: solid 1px #ccc;;
 }
 .dc-link-submit {
   text-align: left;
-  padding: 1px 8px 0.5px; 
-/* Exo  padding: 0 8px; */
-  
   border-radius: 3px;
   background-color: #eee;
   background: transparent linear-gradient(to bottom, #fff 0%, #e2e2e2 100%) repeat scroll 0% 0%;
-  border: 1px solid #ddd;
+  border: 1px solid #eee;
   display: flex;
   align-items: center;
-  
 }
 
 .dc-link-submit .fa {
@@ -533,7 +529,7 @@ border: solid 1px #ccc;;
   border: none;
   color: #666;
   font-weight: 600;
-  padding: 1px 2px 0;
+  padding: 2px 8px 1px;
   border-radius:  0;
   background: transparent;
   line-height: 30px;
