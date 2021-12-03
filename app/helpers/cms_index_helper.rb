@@ -605,8 +605,8 @@ end
 ############################################################################
 # When result set is to be drawn by Rails helper method.
 ############################################################################
-def dc_process_result_set_eval
-  method = @form['result_set']['method']
+def dc_process_result_set_method
+  method = @form['result_set']['eval']
   if respond_to?(method)
     send method
   else

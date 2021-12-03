@@ -175,14 +175,6 @@ img { vertical-align:bottom; }
   padding: 7px;
 }
 
-/*
-.dc-link a:hover, .dc-animate a:hover, .dc-result a:hover  { 
-  background: #f8f8f8;
-  transition: 0.3s;
-  color: #000;
-}
-*/
-
 a.dc-animate:hover { color: #000; background: transparent;}
 
 .dc-link a img { border: none; }
@@ -208,7 +200,6 @@ width: 99.9%;
 padding:  0;
 border-spacing:  0;
 border-radius: 1px;  
-/*background-color: #f9f9f9;*/
 }
 
 .dc-result i { 
@@ -230,7 +221,6 @@ padding: 0;
 
 .dc-result-header {
   display: flex;
-  /* background: linear-gradient(to bottom, #eee 0%, #e2e2e2 100%); */
 }
 .dc-result-data {
   display: flex;
@@ -255,12 +245,6 @@ padding: 0;
 
 .dc-result-header .spacer, .dc-result-data .spacer {
   width: 2px;
-  /*
-  font-size: 1.5em;
-  margin: 0  0;
-  padding: 4px  0;
-  resize: both;
-/*  border-left: 1px solid #ccc;*/
 }
 
 .dc-result-header a:link, .dc-result-header a:visited {
@@ -335,7 +319,6 @@ padding: 0;
   font-size: 1.2em;
   margin-left: -1rem;
   background-color: white;
-  /* padding: 8px 5px; */
   padding: 6px 3px;
 }
 
@@ -352,12 +335,12 @@ display: inline-table;
 #data-fields {margin: 5px;}
 
 .dc-link {
-font-weight: 600;
-color: #666;
-text-align: center;
-border-radius: 3px;
-background: transparent linear-gradient(to bottom, #fff 0%, #e2e2e2 100%);
-border: 1px solid #eee;
+  font-weight: 600;
+  color: #666;
+  text-align: center;
+  border-radius: 3px;
+  background: transparent linear-gradient(to bottom, #fff 0%, #e2e2e2 100%);
+  border: 1px solid #eee;
 }
 
 .dc-link:hover {
@@ -382,7 +365,7 @@ border: 1px solid #eee;
   font-weight: 600;
   padding: 7px;
   vertical-align: bottom;
-  border: 1px solid #ccc;
+  border: 1px solid #eee;
   border-radius: 3px;
   color: #777;
   text-shadow: 1px 1px #fff;
@@ -411,20 +394,19 @@ border: 1px solid #eee;
 }
 
 .dc-link-ajax:hover, .dc-action-submit:hover {
-cursor: pointer;
-background: #eee;
-border: 1px solid #bbb;
+  cursor: pointer;
+  color: #000;
+  background: #eee;
   border: 1px solid rgba(76,154,255, 1);
   box-shadow: inset 0 0 0 1px rgba(76,154,255, 1);
-transition: 0.3s; 
-color: #000;
+  transition: 0.3s;
 }
 
 .dc-link-ajax:hover a { 
-color: #000; 
-background: transparent;
-cursor: pointer; 
-transition: 0.3s; 
+  color: #000;
+  background: transparent;
+  cursor: pointer;
+  transition: 0.3s;
 }
 
 .dc-link-img {
