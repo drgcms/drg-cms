@@ -1504,6 +1504,6 @@ color: #669;
 /******* Firefox only ********/
 @-moz-document url-prefix() {
   .dc-submit {
-    padding: 0 2px 1px;
+    /* padding: 0 2px 1px; */
   }
 }
