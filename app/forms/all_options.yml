@@ -51,6 +51,14 @@ index:
       eval: ModulClassName.menu_for(self)
       caption: Some caption
 
+# result_set method
+result_set:
+  type: method
+  eval: my_helper_method
+# or
+  view: path_to/_partial
+
+# result_set default
 result_set:
   filter: custom_filter
   footer: custom_footer

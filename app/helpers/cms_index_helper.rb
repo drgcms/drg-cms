@@ -606,11 +606,15 @@ end
 # When result set is to be drawn by Rails helper method.
 ############################################################################
 def dc_process_result_set_method
-  method = @form['result_set']['eval']
-  if respond_to?(method)
-    send method
+  if @form['result_set']['view']
+    render partial: @form['result_set']['view']
   else
-    I18n.t('drgcms.no_method', method: method)
+    method = @form['result_set']['eval'] || 'result_set_eval_misssing'
+    if respond_to?(method)
+      send method
+    else
+      I18n.t('drgcms.no_method', method: method)
+    end
   end
 end
 
