@@ -38,7 +38,6 @@
 #  route_name           String               Default route name for creating page link. ex. page. Leave blank if not used.
 #  page_title           String               Default page title displayed in browser's top menu when title can not be extracted from document
 #  document_extension   String               Default document extension eg. html
-#  page_table           String               Name of table holding data for pages
 #  page_class           String               Rails model class name which defines table holding pages data usually DcPage
 #  site_layout          String               Rails layout used to draw response. This is by default content layout.
 #  menu_class           String               Rails model class name which defines table holding menu data usually DcMenu

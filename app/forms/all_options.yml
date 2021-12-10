@@ -148,8 +148,15 @@ form:
       method: (get),put,post
       caption: ajax_call
       control: control_name.method_to_call
-      when_new: false
-      show: default always readonly
+      show: default || always || readonly
+
+      active: not_new_record
+      active: new_record
+      active: SomeClass.is_active_method
+      or
+      active:
+        method: SomeClass.is_active_method
+
     5: 
       type: window
       controller: cmsedit
@@ -158,7 +165,6 @@ form:
       action: edit
       method: (get),put,post
       caption: Edit linked document
-      when_new: false
       params:
         id:
           object: record (can be omitted)
@@ -174,7 +180,6 @@ form:
     7:
       type: submit
       caption: Send
-      when_new: false
       params:
         before-save: send_mail
         after-save: return_to parent.reload

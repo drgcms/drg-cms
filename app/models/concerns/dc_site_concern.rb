@@ -86,10 +86,17 @@ def params(what=nil)
 end
 
 ########################################################################
-# Returns class object of collection name
+# Returns class object of page collection
 ########################################################################
 def page_klass
   page_class.classify.constantize
+end
+
+########################################################################
+# Returns collection name for page collection
+########################################################################
+def page_table
+  page_class.underscore
 end
 
 ########################################################################
