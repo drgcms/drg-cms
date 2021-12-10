@@ -84,12 +84,8 @@ form:
         name: document_extension
         type: text_field
         size: 10
-      25:
-        name: site_layout
-        type: text_field
-        size: 20
       30:
-        name: page_table
+        name: site_layout
         type: text_field
         size: 20
       40:

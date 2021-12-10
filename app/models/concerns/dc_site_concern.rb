@@ -40,7 +40,6 @@ field :css,                 type: String, default: ''
 field :route_name,          type: String, default: ''
 field :page_title,          type: String
 field :document_extension,  type: String
-field :page_table,          type: String
 field :page_class,          type: String, default: 'DcPage'
 field :site_layout,         type: String, default: 'content'
 field :menu_class,          type: String, default: 'DcSimpleMenu'
@@ -90,7 +89,7 @@ end
 # Returns class object of collection name
 ########################################################################
 def page_klass
-  (self.page_table.blank? ? self.page_class : self.page_table).classify.constantize
+  page_class.classify.constantize
 end
 
 ########################################################################
