@@ -893,20 +893,17 @@ font-size: 1.2em;
 }
 
 .cmsedit-container #menu {
-  min-width: 20%; 
-  height: 100%;
-  background-color: #fcfcfc;
-  border: 1px solid #eee;
-  border-radius: 1px;
-}
-
-.cmsedit-container #menu {
   display: inline-block;
+  min-width: 20%;
+  height: 100%;
+  font-size: 14px;
+  font-weight: 600;
+  color: #222;
+  background-color: #fcfcfc;
   padding: 4px 0;
   margin: 4px;
-  font-size: 14px;
-  color: #222;
-  font-weight: 600;
+  border: 1px solid #eee;
+  border-radius: 1px;
 }
 
 .cmsedit-container .fa {
@@ -1439,7 +1436,7 @@ color: #669;
 
 /****** MOBILE DEVICE *****/
 @media only screen and (max-device-width: 600px) {
-  #iframe_cms body, #iframe_cms .body {font-size: 11px !important;}
+  #body-cms {font-size: 11px;}
   #site-top div:nth-of-type(2) {padding-top: 0 !important;}
 
   .dc-form {
@@ -1466,11 +1463,24 @@ color: #669;
 
   .app-menu li {margin-bottom: 4px;}
 
+  .dc-menu { padding: 0;}
+
   .dc-submit {
-    padding: 1px 0 0;
-    line-height: 26px;
+    line-height: 20px;
     font-size: 11px;
   }
+  .dc-link div, .dc-link-no {
+    padding: 4px 8px;
+  }
+
+  .dc-animate a:link, .dc-animate a:active, .dc-animate a:visited,
+  .dc-result a:link, .dc-result a:active, .dc-result a:visited {
+    padding: 4px 7px;
+  }
+  .dc-action-menu li {padding: 4px 6px;}
+  .dc-action-menu li.dc-link.plus-link {padding: 4px 0;}
+  .dc-title .dc-paginate {float: left;}
+
   #result {width: 200%;}
 
   .dc-separator {
@@ -1496,8 +1506,15 @@ color: #669;
     font-size: 2em;
   }
 
+  .cmsedit-container {display: block;}
   .cmsedit-container #menu {display: none;}
-  .cmsedit-container #menu.visible {display: initial; width: 150%;}
+  .cmsedit-container #menu.visible {
+    display: initial;
+    width: 200%;
+    font-weight: 500;
+    border: none;
+    margin: 0;
+  }
   .cmsedit-iframe {padding-left: 2px;}
 }
 

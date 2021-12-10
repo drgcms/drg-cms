@@ -152,3 +152,4 @@ form:
         caption: false
         type: embedded
         form_name: dc_part
+        load: delay
