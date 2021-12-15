@@ -334,10 +334,12 @@ function dc_reload_window() {
 /*******************************************************************
  * Will open popup window
  *******************************************************************/
-function popup_window(url, window_name, win, w, h) {
-  let y = win.top.outerHeight / 2 + win.top.screenY - ( h / 2);
-  let x = win.top.outerWidth / 2 + win.top.screenX - ( w / 2);
-  return win.open(url, window_name, `toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width=${w}, height=${h}, top=${y}, left=${x}`);
+function popup_window(url, title, parent_win, w, h) {
+  let y = parent_win.top.outerHeight / 2 + parent_win.top.screenY - (h / 2);
+  let x = parent_win.top.outerWidth / 2 + parent_win.top.screenX - (w / 2);
+  let win = parent_win.open(url, 'dc_popup', `toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width=${w}, height=${h}, top=${y}, left=${x}`);
+  win.document.title = title;
+  return win;
 }
 
 /*******************************************************************
@@ -400,6 +402,15 @@ dc_toggle_div = function(div) {
     $(div).slideDown();
   }
 };
+
+/*****************************************************************
+ * Return value of the input field on a form
+ ******************************************************************/
+function dc_get_field_value(field_name) {
+  field_name = field_name.replace('record_', '');
+  let field = $('[name="record[' + field_name + ']"]');
+  return field.val();
+}
 
 /*******************************************************************
  * 
@@ -669,24 +680,35 @@ $(document).ready( function() {
     form.setAttribute('action', url);
     form.setAttribute('method', "post");
     form.submit();
-  });  
-    
+  });
+
 /*******************************************************************
-  will open a new window with URL specified. 
+  Will open a new window with URL specified.
 ********************************************************************/
-  $('.dc-window-open').on('click', function(e) { 
-   // confirmation if required
-    if (confirmation_is_cancled(this)) {return false;}
-    
-    var url   = this.getAttribute("data-url");
-    var title = this.getAttribute("title");
-    var w     = 1000;
-    var h     = 800;
-    var left  = (screen.width/2)-(w/2);
-    var top   = (screen.height/2)-(h/2);
-    var win   = window.open(url, title, 'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=no, copyhistory=no, width='+w+', height='+h+', top='+top+', left='+left);
-    win.focus();
-  });  
+$('.dc-window-open').on('click', function(e) {
+  // confirmation if required
+  if (confirmation_is_cancled(this)) { return false; }
+
+  let url = this.getAttribute("data-url");
+  let title = this.getAttribute("title");
+  let w = this.getAttribute("data-x") || 1000;
+  let h = this.getAttribute("data-y") || 800;
+  // add fields values from current formto url
+  let fields = this.getAttribute("data-fields");
+  if (fields) {
+    let form_parms = '?';
+    // ? separator already in url
+    if (url.match(/\?/)) { form_parms = ''; }
+    fields.split(',').forEach( function(field) {
+      let value = dc_get_field_value(field);
+      if (value) {form_parms += '&' + field + '=' + value;}
+    });
+    url += form_parms;
+  }
+
+  let win = popup_window(url, title, window, w, h);
+  win.focus();
+});
 
  /*******************************************************************
  * Animate button on click

@@ -736,7 +736,7 @@ margin-bottom: -3px;
 
 .dc-spinner {
   float:left;
-  padding: 6px 0;
+  padding: 0.8em 2px 0;
   display: none;
 }
 
@@ -754,7 +754,7 @@ margin-bottom: -3px;
   margin: 0 1px 0 0;
   border-left: 1px solid #ddd;
   border-right: 1px solid #ddd;
-  border-radius: 4px 4px 0  0;
+  border-radius: 4px 4px 0 0;
 }
 
 .dc-form-li:hover, .dc-form-li-selected {

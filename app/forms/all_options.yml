@@ -171,8 +171,11 @@ form:
           method: page_id
         user:
           object: session
-          method: user_id          
-      
+          method: user_id
+      html:
+        data-x: 800
+        data-y: 400
+        data-fields: field1,field2,...
     6: 
       type: script
       caption: Cancle 
