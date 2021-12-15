@@ -783,9 +783,10 @@ end
 def process_return_to(return_to)
   script = case
     when return_to == 'index' then return index
+    when return_to.match(/eval=/i) then return_to.sub('eval=', '')
     when return_to.match(/parent\.reload/i) then 'parent.location.href=parent.location.href;'
     when return_to.match(/reload/i) then 'location.href=location.href;'
-    when return_to.match(/close/i) then 'window.close();'
+    when return_to.match(/window.close/i) then 'window.close();'
     when return_to.match(/none/i) then return
     else "location.href='#{return_to}'"
   end
@@ -829,6 +830,7 @@ def save_data
     value = DrgcmsFormFields.const_get(v['type'].camelize).get_data(params, v['name'])
     @record.send("#{v['name']}=", value)
   end
+
   # before_save callback
   if (m = callback_method('before_save') )
     ret = call_callback_method(m)
