@@ -642,6 +642,10 @@ $(document).ready( function() {
       success: function(data) {
         process_json_result(data);
         $('.dc-spinner').hide();
+      },
+      error: function (request, status, error) {
+        $('.dc-spinner').css('color','red');
+        alert(request.responseText);
       }
     });
   });
