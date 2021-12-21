@@ -764,7 +764,14 @@ $('.dc-window-open').on('click', function(e) {
   
   $('.dc-link-submit').on('click', function(e) {
     $('.dc-spinner').show();
-  });  
+  });
+
+  /*******************************************************************
+   * Hide spinner when validation error occured
+   *******************************************************************/
+  $(':input').on("invalid", function(event) {
+    $('.dc-spinner').hide();
+  });
 
 /*******************************************************************
   * Add button clicked while in edit. Create window dialog for adding new record
