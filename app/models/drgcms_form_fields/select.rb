@@ -191,9 +191,9 @@ def render
   # separate options and html part
   html_part = {}
   @yaml['html'].symbolize_keys!
-  %i(class id style required).each { |sym| html_part[sym] = @yaml['html'].delete(sym) if html_part[sym]}
+  %i(class id style required).each { |sym| html_part[sym] = @yaml['html'].delete(sym) if @yaml['html'][sym] }
   html_part[:multiple] = true if @yaml['multiple']
-
+  pp '-------', @yaml['name'], @yaml['html'], html_part
   record = record_text_for(@yaml['name'])
   if html_part[:multiple]
     @html << @parent.select(record, @yaml['name'], get_choices, @yaml['html'], html_part)
