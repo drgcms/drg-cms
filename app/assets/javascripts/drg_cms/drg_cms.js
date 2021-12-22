@@ -207,7 +207,7 @@ process_json_result = function(json) {
       // select field  
       } else if (field.is('select')) {
         // options for select field
-        if (value && value.isArray) {
+        if (Array.isArray(value)) {
           field.empty();
           $.each(value, function(index, v) {
             field.append( new Option(v[0], v[1]) );
