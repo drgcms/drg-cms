@@ -193,7 +193,6 @@ def render
   @yaml['html'].symbolize_keys!
   %i(class id style required).each { |sym| html_part[sym] = @yaml['html'].delete(sym) if @yaml['html'][sym] }
   html_part[:multiple] = true if @yaml['multiple']
-  pp '-------', @yaml['name'], @yaml['html'], html_part
   record = record_text_for(@yaml['name'])
   if html_part[:multiple]
     @html << @parent.select(record, @yaml['name'], get_choices, @yaml['html'], html_part)
@@ -222,4 +221,5 @@ def self.get_data(params, name)
 end
 
 end
+
 end
