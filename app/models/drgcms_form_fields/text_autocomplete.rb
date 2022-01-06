@@ -29,7 +29,8 @@ module DrgcmsFormFields
 # * +name:+ field name (required)
 # * +type:+ text_autocomplete (required)
 # * +table+ Collection (table) name. When defined search must contain field name
-# * +with_new+ Will add an icon for shortcut to add new document to collection
+# * +with_new+ Will add an icon for shortcut to add new document to related collection
+# * +with_edit+ Will add an icon for shortcut to edit (view) related document
 # * +is_id+ Field value represent value as id. If false, field will use entered value and not value selected with autocomplete. Default is true.
 # * +search:+ Search may consist of three parameters from which are separated either by dot (.) 
 #   * search_field_name; when table option is defined search must define field name which will be used for search query
@@ -43,8 +44,9 @@ module DrgcmsFormFields
 #      type: text_autocomplete
 #      search: dc_user.name
 #      is_id: false
-#      html:
-#        size: 30
+#      size: 30
+#      with_new: user
+#      with_edit: user
 ###########################################################################
 class TextAutocomplete < DrgcmsField
  
@@ -102,16 +104,22 @@ def render
   @yaml['html'] ||= {}
   @yaml['html']['value'] = value_displayed
   @yaml['html']['placeholder'] ||= t('drgcms.search_placeholder') || nil
-  #
+
   _name = '_' + @yaml['name']
   record = record_text_for(@yaml['name'])  
   @html << '<span class="dc-text-autocomplete">' + @parent.text_field(record, _name, @yaml['html']) + '<span></span>'
+  # with new icon
   if @yaml['with_new']
-    @html << ' ' + 
-             @parent.fa_icon('plus-square lg', class: 'in-edit-add', title: t('drgcms.new'), 
-             style: "vertical-align: top;", 'data-table' => @yaml['with_new'] )    
+    @html << ' ' + @parent.fa_icon('plus-square lg', class: 'in-edit-add', title: t('drgcms.new'),
+             style: "vertical-align: top;", 'data-table' => @yaml['with_new'] )
   end
-  @html << '</span>' + @parent.hidden_field(record, @yaml['name'], value: value)        # actual value will be in hidden field
+  # with edit icon
+  if @yaml['with_edit'] && @record[@yaml['name']].present?
+    @html << ' ' + @parent.fa_icon('edit lg', class: 'in-edit-add', title: t('drgcms.edit'),
+             style: "vertical-align: top;", 'data-table' => @yaml['edit'], 'data-id' => @record[@yaml['name']] )
+  end
+  @html << '</span>' + @parent.hidden_field(record, @yaml['name'], value: value) # actual value will be in hidden field
+
   # JS stuff
   # allow unselected values on is_id: false option
   not_id_code = %(
@@ -119,7 +127,7 @@ if (ui.item == null) {
 $("##{record}_#{@yaml['name']}").val($("##{record}__#{@yaml['name']}").val() );
 return;
 } ) if not_id
-  #
+
   @js << <<EOJS
 $(document).ready(function() {
   $("##{record}_#{_name}").autocomplete( {

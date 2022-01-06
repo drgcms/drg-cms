@@ -778,8 +778,13 @@ $('.dc-window-open').on('click', function(e) {
   * into required table. This is helper scenario, when user is selecting
   * data from with text_autocomplete and data doesn't exist in belongs_to table.
   *******************************************************************/
-  $('.in-edit-add').on('click', function(e) { 
-    let url = '/cmsedit/new?window_close=0&table=' + this.getAttribute("data-table");
+  $('.in-edit-add').on('click', function(e) {
+    let id = this.getAttribute("data-id");
+    let table = this.getAttribute("data-table");
+    let url = '/cmsedit/new?window_close=0&table=' + table;
+    if (id) {
+      url = '/cmsedit/' + id + '/edit?window_close=0&table=' + table;
+    }
     let w = popup_window(url, '', window, 1000, 800);
     w.focus();    
   });  
