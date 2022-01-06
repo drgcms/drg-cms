@@ -116,7 +116,7 @@ def render
   # with edit icon
   if @yaml['with_edit'] && @record[@yaml['name']].present?
     @html << ' ' + @parent.fa_icon('edit lg', class: 'in-edit-add', title: t('drgcms.edit'),
-             style: "vertical-align: top;", 'data-table' => @yaml['edit'], 'data-id' => @record[@yaml['name']] )
+             style: "vertical-align: top;", 'data-table' => @yaml['with_edit'], 'data-id' => @record[@yaml['name']] )
   end
   @html << '</span>' + @parent.hidden_field(record, @yaml['name'], value: value) # actual value will be in hidden field
 
