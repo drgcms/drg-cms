@@ -23,7 +23,43 @@
 #++
 */
 
-@import url('https://fonts.googleapis.com/css2?family=Exo:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet"');
+@font-face {
+  font-family: DrgSans;
+  font-style: normal;
+  font-weight: 300;
+  src: url('ibm-plex-sans-300.woff2') format('woff2')
+}
+@font-face {
+  font-family: DrgSans;
+  font-style: normal;
+  font-weight: 400;
+  src: url('ibm-plex-sans-400.woff2') format('woff2')
+}
+@font-face {
+  font-family: DrgSans;
+  font-style: normal;
+  font-weight: 500;
+  src: url('ibm-plex-sans-500.woff2') format('woff2')
+}
+@font-face {
+  font-family: DrgSans;
+  font-style: normal;
+  font-weight: 600;
+  src: url('ibm-plex-sans-600.woff2') format('woff2')
+}
+@font-face {
+  font-family: DrgSans;
+  font-style: normal;
+  font-weight: 700;
+  src: url('ibm-plex-sans-700.woff2') format('woff2')
+}
+
+@font-face {
+  font-family: DrgSans;
+  font-style: italic;
+  font-weight: 400;
+  src: url('ibm-plex-sans-italic.woff2') format('woff2')
+}
 
 /* Web reset. Countributed by
 /* http://meyerweb.com/eric/tools/css/reset/ 
@@ -78,8 +114,8 @@ table {
 /* END */
 
 body {
-font-family: Exo,arial,sans-serif;
-font-size: 14px;
+font-family: DrgSans,arial,sans-serif;
+font-size: 15px;
 margin: 0;
 vertical-align: middle;
 color: #000;
@@ -87,7 +123,7 @@ font-weight: 400;
 }
 
 button {
-font-family: Exo,arial,sans-serif;
+font-family: DrgSans,arial,sans-serif;
 }
 
 
@@ -97,7 +133,7 @@ padding: 6px 4px;
 margin-left: 1px;
 border: 1px dashed #888;;
 border-radius: 2px;
-font: 14px Exo,arial,sans-serif;
+font: 15px DrgSans,arial,sans-serif;
 max-width: 100%;
 vertical-align: middle;
 }
@@ -204,7 +240,7 @@ border-radius: 1px;
 
 .dc-result i { 
 padding: 2px;
-font-size: 14px;
+font-size: 15px;
 vertical-align: initial;
 }
 
@@ -515,7 +551,7 @@ border: solid 1px #ccc;;
   border-radius:  0;
   background: transparent;
   line-height: 30px;
-  font-size: 14px;
+  font-size: 15px;
 }
 
 .dc-submit:hover { 
@@ -702,7 +738,7 @@ color: #aaa;
 
 .dc-readonly {
   display: inline-block;
-  font-size: 14px;
+  font-size: 15px;
   font-weight: normal;
   color: #222;
   padding: 6px 4px;
@@ -809,7 +845,7 @@ display: flex;
   color: #fff;
   background-color: #000;
   font-weight: bold;
-  font-size: 14px;
+  font-size: 15px;
   box-shadow: 2px 2px 6px #666;
   border-radius: 3px;
 }
@@ -843,7 +879,7 @@ display: flex;
 }
 
 #cmsedit-div {
-font-family: Exo,Arial, sans-serif;
+font-family: DrgSans,Arial, sans-serif;
 font-size: 13px;
 line-height: 13px;
 }
@@ -896,7 +932,7 @@ font-size: 1.2em;
   display: inline-block;
   min-width: 20%;
   height: 100%;
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 600;
   color: #222;
   background-color: #fcfcfc;
@@ -1458,7 +1494,7 @@ color: #669;
     white-space: nowrap;
   }
   .dc-form-label label {
-    font-size: 14px;
+    font-size: 15px;
   }
 
   .app-menu li {margin-bottom: 4px;}
