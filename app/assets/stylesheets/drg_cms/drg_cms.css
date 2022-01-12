@@ -23,7 +23,10 @@
 #++
 */
 
-@import url('https://fonts.googleapis.com/css2?family=Exo:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet"');
+@font-face {
+  font-family: Exo;
+  src:url("Exo.ttf") format('truetype');
+}
 
 /* Web reset. Countributed by
 /* http://meyerweb.com/eric/tools/css/reset/ 
