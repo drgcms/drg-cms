@@ -257,7 +257,7 @@ def dc_set_options(parameters)
   return if parameters.to_s.size < 3
   # parameters are set as YAML. This should be default in future.
   parms = YAML.load(parameters) rescue {}
-  @options.merge!(parms)
+  @options = @options.deep_merge(parms)
 end
 
 ##########################################################################
