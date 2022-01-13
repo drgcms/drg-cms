@@ -58,7 +58,7 @@ def get_settings()
 # Check fild name 
   begin
     document = model.find(params[:id])
-    params[:field_name] ||= (params[:location] == 'dc_site' ? 'options' : 'params')
+    params[:field_name] ||= (params[:location] == 'dc_site' ? 'settings' : 'params')
 # field not defined on document   
     raise unless document.respond_to?(params[:field_name])
     yaml = document[params[:field_name]] || ''
