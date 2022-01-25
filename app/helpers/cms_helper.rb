@@ -34,8 +34,6 @@ module CmsHelper
 # Creates code for script action type.
 ############################################################################
 def dc_script_action(yaml)
-#  data = {'request' => 'script', 'script' => yaml['js'] || yaml['script'] }
-#  %Q[<li class="dc-link-ajax with-link dc-animate">#{ dc_link_to(yaml['caption'], yaml['icon'], '#', data: data ) }</li>]
   icon = dc_icon_for_link yaml['icon']
   data = %(data-request="script" data-script="#{yaml['js'] || yaml['script']}" data-url="script")
   %Q[<li class="dc-link-ajax dc-animate" #{data}>#{icon} #{ t(yaml['caption'],yaml['caption']) }</li>]
@@ -49,11 +47,11 @@ def dc_get_field_form_definition(name) #:nodoc:
   return if @form['form'].nil?
   
   @form['form']['tabs'].each do |tab|
-# Array with 2 elements. First is tabname, second is data      
+    # Array with 2 elements. First is tab name, second is data
     my_fields = tab.last
-    my_fields.each {|k,v| return v if (k.class == Integer and v['name'] == name) }
+    my_fields.each { |k, v| return v if (k.class == Integer && v['name'] == name) }
   end if @form['form']['tabs'] #  I know. But nice. 
-#
+
   @form['form']['fields'].each do |field|
     next unless field.first.class == Integer # options
     return field.last if field.last['name'] == name
@@ -160,7 +158,7 @@ def dc_field_action(yaml)
   end
   # input field will have label as placeholder
   field = field.sub('input',"input placeholder=\"#{label}\"")
-  %Q[<li class="no-background">#{field}</li>]
+  %(<li class="no-background">#{field}</li>)
 end
 
 ############################################################################
@@ -168,7 +166,8 @@ end
 ############################################################################
 def dc_html_data(yaml)
   return '' if yaml.blank?
-  yaml.inject(' ') {|result, e| result = e.last.nil? ? result : result << "#{e.first}=\"#{e.last}\" "}
+
+  yaml.inject(' ') { |result, e| result = e.last.nil? ? result : result << "#{e.first}=\"#{e.last}\" " }
 end
 
 ############################################################################
@@ -218,40 +217,37 @@ def dc_link_ajax_window_submit_action(yaml, record = nil, action_active = true)
 
   parms['table'] = parms['table'].underscore if parms['table'] # might be CamelCase
   # error if controller parameter is missing
-  if parms['controller'].nil? && parms['url'].nil?
-    "<li>#{'Controller not defined'}</li>"
+  return "<li>#{'Controller not defined'}</li>" if parms['controller'].nil? && parms['url'].nil?
+
+  html_data = dc_html_data(yaml['html'])
+  url = url_for(parms) rescue 'URL error'
+  url = nil if parms['url'] == '#'
+
+  request = yaml['request'] || yaml['method'] || 'get'
+  if yaml['type'] == 'ajax' # ajax button
+    clas = 'dc-link-ajax dc-animate'
+    %(<li class="#{clas}" data-url="#{action_active ? url : ''}" #{html_data}
+       data-request="#{request}" title="#{yaml['title']}">#{icon}#{caption}</li>)
+
+  elsif yaml['type'] == 'submit'  # submit button
+    # It's dirty hack, but will prevent not authorized message and render index action correctly
+    parms[:filter] = 'on'
+    url  = url_for(parms) rescue 'URL error'
+    clas = 'dc-action-submit'
+    %(<li class="#{clas}" data-url="#{action_active ? url : ''}" #{html_data}
+       data-request="#{request}" title="#{yaml['title']}">#{icon}#{caption}</li>)
+
+  elsif yaml['type'] == 'link'  # link button
+    clas = 'dc-link plus-link dc-animate'
+    link = dc_link_to(caption, yaml['icon'], parms, yaml['html'] )
+    %(<li class="#{clas}">#{action_active ? link : caption}</li>)
+
+  elsif yaml['type'] == 'window'
+    clas = 'dc-link dc-animate dc-window-open'
+    %(<li class="#{clas}" data-url="#{action_active ? url : ''}" #{html_data}>#{icon}#{caption}</li>)
+
   else
-    #yaml['caption'] ||= yaml['text']
-    html_data = dc_html_data(yaml['html'])
-    url = url_for(parms) rescue 'URL error'
-    url = nil if parms['url'] == '#'
-
-    request = yaml['request'] || yaml['method'] || 'get'
-    if yaml['type'] == 'ajax' # ajax button
-      clas = "dc-link-ajax dc-animate"
-      %Q[<li class="#{clas}" data-url="#{action_active ? url : ''}" #{html_data}
-         data-request="#{request}" title="#{yaml['title']}">#{icon}#{caption}</li>]
-
-    elsif yaml['type'] == 'submit'  # submit button
-      # It's dirty hack, but will prevent not authorized message and render index action correctly
-      parms[:filter] = 'on' 
-      url  = url_for(parms) rescue 'URL error'
-      clas = "dc-action-submit"
-      %Q[<li class="#{clas}" data-url="#{action_active ? url : ''}" #{html_data}
-         data-request="#{request}" title="#{yaml['title']}">#{icon}#{caption}</li>]
-
-    elsif yaml['type'] == 'link'  # link button
-      clas = "dc-link plus-link dc-animate"
-      link = dc_link_to(caption, yaml['icon'], parms, yaml['html'] )
-      %Q[<li class="#{clas}">#{action_active ? link : caption}</li>]
-
-    elsif yaml['type'] == 'window'
-      clas = "dc-link dc-animate dc-window-open"
-      %Q[<li class="#{clas}" data-url="#{action_active ? url : ''}" #{html_data}>#{icon}#{caption}</li>]
-
-    else
-      '<li>Action Type error</li>'
-    end
+    '<li>Action Type error</li>'
   end
 end
 
