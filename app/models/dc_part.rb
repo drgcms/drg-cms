@@ -62,15 +62,25 @@
 # taken into account when rendering part.
 ########################################################################
 class DcPart 
-  include DcPieceConcern
-  
-  field :_type,       type: String, default: 'DcPart' # needed when changed to Concern
-  field :policy_id,   type: BSON::ObjectId
-  field :link,        type: String
-  
-  embedded_in :dc_parts, polymorphic: true
-  
-  before_save :do_before_save
+include DcPieceConcern
+
+field :_type,       type: String, default: 'DcPart' # needed when changed to Concern
+field :policy_id,   type: BSON::ObjectId
+field :link,        type: String
+
+embedded_in :dc_parts, polymorphic: true
+
+before_save :do_before_save
+
+after_save :cache_clear
+after_destroy :cache_clear
+
+####################################################################
+# Clear parent's record from cache if cache is configured
+####################################################################
+def cache_clear
+  _parent.cache_clear() if _parent&.respond_to?(:cache_clear)
+end
   
 ######################################################################
 # Implementation of before_save callback.
