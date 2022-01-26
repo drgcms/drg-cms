@@ -1,11 +1,105 @@
 # What is DRG CMS
 
-DRG CMS simplifies the programming of business applications
-with Ruby on Rails. Instead of creating controllers and 
-views for each collection (table) model, DRG CMS introduces a single 
-Cmsedit controller, which uses DRG Forms to control CRUD database 
-operations. Form files are simple configuration files written in YAML 
-markup language.
+DRG CMS simplifies the programming of business applications. 
+No database experience and only basic programming skills are needed to create a data entry program. You can do it in 6 simple steps.
+
+Step 1: Create Mode<br>
+Step 2: Generate Form<br>
+Step 3: Edit Form<br>
+Step 4: Define Labels and Help Text<br>
+Step 5: Create Controls File (if required)<br>
+Step 6: Include in Menu<br>
+
+Most of the time, you will end up with two source files.
+
+Model file is a Ruby source file, which holds fields definitions, 
+index definitions, dependencies, validations, transformations 
+for a document (record). This is an example of a typical simple 
+model file example.
+
+```ruby
+class Note
+include Mongoid::Document
+include Mongoid::Timestamps
+
+field   :title,       type: String
+field   :body,        type: String
+field   :time_begin,  type: DateTime
+field   :duration,    type: Integer
+field   :search,      type: String
+
+field   :user_id,     type: BSON::ObjectId
+
+index   user_id: 1
+
+validates :title,      presence: true
+validates :time_begin, presence: true
+validates :duration,   presence: true
+
+end
+```
+
+Form file is a text file, written in the YAML markup language, and 
+defines fields and actions which make application web facing view.
+
+```yaml
+table: note
+
+index:
+  filter: title
+  actions: standard
+
+result_set:
+  filter: notes_filter
+  actions:
+    1: edit
+
+  columns:
+    10:
+     name: title
+     width: 25%
+    20:
+      name: time_started
+      width: 10%
+      format: '%d.%m.%Y'
+    30:
+      name: duration
+
+form:
+  fields:
+  10:
+    name: user_id
+    type: readonly
+    eval: dc_name4_id,dc_user,name
+  20:
+    name: title
+    type: text_field
+    size: 50
+  30:
+    name: time_started
+    type: datetime_picker
+    options:
+      step: 15
+  40:
+    name: duration
+    type: select
+  50:
+    name: body
+    type: html_field
+    options: "height: 500"
+```
+
+Include it into your application menu with this line:
+
+```ruby
+dc_link_to('Notes', 'book', { table: 'note' }, target: 'iframe_edit')
+```
+
+And when you need advanced program logic, you will implement it in 
+the controls source file.
+
+DRG CMS uses Ruby on Rails, one of the most popular frameworks for 
+building web sites. Ruby on Rails guarantees highest level of application security and huge base of extensions which will help you when your application grows.
 
 DRG CMS uses MongoDB, leading NO-SQL document database, as database 
 back-end with a help of mongoid gem. Mongoid's flexible document model 
