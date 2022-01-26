@@ -186,7 +186,7 @@ def self.menu_filter(parent)
     filters = [filters] if filters.class == Hash
     filters.each do |filter| 
       url = parent.dc_link_to(filter['title'], nil,controller: :cmsedit, action: :index, table: table,
-                           form_name: parent.params[:form_name], 
+                           form_name: CmsHelper.form_param(parent.params),
                            filter_field: filter['field'],
                            filter_oper: filter['operation'],
                            filter_value: filter['value'],

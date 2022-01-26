@@ -439,7 +439,7 @@ def run
   control_name, method_name = params[:control].split('.')
   if method_name.nil?
     method_name  = control_name
-    control_name = params[:table]   
+    control_name = CmsHelper.table_param(params)
   end
   # extend with control methods
   extend_with_control_module(control_name)
@@ -476,7 +476,7 @@ def can_process_run
     response = send(:dc_can_process)
     return response unless response.class == Array
   else
-    response = [DcPermission::CAN_VIEW, params[:table] || 'dc_memory']
+    response = [DcPermission::CAN_VIEW, CmsHelper.table_param(params) || 'dc_memory']
   end
   dc_user_can *response
 end
@@ -569,7 +569,7 @@ end
 # Read DRG form into @form object. Subroutine of check_authorization.
 ########################################################################
 def read_drg_form
-  table_name = decamelize_type(params[:table].strip)
+  table_name = decamelize_type(CmsHelper.table_param(params).strip)
   @tables = table_name.split(';').inject([]) { |r,v| r << [(v.classify.constantize rescue nil), v] }
 
   # split ids passed when embedded document
@@ -577,11 +577,11 @@ def read_drg_form
   @ids = ids.split(';').inject([]) { |r,v| r << v }
 
   # form_name defaults to last table specified
-  form_name = params[:form_name] || @tables.last[1]
+  form_name = CmsHelper.form_param(params) || @tables.last[1]
   @form_js = ''
 
   # dynamically generated form
-  @form = if params[:form_name] == 'method'
+  @form = if CmsHelper.form_param(params) == 'method'
             dc_eval_class_method(params[:form_method], params)
           else
             form_file_name = dc_find_form_file(form_name)
@@ -621,7 +621,7 @@ end
 ############################################################################
 def extend_with_control_module(control_name = @form['controls'] || @form['control'])
   # May include embedded forms so ; => _
-  control_name ||= params[:table].gsub(';','_')
+  control_name ||= CmsHelper.table_param(params).gsub(';','_')
   control_name += '_control' unless control_name.match(/control$|report$/i)
   # p '************',  control_name
   controls = load_controls_module(control_name)
@@ -642,9 +642,10 @@ end
 # load DRG form.
 ############################################################################
 def check_authorization
-  params[:table] ||= params[:form_name]
+  params[:table] ||= params[:t] || CmsHelper.form_param(params)
   # Only show menu
   return login if params[:id].in?(%w(login logout test))
+
   table = params[:table].to_s.strip.downcase
   set_default_guest_user_role if session[:user_roles].nil?
   # request shouldn't pass
@@ -920,7 +921,7 @@ end
 ########################################################################
 def set_session_filter(table_name)
   # models that can not be filtered (for now)
-  return if %w(dc_temp dc_memory).include?(params[:table])
+  return if %w(dc_temp dc_memory).include?(CmsHelper.table_param(params))
   # clear filter 
   if params[:filter] == 'off' 
     session[table_name][:filter] = nil

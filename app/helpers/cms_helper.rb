@@ -260,5 +260,19 @@ def dc_log_exception(exception, where = '')
   
   logger.error log
 end
-  
+
+############################################################################
+# Will return form_name from parameter regardless if set as form_name or just f.
+############################################################################
+def self.form_param(params)
+  params[:form_name] || params[:f]
+end
+
+############################################################################
+# Will return table name from parameter regardless if set as table or just t.
+############################################################################
+def self.table_param(params)
+  params[:table] || params[:t]
+end
+
 end

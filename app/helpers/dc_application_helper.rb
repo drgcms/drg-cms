@@ -260,8 +260,8 @@ def dc_table_title(text, result_set = nil)
   c = %(<div class="dc-title">#{text})
   # help button
   type = result_set.nil? ? 'form' : 'index'
-  form_name = params[:form_name] || params[:table]
-  url = url_for(controller: :dc_common, action: :help, type: type, form_name: form_name)
+  form_name = CmsHelper.form_param(params) || CmsHelper.table_param(params)
+  url = url_for(controller: :dc_common, action: :help, type: type, f: form_name)
   c << %(<div class="dc-help dc-link-ajax" data-url=#{url}>#{fa_icon('question-circle')}</div>)
 
   if result_set and result_set.respond_to?(:current_page)
@@ -629,7 +629,7 @@ def dc_page_edit_menu(opts = @opts)
   opts[:editparams] ||= {}
   dc_link_menu_tag(title) do |html|
     opts[:editparams].merge!( controller: 'cmsedit', action: 'edit', 'icon' => 'edit' )
-    opts[:editparams].merge!( :id => page.id, :table => _origin.site.page_class.underscore, form_name: opts[:form_name], edit_only: 'body' )
+    opts[:editparams].merge!( :id => page.id, :t => _origin.site.page_class.underscore, f: opts[:form_name], edit_only: 'body' )
     html << dc_link_for_edit1( opts[:editparams], t('drgcms.edit_content') )
     
     opts[:editparams].merge!( edit_only: nil, 'icon' => 'pencil' )
@@ -1085,9 +1085,9 @@ end
 # Html code for edit iframe
 ########################################################################
 def dc_iframe_edit(table, opts={})
-  ret = if params.to_unsafe_h.size > 2 and table  # controller, action, path is minimal
+  ret = if params.to_unsafe_h.size > 2 && table  # controller, action, path is minimal
     params[:controller] = 'cmsedit'
-    params[:action]     = (params[:oper] and (params[:oper] == 'edit')) ? 'edit' : 'index'
+    params[:action]     = (params[:oper] && (params[:oper] == 'edit')) ? 'edit' : 'index'
     params[:action]     = opts[:action] unless params[:oper]
     params[:table]      ||= table 
     params[:form_name]  ||= opts[:form_name] || table 

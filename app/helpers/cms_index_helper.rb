@@ -366,7 +366,7 @@ def dc_header_for_result
         if v['name'] == sort_field
           icon = sort_direction == '1' ? 'sort-alpha-asc lg' : 'sort-alpha-desc lg'
         end        
-        th << ">#{dc_link_to(label, icon, sort: v['name'], table: params[:table], form_name: params[:form_name], action: :index, icon_pos: :last )}</div>"
+        th << ">#{dc_link_to(label, icon, sort: v['name'], t: params[:table], f: CmsHelper.form_param(params), action: :index, icon_pos: :last )}</div>"
       else
         th << ">#{label}</div>"
       end
@@ -386,8 +386,8 @@ def dc_clicks_for_result(document)
     opts = {}
     opts[:controller] = yaml['controller'] || 'cmsedit'
     opts[:action]     = yaml['action']
-    opts[:table]      = yaml['table']
-    opts[:form_name]  = yaml['form_name']
+    opts[:table]      = CmsHelper.table_param(params)
+    opts[:form_name]  = CmsHelper.form_param(params) || opts[:table]
     opts[:method]     = yaml['method'] || 'get'
     opts[:id]         = document['id']
     opts[:readonly]   = yaml['readonly'] if yaml['readonly']
@@ -396,8 +396,8 @@ def dc_clicks_for_result(document)
   else
      html << (' data-dblclick=' +
                 url_for(action: 'show', controller: 'cmsedit', id: document.id, ids: params[:ids],
-                        readonly: (params[:readonly] ? 2 : 1), table: params[:table],
-                        form_name: params[:form_name]) ) if @form['form']
+                        readonly: (params[:readonly] ? 2 : 1), t: CmsHelper.table_param(params),
+                        f: CmsHelper.form_param(params)) ) if @form['form']
   end
   html
 end

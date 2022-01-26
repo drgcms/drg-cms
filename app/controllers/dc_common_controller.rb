@@ -217,8 +217,9 @@ def copy_clipboard
     format.json { dc_render_ajax(operation: 'window', url: request.url ) }
     
     format.html do
-      doc = dc_find_document(params[:table], params[:id], params[:ids])
-      text = "<br><br>[#{params[:table]},#{params[:id]},#{params[:ids]}]<br>"
+      table = CmsHelper.table_param(params)
+      doc   = dc_find_document(table, params[:id], params[:ids])
+      text  = "<br><br>[#{table},#{params[:id]},#{params[:ids]}]<br>"
       render plain: text + doc.as_document.to_json
     end
   end  
@@ -266,7 +267,7 @@ end
 # document.
 ########################################################################
 def add_json_ld_schema
-  edited_document = DcJsonLd.find_document_by_ids(params[:table], params[:ids])
+  edited_document = DcJsonLd.find_document_by_ids(CmsHelper.table_param(params), params[:ids])
   yaml = YAML.load_file( dc_find_form_file('json_ld_schema') )
   schema_data = yaml[params[:schema]]
   # Existing document
@@ -282,11 +283,11 @@ end
 # Will provide help data
 ########################################################################
 def help
-  form_name = params[:form_name] || params[:table]
+  form_name = CmsHelper.form_param(params) || CmsHelper.table_param(params)
   @form = form_name ? YAML.load_file(dc_find_form_file(form_name)) : {}
   return render json: {} if @form.nil?
 
-  help_file_name = @form['help'] || @form['extend'] || params[:form_name] || params[:table]
+  help_file_name = @form['help'] || @form['extend'] || form_name
   help_file_name = find_help_file(help_file_name)
   @help = YAML.load_file(help_file_name) if help_file_name
   # no auto generated help on index action

@@ -52,7 +52,7 @@ end
 ############################################################################
 def dc_is_action_active?(options)
   if options['when_new']
-    dc_deprecate("when_option will be deprecated and replaced by active: not_new_record! Form #{params[:form_name]}") 
+    dc_deprecate("when_option will be deprecated and replaced by active: not_new_record! Form #{CmsHelper.form_param(params)}")
     return !(dc_dont?(options['when_new']) && @record.new_record?)
   end
   return true unless options['active']

@@ -39,7 +39,7 @@ end
 # If exists, set report section as form, so it can be used to display result.
 ######################################################################
 def dc_update_form
-  return unless @form && @form['report'] && params[:table] == 'dc_temp'
+  return unless @form && @form['report'] && CmsHelper.table_param(params) == 'dc_temp'
 
   @form = @form['report']
 end
