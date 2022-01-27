@@ -171,10 +171,16 @@ def set_default_value(opt1, opt2)
   return if @record && @record[@yaml['name']].present?
 
   @yaml[opt1][opt2] = if @yaml['default'].class == Hash
-    eval(@yaml['default']['eval'])
-  else
-    @yaml['default']
-  end
+                        evaluate = @yaml['default']['eval']
+                        return if evaluate.blank?
+                        # add @parent if it's a method call and @parent is not present
+                        if evaluate[0] != evaluate[0].upcase && !evaluate.match('@parent')
+                          evaluate.prepend('@parent.')
+                        end
+                        eval(evaluate)
+                      else
+                        @yaml['default']
+                      end
 end
 
 ####################################################################
