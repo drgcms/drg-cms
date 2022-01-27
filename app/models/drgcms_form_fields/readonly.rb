@@ -52,6 +52,9 @@ class Readonly < DrgcmsField
 # Render readonly field html code
 ###########################################################################
 def render
+  set_initial_value
+  @record[@yaml['name']] = @yaml['html']['value'] if @yaml['html']['value']
+
   @html << @parent.hidden_field('record', @yaml['name']) # retain field as hidden field
   @html << '<div class="dc-readonly">'
 
