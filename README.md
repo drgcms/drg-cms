@@ -50,7 +50,7 @@ index:
   actions: standard
 
 result_set:
-  filter: notes_filter
+  filter: current_users_documents
   actions:
     1: edit
 
@@ -71,6 +71,8 @@ form:
     name: user_id
     type: readonly
     eval: dc_name4_id,dc_user,name
+    default:
+      eval: 'session[:user_id]'    
   20:
     name: title
     type: text_field
