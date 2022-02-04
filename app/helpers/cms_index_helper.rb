@@ -147,7 +147,7 @@ def dc_actions_for_index
       html << dc_field_action(yaml) 
       next 
 
-    when %w(ajax link window submit).include?(action)
+    when %w(ajax link window popup submit).include?(action)
       html << dc_link_ajax_window_submit_action(options, nil)
       next
 
@@ -284,7 +284,7 @@ def dc_actions_for_result(document)
     # if single definition simulate type parameter
     yaml = v.class == String ? { 'type' => v } : v
     # code already includes li tag
-    if %w(ajax link window submit).include?(yaml['type'])
+    if %w(ajax link window popup submit).include?(yaml['type'])
       @record = document # otherwise document fields can't be used as parameters
       html << dc_link_ajax_window_submit_action(yaml, document)
     else

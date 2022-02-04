@@ -395,7 +395,7 @@ process_parent_form_updates = function(element) {
 /*****************************************************************
  * Toggle show and hide div
  ******************************************************************/
-dc_toggle_div = function(div) {
+dc_div_toggle = function(div) {
   if ($(div).is(":visible")) {
     $(div).slideUp();
   } else {
@@ -406,10 +406,28 @@ dc_toggle_div = function(div) {
 /*****************************************************************
  * Return value of the input field on a form
  ******************************************************************/
-function dc_get_field_value(field_name) {
+function dc_field_get_value(field_name) {
   field_name = field_name.replace('record_', '');
   let field = $('[name="record[' + field_name + ']"]');
   return field.val();
+}
+
+/*****************************************************************
+ * Will process data-fields attribute and add field values as parameters to url
+ ******************************************************************/
+function dc_url_add_params(form, url) {
+  // check if data-fields attribute present
+  let fields = form.getAttribute("data-fields");
+  if (fields === null) return url;
+  // url might already contain ?
+  let form_parms = '?';
+  if (url.match(/\?/)) form_parms = '';
+
+  fields.split(',').forEach( function(field) {
+    let value = dc_field_get_value(field);
+    if (value) form_parms += '&' + field + '=' + value;
+  });
+  return url + form_parms;
 }
 
 /*******************************************************************
@@ -682,33 +700,38 @@ $(document).ready( function() {
     form.submit();
   });
 
-/*******************************************************************
-  Will open a new window with URL specified.
-********************************************************************/
-$('.dc-window-open').on('click', function(e) {
-  // confirmation if required
-  if (confirmation_is_cancled(this)) { return false; }
+  /*******************************************************************
+    Will open a new window with URL specified.
+  ********************************************************************/
+  $('.dc-window-open').on('click', function(e) {
+    // confirmation if required
+    if (confirmation_is_cancled(this)) return false;
 
-  let url = this.getAttribute("data-url");
-  let title = this.getAttribute("title");
-  let w = this.getAttribute("data-x") || 1000;
-  let h = this.getAttribute("data-y") || 800;
-  // add fields values from current formto url
-  let fields = this.getAttribute("data-fields");
-  if (fields) {
-    let form_parms = '?';
-    // ? separator already in url
-    if (url.match(/\?/)) { form_parms = ''; }
-    fields.split(',').forEach( function(field) {
-      let value = dc_get_field_value(field);
-      if (value) {form_parms += '&' + field + '=' + value;}
-    });
-    url += form_parms;
-  }
+    let url = this.getAttribute("data-url");
+    let title = this.getAttribute("title");
+    let w = this.getAttribute("data-x") || 1000;
+    let h = this.getAttribute("data-y") || 800;
 
-  let win = popup_window(url, title, window, w, h);
-  win.focus();
-});
+    url = dc_url_add_params(this, url)
+    let win = popup_window(url, title, window, w, h);
+    win.focus();
+  });
+
+  /*******************************************************************
+   Will open a new popup with URL specified.
+   ********************************************************************/
+  $('.dc-popup-open').on('click', function(e) {
+    // confirmation if required
+    if (confirmation_is_cancled(this)) return false;
+
+    let url = this.getAttribute("data-url");
+    let title = this.getAttribute("title");
+    let w = this.getAttribute("data-x") || 1000;
+    let h = this.getAttribute("data-y") || 800;
+
+    url = dc_url_add_params(this, url)
+    $('#popup').bPopup({ loadUrl: url });
+  });
 
  /*******************************************************************
  * Animate button on click
@@ -1179,7 +1202,7 @@ $('.dc-window-open').on('click', function(e) {
    ******************************************************************/
   $(".dc-handle").click(function() {
     let div = this.getAttribute("data-div");
-    dc_toggle_div(div);
+    dc_div_toggle(div);
   });
 
   /*******************************************************************

@@ -505,15 +505,16 @@ border: solid 1px #ccc;;
 .skip-next a:link, .skip-next a:active, .skip-next a:visited { color: #333; text-decoration: none; background: transparent;}
 .skip-next a:hover { text-decoration: none; color: #c43; }
 
-.dc-window-open {
+.dc-window-open, .dc-popup-open {
   padding: 8px 7px 6px;
 }
-.dc-window-open i {
+.dc-window-open i, .dc-popup-open i {
   padding-right: 4px;
 }
-.dc-window-open:hover {
+.dc-window-open:hover, .dc-popup-open:hover {
   cursor: pointer;
 }
+
 .dc-link-submit {
   text-align: left;
   border-radius: 3px;
@@ -1263,6 +1264,8 @@ background-color: transparent;
 
 #popup {
   min-width: 50%;
+  background-color: #fff;
+  padding: 4px;
 }
 
 #popup .dc-help .help-top {
