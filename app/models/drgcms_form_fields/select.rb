@@ -189,16 +189,17 @@ def render
 
   set_initial_value('html','selected')
   # separate options and html part
-  html_part = {}
+  options_part = {}
   @yaml['html'].symbolize_keys!
-  %i(class id style required).each { |sym| html_part[sym] = @yaml['html'].delete(sym) if @yaml['html'][sym] }
-  html_part[:multiple] = true if @yaml['multiple']
+  %i(selected include_blank).each { |sym| options_part[sym] = @yaml['html'].delete(sym) if @yaml['html'][sym] }
+  @yaml['html'][:multiple] = true if @yaml['multiple']
+
   record = record_text_for(@yaml['name'])
-  if html_part[:multiple]
-    @html << @parent.select(record, @yaml['name'], get_choices, @yaml['html'], html_part)
+  if @yaml['html'][:multiple]
+    @html << @parent.select(record, @yaml['name'], get_choices, options_part, @yaml['html'])
     @js   << "$('##{record}_#{@yaml['name']}').selectMultiple();"
   else
-    @html << @parent.select(record, @yaml['name'], get_choices, @yaml['html'], html_part)
+    @html << @parent.select(record, @yaml['name'], get_choices, options_part, @yaml['html'])
     # add code for view more data
     @html << add_view_code() if @yaml['view']
   end
