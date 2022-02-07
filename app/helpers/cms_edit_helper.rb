@@ -137,7 +137,7 @@ def dc_actions_for_form(position)
   actions.delete('standard')
   actions = actions.to_a.sort { |x, y| x[0] <=> y[0] }
   # Add spinner to the beginning
-  html = %Q[<span class="dc-spinner">#{fa_icon('spinner lg spin')}</span><ul class="dc-menu #{position}">]
+  html = %Q[<span class="dc-spinner">#{fa_icon('settings-o spin')}</span><ul class="dc-menu #{position}">]
 
   actions.each do |key, options|
     session[:form_processing] = "form:actions: #{key} #{options}"
@@ -145,48 +145,49 @@ def dc_actions_for_form(position)
     parms = @parms.clone
     if options.class == String
       next if @form['readonly'] and !options.match(/back|close/)
-      
-      html << '<li class="dc-link dc-animate">'
-      html << case 
-        when (options == 'back' or options == 'cancle') then
+
+      #      html << '<li class="dc-link">'
+      html << '<li>'
+      html << case
+        when (options == 'back' or options == 'cancle')
           # If return_to is present link directly to URL
           if parms['xreturn_to'] # disabled for now
-            dc_link_to( 'drgcms.back','arrow-left', parms['return_to'] )
+            dc_link_to( 'drgcms.back', 'arrow_back', parms['return_to'], class: 'dc-link' )
           else
             parms['action'] = 'index'
             parms['readonly'] = parms['readonly'].to_s.to_i < 2 ? nil : 1  
-            dc_link_to( 'drgcms.back','arrow-left', parms )
+            dc_link_to( 'drgcms.back', 'arrow_back', parms, class: 'dc-link' )
           end
           
-        when options == 'delete' then
+        when options == 'delete'
           parms['operation'] = options
           parms['id']   = @record.id
-          dc_link_to( 'drgcms.delete','remove', parms, data: { confirm: t('drgcms.confirm_delete') }, method: :delete )
+          dc_link_to( 'drgcms.delete','remove', parms, data: { confirm: t('drgcms.confirm_delete') }, method: :delete, class: 'dc-link' )
           
-        when options == 'new' then
+        when options == 'new'
           parms['action'] = options
-          dc_link_to( 'drgcms.new', 'plus', parms)
+          dc_link_to( 'drgcms.new', 'add', parms, class: 'dc-link')
           
-        when (options == 'enable' or options == 'disable') then
+        when (options == 'enable' || options == 'disable')
           parms['operation'] = options
           parms['id']        = @record.id
-          icon = (options == 'enable' ? 'thumbs-o-up' : 'thumbs-o-down')
-          dc_link_to( "drgcms.#{options}",icon, parms, method: :delete )
+          icon = (options == 'enable' ? 'check_box-o' : 'check_box_outline_blank')
+          dc_link_to( "drgcms.#{options}",icon, parms, method: :delete, class: 'dc-link' )
           
-        when options == 'edit' then
+        when options == 'edit'
           parms['operation'] = options
           parms['id']        = @record.id
-          dc_link_to( "drgcms.#{options}",options, parms )
+          dc_link_to( "drgcms.#{options}", options, parms, class: 'dc-link' )
           
-        when options == 'refresh' then
-          "<div onclick='window.location.href=window.location.href;'>#{fa_icon('refresh')} #{t('drgcms.refresh')}</div></li>"
+        when options == 'refresh'
+          %(<div class="dc-link" onclick='window.location.href=window.location.href;'>#{fa_icon('refresh')} #{t('drgcms.refresh')}</div></li>)
           
-        when options == 'close' then
+        when options == 'close'
           close = params[:window_close].to_i
           if close < 2
-            "<div onclick='window.close();'>#{fa_icon('close')} #{t('drgcms.close')}</div></li>"
+            %(<div class="dc-link" onclick='window.close();'>#{fa_icon('close')} #{t('drgcms.close')}</div></li>)
           else
-            "<div onclick='history.back();'>#{fa_icon('close')} #{t('drgcms.close')}</div></li>"
+            %(<div class="dc-link" onclick='history.back();'>#{fa_icon('close')} #{t('drgcms.close')}</div></li>)
           end
       else 
         "err1 #{key}=>#{options}"
@@ -203,11 +204,11 @@ def dc_actions_for_form(position)
       when options['type'] == 'submit'
         caption = options['caption'] || 'drgcms.save'
         icon    = options['icon'] || 'save'
-        prms = {}
-        options['params'].each { |k,v| prms[k] = dc_value_for_parameter(v) } if options['params']
+        parameters = {}
+        options['params'].each { |k, v| parameters[k] = dc_value_for_parameter(v) } if options['params']
         if dc_is_action_active?(options) 
-          '<li class="dc-link-submit dc-animate">' + 
-             dc_submit_tag(caption, icon, {:data => prms, :title => options['title'] }) +
+          '<li>' +
+             dc_submit_tag(caption, icon, { data: parameters, title: options['title'] }) +
           '</li>'
         else
           "<li class=\"dc-link-no\">#{fa_icon(icon)} #{caption}</li>"
@@ -219,8 +220,8 @@ def dc_actions_for_form(position)
         parms.merge!(options['params'])
         caption = options['caption'] || 'drgcms.delete'
         icon = options['icon'] || 'remove'
-        '<li class="dc-link dc-animate">' + 
-          dc_link_to( caption, icon, parms, data: t('drgcms.confirm_delete'), method: :delete ) +
+        '<li class="">' +
+          dc_link_to( caption, icon, parms, data: t('drgcms.confirm_delete'), method: :delete, class: 'dc-link' ) +
         '</li>'
       
       # ajax or link button
@@ -471,7 +472,7 @@ end
 ############################################################################
 def dc_document_statistics
   return '' if @record.new_record? or dc_dont?(@form['form']['info'])
-  html =  %Q[<div id="dc-document-info">#{fa_icon('info-circle lg')}</div> <div id="dc-document-info-popup" class="div-hidden"> ]
+  html =  %Q[<div id="dc-document-info">#{fa_icon('info')}</div> <div id="dc-document-info-popup" class="div-hidden"> ]
 #
   u = dc_document_user_for('created_by')
   html << %Q[<div><span>#{t('drgcms.created_by', 'Created by')}: </span><span>#{u}</span></div>] if u
@@ -484,12 +485,12 @@ def dc_document_statistics
   parms[:controller] = 'dc_common'
   parms[:action]     = 'copy_clipboard'
   url = url_for(parms.permit!)
-  html << fa_icon('copy lg', class: 'dc-link-img dc-link-ajax dc-animate',
+  html << fa_icon('content_copy-o', class: 'dc-link-img dc-link-ajax',
                   'data-url' => url, 'data-request' => 'get', title: t('drgcms.doc_copy_clipboard') )
 
   url = url_for(controller: :cmsedit, action: :index, table: 'dc_journal', filter: 'on',
                 filter_oper: 'eq', filter_field: 'doc_id', filter_value: @record.id)
-  html << fa_icon('history lg', class: 'dc-link-img dc-animate dc-window-open',
+  html << fa_icon('history lg', class: 'dc-link-img dc-window-open',
                   'data-url' => url, title: t('helpers.label.dc_journal.tabletitle') )
 
   (html << '</div></div>').html_safe

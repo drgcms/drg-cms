@@ -9,6 +9,6 @@
  * compiled file, but it's generally better to create a new file per style scope.
  *
  *= require drg_cms/drg_cms
- *= require font-awesome
+ *= require drg_material_icons
 
 */

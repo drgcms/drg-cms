@@ -24,124 +24,124 @@
 menu:
   10_system_menu:
     caption: drgcms.cms_main
-    icon: support lg
+    icon: support
     
     items:
       10: 
         caption: helpers.label.dc_site.tabletitle
         controller: cmsedit
-        icon: globe lg
+        icon: public
         table: dc_site
       20: 
         caption: helpers.label.dc_design.tabletitle
         controller: cmsedit
-        icon: credit-card lg
+        icon: web
         table: dc_design
       30: 
         caption: helpers.label.dc_page.tabletitle
         controller: cmsedit
-        icon: file-text-o lg
+        icon: description-o
         table: dc_page
       50: 
         caption: helpers.label.dc_piece.tabletitle
         controller: cmsedit
-        icon: puzzle-piece lg
+        icon: extension-o
         table: dc_piece
       60: 
         caption: helpers.label.dc_link.tabletitle
         controller: cmsedit
-        icon: link lg
+        icon: link
         table: dc_link
       70: 
         caption: helpers.label.dc_menu.tabletitle
         controller: cmsedit
-        icon: th-list lg
+        icon: menu
         table: dc_menu
       80: 
         caption: helpers.label.dc_simple_menu.tabletitle
         controller: cmsedit
-        icon: ellipsis-h lg
+        icon: more_horiz-o
         table: dc_simple_menu
       90: 
         caption: helpers.label.dc_category.tabletitle
         controller: cmsedit
-        icon: list lg
+        icon: list
         table: dc_category
       100: 
         caption: helpers.label.dc_poll.tabletitle
         controller: cmsedit
-        icon: list-alt lg
+        icon: poll-o
         table: dc_poll
       110: 
         caption: helpers.label.dc_poll_result.tabletitle
         controller: cmsedit
-        icon: database lg
+        icon: leaderboard
         table: dc_poll_result
       120: 
         caption: helpers.label.dc_ad.tabletitle
         controller: cmsedit
-        icon: money lg
+        icon: ads_click
         table: dc_ad
 
   11_system_menu:
     caption: drgcms.cms_advanced
-    icon: star lg
+    icon: star
     items:
       10: 
         caption: helpers.label.dc_user.tabletitle
         controller: cmsedit
-        icon: users lg
+        icon: account_circle-o
         table: dc_user
       20: 
         caption: helpers.label.dc_policy_role.tabletitle
         controller: cmsedit
-        icon: user-secret lg
+        icon: manage_accounts
         table: dc_policy_role
       30: 
         caption: helpers.label.dc_permission.tabletitle
         controller: cmsedit
-        icon: shield lg
+        icon: security
         table: dc_permission
       40: 
         caption: helpers.label.dc_folder_permission.tabletitle
         controller: cmsedit
-        icon: shield lg
+        icon: shield-o
         table: dc_folder_permission
       60: 
         caption: helpers.label.dc_big_table.tabletitle
         controller: cmsedit
-        icon: table lg
+        icon: topic-o
         table: dc_big_table
       70: 
         caption: helpers.label.dc_key_value_store.tabletitle
         controller: cmsedit
-        icon: list lg
+        icon: view_list
         table: dc_key_value_store
       80: 
         caption: helpers.label.dc_filter.tabletitle
         controller: cmsedit
-        icon: filter lg
+        icon: topic-o
         table: dc_filter
       90: 
         caption: helpers.label.dc_removed_url.tabletitle
         controller: cmsedit
-        icon: trash-o lg
+        icon: link_off
         table: dc_removed_url
       400:
         caption: drgcms.dc_help.title
         controller: cmsedit
-        icon: question-circle lg
+        icon: help-o
         table: dc_temp
         form_name: dc_help_1
       500: 
         caption: helpers.label.dc_journal.tabletitle
         controller: cmsedit
-        icon: history lg
+        icon: history
         table: dc_journal
 
       600: 
         caption: drgcms.browse_collections
         controller: cmsedit
-        icon: table lg
+        icon: list_alt
         table: dc_memory
         form_name: dc_browse_models

@@ -8,7 +8,7 @@ form:
       type: script
       caption: drgcms.back
       js: 'history.back();'
-      icon: arrow-left
+      icon: arrow_back
 
     3: 
       type: ajax

@@ -36,7 +36,7 @@ module CmsHelper
 def dc_script_action(yaml)
   icon = dc_icon_for_link yaml['icon']
   data = %(data-request="script" data-script="#{yaml['js'] || yaml['script']}" data-url="script")
-  %Q[<li class="dc-link-ajax dc-animate" #{data}>#{icon} #{ t(yaml['caption'],yaml['caption']) }</li>]
+  %Q[<li><div class="dc-link-ajax" #{data}>#{icon} #{ t(yaml['caption'],yaml['caption']) }</div></li>]
 end
 
 ############################################################################
@@ -222,33 +222,35 @@ def dc_link_ajax_window_submit_action(yaml, record = nil, action_active = true)
   html_data = dc_html_data(yaml['html'])
   url = url_for(parms) rescue 'URL error'
   url = nil if parms['url'] == '#'
-
   request = yaml['request'] || yaml['method'] || 'get'
-  if yaml['type'] == 'ajax' # ajax button
-    clas = 'dc-link-ajax dc-animate'
-    %(<li class="#{clas}" data-url="#{action_active ? url : ''}" #{html_data}
-       data-request="#{request}" title="#{yaml['title']}">#{icon}#{caption}</li>)
 
-  elsif yaml['type'] == 'submit'  # submit button
+  code = case yaml['type']
+  when 'ajax' # ajax button
+    clas = 'dc-link-ajax'
+    %(<div class="#{clas}" data-url="#{action_active ? url : ''}" #{html_data}
+       data-request="#{request}" title="#{yaml['title']}">#{icon}#{caption}</div>)
+
+  when 'submit'  # submit button
     # It's dirty hack, but will prevent not authorized message and render index action correctly
     parms[:filter] = 'on'
     url  = url_for(parms) rescue 'URL error'
     clas = 'dc-action-submit'
-    %(<li class="#{clas}" data-url="#{action_active ? url : ''}" #{html_data}
-       data-request="#{request}" title="#{yaml['title']}">#{icon}#{caption}</li>)
+    %(<div class="#{clas}" data-url="#{action_active ? url : ''}" #{html_data}
+       data-request="#{request}" title="#{yaml['title']}">#{icon}#{caption}</div>)
 
-  elsif yaml['type'] == 'link'  # link button
-    clas = 'dc-link plus-link dc-animate'
+  when 'link'  # link button
+    clas = 'dc-link plus-link'
     link = dc_link_to(caption, yaml['icon'], parms, yaml['html'] )
-    %(<li class="#{clas}">#{action_active ? link : caption}</li>)
+    %(<div class="#{clas}">#{action_active ? link : caption}</div>)
 
-  elsif yaml['type'] == 'window'
-    clas = 'dc-link dc-animate dc-window-open'
-    %(<li class="#{clas}" data-url="#{action_active ? url : ''}" #{html_data}>#{icon}#{caption}</li>)
+  when 'window'
+    clas = 'dc-link dc-window-open'
+    %(<div class="#{clas}" data-url="#{action_active ? url : ''}" #{html_data}>#{icon}#{caption}</div>)
 
   else
-    '<li>Action Type error</li>'
+    'Type error!'
   end
+  "<li>#{code}</li>"
 end
 
 ############################################################################

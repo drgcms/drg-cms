@@ -155,7 +155,7 @@ def self.get_filter_field(parent)
       js = drg_field.js.blank? ? '' : parent.javascript_tag(drg_field.js)
       html = %(<li class="no-background">
 <span class="filter_field" data-url="#{url}">#{drg_field.html}
-  #{parent.fa_icon('search lg', class: 'record_filter_field_icon')}
+  #{parent.fa_icon('filter_alt-o', class: 'record_filter_field_icon')}
   #{js}</span></li>)
     else
       # Error. Forget filter
@@ -185,7 +185,7 @@ def self.menu_filter(parent)
 # only single defined. Convert to array.    
     filters = [filters] if filters.class == Hash
     filters.each do |filter| 
-      url = parent.dc_link_to(filter['title'], nil,controller: :cmsedit, action: :index, table: table,
+      url = parent.dc_link_to(filter['title'], nil, controller: :cmsedit, action: :index, table: table,
                            form_name: CmsHelper.form_param(parent.params),
                            filter_field: filter['field'],
                            filter_oper: filter['operation'],

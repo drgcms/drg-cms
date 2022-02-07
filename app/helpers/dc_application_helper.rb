@@ -341,10 +341,10 @@ end
 # Similar to rails submit_tag, but also takes care of link icon, translation, ...
 ############################################################################
 def dc_submit_tag(caption, icon, parms, rest={})
-  parms['class'] ||= 'dc-submit'
+  parms['class'] ||= 'dc-link'
   if icon
     icon_image = if icon.match(/\./)
-      image_tag(icon, class: 'dc-animate')
+      image_tag(icon)
     elsif icon.match('<i')
       icon
     else
@@ -363,7 +363,7 @@ def dc_icon_for_link(icon)
   return nil if icon.nil?
 
   if icon.match(/\./)
-    _origin.image_tag(icon, class: 'dc-link-img dc-animate')
+    _origin.image_tag(icon, class: 'dc-link-img')
   elsif icon.match('<i')
     icon
   else
@@ -379,7 +379,7 @@ def dc_link_to(caption, icon, parms, rest={})
   if parms.class == Hash
     parms.stringify_keys!
     rest.stringify_keys!
-    rest['class'] = rest['class'].to_s + ' dc-animate' unless rest['class'].to_s.match('dc-animate')
+    #    rest['class'] = rest['class'].to_s + ' dc-animate' unless rest['class'].to_s.match('dc-animate')
     rest['target'] ||=  parms.delete('target')
     parms['controller'] ||= 'cmsedit'
     icon_pos = parms.delete('icon_pos') || 'first'
@@ -632,13 +632,13 @@ def dc_page_edit_menu(opts = @opts)
     opts[:editparams].merge!( :id => page.id, :t => _origin.site.page_class.underscore, f: opts[:form_name], edit_only: 'body' )
     html << dc_link_for_edit1( opts[:editparams], t('drgcms.edit_content') )
     
-    opts[:editparams].merge!( edit_only: nil, 'icon' => 'pencil' )
+    opts[:editparams].merge!( edit_only: nil, 'icon' => 'edit' )
     html << dc_link_for_edit1( opts[:editparams], t('drgcms.edit_advanced') )
     
     opts[:editparams].merge!( action: 'new', 'icon' => 'plus' )
     html << dc_link_for_edit1( opts[:editparams], t('drgcms.edit_new_page') )
 
-    opts[:editparams].merge!(ids: page.id, form_name: 'dc_part', 'icon' => 'plus-square-o', 
+    opts[:editparams].merge!(ids: page.id, form_name: 'dc_part', 'icon' => 'add_circle-o',
                              table: "#{_origin.site.page_class.underscore};dc_part"  )
     html << dc_link_for_edit1( opts[:editparams], t('drgcms.edit_new_part') )
   end.html_safe

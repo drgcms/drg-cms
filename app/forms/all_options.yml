@@ -94,7 +94,7 @@ result_set:
       type: delete
       title: Delete it
       icon: delete.png
-      icon: arrow-left
+      icon: arrow_back
       icon: home
     4:
       type: link

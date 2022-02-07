@@ -53,7 +53,7 @@ def dc_actions_for_index
   # start div with hidden spinner image
   html = %(
 <form id="dc-action-menu">
-  <span class="dc-spinner">#{fa_icon('spinner lg spin')}</span>
+  <span class="dc-spinner">#{fa_icon('settings-o spin')}</span>
   <ul class="dc-action-menu">)
 
   # Remove actions settings and sort
@@ -86,43 +86,45 @@ def dc_actions_for_index
     yhtml['title'] = yaml['title'] if yaml['title']
     code = case
     # sort
-    when action == 'sort' then 
-      choices = [['id','id']]
+    when action == 'sort'
+      choices = [%w[id id]]
       if @form['index']['sort']
         @form['index']['sort'].split(',').each do |s| 
           s.strip!
           choices << [ t("helpers.label.#{@form['table']}.#{s}"), s ]
         end
       end
-      fa_icon('sort-alpha-asc') + ' ' + t('drgcms.sort') + ' ' + 
-              select('sort', 'sort', choices, { include_blank: true }, 
-              { class: 'drgcms_sort', 'data-table' => @form['table'], 'data-form' => params['form_name']} )
-
-    # filter
-    when action == 'filter' then 
-      caption = t('drgcms.filter')
-      caption << '&nbsp;' + fa_icon('caret-down lg') + DcFilter.menu_filter(self)
-      # add filter OFF link
-      sess = session[@form['table']]
-      if sess and sess[:filter]
-        caption << '&nbsp;&nbsp;' + dc_link_to(nil,'remove lg',
-                   { controller: 'cmsedit', filter: 'off', table: @form['table'], form_name: params['form_name'] },
-                   { title: DcFilter.title4_filter_off(sess[:filter]) })
-      end
-      caption
-
-    # new
-    when action == 'new' then
-      caption = yaml['caption'] || 'drgcms.new'
-      html << "<li class=\"dc-link plus-link dc-animate\">#{dc_link_to(caption, 'plus', url, yhtml )}</li>"
+      caption = t('drgcms.sort') + select('sort', 'sort', choices, { include_blank: true },
+        { class: 'drgcms_sort', 'data-table' => @form['table'], 'data-form' => params['form_name']} )
+      html << %(<li><div class="dc-link sort">#{caption}</li>)
       next
 
-    when action == 'close' then
-      html << %(<li class="dc-link dc-animate" onclick="window.close();"'>#{fa_icon('close')} #{t('drgcms.close')}</li>)
+    # filter
+    when action == 'filter'
+      caption = t('drgcms.filter') + DcFilter.menu_filter(self)
+      # filter OFF link
+      table = session[@form['table']]
+      if table && table[:filter]
+        caption << dc_link_to(nil, 'filter_alt_off md-18',
+                   { filter: 'off', t: @form['table'], f: params['form_name'] },
+                   { title: DcFilter.title4_filter_off(table[:filter]) })
+      end
+      html << %(<li><div class="dc-link filter">#{caption}</li>)
+      next
+
+    # new
+    when action == 'new'
+      caption = yaml['caption'] || 'drgcms.new'
+      yhtml['class'] = 'dc-link'
+      html << "<li>#{dc_link_to(caption, 'add', url, yhtml)}</li>"
+      next
+
+    when action == 'close'
+      html << %(<li><div class="dc-link" onclick="window.close();"'>#{fa_icon('close')} #{t('drgcms.close')}</div></li>)
       next
 
     # menu
-    when action == 'menu' then
+    when action == 'menu'
       if options['caption']
         caption = t(options['caption'], options['caption']) + '&nbsp;' + fa_icon('caret-down lg')
         caption + eval(options['eval'])
@@ -156,7 +158,7 @@ def dc_actions_for_index
       icon    = yaml['icon'] ? yaml['icon'] : action
       dc_link_to(caption, icon, url, yhtml)
     end
-    html << "<li class=\"dc-link dc-animate\">#{code}</li>"
+    html << %(<li><div class="dc-link">#{code}</div></li>)
     html << DcFilter.get_filter_field(self) if action == 'filter'
   end
   html << '</ul></form>'
@@ -255,7 +257,7 @@ def dc_actions_column
     actions.delete('standard')
   end
 
-  width = @form['result_set']['actions_width'] || 18*actions.size
+  width = @form['result_set']['actions_width'] || 26*actions.size
   [actions, width]
 end
 
@@ -296,20 +298,20 @@ def dc_actions_for_result(document)
       when yaml['type'] == 'edit' then
         parms['action'] = 'edit'
         parms['id']     = document.id
-        dc_link_to( nil, 'pencil lg', parms )
+        dc_link_to( nil, 'edit', parms )
 
       when yaml['type'] == 'duplicate' then
         parms['id']     = document.id
         # duplicate string will be added to these fields.
         parms['dup_fields'] = yaml['dup_fields'] 
         parms['action'] = 'create'
-        dc_link_to( nil, 'copy lg', parms, data: { confirm: t('drgcms.confirm_dup') }, method: :post )
+        dc_link_to( nil, 'content_copy-o', parms, data: { confirm: t('drgcms.confirm_dup') }, method: :post )
 
       when yaml['type'] == 'delete' then
         parms['action'] = 'destroy'
         parms['id']     = document.id
         #parms['return_to'] = request.url
-        dc_link_to( nil, 'remove lg', parms, data: { confirm: t('drgcms.confirm_delete') }, method: :delete )
+        dc_link_to( nil, 'delete-o', parms, data: { confirm: t('drgcms.confirm_delete') }, method: :delete )
 
       # undocumented so far
       when yaml['type'] == 'edit_embedded'
@@ -362,9 +364,9 @@ def dc_header_for_result
       sort_ok = sort_ok || (@form['index'] && @form['index']['sort'])
       sort_ok = sort_ok && !dc_dont?(v['sort'], false)
       if @tables.size == 1 and sort_ok
-        icon = 'sort lg'
+        icon = 'sort_unset md-18'
         if v['name'] == sort_field
-          icon = sort_direction == '1' ? 'sort-alpha-asc lg' : 'sort-alpha-desc lg'
+          icon = sort_direction == '1' ? 'sort_up md-18' : 'sort_down md-18'
         end        
         th << ">#{dc_link_to(label, icon, sort: v['name'], t: params[:table], f: CmsHelper.form_param(params), action: :index, icon_pos: :last )}</div>"
       else

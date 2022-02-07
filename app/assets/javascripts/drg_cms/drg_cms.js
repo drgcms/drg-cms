@@ -1131,14 +1131,14 @@ $('.dc-window-open').on('click', function(e) {
   *******************************************************************/
   $('.dc-result-header .th i').hover( function() {
     old_sort_icon = '';
-    // save old sort icon and replace it with filter icon   
+    // save old sort icon and replace it with filter icon
     $.each( $(this).attr("class").split(/\s+/), 
       function(index, item) { if (item.match('sort')) { old_sort_icon = item}; }
     );
-    $(this).removeClass(old_sort_icon).addClass('fa-filter');
-// bring back old sort icon
+    $(this).removeClass(old_sort_icon).addClass('mi-ads_click');
+  // bring back old sort icon
   }, function(){
-    $(this).removeClass('fa-filter').addClass(old_sort_icon);
+    $(this).removeClass('mi-ads_click').addClass(old_sort_icon);
   });
 
 /*******************************************************************
