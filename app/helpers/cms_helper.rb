@@ -247,6 +247,10 @@ def dc_link_ajax_window_submit_action(yaml, record = nil, action_active = true)
     clas = 'dc-link dc-window-open'
     %(<div class="#{clas}" data-url="#{action_active ? url : ''}" #{html_data}>#{icon}#{caption}</div>)
 
+  elsif yaml['type'] == 'popup'
+    clas = 'dc-link dc-animate dc-popup-open'
+    %(<li class="#{clas}" data-url="#{action_active ? url : ''}" #{html_data}>#{icon}#{caption}</li>)
+
   else
     'Type error!'
   end

@@ -225,7 +225,7 @@ def dc_actions_for_form(position)
         '</li>'
       
       # ajax or link button
-      when %w(ajax link window).include?(options['type'])
+      when %w(ajax link window popup).include?(options['type'])
         dc_link_ajax_window_submit_action(options, @record)
         
 # Javascript action        

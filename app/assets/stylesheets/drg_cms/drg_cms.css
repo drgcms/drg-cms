@@ -104,7 +104,6 @@ blockquote, q {
 }
 blockquote:before, blockquote:after,
 q:before, q:after {
-	content: '';
 	content: none;
 }
 table {
@@ -449,7 +448,7 @@ display: inline-table;
 .dc-link-icon {
 padding: 3px;
 border-radius: 3px;
-background: transparent linear-gradient(to bottom, #fff 0%, #e2e2e2 100%) repeat scroll 0% 0%;
+background: transparent linear-gradient(to bottom, #fff 0%, #e2e2e2 100%) repeat scroll 0 0;
 border: solid 1px #ccc;;
 }
 
@@ -495,16 +494,14 @@ border: solid 1px #ccc;;
 .skip-next a:link, .skip-next a:active, .skip-next a:visited { color: #333; text-decoration: none; background: transparent;}
 .skip-next a:hover { text-decoration: none; color: #c43; }
 
-/*
-.dc-window-open {
+.dc-window-open, .dc-popup-open {
   padding: 8px 7px 6px;
 }
-.dc-window-open i {
+.dc-window-open i, .dc-popup-open i {
   padding-right: 4px;
 }
-*/
 
-.dc-window-open:hover {
+.dc-window-open:hover, .dc-popup-open:hover {
   cursor: pointer;
 }
 
@@ -512,7 +509,7 @@ border: solid 1px #ccc;;
   text-align: left;
   border-radius: 3px;
   background-color: #eee;
-  background: transparent linear-gradient(to bottom, #fff 0%, #e2e2e2 100%) repeat scroll 0% 0%;
+  background: transparent linear-gradient(to bottom, #fff 0%, #e2e2e2 100%) repeat scroll 0 0;
   border: 1px solid #eee;
   display: flex;
   align-items: center;
@@ -1250,6 +1247,8 @@ background-color: transparent;
 
 #popup {
   min-width: 50%;
+  background-color: #fff;
+  padding: 4px;
 }
 
 #popup .dc-help .help-top {
