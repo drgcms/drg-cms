@@ -110,6 +110,7 @@ def dc_actions_for_index
                    { title: DcFilter.title4_filter_off(table[:filter]) })
       end
       html << %(<li><div class="dc-link filter">#{caption}</li>)
+      html << DcFilter.get_filter_field(self)
       next
 
     # new
@@ -159,7 +160,6 @@ def dc_actions_for_index
       dc_link_to(caption, icon, url, yhtml)
     end
     html << %(<li><div class="dc-link">#{code}</div></li>)
-    html << DcFilter.get_filter_field(self) if action == 'filter'
   end
   html << '</ul></form>'
   html.html_safe
@@ -268,7 +268,7 @@ def dc_actions_column_for_footer
   return '' unless @form['result_set']['actions']
 
   ignore, width = dc_actions_column
-  %Q[<div class="actions" style="width: #{width}px;"></div>].html_safe
+  %(<div class="actions" style="width: #{width}px;"></div>).html_safe
 end
 
 ############################################################################
@@ -290,7 +290,7 @@ def dc_actions_for_result(document)
       @record = document # otherwise document fields can't be used as parameters
       html << dc_link_ajax_window_submit_action(yaml, document)
     else
-      html << '<li class="dc-link">'
+      html << '<li><div class="dc-link">'
       html << case
       when yaml['type'] == 'check' then
         check_box_tag("check-#{document.id}", false,false,{ class: 'dc-check' })
@@ -324,7 +324,7 @@ def dc_actions_for_result(document)
       else # error. 
         yaml['type'].to_s
       end
-      html << '</li>'
+      html << '</div></li>'
     end
   end
   html << '</ul>'

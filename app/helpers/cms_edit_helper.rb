@@ -211,7 +211,7 @@ def dc_actions_for_form(position)
              dc_submit_tag(caption, icon, { data: parameters, title: options['title'] }) +
           '</li>'
         else
-          "<li class=\"dc-link-no\">#{fa_icon(icon)} #{caption}</li>"
+          %(<li><div class="dc-link-no">#{fa_icon(icon)} #{caption}</div></li>)
         end
       
       # delete with some sugar added
@@ -228,7 +228,7 @@ def dc_actions_for_form(position)
       when %w(ajax link window popup).include?(options['type'])
         dc_link_ajax_window_submit_action(options, @record)
         
-# Javascript action        
+      # Javascript action
       when options['type'] == 'script'
         dc_script_action(options)
       else
@@ -472,7 +472,7 @@ end
 ############################################################################
 def dc_document_statistics
   return '' if @record.new_record? or dc_dont?(@form['form']['info'])
-  html =  %Q[<div id="dc-document-info">#{fa_icon('info')}</div> <div id="dc-document-info-popup" class="div-hidden"> ]
+  html =  %(<div id="dc-document-info">#{fa_icon('info md-18')}</div> <div id="dc-document-info-popup" class="div-hidden">)
 #
   u = dc_document_user_for('created_by')
   html << %Q[<div><span>#{t('drgcms.created_by', 'Created by')}: </span><span>#{u}</span></div>] if u
@@ -485,15 +485,15 @@ def dc_document_statistics
   parms[:controller] = 'dc_common'
   parms[:action]     = 'copy_clipboard'
   url = url_for(parms.permit!)
-  html << fa_icon('content_copy-o', class: 'dc-link-img dc-link-ajax',
+  html << fa_icon('content_copy-o md-18', class: 'dc-link-img dc-link-ajax',
                   'data-url' => url, 'data-request' => 'get', title: t('drgcms.doc_copy_clipboard') )
 
   url = url_for(controller: :cmsedit, action: :index, table: 'dc_journal', filter: 'on',
                 filter_oper: 'eq', filter_field: 'doc_id', filter_value: @record.id)
-  html << fa_icon('history lg', class: 'dc-link-img dc-window-open',
+  html << fa_icon('history md-18', class: 'dc-link-img dc-window-open',
                   'data-url' => url, title: t('helpers.label.dc_journal.tabletitle') )
 
-  (html << '</div></div>').html_safe
+  (html << '</div>').html_safe
 end
 
 private
