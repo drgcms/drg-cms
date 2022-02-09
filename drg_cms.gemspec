@@ -31,6 +31,6 @@ Gem::Specification.new do |s|
   s.add_dependency 'kaminari-mongoid'
   s.add_dependency 'kaminari-actionview'
 #  s.add_dependency 'font-awesome-rails'
-  s.add_dependency 'drg_material_icons'
+#  s.add_dependency 'drg_material_icons'
   s.add_dependency 'sort_alphabetical'
 end

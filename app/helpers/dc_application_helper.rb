@@ -281,21 +281,19 @@ def dc_edit_title
   session[:form_processing] = "form:title:"
   title = @form['form']['title']
   # defined as form:title:edit
-  if title and title['edit'] and !@form['readonly']
+  if title && title['edit'] && !@form['readonly']
     t( title['edit'], title['edit'] )
-  elsif title and title['show'] and @form['readonly']
+  elsif title && title['show'] && @form['readonly']
     t( title['show'], title['show'] )
   else
     # concatenate title
     c = (@form['readonly'] ? t('drgcms.show') : t('drgcms.edit')) + " : "
-    c << (@form['title'].class == String ? t( @form['title'], @form['title'] ) : t_tablename(@form['table'])) + ' : '
-    title = (title and title['field']) ? title['field'] : @form['form']['edit_title']
-    dc_deprecate('form:edit_title will be deprecated. Use form:title:field instead.') if @form['form']['edit_title']
+    c << (@form['title'].class == String ? t( @form['title'], @form['title'] ) : t_tablename(@form['table']))
+    title = title.try('field')
 
-    c << "#{@record[ title ]} : " if title and @record.respond_to?(title)
-    c << @record.id if @record
+    c << "#{@record[ title ]}" if title && @record.respond_to?(title)
+    c
   end
-  c
 end
 
 ############################################################################

@@ -431,7 +431,17 @@ function dc_url_add_params(form, url) {
 }
 
 /*******************************************************************
- * 
+ * Copy div text to clipboard
+ *******************************************************************/
+function dc_copy_to_clipboard(div) {
+  let copyText = document.getElementById(div).innerText;
+  console.log(copyText);
+  /* Copy the text inside the text field */
+  navigator.clipboard.writeText(copyText);
+}
+
+/*******************************************************************
+ * Events start here
  *******************************************************************/
 $(document).ready( function() {
 /* This could be the way to focus on first input field on document open
@@ -730,7 +740,7 @@ $(document).ready( function() {
     let h = this.getAttribute("data-y") || 800;
 
     url = dc_url_add_params(this, url)
-    $('#popup').bPopup({ loadUrl: url });
+    $('#popup').bPopup({ loadUrl: url, opacity: 0.4, position: ['auto', 10] });
   });
 
  /*******************************************************************

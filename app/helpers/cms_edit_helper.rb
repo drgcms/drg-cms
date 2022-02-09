@@ -471,16 +471,17 @@ end
 # + lots of more. At the moment also adds icon for dumping current document as json text.
 ############################################################################
 def dc_document_statistics
-  return '' if @record.new_record? or dc_dont?(@form['form']['info'])
+  return '' if @record.id.nil? || dc_dont?(@form['form']['info'])
+
   html =  %(<div id="dc-document-info">#{fa_icon('info md-18')}</div> <div id="dc-document-info-popup" class="div-hidden">)
-#
   u = dc_document_user_for('created_by')
-  html << %Q[<div><span>#{t('drgcms.created_by', 'Created by')}: </span><span>#{u}</span></div>] if u
+  html << %(<div><span>#{t('drgcms.created_by', 'Created by')}: </span><span>#{u}</span></div>) if u
   u = dc_document_user_for('updated_by')
-  html << %Q[<div><span>#{t('drgcms.updated_by', 'Updated by')}: </span><span>#{u}</span></div>] if u
-  html << %Q[<div><span>#{t('drgcms.created_at', 'Created at')}: </span><span>#{dc_format_value(@record.created_at)}</span></div>] if @record['created_at']
-  html << %Q[<div><span>#{t('drgcms.updated_at', 'Updated at')}: </span><span>#{dc_format_value(@record.updated_at)}</span></div>] if @record['updated_at']
-# copy to clipboard icon
+  html << %(<div><span>#{t('drgcms.updated_by', 'Updated by')}: </span><span>#{u}</span></div>) if u
+
+  html << %(<div><span>#{t('drgcms.created_at', 'Created at')}: </span><span>#{dc_format_value(@record.created_at)}</span></div>) if @record['created_at']
+  html << %(<div><span>#{t('drgcms.updated_at', 'Updated at')}: </span><span>#{dc_format_value(@record.updated_at)}</span></div>) if @record['updated_at']
+  # copy to clipboard icon
   parms = params.clone
   parms[:controller] = 'dc_common'
   parms[:action]     = 'copy_clipboard'
@@ -492,6 +493,9 @@ def dc_document_statistics
                 filter_oper: 'eq', filter_field: 'doc_id', filter_value: @record.id)
   html << fa_icon('history md-18', class: 'dc-link-img dc-window-open',
                   'data-url' => url, title: t('helpers.label.dc_journal.tabletitle') )
+  html << %(<span>ID: </span><span id="record-id" class="hover" onclick="dc_copy_to_clipboard('record-id');" title="Copy document ID to clipboard">#{@record.id}</span>)
+
+  #dc_copy_to_clipboard
 
   (html << '</div>').html_safe
 end

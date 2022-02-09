@@ -31,7 +31,7 @@
             onclick: "document.location.reload(true); return false;")  %>
         <b>&nbsp; | &nbsp; </b>
 
-        <%= link_to( fa_icon('content_paste-o', class: "dc-animate", title: "#{t('drgcms.doc_paste_title')}"),
+        <%= link_to( fa_icon('content_paste-o', title: t('drgcms.doc_paste_title')),
             {controller: 'dc_common', action: 'paste_clipboard'}, target: 'iframe_cms') %>
 
         <%= DrgcmsFormFields::Elfinder.file_manager_url(self) %>
