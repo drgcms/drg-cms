@@ -360,7 +360,7 @@ end
 # Returns icon code if icon is specified
 ############################################################################
 def dc_icon_for_link(icon)
-  return nil if icon.nil?
+  return '' if icon.blank?
 
   if icon.match(/\./)
     _origin.image_tag(icon, class: 'dc-link-img')
@@ -379,18 +379,17 @@ def dc_link_to(caption, icon, parms, rest={})
   if parms.class == Hash
     parms.stringify_keys!
     rest.stringify_keys!
-    #    rest['class'] = rest['class'].to_s + ' dc-animate' unless rest['class'].to_s.match('dc-animate')
     rest['target'] ||=  parms.delete('target')
     parms['controller'] ||= 'cmsedit'
     icon_pos = parms.delete('icon_pos') || 'first'
   end
-#  
+
   icon_image = dc_icon_for_link(icon)
   if caption
     caption = t(caption, caption)
     icon_image << ' ' if icon_image
   end
-  icon_pos == 'first' ?
+  %w[first left].include?(icon_pos) ?
     _origin.link_to("#{icon_image}#{caption}".html_safe, parms, rest) :
     _origin.link_to("#{caption} #{icon_image}".html_safe, parms, rest)
 end
@@ -417,7 +416,7 @@ def dc_flash_messages()
     _origin.flash[:info]    = nil
     _origin.flash[:note]    = nil
   end
-# Update fields on the form
+  # Update fields on the form
   if _origin.flash[:update]
     html << "<div class=\"dc-form-updates\">\n"
     _origin.flash[:update].each do |field, value|
