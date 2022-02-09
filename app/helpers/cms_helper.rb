@@ -188,7 +188,7 @@ def dc_link_ajax_window_submit_action(yaml, record = nil, action_active = true)
   icon    = yaml['icon'] ? "#{fa_icon(yaml['icon'])}" : ''
   # action is not active
   unless dc_is_action_active?(yaml)
-    return "<li class=\"dc-link-no\">#{icon} #{caption}</li>" 
+    return %(<li><div class="dc-link-no">#{icon} #{caption}</div></li>)
   end
   # set data-confirm when confirm 
   yaml['html'] ||= {}
@@ -243,12 +243,12 @@ def dc_link_ajax_window_submit_action(yaml, record = nil, action_active = true)
     link = dc_link_to(caption, yaml['icon'], parms, yaml['html'] )
     %(<div class="#{clas}">#{action_active ? link : caption}</div>)
 
-  when 'window'
+  when 'window' # open window
     clas = 'dc-link dc-window-open'
     %(<div class="#{clas}" data-url="#{action_active ? url : ''}" #{html_data}>#{icon}#{caption}</div>)
 
-  when yaml['type'] == 'popup'
-    clas = 'dc-link dc-animate dc-popup-open'
+  when 'popup' # popup dialog
+    clas = 'dc-link dc-popup-open'
     %(<div class="#{clas}" data-url="#{action_active ? url : ''}" #{html_data}>#{icon}#{caption}</div>)
 
   else
