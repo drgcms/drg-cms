@@ -50,12 +50,7 @@ def dc_actions_for_index
     actions['standard'] = nil
   end
   
-  # start div with hidden spinner image
-  html = %(
-<form id="dc-action-menu">
-  <span class="dc-spinner">#{fa_icon('settings-o spin')}</span>
-  <ul class="dc-action-menu">)
-
+  html_left, html_right = '', ''
   # Remove actions settings and sort
   only_actions = []
   actions.each { |key, value| only_actions << [key, value] if key.class == Integer }
@@ -82,8 +77,8 @@ def dc_actions_for_index
       url['control']    = yaml['control'] if yaml['control']
     end
     # html link options
-    yhtml = yaml['html'] || {}
-    yhtml['title'] = yaml['title'] if yaml['title']
+    html_options = yaml['html'] || {}
+    html_options['title'] = yaml['title'] if yaml['title']
     code = case
     # sort
     when action == 'sort'
@@ -96,7 +91,7 @@ def dc_actions_for_index
       end
       caption = t('drgcms.sort') + select('sort', 'sort', choices, { include_blank: true },
         { class: 'drgcms_sort', 'data-table' => @form['table'], 'data-form' => params['form_name']} )
-      html << %(<li><div class="dc-link sort">#{caption}</li>)
+      html_right << %(<li><div class="dc-link sort">#{caption}</li>)
       next
 
     # filter
@@ -109,19 +104,18 @@ def dc_actions_for_index
                    { filter: 'off', t: @form['table'], f: params['form_name'] },
                    { title: DcFilter.title4_filter_off(table[:filter]) })
       end
-      html << %(<li><div class="dc-link filter">#{caption}</li>)
-      html << DcFilter.get_filter_field(self)
+      html_right << %(<li><div class="dc-link filter">#{caption}</li>) << DcFilter.get_filter_field(self)
       next
 
     # new
     when action == 'new'
       caption = yaml['caption'] || 'drgcms.new'
-      yhtml['class'] = 'dc-link'
-      html << "<li>#{dc_link_to(caption, 'add', url, yhtml)}</li>"
+      html_options['class'] = 'dc-link'
+      html_left << "<li>#{dc_link_to(caption, 'add', url, html_options)}</li>"
       next
 
     when action == 'close'
-      html << %(<li><div class="dc-link" onclick="window.close();"'>#{fa_icon('close')} #{t('drgcms.close')}</div></li>)
+      html_left << %(<li><div class="dc-link" onclick="window.close();"'>#{fa_icon('close')} #{t('drgcms.close')}</div></li>)
       next
 
     # menu
@@ -143,26 +137,34 @@ def dc_actions_for_index
       dc_link_to( caption, 'reorder', parms, method: :delete )              
 =end     
     when action == 'script'
-      html << dc_script_action(options)
+      html_left << dc_script_action(options)
       next
 
     when action == 'field'
-      html << dc_field_action(yaml) 
+      html_right << dc_field_action(yaml)
       next 
 
     when %w(ajax link window popup submit).include?(action)
-      html << dc_link_ajax_window_submit_action(options, nil)
+      html_left << dc_link_ajax_window_submit_action(options, nil)
       next
 
     else
       caption = yaml['caption'] || yaml['text']
-      icon    = yaml['icon'] ? yaml['icon'] : action
-      dc_link_to(caption, icon, url, yhtml)
+      icon    = yaml['icon'] || action
+      dc_link_to(caption, icon, url, html_options)
     end
-    html << %(<li><div class="dc-link">#{code}</div></li>)
+    html_left << %(<li><div class="dc-link">#{code}</div></li>)
   end
-  html << '</ul></form>'
-  html.html_safe
+  # start div with hidden spinner image
+  html = %(
+<form id="dc-action-menu">
+  <span class="dc-spinner">#{fa_icon('settings-o spin')}</span>
+  <div class="dc-action-menu">
+    <ul class="dc-left">#{html_left}</ul>
+    <ul class="dc-right">#{html_right}</ul>
+  </div>
+</form>
+).html_safe
 end
 
 ############################################################################
@@ -199,8 +201,8 @@ def dc_div_filter
     #{ select(nil, 'filter_field1', options_for_select(choices, field_name), { include_blank: true }) }
     #{ select(nil, 'filter_oper', options_for_select(choices4_operators, operators_value)) }
     <div class="dc-menu">
-      <div class="dc-link dc-animate drgcms_popup_submit" data-url="#{url}">#{fa_icon('check-square-o')} #{t('drgcms.filter_on')}</div>
-      <div class="dc-link dc-animate">#{dc_link_to('drgcms.filter_off','close', {action: :index, filter: 'off', table: @form['table'], form_name: params['form_name']}) }</div>
+      <div class="dc-link drgcms_popup_submit" data-url="#{url}">#{fa_icon('check-square-o')} #{t('drgcms.filter_on')}</div>
+      <div class="dc-link">#{dc_link_to('drgcms.filter_off','close', {action: :index, filter: 'off', table: @form['table'], form_name: params['form_name']}) }</div>
     </div>
   </div>
 EOT
@@ -257,7 +259,7 @@ def dc_actions_column
     actions.delete('standard')
   end
 
-  width = @form['result_set']['actions_width'] || 26*actions.size
+  width = @form['result_set']['actions_width'] || 22*actions.size
   [actions, width]
 end
 
@@ -298,7 +300,7 @@ def dc_actions_for_result(document)
       when yaml['type'] == 'edit' then
         parms['action'] = 'edit'
         parms['id']     = document.id
-        dc_link_to( nil, 'edit', parms )
+        dc_link_to( nil, 'edit-o', parms )
 
       when yaml['type'] == 'duplicate' then
         parms['id']     = document.id

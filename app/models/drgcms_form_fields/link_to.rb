@@ -51,7 +51,7 @@ class LinkTo < DrgcmsField
 ###########################################################################
 def render
   @yaml['html'] ||= {}
-  @yaml['html']['class'] ||= 'dc-link dc-animate'
+  @yaml['html']['class'] ||= 'dc-link'
   @yaml['html'].symbolize_keys!
 
   @yaml[:id] = record._id if @yaml[:id] == 'id'

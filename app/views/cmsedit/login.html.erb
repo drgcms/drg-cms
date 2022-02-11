@@ -12,7 +12,7 @@
       <div class="input"><%= password_field('record', 'password') %></div>
       
       <div class="label"></div>
-      <div class="input"><%= submit_tag t('drgcms.login'), class: 'dc-animate-button' %></div>
+      <div class="input"><%= submit_tag t('drgcms.login'), class: 'dc-submit' %></div>
       <%= hidden_field_tag('return_to_error', request.url ) %>
     <% end %>
   </div>

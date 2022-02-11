@@ -2,7 +2,7 @@
 <%= dc_table_title t('drgcms.doc_paste_title') %>
 
 <div class="dc-form-frame"><br>
-  <span class="dc-link dc-link-ajax dc-animate" data-request="post" title="<%= t('drgcms.doc_paste_clipboard') %>"
+  <span class="dc-link-ajax" data-request="post" title="<%= t('drgcms.doc_paste_clipboard') %>"
         data-url="<%= url_for(controller: 'dc_common', action: 'paste_clipboard') %>"><%= t('drgcms.doc_paste_clipboard') %>
   </span>
   

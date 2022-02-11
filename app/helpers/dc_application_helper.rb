@@ -262,7 +262,7 @@ def dc_table_title(text, result_set = nil)
   type = result_set.nil? ? 'form' : 'index'
   form_name = CmsHelper.form_param(params) || CmsHelper.table_param(params)
   url = url_for(controller: :dc_common, action: :help, type: type, f: form_name)
-  c << %(<div class="dc-help dc-link-ajax" data-url=#{url}>#{fa_icon('question-circle')}</div>)
+  c << %(<div class="dc-help-icon dc-link-ajax" data-url=#{url}>#{fa_icon('question-circle')}</div>)
 
   if result_set and result_set.respond_to?(:current_page)
     c << %(<div class="dc-paginate">#{paginate(result_set, :params => {action: 'index', clear: 'no', filter: nil})}</div>)

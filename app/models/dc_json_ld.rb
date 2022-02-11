@@ -144,7 +144,7 @@ def self.add_schema_menu(parent)
   yaml.each do |schema_name, schema_data|
     next if level == 1 and schema_data['level'].nil?
     url = "/dc_common/add_json_ld_schema?table=#{parent.params['table']}&ids=#{parent.params['ids']}&schema=#{schema_name}&url=#{parent.request.url}"
-    html << %Q[<li class="dc-link-ajax dc-animate" data-url="#{url}">#{schema_name}</li>]    
+    html << %Q[<li class="dc-link-ajax" data-url="#{url}">#{schema_name}</li>]
   end
   html << '</ul>' 
 end

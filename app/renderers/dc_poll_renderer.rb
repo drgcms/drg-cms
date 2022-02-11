@@ -120,7 +120,7 @@ def do_one_item(poll, yaml)
     end
     # submit and link tag
     clas = yaml['type'].match(/submit_tag/) ? '' : 'dc-link-submit'
-    html << "<span class='#{clas} dc-animate'>#{field_html}#{yaml['separator']}</span>"
+    html << "<span class='#{clas}'>#{field_html}#{yaml['separator']}</span>"
   # other fields
   else
     html << case

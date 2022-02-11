@@ -6,28 +6,28 @@
       <div id="menu">
 
         <% if @page %>
-          <%= link_to( fa_icon('description-o', class: "dc-animate", title: "#{t('drgcms.edit_page')}"),
+          <%= link_to( fa_icon('description-o', title: "#{t('drgcms.edit_page')}"),
               {controller: 'cmsedit', action: 'edit', table: @site.page_class, id: @page._id}, target: 'iframe_cms') %>
         <% end %>
 
         <% if @design %>
-          <%= link_to( fa_icon('web', class: "dc-animate", title: "#{t('drgcms.edit_design')}"),
+          <%= link_to( fa_icon('web', title: "#{t('drgcms.edit_design')}"),
               {controller: 'cmsedit', action: 'edit', table: 'dc_design', id: @design._id}, target: 'iframe_cms') %>
         <% end %>
 
         <% if @site %>
-          <%= link_to( fa_icon('public', class: "dc-animate", title: "#{t('drgcms.edit_site')}"),
+          <%= link_to( fa_icon('public', title: "#{t('drgcms.edit_site')}"),
               {controller: 'cmsedit', action: 'edit', table: 'dc_site', id: @site._id}, target: 'iframe_cms') %>
         <% end %>
         <b>&nbsp; | &nbsp; </b>
         
-        <%= link_to( fa_icon('compress', class: "dc-animate", title: t('drgcms.minimize')), '#',
+        <%= link_to( fa_icon('compress', title: t('drgcms.minimize')), '#',
             onclick: "$('#iframe_cms').height(1); return false;" ) %>
 
-        <%= link_to( fa_icon('expand', class: "dc-animate", title: t('drgcms.maximize')), '#',
+        <%= link_to( fa_icon('expand', title: t('drgcms.maximize')), '#',
             onclick: "$('#iframe_cms').height( $('#iframe_cms').height() + 500);; return false;")  %>
 
-        <%= link_to( fa_icon('refresh', class: "dc-animate", title: t('drgcms.reload')), '#',
+        <%= link_to( fa_icon('refresh', title: t('drgcms.reload')), '#',
             onclick: "document.location.reload(true); return false;")  %>
         <b>&nbsp; | &nbsp; </b>
 
