@@ -95,28 +95,16 @@ def dc_actions_for_index
       next
 
     # filter
-     when action == 'xfilter'
-       caption = t('drgcms.filter') + DcFilter.menu_filter(self)
-       # filter OFF link
-       table = session[@form['table']]
-       if table && table[:filter]
-         caption << dc_link_to(nil, 'search_off',
-                               { filter: 'off', t: @form['table'], f: params['form_name'] },
-                               { title: DcFilter.title4_filter_off(table[:filter]) })
-       end
-       html_right << %(<li><div class="dc-filter">#{caption}</li>) << DcFilter.get_filter_field(self)
-       next
-
-     when action == 'filter'
-       caption = mi_icon('search') #+ DcFilter.menu_filter(self)
-       # filter OFF link
-       table = session[@form['table']]
-       if table && table[:filter]
-         caption = dc_link_to(nil, 'search_off',
-                               { filter: 'off', t: @form['table'], f: params['form_name'] },
-                               { title: DcFilter.title4_filter_off(table[:filter]) })
-       end
-       html_right << %(
+    when action == 'filter'
+      caption = mi_icon('search') #+ DcFilter.menu_filter(self)
+      # filter OFF link
+      table = session[@form['table']]
+      if table && table[:filter]
+        caption = dc_link_to(nil, 'search_off',
+                             { filter: 'off', t: @form['table'], f: params['form_name'] },
+                             { title: DcFilter.title4_filter_off(table[:filter]) })
+      end
+      html_right << %(
 <li>
   <div class="dc-filter">#{caption.html_safe}#{DcFilter.menu_filter(self).html_safe}</div>
 </li>
@@ -219,7 +207,9 @@ def dc_div_filter
     #{ select(nil, 'filter_oper', options_for_select(choices4_operators, operators_value)) }
     <div class="dc-menu">
       <div class="dc-link drgcms_popup_submit" data-url="#{url}">#{fa_icon('check-square-o')} #{t('drgcms.filter_on')}</div>
-      <div class="dc-link">#{dc_link_to('drgcms.filter_off','close', {action: :index, filter: 'off', table: @form['table'], form_name: params['form_name']}) }</div>
+      <div class="dc-link">
+        #{dc_link_to('drgcms.filter_off', 'close', { action: :run, control: 'cms.filter_off', t: @form['table'], f: params['form_name'] }) }
+      </div>
     </div>
   </div>
 EOT
