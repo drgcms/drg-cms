@@ -292,7 +292,13 @@ border-radius: 1px;
   flex-grow: 1;
 }
 
-.dc-result-data .actions, .dc-result-header .actions {
+.dc-row-actions .dc-link i,
+.dc-row-actions .dc-link-ajax i {
+  color: #666;
+  font-size: 20px;
+}
+
+.dc-result-data .dc-row-actions, .dc-result-header .dc-row-actions {
   padding-right: 4px;
   display: flex;
   align-items: center;
@@ -361,7 +367,7 @@ display: inline-table;
 .dc-link, .dc-link-ajax, .dc-submit {
   font-weight: 600;
   font-size: 15px;
-  color: #666;
+  color: #888;
   text-align: center;
   border-radius: 4px;
   background: #fff;
@@ -392,11 +398,7 @@ display: inline-table;
   padding-right: 2px;
 }
 
-.actions .dc-link i,
-.actions .dc-link-ajax i {
-  color: #666;
-  font-size: 20px;
-}
+
 
 .dc-link-no {
   text-align: left;
@@ -1050,9 +1052,9 @@ background-color: lightyellow;
 
 #dc-action-menu {
   font-weight: bold;
-  color: #666;
-  display: flow-root;
-  margin-bottom: 12px;
+  color: #888;
+  display: block;
+  margin: 6px 0;
 }
 
 .dc-action-menu ul li {
@@ -1066,9 +1068,9 @@ background-color: lightyellow;
 .dc-action-menu ul ul {
   margin: 5px 0 0 3px;
   position: absolute;
-  left: -9999px;
   border-radius: 1px;
   line-height: 1.2em !important;
+  display: none;
 }
 
 .dc-action-menu ul ul li {
@@ -1078,24 +1080,26 @@ background-color: lightyellow;
   margin-right:  0;
   white-space: nowrap;
   background: #fff;
-  border: 0;
   color: #888;
+  filter: drop-shadow(1px 2px 4px #ccc);
 }
 
 .dc-action-menu ul ul a {
   white-space:nowrap;
   padding: 7px;
+  cursor: pointer;
 }
 
 .dc-action-menu ul li:hover ul {
-  left:-3px;
-  background-color: #fff;
-  border: 2px solid rgba(44, 142, 255, 1);
+  display: block;
+  right: 0;
+  margin-top: 0;
+  border: 1px solid #eee;
   z-index: 1000000;
 }
 
 .dc-action-menu ul li:hover ul li a:hover {
-color: #222;
+  color: #222;
 }
 
 .menu-filter {
@@ -1104,11 +1108,11 @@ max-width: 400px;
 }
 
 .menu-filter li {
-color: #888 !important;
+
 }
 .menu-filter li:hover {
-color: #000 !important;
-background-color: transparent;
+  cursor: pointer;
+  color: rgba(44, 142, 255, 1);
 }
 
 .menu-filter hr {
@@ -1126,13 +1130,9 @@ background-color: transparent;
   padding-left: 4px;
 }
 
-.dc-action-menu .filter_field i {
-  padding-right: 8px;
-}
-
 .dc-action-menu .filter_field i:hover {
   cursor: pointer;
-  color: #ccc;
+  color: rgba(44, 142, 255, 1);
 }
 
 .dc-action-menu .dc-link:empty {
@@ -1146,32 +1146,19 @@ background-color: transparent;
   margin-right: 5px;
 }
 
-
-#dc-action-menu .dc-filter {
-  display: inline-block;
-
+.dc-filter .mi-search_off {
+  color: #c43;
+}
+.dc-filter i:hover {
+  color: rgba(44, 142, 255, 1);
 }
 
-.dc-link.filter a {
-  color: #d34;
-}
-.dc-link.filter li a {
-  color: #666;
-}
-.dc-link.filter a:hover {
-  color: #000;
+.dc-sort {
+  padding-top: 6px;
 }
 
-.dc-link.sort {
-  padding: 7px 14px;
-}
-
-.dc-link.filter {
-  padding: 7px 14px 8px;
-}
-
-.dc-link.filter i {
-  line-height: 1em;
+.dc-sort:hover > select {
+  color: rgba(44, 142, 255, 1);
 }
 
 /*****  POPUP ******/

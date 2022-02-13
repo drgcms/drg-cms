@@ -91,20 +91,36 @@ def dc_actions_for_index
       end
       caption = t('drgcms.sort') + select('sort', 'sort', choices, { include_blank: true },
         { class: 'drgcms_sort', 'data-table' => @form['table'], 'data-form' => params['form_name']} )
-      html_right << %(<li><div class="dc-link sort">#{caption}</li>)
+      html_right << %(<li><div class="dc-sort" title="">#{caption}</li>)
       next
 
     # filter
-    when action == 'filter'
-      caption = t('drgcms.filter') + DcFilter.menu_filter(self)
-      # filter OFF link
-      table = session[@form['table']]
-      if table && table[:filter]
-        caption << dc_link_to(nil, 'filter_alt_off md-18',
-                   { filter: 'off', t: @form['table'], f: params['form_name'] },
-                   { title: DcFilter.title4_filter_off(table[:filter]) })
-      end
-      html_right << %(<li><div class="dc-link filter">#{caption}</li>) << DcFilter.get_filter_field(self)
+     when action == 'xfilter'
+       caption = t('drgcms.filter') + DcFilter.menu_filter(self)
+       # filter OFF link
+       table = session[@form['table']]
+       if table && table[:filter]
+         caption << dc_link_to(nil, 'search_off',
+                               { filter: 'off', t: @form['table'], f: params['form_name'] },
+                               { title: DcFilter.title4_filter_off(table[:filter]) })
+       end
+       html_right << %(<li><div class="dc-filter">#{caption}</li>) << DcFilter.get_filter_field(self)
+       next
+
+     when action == 'filter'
+       caption = mi_icon('search') #+ DcFilter.menu_filter(self)
+       # filter OFF link
+       table = session[@form['table']]
+       if table && table[:filter]
+         caption = dc_link_to(nil, 'search_off',
+                               { filter: 'off', t: @form['table'], f: params['form_name'] },
+                               { title: DcFilter.title4_filter_off(table[:filter]) })
+       end
+       html_right << %(
+<li>
+  <div class="dc-filter">#{caption.html_safe}#{DcFilter.menu_filter(self).html_safe}</div>
+</li>
+#{DcFilter.get_filter_field(self).html_safe})
       next
 
     # new
@@ -163,6 +179,7 @@ def dc_actions_for_index
     <ul class="dc-left">#{html_left}</ul>
     <ul class="dc-right">#{html_right}</ul>
   </div>
+<div style="clear: both;"></div>
 </form>
 ).html_safe
 end
@@ -270,7 +287,7 @@ def dc_actions_column_for_footer
   return '' unless @form['result_set']['actions']
 
   ignore, width = dc_actions_column
-  %(<div class="actions" style="width: #{width}px;"></div>).html_safe
+  %(<div class="dc-row-actions" style="width: #{width}px;"></div>).html_safe
 end
 
 ############################################################################
@@ -281,7 +298,7 @@ def dc_actions_for_result(document)
   return '' if actions.nil? || @form['readonly']
 
   actions, width = dc_actions_column()
-  html = %Q[<ul class="actions" style="width: #{width}px;">]
+  html = %Q[<ul class="dc-row-actions" style="width: #{width}px;">]
   actions.sort_by(&:first).each do |k, v|
     session[:form_processing] = "result_set:actions: #{k}=#{v}"
     parms = @parms.clone
@@ -343,7 +360,7 @@ def dc_header_for_result
     if width > 0 && @form['result_set']['actions'][0].to_s == 'check'
       check_all = fa_icon('check-square-o', class: 'dc-check-all')
     end
-    html << %Q[<div class="actions" style="width:#{width}px;">#{check_all}</div>]
+    html << %(<div class="dc-row-actions" style="width:#{width}px;">#{check_all}</div>)
   end
   # preparation for sort icon  
   sort_field, sort_direction = nil, nil
@@ -356,7 +373,7 @@ def dc_header_for_result
       session[:form_processing] = "result_set:columns: #{k}=#{v}"
       next if v['width'].to_s.match(/hidden|none/i)
 
-      th = %Q[<div class="th" style="width:#{v['width'] || '15%'};text-align:#{v['align'] || 'left'};" data-name="#{v['name']}"]
+      th = %(<div class="th" style="width:#{v['width'] || '15%'};text-align:#{v['align'] || 'left'};" data-name="#{v['name']}")
       label = v['caption'] || v['label']
       label = (v['name'] ? "helpers.label.#{@form['table']}.#{v['name']}" : '') if label.nil?
       label = t(label) if label.match(/\./)

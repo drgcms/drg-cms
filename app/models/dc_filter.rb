@@ -91,11 +91,11 @@ end
 def self.get_field_form_definition(name, parent) #:nodoc:
   form = parent.form
   form['form']['tabs'].each do |tab|
-# Array with 2 elements. First is tabname, second is data      
+    # Array with 2 elements. First is tabname, second is data
     my_fields = tab.last
     my_fields.each {|k,v| return v if (k.class == Integer and v['name'] == name) }
   end if form['form']['tabs'] #  I know. But nice. 
-#
+
   form['form']['fields'].each do |field|
     next unless field.first.class == Integer # options
     return field.last if field.last['name'] == name
@@ -155,7 +155,7 @@ def self.get_filter_field(parent)
       js = drg_field.js.blank? ? '' : parent.javascript_tag(drg_field.js)
       html = %(<li class="no-background">
 <span class="filter_field" data-url="#{url}">#{drg_field.html}
-  #{parent.fa_icon('filter_alt-o', class: 'record_filter_field_icon')}
+  #{parent.fa_icon('search', class: 'record_filter_field_icon')}
   #{js}</span></li>)
     else
       # Error. Forget filter
@@ -163,7 +163,7 @@ def self.get_filter_field(parent)
     end
   end
   parent.form['readonly'] = saved_readonly
-  html
+  html.html_safe
 end
 
 ######################################################################
@@ -196,8 +196,8 @@ def self.menu_filter(parent)
   end
 # divide standard and custom filter options  
   html << '<hr>' if html.size > 30 # 
-  html << '<li id="open_drgcms_filter">' + I18n.t('drgcms.filter_set') + '</li>'
-  html << '</ul>'
+  html << '<li id="open_drgcms_filter">' + I18n.t('drgcms.filter_set') + '</li></ul>'
+  html.html_safe
 end
 
 ######################################################################
@@ -212,7 +212,7 @@ def self.title4_filter_off(filter_yaml)
    filter['field']
   else
     operations.each{|a| (operation = a.first; break) if a.last == filter['operation']}
-#
+
     '[ ' + I18n.t("helpers.label.#{filter['table']}.#{filter['field']}") + 
     " ] #{operation} [ #{filter['value'].to_s} ] : #{I18n.t('drgcms.filter_off')}"
   end
