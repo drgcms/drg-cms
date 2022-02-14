@@ -870,23 +870,12 @@ end
 ########################################################################
 # Will check and set sorting options for current result set. Subroutine of index method.
 ########################################################################
-def check_sort_options() #:nodoc:
+def check_sort_options #:nodoc:
   table_name = @tables.first[1]
-  old_sort = session[table_name][:sort].to_s
-  sort, direction = old_sort.split(' ')
+  return if session[table_name][:sort].nil? || @records.class != Mongoid::Criteria
 
-  if params['sort']
-    # reverse sort if same selected
-    if params['sort'] == sort
-      direction = (direction == '1') ? '-1' : '1'
-    end
-    direction ||= '1'
-    sort = params[:sort]
-    session[table_name][:sort] = "#{params['sort']} #{direction}"
-    session[table_name][:page] = 1
-  end
-  @records.sort( sort => direction.to_i ) if session[table_name][:sort] && @records.class == Mongoid::Criteria
-  params['sort'] = nil # otherwise there is problem with other links
+  sort, direction = session[table_name][:sort].split(' ')
+  @records = @records.order_by( sort => direction.to_i )
 end
 
 ########################################################################

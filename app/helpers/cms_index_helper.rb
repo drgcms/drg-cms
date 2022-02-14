@@ -84,28 +84,35 @@ def dc_actions_for_index
     when action == 'sort'
       choices = [%w[id id]]
       if @form['index']['sort']
-        @form['index']['sort'].split(',').each do |s| 
-          s.strip!
-          choices << [ t("helpers.label.#{@form['table']}.#{s}"), s ]
+        @form['index']['sort'].split(',').each do |e|
+          e.strip!
+          choices << [ t("helpers.label.#{@form['table']}.#{e}"), e ]
         end
       end
-      caption = t('drgcms.sort') + select('sort', 'sort', choices, { include_blank: true },
-        { class: 'drgcms_sort', 'data-table' => @form['table'], 'data-form' => params['form_name']} )
-      html_right << %(<li><div class="dc-sort" title="">#{caption}</li>)
+      data = t('drgcms.sort') + select('sort', 'sort', choices, { include_blank: true }, { class: 'dc-sort-select',
+                                 'data-table' => @form['table'], 'data-form' => CmsHelper.form_param(params)} )
+      html_right << %(
+<li>
+  <div class="dc-sort">#{data}
+</li>)
+
+      #      caption = t('drgcms.sort') + select('sort', 'sort', choices, { include_blank: true },
+      ##                                    { class: 'drgcms_sort', 'data-table' => @form['table'], 'data-form' => params['form_name']} )
+      #html_right << %(<li><div class="dc-sort" title="">#{caption}</li>)
       next
 
     # filter
     when action == 'filter'
       table = session[@form['table']]
-       url = table.dig(:filter) ?
-              url_for(controller: 'cmsedit', action: 'run', control: 'cmsedit.filter_off', t: @form['table'], f: CmsHelper.form_param(params)) :
-              ''
-      html_right << %(<li>
+      url = table.dig(:filter) ?
+            url_for(controller: 'cmsedit', action: 'run', control: 'cmsedit.filter_off', t: @form['table'], f: CmsHelper.form_param(params)) :
+            ''
+      html_right << %(
+<li>
   <div class="dc-filter" title="#{DcFilter.title4_filter_off(table[:filter])}" data-url="#{url.html_safe}">
     #{mi_icon(url.blank? ? 'search' : 'search_off') }#{DcFilter.menu_filter(self).html_safe}
   </div>
-</li>
-#{DcFilter.get_filter_field(self)}).html_safe
+</li>#{DcFilter.get_filter_field(self)}).html_safe
       next
 
     # new
@@ -375,8 +382,11 @@ def dc_header_for_result
         icon = 'sort_unset md-18'
         if v['name'] == sort_field
           icon = sort_direction == '1' ? 'sort_up md-18' : 'sort_down md-18'
-        end        
-        th << ">#{dc_link_to(label, icon, sort: v['name'], t: params[:table], f: CmsHelper.form_param(params), action: :index, icon_pos: :last )}</div>"
+        end
+        url = url_for(controller: 'cmsedit', action: 'run', control: 'cmsedit.sort', sort: v['name'],
+                      t: CmsHelper.table_param(params), f: CmsHelper.form_param(params))
+        th << %(><span data-url="#{url}">#{label}</span>#{mi_icon(icon)}</div>) #{dc_link_to(label, icon, sort: v['name'], t: params[:table], f: CmsHelper.form_param(params), action: :index, icon_pos: :last )}</div>"
+        #        th << ">#{dc_link_to(label, icon, sort: v['name'], t: params[:table], f: CmsHelper.form_param(params), action: :index, icon_pos: :last )}</div>"
       else
         th << ">#{label}</div>"
       end

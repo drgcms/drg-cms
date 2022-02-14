@@ -27,7 +27,7 @@
 module CmseditControl
 
 ######################################################################
-#
+# Clear current form filter
 ######################################################################
 def filter_off
   table_name = CmsHelper.table_param(params).strip.split(';').first.underscore
@@ -39,12 +39,32 @@ def filter_off
 end
 
 ######################################################################
-#
+# Set current form filter
 ######################################################################
 def filter_on
   table_name = CmsHelper.table_param(params).strip.split(';').first.underscore
   session[table_name][:page] = 1
   set_session_filter(table_name)
+  url = url_for( controller: 'cmsedit', t: table_name, f: CmsHelper.form_param(params))
+
+  render json: { url: url }
+end
+
+########################################################################
+# Will check and set sorting options for current result set. Subroutine of index method.
+########################################################################
+def sort
+  return if params['sort'].nil?
+
+  table_name = CmsHelper.table_param(params).strip.split(';').first.underscore
+  old_sort = session[table_name][:sort].to_s
+  sort, direction = old_sort.split(' ')
+  # reverse sort if same selected
+  direction = (direction == '1') ? '-1' : '1' if params['sort'] == sort
+  direction ||= '1'
+  session[table_name][:sort] = "#{params[:sort]} #{direction}"
+  session[table_name][:page] = 1
+  params['sort'] = nil # otherwise there is problem with other links
   url = url_for( controller: 'cmsedit', t: table_name, f: CmsHelper.form_param(params))
 
   render json: { url: url }

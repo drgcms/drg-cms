@@ -404,6 +404,16 @@ dc_div_toggle = function(div) {
 };
 
 /*****************************************************************
+ * Process simple ajax call
+ ******************************************************************/
+simple_ajax_call = function(url) {
+  $.ajax({
+    url: url,
+    success: function(data) { process_json_result(data); }
+  });
+};
+
+/*****************************************************************
  * Return value of the input field on a form
  ******************************************************************/
 function dc_field_get_value(field_name) {
@@ -504,7 +514,7 @@ $(document).ready( function() {
   * Popup CMS edit menu option clicked
   *******************************************************************/
   $('.drgcms_popmenu_item').on('click',function(e) {
-    url = e.target.getAttribute("data-url");
+    let url = e.target.getAttribute("data-url");
     $('#iframe_cms').attr('src', url);
 //    $('#iframe_cms').width(1000).height(1000);
 // scroll to top of page and hide menu    
@@ -515,13 +525,22 @@ $(document).ready( function() {
  /*******************************************************************
   * Sort action clicked on cmsedit
   *******************************************************************/
-  $('.drgcms_sort').change( function(e) {
+  $('.dc-sort-select').change( function(e) {
     let table = e.target.getAttribute("data-table");
     let form  = e.target.getAttribute("data-form");
     if (form === null) form = table;
     let sort = e.target.value;
-    e.target.value = null;
-    window.location.href = "/cmsedit?sort=" + sort + "&table=" + table +  "&form_name=" + form;
+//    e.target.value = null;
+    let url = "/cmsedit/run?control=cmsedit.sort&sort=" + sort + "&table=" + table +  "&form_name=" + form;
+    simple_ajax_call(url);
+  });
+
+  /*******************************************************************
+   * Click on field name in result header perform sort action
+   *******************************************************************/
+  $('.dc-result-header span').on('click',function(e) {
+    let url = e.target.getAttribute("data-url");
+    simple_ajax_call(url);
   });
 
   /*******************************************************************
@@ -694,13 +713,7 @@ $(document).ready( function() {
    *******************************************************************/
   $('.mi-search_off').on('click', function(e) {
     let url = $(this).parents('.dc-filter').attr("data-url");
-    if (url.length < 5) return false;
-    $.ajax({
-      url: url,
-      success: function(data) {
-        process_json_result(data);
-      }
-    });
+    if (url.length > 5) simple_ajax_call(url);
   });
   
 /*******************************************************************
@@ -978,12 +991,7 @@ $(document).ready( function() {
     if (e.which == '13' || e.which == '9') {
       let url = $(this).parents('span').attr("data-url");
       url = url + "&filter_value=" + this.value;
-      $.ajax({
-        url: url,
-        success: function(data) {
-          process_json_result(data);
-        }
-      });
+      simple_ajax_call(url);
     };
   });
 
@@ -1002,12 +1010,7 @@ $(document).ready( function() {
       value = field.val();
     }
     url = url + "&filter_value=" + value;
-    $.ajax({
-      url: url,
-      success: function(data) {
-        process_json_result(data);
-      }
-    });
+    simple_ajax_call(url);
   });
 
  /*******************************************************************
@@ -1041,12 +1044,7 @@ $(document).ready( function() {
     let field = $('select#filter_field1').val();
     let operation  = $('select#filter_oper').val();
     url = url + '&filter_field=' + field + '&filter_oper=' + operation
-    $.ajax({
-      url: url,
-      success: function(data) {
-        process_json_result(data);
-      }
-    });
+    simple_ajax_call(url);
    });
    
  /*******************************************************************
@@ -1227,12 +1225,7 @@ $(document).ready( function() {
     let field_name = parent.data("name");
     
     url = url + '&filter_field=' + field_name + '&filter_oper=' + operator;
-    $.ajax({
-      url: url,
-      success: function(data) {
-        process_json_result(data);
-      }
-    });
+    simple_ajax_call(url);
   });
 
   /*****************************************************************

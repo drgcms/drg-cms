@@ -1036,14 +1036,6 @@ background-color: lightyellow;
   border-radius: 4px;
 }
 
-.drgcms_sort {
-  width: 18px;
-  background: none;
-  height: 20px;
-  border:  0;
-  color: #222;
-}
-
 .iframe_embedded {
   padding: 4px;
   background-color: #f8f8f8;
@@ -1169,11 +1161,24 @@ max-width: 400px;
 }
 
 .dc-sort {
-  padding-top: 6px;
+  padding-top: 2px;
 }
 
 .dc-sort:hover > select {
   color: rgba(44, 142, 255, 1);
+}
+
+.dc-sort-select {
+  width: 18px;
+  background: none;
+  height: 20px;
+  border:  0;
+  color: #222;
+}
+
+.dc-result-header span:hover {
+  cursor: pointer;
+  color: #000;
 }
 
 /*****  POPUP ******/
