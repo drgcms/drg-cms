@@ -837,7 +837,7 @@ font-size: 1.2em;
 }
 
 .cmsedit-top #menu {
-  padding: 4px 4px 8px 4rem;
+  padding: 8px 4px 0 4rem;
   color: #666;
   background-color: #fff;
   border-bottom: 3px solid #666;
@@ -852,6 +852,12 @@ font-size: 1.2em;
   height: 26px;
 }
 .cmsedit-top #menu .fa {width: 20px;}
+
+.cmsedit-top #menu span {
+  font-size: 22px;
+  vertical-align: top;
+  padding: 0 4px;
+}
 
 .cmsedit-container {
   display: flex;

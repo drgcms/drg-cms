@@ -19,7 +19,7 @@
           <%= link_to( fa_icon('public', title: "#{t('drgcms.edit_site')}"),
               {controller: 'cmsedit', action: 'edit', table: 'dc_site', id: @site._id}, target: 'iframe_cms') %>
         <% end %>
-        <b>&nbsp; | &nbsp; </b>
+        <span>|</span>
         
         <%= link_to( fa_icon('compress', title: t('drgcms.minimize')), '#',
             onclick: "$('#iframe_cms').height(1); return false;" ) %>
@@ -29,7 +29,7 @@
 
         <%= link_to( fa_icon('refresh', title: t('drgcms.reload')), '#',
             onclick: "document.location.reload(true); return false;")  %>
-        <b>&nbsp; | &nbsp; </b>
+        <span>|</span>
 
         <%= link_to( fa_icon('content_paste-o', title: t('drgcms.doc_paste_title')),
             {controller: 'dc_common', action: 'paste_clipboard'}, target: 'iframe_cms') %>

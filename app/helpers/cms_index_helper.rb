@@ -378,15 +378,14 @@ def dc_header_for_result
       sort_ok = !dc_dont?(@form['result_set']['sort'], false)
       sort_ok = sort_ok || (@form['index'] && @form['index']['sort'])
       sort_ok = sort_ok && !dc_dont?(v['sort'], false)
-      if @tables.size == 1 and sort_ok
+      if @tables.size == 1 && sort_ok
         icon = 'sort_unset md-18'
         if v['name'] == sort_field
-          icon = sort_direction == '1' ? 'sort_up md-18' : 'sort_down md-18'
+          icon = sort_direction == '1' ? 'sort_down md-18' : 'sort_up md-18'
         end
         url = url_for(controller: 'cmsedit', action: 'run', control: 'cmsedit.sort', sort: v['name'],
                       t: CmsHelper.table_param(params), f: CmsHelper.form_param(params))
         th << %(><span data-url="#{url}">#{label}</span>#{mi_icon(icon)}</div>) #{dc_link_to(label, icon, sort: v['name'], t: params[:table], f: CmsHelper.form_param(params), action: :index, icon_pos: :last )}</div>"
-        #        th << ">#{dc_link_to(label, icon, sort: v['name'], t: params[:table], f: CmsHelper.form_param(params), action: :index, icon_pos: :last )}</div>"
       else
         th << ">#{label}</div>"
       end
