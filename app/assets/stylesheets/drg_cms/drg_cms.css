@@ -127,7 +127,7 @@ color: #000;
 padding: 8px 4px;
 margin-left: 1px;
 border: 1px dashed #888;;
-border-radius: 2px;
+border-radius: 4px;
 font: 16px DrgSans,arial,sans-serif;
 max-width: 100%;
 vertical-align: middle;
@@ -365,16 +365,16 @@ display: inline-table;
 #data-fields {margin: 5px;}
 
 .dc-link, .dc-link-ajax, .dc-submit {
-  font-weight: 600;
+  font-weight: 500;
   font-size: 15px;
-  color: #888;
+  color: #666;
   text-align: center;
   border-radius: 4px;
   background: #fff;
-  padding: 7px 14px 5px;
+  padding: 8px 14px 6px;
   text-transform: uppercase;
   text-decoration: none;
-  line-height: 24px;
+  line-height: 22px;
   filter: drop-shadow(1px 2px 4px #ccc);
   border: 0;
 }
@@ -398,18 +398,29 @@ display: inline-table;
   padding-right: 2px;
 }
 
-
-
 .dc-link-no {
   text-align: left;
-  font-weight: 600;
-  padding: 7px 14px 5px;
+  font-weight: 500;
+  padding: 8px 14px 6px;
   vertical-align: middle;
-  border: 2px solid #ddd;
+  filter: drop-shadow(0 1px 2px #ccc);
+  border: 1px solid #eee;
   border-radius: 4px;
-  color: #aaa;
-  background: #eee !important;
+  color: #999;
+  background: #f7f7f7;
   text-transform: uppercase;
+}
+
+.dc-link-ajax.in-menu {
+  border-radius: 0;
+  padding: 4px 12px;
+  text-transform: none;
+  border: 0;
+  text-align: left;
+}
+
+.dc-link-ajax.in-menu:hover {
+  background-color: #fff;
 }
 
 .dc-link-img {
@@ -554,6 +565,13 @@ border: solid 1px #ccc;;
   background: none;
 }
 
+.dc-title .dc-help-icon i {
+  color: #888;
+}
+.dc-title .dc-help-icon i:hover {
+  color: rgba(44, 142, 255, 1);
+}
+
 .dc-form-frame {
   margin: 0px;
   padding: 4px;
@@ -562,7 +580,8 @@ border: solid 1px #ccc;;
 
 .dc-form {
   width: 99.8%;
-  padding: 4px 0 0;
+  padding: 8px 0;
+  background-color: #fff;
 }
 
 .dc-form .row-div {
@@ -660,7 +679,7 @@ border: solid 1px #ccc;;
   padding: 8px 4px;
   border: dotted 1px #ddd;;
   background-color: #eee;
-  border-radius: 2px;
+  border-radius: 4px;
 }
 
 .tree-select.dc-readonly {
@@ -689,10 +708,6 @@ border: solid 1px #ccc;;
   display: none;
 }
 
-.dc-form-ul {
-  padding: 8px 0;
-}
-
 .dc-form-li {
   display:inline-block;
   white-space: nowrap;
@@ -702,7 +717,7 @@ border: solid 1px #ccc;;
   text-align: center;
   font-weight: 500;
   line-height: 1.2em;
-  padding: 8px 1rem;
+  padding: 10px 1rem;
   border-bottom: 3px solid rgba(98, 0, 238, 0.4);;
   text-transform: uppercase;
 }
@@ -810,7 +825,7 @@ background: transparent;
 
 #cmsedit-div #record_select  {
 border: 1px solid #aaa;
-border-radius: 2px;
+border-radius: 4px;
 font-size: 1.2em;
 }
 
@@ -907,8 +922,8 @@ display: none;
 }
 /****** jquery ui-autocomplete widget ***************/
 .ui-autocomplete-input {
-  padding: 6px 6px 6px 12px;
-  border-radius: 2px;
+  padding: 8px 4px 8px 12px;
+  border-radius: 4px;
 }
 .dc-text-autocomplete {
   position: relative;
@@ -930,8 +945,6 @@ display: none;
   font-size: 11px;
 }
 
-.filter_field .dc-text-autocomplete input+span:before {top: -16px;}
-
 .ui-autocomplete.ui-menu{
  font-size: 1.1em;
 }
@@ -950,7 +963,7 @@ color: #000;
 
 .ui-autocomplete-border {
   display: inline-block;
-  border-radius: 2px;
+  border-radius: 4px;
   border: dashed 1px #555;;
   padding: 8px;
   background-color: #fff;
@@ -1020,7 +1033,7 @@ background-color: lightyellow;
   background-color: white;
   border: 1px solid rgba(44, 142, 255, 1);
   box-shadow: inset 0 0 0 1px rgba(44, 142, 255, 1);
-  border-radius: 2px;
+  border-radius: 4px;
 }
 
 .drgcms_sort {
@@ -1033,7 +1046,7 @@ background-color: lightyellow;
 
 .iframe_embedded {
   padding: 4px;
-  background-image: none;
+  background-color: #f8f8f8;
   border-radius: 2px;
   border: 2px solid #666;
 }
@@ -1075,12 +1088,13 @@ background-color: lightyellow;
 
 .dc-action-menu ul ul li {
   display: block;
-  float: none;
-  padding: 6px 10px;
-  margin-right:  0;
   white-space: nowrap;
+  font-weight: 500;
   background: #fff;
   color: #888;
+  padding: 6px 10px;
+  float: none;
+  margin-right:  0;
   filter: drop-shadow(1px 2px 4px #ccc);
 }
 
@@ -1107,8 +1121,9 @@ min-width: 200px;
 max-width: 400px;
 }
 
-.menu-filter li {
-
+.menu-filter li a {
+  color: #888;
+  text-decoration: none;
 }
 .menu-filter li:hover {
   cursor: pointer;
@@ -1355,11 +1370,12 @@ color: #669;
 /**  Radio button input field **/
 
 .dc-radio {
-  padding: 8px 0 10px 0;
   display: inline-table;
-  border: 1px dashed #666;
-  margin-left: 1px;
   background-color: #fff;
+  padding: 7px 0 9px;
+  border: 1px dashed #666;
+  border-radius: 4px;
+  margin-left: 1px;
 }
 .dc-radio div {
   font-size: 1.1em;

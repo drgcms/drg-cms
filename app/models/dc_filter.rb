@@ -133,15 +133,15 @@ def self.get_filter_field(parent)
   field['type']     = filter['input'] if filter['input'].to_s.size > 5
   field['type']   ||= 'text_field'
   field['readonly'] = false   # must be
+  # let text fields size be no more then 20
+  field['size'] = 20 if field['type'].match('text') && field['size'].to_i > 20
   field['html']   ||= {}
-  field['html']['size'] = 20
   # Start with last entered value
   field['html']['value']    = filter['value'] unless filter['value'] == '#NIL'
   field['html']['selected'] = field['html']['value'] # for select field
   # url for filter ON action
-  field['html']['data-url'] = parent.url_for(
-    controller: 'cmsedit', action: :index, filter: 'on',
-    table: parent.form['table'], form_name: parent.params['form_name'])
+  field['html']['data-url'] = parent.url_for(controller: 'cmsedit', action: 'run', control: 'cmsedit.filter_on',
+                                             t: CmsHelper.table_param(parent.params), f: CmsHelper.form_param(parent.params))
   url = field['html']['data-url']
   # remove if present
   field['with_new'] = nil if field['with_new']
@@ -178,20 +178,26 @@ def self.menu_filter(parent)
     html << "<li data-filter=\"#{document.id}\">#{description}</li>"
   end
 
-# add filters defined in model
+  # add filters defined in model
   model = table.classify.constantize
-  filters = model.dc_filters rescue nil
+  filters = model.dc_filters if model.respond_to?(:dc_filters)
   if filters
-# only single defined. Convert to array.    
+    # only single defined. Convert to array.
     filters = [filters] if filters.class == Hash
-    filters.each do |filter| 
-      url = parent.dc_link_to(filter['title'], nil, controller: :cmsedit, action: :index, table: table,
-                           form_name: CmsHelper.form_param(parent.params),
+    filters.each do |filter|
+      url = parent.dc_link_to(filter['title'], nil, controller: 'cmsedit', action: :run, t: table,
+                              f: CmsHelper.form_param(parent.params),
+                              control: 'cmsedit.filter_on',
+                              filter_field: filter['field'],
+                              filter_oper: filter['operation'],
+                              filter_value: filter['value'])
+
+      url = parent.url_for(controller: 'cmsedit', action: :run, t: table, f: CmsHelper.form_param(parent.params),
+                           control: 'cmsedit.filter_on',
                            filter_field: filter['field'],
                            filter_oper: filter['operation'],
-                           filter_value: filter['value'],
-                           filter: 'on')
-      html << "<li>#{url}</li>"
+                           filter_value: filter['value'])
+      html << %(<li class="dc-link-ajax in-menu" data-url="#{url}">#{filter['title']}</li>)
     end
   end
 # divide standard and custom filter options  
@@ -205,6 +211,8 @@ end
 # active filter and text to turn it off.
 ######################################################################
 def self.title4_filter_off(filter_yaml)
+  return '' if filter_yaml.nil?
+
   filter = YAML.load(filter_yaml)
   operations = I18n.t('drgcms.choices4_filter_operators').chomp.split(',').inject([]) {|r,v| r << v.split(':') }
   operation = ''

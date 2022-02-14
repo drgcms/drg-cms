@@ -32,6 +32,7 @@ module CmseditControl
 def filter_off
   table_name = CmsHelper.table_param(params).strip.split(';').first.underscore
   session[table_name][:filter] = nil
+  session[table_name][:page] = 1
   url = url_for( controller: 'cmsedit', t: table_name, f: CmsHelper.form_param(params))
 
   render json: { url: url }
@@ -42,6 +43,7 @@ end
 ######################################################################
 def filter_on
   table_name = CmsHelper.table_param(params).strip.split(';').first.underscore
+  session[table_name][:page] = 1
   set_session_filter(table_name)
   url = url_for( controller: 'cmsedit', t: table_name, f: CmsHelper.form_param(params))
 

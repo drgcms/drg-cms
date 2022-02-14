@@ -96,19 +96,16 @@ def dc_actions_for_index
 
     # filter
     when action == 'filter'
-      caption = mi_icon('search') #+ DcFilter.menu_filter(self)
-      # filter OFF link
       table = session[@form['table']]
-      if table && table[:filter]
-        caption = dc_link_to(nil, 'search_off',
-                             { filter: 'off', t: @form['table'], f: params['form_name'] },
-                             { title: DcFilter.title4_filter_off(table[:filter]) })
-      end
-      html_right << %(
-<li>
-  <div class="dc-filter">#{caption.html_safe}#{DcFilter.menu_filter(self).html_safe}</div>
+       url = table.dig(:filter) ?
+              url_for(controller: 'cmsedit', action: 'run', control: 'cmsedit.filter_off', t: @form['table'], f: CmsHelper.form_param(params)) :
+              ''
+      html_right << %(<li>
+  <div class="dc-filter" title="#{DcFilter.title4_filter_off(table[:filter])}" data-url="#{url.html_safe}">
+    #{mi_icon(url.blank? ? 'search' : 'search_off') }#{DcFilter.menu_filter(self).html_safe}
+  </div>
 </li>
-#{DcFilter.get_filter_field(self).html_safe})
+#{DcFilter.get_filter_field(self)}).html_safe
       next
 
     # new
@@ -197,8 +194,10 @@ def dc_div_filter
   else
     field_name, operators_value = nil, nil
   end
-  #{ form_tag :table => @form['table'], filter: :on, filter_input: 1, action: :index, method: :post }
-  url = url_for(table: @form['table'],form_name: params['form_name'], filter: :on, filter_input: 1, action: :index, controller: :cmsedit)  
+  url_on  = url_for(controller: 'cmsedit', action: :run, control: 'cmsedit.filter_on' ,
+                    t: CmsHelper.table_param(params), f: CmsHelper.form_param(params), filter_input: 1)
+  url_off = url_for(controller: 'cmsedit', action: :run, control: 'cmsedit.filter_off',
+                    t: CmsHelper.table_param(params), f: CmsHelper.form_param(params))
   html =<<EOT
   <div id="drgcms_filter" class="div-hidden">
     <h1>#{t('drgcms.filter_set')}</h1>
@@ -206,9 +205,9 @@ def dc_div_filter
     #{ select(nil, 'filter_field1', options_for_select(choices, field_name), { include_blank: true }) }
     #{ select(nil, 'filter_oper', options_for_select(choices4_operators, operators_value)) }
     <div class="dc-menu">
-      <div class="dc-link drgcms_popup_submit" data-url="#{url}">#{fa_icon('check-square-o')} #{t('drgcms.filter_on')}</div>
-      <div class="dc-link">
-        #{dc_link_to('drgcms.filter_off', 'close', { action: :run, control: 'cms.filter_off', t: @form['table'], f: params['form_name'] }) }
+      <div class="dc-link dc-filter-set" data-url="#{url_on}">#{fa_icon('check-square-o')} #{t('drgcms.filter_on')}</div>
+      <div class="dc-link-ajax" data-url="#{url_off}">
+         #{mi_icon('close')}#{t('drgcms.filter_off')}
       </div>
     </div>
   </div>
@@ -220,12 +219,12 @@ end
 # Creates popup div for setting filter on result set header.
 ############################################################################
 def dc_filter_popup
-  html = %Q[<div class="filter-popup" style="display: none;">
-  <div>#{t('drgcms.filter_set')}</div>
-  <ul>]
-  url = url_for(table: @form['table'],form_name: params['form_name'], filter: :on, filter_input: 1, action: :index, controller: :cmsedit)
+  html = %(<div class="filter-popup" style="display: none;"><div>#{t('drgcms.filter_set')}</div><ul>)
+  url  = url_for(controller: 'cmsedit', action: 'run', control: 'cmsedit.filter_on',
+                 t: @form['table'], f: params['form_name'], filter_input: 1)
+
   t('drgcms.choices4_filter_operators').chomp.split(',').each do |operator_choice|
-    caption,choice = operator_choice.split(':') 
+    caption, choice = operator_choice.split(':')
     html << %Q[<li data-operator="#{choice}" data-url="#{url}">#{caption}</li>]
   end 
   html << "</ul></div>"

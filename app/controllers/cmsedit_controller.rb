@@ -75,7 +75,7 @@
 #      
 # If filter method returns false user will be presented with flash error.
 ########################################################################
-class DrgController < DcApplicationController
+class CmseditController < DcApplicationController
 before_action :check_authorization, :except => [:login, :logout, :test, :run]
 protect_from_forgery with: :null_session, only: Proc.new { |c| c.request.format.json? }
   
@@ -125,7 +125,7 @@ end
 # creating site and when something goes so wrong, that traditional login procedure 
 # is not available.
 # 
-# Login can be called directly with url http://site.com/drg/login
+# Login can be called directly with url http://site.com/cmsedit/login
 ########################################################################
 def login
   if    params[:id] == 'test' then set_test_site
@@ -139,7 +139,7 @@ end
 ########################################################################
 # Logout action. Used to logout direct from CMS.
 # 
-# Logout can be called directly with url http://site.com/drg/logout
+# Logout can be called directly with url http://site.com/cmsedit/logout
 ########################################################################
 def logout 
   session[:edit_mode] = 0
@@ -259,12 +259,9 @@ def duplicate_document(source)
 end
 
 ########################################################################
-# Create (or duplicate) action. Action is also used for turning filter on.
+# Create (or duplicate) action.
 ########################################################################
 def create
-  # abusing create for turning filter on
-  return index if params[:filter].to_s == 'on'
-
   # not authorized
   unless dc_user_can(DcPermission::CAN_CREATE)
     flash[:error] = t('drgcms.not_authorized')
@@ -924,11 +921,6 @@ def check_filter_options #:nodoc:
   session[table_name] ||= {}
   # page is set
   session[table_name][:page] = params[:page] if params[:page]
-  # new filter is applied
-  if params[:filter]
-    set_session_filter(table_name)
-    session[table_name][:page] = 1
-  end
   # if data model has field dc_site_id ensure that only documents which belong to the site are selected.
   site_id = dc_get_site._id if dc_get_site
 
@@ -1022,6 +1014,5 @@ def process_in_memory #:nodoc
   end
   false
 end
-
 
 end

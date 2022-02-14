@@ -688,6 +688,20 @@ $(document).ready( function() {
       }
     });
   });
+
+  /*******************************************************************
+   * Click on filter off
+   *******************************************************************/
+  $('.mi-search_off').on('click', function(e) {
+    let url = $(this).parents('.dc-filter').attr("data-url");
+    if (url.length < 5) return false;
+    $.ajax({
+      url: url,
+      success: function(data) {
+        process_json_result(data);
+      }
+    });
+  });
   
 /*******************************************************************
  * Process action submit button click. 
@@ -824,7 +838,7 @@ $(document).ready( function() {
   
 /**********************************************************************
  * When filter_field (field name) is selected on filter subform this routine finds 
- * and displays apropriate span with input field.
+ * and displays appropriate span with input field.
  **********************************************************************/
   $('#filter_field').on('change', function() {
     if (this.value.length > 0) { 
@@ -962,11 +976,15 @@ $(document).ready( function() {
   *******************************************************************/
   $('#_record__filter_field').keydown( function(e) {
     if (e.which == '13' || e.which == '9') {
-      var url = $(this).parents('span').attr("data-url");
+      let url = $(this).parents('span').attr("data-url");
       url = url + "&filter_value=" + this.value;
-      location.href = url;
-      return false;      
-    }
+      $.ajax({
+        url: url,
+        success: function(data) {
+          process_json_result(data);
+        }
+      });
+    };
   });
 
   /*******************************************************************
@@ -984,7 +1002,12 @@ $(document).ready( function() {
       value = field.val();
     }
     url = url + "&filter_value=" + value;
-    location.href = url;
+    $.ajax({
+      url: url,
+      success: function(data) {
+        process_json_result(data);
+      }
+    });
   });
 
  /*******************************************************************
@@ -1011,19 +1034,19 @@ $(document).ready( function() {
   });
   
  /*******************************************************************
-  * 
+  * Set new filter
   *******************************************************************/
-  $('.drgcms_popup_submit').on('click', function(e) {
-    //e.preventDefault();  
-    url = $(this).attr( 'data-url' );
-    field = $('select#filter_field1').val();
-    oper  = $('select#filter_oper').val();
-    location.href = url + '&filter_field=' + field + '&filter_oper=' + oper
-// Still opening in new window
-//    iframe = parent.document.getElementsByTagName("iframe")[0].getAttribute("id");
-//    loc = url + '&filter_field=' + field + '&filter_oper=' + oper
-//    $('#'+iframe).attr('src', loc);
-//    parent.document.getElementById(iframe).src = loc   
+  $('.dc-filter-set').on('click', function(e) {
+    let url = $(this).attr( 'data-url' );
+    let field = $('select#filter_field1').val();
+    let operation  = $('select#filter_oper').val();
+    url = url + '&filter_field=' + field + '&filter_oper=' + operation
+    $.ajax({
+      url: url,
+      success: function(data) {
+        process_json_result(data);
+      }
+    });
    });
    
  /*******************************************************************
@@ -1189,7 +1212,7 @@ $(document).ready( function() {
     let field_name = header.attr("data-name");
     $('.filter-popup').attr('data-name', field_name);
     // change popup position and show
-    $('.filter-popup').css({'top':e.pageY+5,'left':e.pageX, 'position':'absolute'});
+    $('.filter-popup').css({'top':e.pageY + 5, 'left':e.pageX, 'position':'absolute'});
     $('.filter-popup').show();    
   });
   
@@ -1204,7 +1227,12 @@ $(document).ready( function() {
     let field_name = parent.data("name");
     
     url = url + '&filter_field=' + field_name + '&filter_oper=' + operator;
-    window.location.href = url;
+    $.ajax({
+      url: url,
+      success: function(data) {
+        process_json_result(data);
+      }
+    });
   });
 
   /*****************************************************************

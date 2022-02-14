@@ -489,7 +489,7 @@ def dc_document_statistics
   html << fa_icon('content_copy-o md-18', class: 'dc-link-img dc-link-ajax',
                   'data-url' => url, 'data-request' => 'get', title: t('drgcms.doc_copy_clipboard') )
 
-  url = url_for(controller: :cmsedit, action: :index, table: 'dc_journal', filter: 'on',
+  url = url_for(controller: 'cmsedit', action: :index, table: 'dc_journal', filter: 'on',
                 filter_oper: 'eq', filter_field: 'doc_id', filter_value: @record.id)
   html << fa_icon('history md-18', class: 'dc-link-img dc-window-open',
                   'data-url' => url, title: t('helpers.label.dc_journal.tabletitle') )
