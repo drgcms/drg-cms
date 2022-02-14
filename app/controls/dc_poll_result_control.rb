@@ -38,7 +38,7 @@ end
 # Filter action called. Update url to reflect filter conditions and reload form.
 ######################################################################
 def do_filter
-  url = url_for(controller: :cmsedit, action: :index, table: :dc_poll_result,
+  url = url_for(controller: 'cmsedit', action: :index, table: :dc_poll_result,
                 'record[dc_poll_id]' => params[:record][:dc_poll_id],
                 'record[start_date]' => params[:record][:start_date],
                 'record[end_date]'   => params[:record][:end_date]

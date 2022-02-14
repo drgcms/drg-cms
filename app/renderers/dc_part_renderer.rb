@@ -64,7 +64,7 @@ def render_particle(particle, opts)
   return msg unless can_view
   html = ''
   if @opts[:edit_mode] > 1
-    opts[:editparams].merge!(title: "#{t('drgcms.edit')}: #{particle.name}", controller: :cmsedit)    
+    opts[:editparams].merge!(title: "#{t('drgcms.edit')}: #{particle.name}", controller: 'cmsedit')
     html << dc_link_for_edit( opts[:editparams] )
   end
 #

@@ -49,7 +49,7 @@ def project_refresh
                  updated_at: File.mtime(file_name)).save
     end
   end
-  render json: { url: url_for(controller: :cmsedit, table: :dc_temp, form_name: :dc_help_1) }
+  render json: { url: url_for(controller: 'cmsedit', table: :dc_temp, form_name: :dc_help_1) }
 end
 
 ######################################################################
