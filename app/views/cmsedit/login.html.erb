@@ -4,7 +4,7 @@
   <div id="dc-login">
     <h2><%= t('drgcms.login') %></h2>
     <%= dc_flash_messages %>   
-    <%= form_tag controller: 'dc_common', action: 'process_login', return_to: '/cmsedit/login?ok=1', method: :put do %>
+    <%= form_tag controller: 'dc_common', action: 'process_login', return_to: '/drg/login?ok=1', method: :put do %>
       <div class="label"><%= t('drgcms.username') %></div>
       <div class="input"><%= text_field('record', 'username') %></div>
 
