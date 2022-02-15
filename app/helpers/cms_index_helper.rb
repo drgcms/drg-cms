@@ -96,12 +96,12 @@ def dc_actions_for_index
     # filter
     when action == 'filter'
       table = session[@form['table']]
-      url = table.dig(:filter) ?
+      url = table&.dig(:filter) ?
             url_for(controller: 'cmsedit', action: 'run', control: 'cmsedit.filter_off', t: @form['table'], f: CmsHelper.form_param(params)) :
             ''
       html_right << %(
 <li>
-  <div class="dc-filter" title="#{DcFilter.title4_filter_off(table[:filter])}" data-url="#{url.html_safe}">
+  <div class="dc-filter" title="#{DcFilter.title4_filter_off(table)}" data-url="#{url.html_safe}">
     #{mi_icon(url.blank? ? 'search' : 'search_off') }#{DcFilter.menu_filter(self).html_safe}
   </div>
 </li>#{DcFilter.get_filter_field(self)}).html_safe

@@ -210,10 +210,10 @@ end
 # Creates title for turn filter off, which consists of displaying curently
 # active filter and text to turn it off.
 ######################################################################
-def self.title4_filter_off(filter_yaml)
-  return '' if filter_yaml.nil?
+def self.title4_filter_off(filter_data)
+  return '' unless filter_data&.dig(:filter)
 
-  filter = YAML.load(filter_yaml)
+  filter = YAML.load(filter_data[:filter])
   operations = I18n.t('drgcms.choices4_filter_operators').chomp.split(',').inject([]) {|r,v| r << v.split(':') }
   operation = ''
   if filter['operation'] == 'eval'
