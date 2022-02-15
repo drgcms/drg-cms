@@ -292,23 +292,67 @@ border-radius: 1px;
   flex-grow: 1;
 }
 
-.dc-row-actions .dc-link i,
-.dc-row-actions .dc-link-ajax i {
+.dc-result-actions i, .dc-result-actions .dc-link-ajax i {
   color: #666;
-  font-size: 20px;
+  font-size: 22px;
 }
 
-.dc-result-data .dc-row-actions, .dc-result-header .dc-row-actions {
-  padding-right: 4px;
-  display: flex;
+.dc-result-actions .dc-link-ajax:hover i {
+  color: rgba(44, 142, 255, 1);
+}
+
+.dc-result-data .dc-result-actions, .dc-result-header .dc-result-actions {
+  padding: 0 4px;
+  display: inline-flex;
   align-items: center;
-  justify-content: center;  
+  justify-content: left;
   white-space: nowrap;
 }
 
+.dc-result-submenu ul {
+  display: none;
+  background-color: #fff;
+  filter: drop-shadow(1px 2px 6px #ccc);
+  border: 1px solid #eee;
+  position: fixed;
+  margin: -6px 0 0 13px;
+}
+
+.dc-result-submenu ul li {
+  padding: 4px 8px;
+  text-transform: uppercase;
+}
+
+.dc-result-submenu ul .dc-link-ajax {
+  text-align: left;
+}
+
+.dc-result-submenu:hover > ul {
+  display: block;
+
+}
+
+.dc-result-submenu ul li a:link, .dc-result-submenu .dc-link a:link   {
+  font-size: 15px;
+  font-weight: 500;
+  color: #666;
+}
+
+.dc-result-submenu ul li:hover {
+  background-color: #f7f7f7;
+}
+
+.dc-result-submenu ul li i, .dc-result-submenu ul li:hover i, .dc-result-submenu ul li:hover a {
+  color: rgba(44, 142, 255, 1);
+}
+
+.dc-result-header .dc-check-all {
+  font-size: 18px;
+  padding: 6px 0;
+}
+
 .dc-result-data.dc-even.dc-checked, .dc-result-data.dc-odd.dc-checked {
-  background-color: #dbebff;
-  background-color: rgba(44,142,255, 0.6);
+  background-color: rgba(44,142,255,0.1);
 }
 
 .dc-result-data .dc-link, .dc-result-data .dc-link-ajax {
@@ -344,13 +388,11 @@ border-radius: 1px;
   padding-right: 4px;
 }
 
-.dc-result-header .dc-check-all {
-  font-size: 1.2em;
-  margin-left: -1rem;
-  background-color: white;
-  padding: 6px 3px;
-}
 
+
+
+
+/* */
 .dc-menu {
 padding: 8px 0;
 display: inline-table;
@@ -1097,7 +1139,7 @@ background-color: lightyellow;
 }
 
 .dc-action-menu ul ul a {
-  white-space:nowrap;
+  /*white-space: nowrap;*/
   padding: 7px;
   cursor: pointer;
 }
@@ -1110,13 +1152,19 @@ background-color: lightyellow;
   z-index: 1000000;
 }
 
+.dc-action-menu .dc-left li:hover ul {
+  left: -4px;
+  margin-top: 4px;
+}
+
 .dc-action-menu ul li:hover ul li a:hover {
   color: #222;
 }
 
 .menu-filter {
-min-width: 200px;
-max-width: 400px;
+  min-width: 200px;
+  /*max-width: 400px;*/
+  position: initial;
 }
 
 .menu-filter li a {

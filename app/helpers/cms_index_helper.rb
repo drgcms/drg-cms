@@ -67,7 +67,7 @@ def dc_actions_for_index
       action = 'link' 
     end
     # if return_to is present link directly to URL
-    if action == 'link' and yaml['url']
+    if action == 'link' && yaml['url']
       url = yaml['url']
     else
       url['controller'] = yaml['controller'] if yaml['controller']
@@ -79,7 +79,7 @@ def dc_actions_for_index
     # html link options
     html_options = yaml['html'] || {}
     html_options['title'] = yaml['title'] if yaml['title']
-    code = case
+    case
     # sort
     when action == 'sort'
       choices = [%w[id id]]
@@ -91,15 +91,7 @@ def dc_actions_for_index
       end
       data = t('drgcms.sort') + select('sort', 'sort', choices, { include_blank: true }, { class: 'dc-sort-select',
                                  'data-table' => @form['table'], 'data-form' => CmsHelper.form_param(params)} )
-      html_right << %(
-<li>
-  <div class="dc-sort">#{data}
-</li>)
-
-      #      caption = t('drgcms.sort') + select('sort', 'sort', choices, { include_blank: true },
-      ##                                    { class: 'drgcms_sort', 'data-table' => @form['table'], 'data-form' => params['form_name']} )
-      #html_right << %(<li><div class="dc-sort" title="">#{caption}</li>)
-      next
+      html_right << %(<li><div class="dc-sort">#{data}</li>)
 
     # filter
     when action == 'filter'
@@ -113,27 +105,26 @@ def dc_actions_for_index
     #{mi_icon(url.blank? ? 'search' : 'search_off') }#{DcFilter.menu_filter(self).html_safe}
   </div>
 </li>#{DcFilter.get_filter_field(self)}).html_safe
-      next
 
     # new
     when action == 'new'
       caption = yaml['caption'] || 'drgcms.new'
       html_options['class'] = 'dc-link'
       html_left << "<li>#{dc_link_to(caption, 'add', url, html_options)}</li>"
-      next
 
     when action == 'close'
       html_left << %(<li><div class="dc-link" onclick="window.close();"'>#{fa_icon('close')} #{t('drgcms.close')}</div></li>)
-      next
 
     # menu
     when action == 'menu'
-      if options['caption']
-        caption = t(options['caption'], options['caption']) + '&nbsp;' + fa_icon('caret-down lg')
-        caption + eval(options['eval'])
-      else # when caption is false, provide own actions
-        eval(options['eval'])
-      end
+      code = if options['caption']
+               caption = t(options['caption'], options['caption']) + '&nbsp;' + fa_icon('caret-down lg')
+               caption + eval(options['eval'])
+             else # when caption is false, provide own actions
+               eval(options['eval'])
+             end
+      html_left << %(<li><div class="dc-link">#{code}</div></li>)
+
 =begin
 # reorder      
     when action == 'reorder' then  
@@ -146,27 +137,26 @@ def dc_actions_for_index
 =end     
     when action == 'script'
       html_left << dc_script_action(options)
-      next
 
     when action == 'field'
       html_right << dc_field_action(yaml)
-      next 
 
     when %w(ajax link window popup submit).include?(action)
       html_left << dc_link_ajax_window_submit_action(options, nil)
-      next
 
     else
-      caption = yaml['caption'] || yaml['text']
+      caption = dc_get_caption(yaml) || t("drgcms.#{action}")
       icon    = yaml['icon'] || action
-      dc_link_to(caption, icon, url, html_options)
+      html_options['class'] = 'dc-link'
+      code = dc_link_to(caption, icon, url, html_options)
+      html_left << %(<li>#{code}</li>)
     end
-    html_left << %(<li><div class="dc-link">#{code}</div></li>)
   end
-  # start div with hidden spinner image
-  html = %(
+
+  %(
 <form id="dc-action-menu">
   <span class="dc-spinner">#{fa_icon('settings-o spin')}</span>
+
   <div class="dc-action-menu">
     <ul class="dc-left">#{html_left}</ul>
     <ul class="dc-right">#{html_right}</ul>
@@ -262,18 +252,23 @@ end
 ############################################################################
 def dc_actions_column
   actions = @form['result_set']['actions']
-  return [{}, 0] if actions.nil? || dc_dont?(actions)
+  return [{}, 0, false] if actions.nil? || dc_dont?(actions)
 
   # standard actions
-  actions = {'standard' => true} if actions.class == String && actions == 'standard'
+  actions = { 'standard' => true } if actions.class == String && actions == 'standard'
   std_actions = { 2 => 'edit', 5 => 'delete' }
   if actions['standard']
     actions.merge!(std_actions) 
     actions.delete('standard')
   end
-
-  width = @form['result_set']['actions_width'] || 22*actions.size
-  [actions, width]
+  # check must be first action
+  has_check = actions.first[1] == 'check'
+  width = if has_check
+            actions.size > 1 ? 44 : 22
+          else
+            22
+          end
+  [actions, width, has_check]
 end
 
 ############################################################################
@@ -282,8 +277,8 @@ end
 def dc_actions_column_for_footer
   return '' unless @form['result_set']['actions']
 
-  ignore, width = dc_actions_column
-  %(<div class="dc-row-actions" style="width: #{width}px;"></div>).html_safe
+  ignore, width, ignore2 = dc_actions_column
+  %(<div class="dc-result-actions" style="width: #{width}px;"></div>).html_safe
 end
 
 ############################################################################
@@ -293,57 +288,75 @@ def dc_actions_for_result(document)
   actions = @form['result_set']['actions']
   return '' if actions.nil? || @form['readonly']
 
-  actions, width = dc_actions_column()
-  html = %Q[<ul class="dc-row-actions" style="width: #{width}px;">]
-  actions.sort_by(&:first).each do |k, v|
-    session[:form_processing] = "result_set:actions: #{k}=#{v}"
+  actions, width, has_check = dc_actions_column()
+  has_sub_menu = (has_check && actions.size > 2) || (!has_check && actions.size > 1)
+
+  main_menu, sub_menu = '', ''
+  actions.sort_by(&:first).each do |num, action|
+    session[:form_processing] = "result_set:actions: #{num}=#{action}"
     parms = @parms.clone
     # if single definition simulate type parameter
-    yaml = v.class == String ? { 'type' => v } : v
-    # code already includes li tag
+    yaml = action.class == String ? { 'type' => action } : action
+
     if %w(ajax link window popup submit).include?(yaml['type'])
       @record = document # otherwise document fields can't be used as parameters
-      html << dc_link_ajax_window_submit_action(yaml, document)
+      html = dc_link_ajax_window_submit_action(yaml, document)
     else
-      html << '<li><div class="dc-link">'
-      html << case
-      when yaml['type'] == 'check' then
-        check_box_tag("check-#{document.id}", false,false,{ class: 'dc-check' })
+      caption = dc_get_caption(yaml) || "drgcms.#{yaml['type']}"
+      title   = t(yaml['help'] || caption, '')
+      caption = has_sub_menu ? t(caption, '') : nil
+      html = '<li>'
+      html << case yaml['type']
+      when 'check' then
+        main_menu << '<li>' + check_box_tag("check-#{document.id}", false, false, { class: 'dc-check' }) + '</li>'
+        next
 
-      when yaml['type'] == 'edit' then
+      when 'edit' then
         parms['action'] = 'edit'
-        parms['id']     = document.id
-        dc_link_to( nil, 'edit-o', parms )
+        parms['id'] = document.id
+        dc_link_to( caption, 'edit-o', parms, title: title )
 
-      when yaml['type'] == 'duplicate' then
-        parms['id']     = document.id
+      when 'show' then
+        parms['action'] = 'show'
+        parms['id'] = document.id
+        parms['readonly'] = true
+        dc_link_to( caption, 'eye', parms, title: title )
+
+      when 'duplicate' then
+        parms['id'] = document.id
         # duplicate string will be added to these fields.
         parms['dup_fields'] = yaml['dup_fields'] 
         parms['action'] = 'create'
-        dc_link_to( nil, 'content_copy-o', parms, data: { confirm: t('drgcms.confirm_dup') }, method: :post )
+        dc_link_to( caption, 'content_copy-o', parms, data: { confirm: t('drgcms.confirm_dup') }, method: :post, title: title )
 
-      when yaml['type'] == 'delete' then
+      when 'delete' then
         parms['action'] = 'destroy'
-        parms['id']     = document.id
-        #parms['return_to'] = request.url
-        dc_link_to( nil, 'delete-o', parms, data: { confirm: t('drgcms.confirm_delete') }, method: :delete )
+        parms['id'] = document.id
+        dc_link_to( caption, 'delete-o', parms, data: { confirm: t('drgcms.confirm_delete') }, method: :delete, title: title )
 
-      # undocumented so far
-      when yaml['type'] == 'edit_embedded'
-        parms['controller'] = 'cmsedit'
-        parms['table'] +=  ";#{yaml['table']}"
-        parms['ids']   ||= ''
-        parms['ids']   +=  "#{document.id};"
-        dc_link_to( nil, 'table lg', parms, method: :get )
-    
       else # error. 
         yaml['type'].to_s
       end
-      html << '</div></li>'
+      html << '</li>'
+    end
+
+    if has_sub_menu
+      sub_menu << html
+    else
+      main_menu << html
     end
   end
-  html << '</ul>'
-  html.html_safe
+
+  if has_sub_menu
+    %(
+<ul class="dc-result-actions" style="width: #{width}px;">#{main_menu}
+  <li><div class="dc-result-submenu">#{fa_icon('more_vert')}
+    <ul>#{sub_menu}</ul>
+  </div></li>
+</ul>)
+  else
+    %(<ul class="dc-result-actions" style="width: #{width}px;">#{main_menu}</ul>)
+  end.html_safe
 end
 
 ############################################################################
@@ -351,12 +364,10 @@ end
 ############################################################################
 def dc_header_for_result
   html = '<div class="dc-result-header">'
-  if @form['result_set']['actions'] and !@form['readonly']
-    ignore, width = dc_actions_column()
-    if width > 0 && @form['result_set']['actions'][0].to_s == 'check'
-      check_all = fa_icon('check-square-o', class: 'dc-check-all')
-    end
-    html << %(<div class="dc-row-actions" style="width:#{width}px;">#{check_all}</div>)
+  if @form['result_set']['actions'] && !@form['readonly']
+    ignore, width, has_check = dc_actions_column()
+    check_all = fa_icon('check-square-o', class: 'dc-check-all') if has_check
+    html << %(<div class="dc-result-actions" style="width:#{width}px;">#{check_all}</div>)
   end
   # preparation for sort icon  
   sort_field, sort_direction = nil, nil

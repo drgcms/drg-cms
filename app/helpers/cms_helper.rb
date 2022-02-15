@@ -171,6 +171,13 @@ def dc_html_data(yaml)
 end
 
 ############################################################################
+# There are several options for defining caption (caption,label, text). This method
+# will ensure that caption is returned anyhow provided.
+############################################################################
+def dc_get_caption(yaml)
+  yaml['caption'] || yaml['text'] || yaml['label']
+end
+############################################################################
 # Creates code for link, ajax or windows action for index or form actions.
 # 
 # Parameters:
@@ -183,7 +190,7 @@ end
 ############################################################################
 def dc_link_ajax_window_submit_action(yaml, record = nil, action_active = true)
   parms = {}
-  caption = yaml['caption'] || yaml['text']
+  caption = dc_get_caption(yaml)
   caption = caption ? t("#{caption.downcase}", caption) : nil
   icon    = yaml['icon'] ? "#{fa_icon(yaml['icon'])}" : ''
   # action is not active
@@ -239,9 +246,9 @@ def dc_link_ajax_window_submit_action(yaml, record = nil, action_active = true)
        data-request="#{request}" title="#{yaml['title']}">#{icon}#{caption}</div>)
 
   when 'link'  # link button
-    clas = 'dc-link plus-link'
+    yaml['html'] = dc_add_option(yaml['html'], class: 'dc-link')
     link = dc_link_to(caption, yaml['icon'], parms, yaml['html'] )
-    %(<div class="#{clas}">#{action_active ? link : caption}</div>)
+    %(#{action_active ? link : caption})
 
   when 'window' # open window
     clas = 'dc-link dc-window-open'
@@ -255,6 +262,18 @@ def dc_link_ajax_window_submit_action(yaml, record = nil, action_active = true)
     'Type error!'
   end
   "<li>#{code}</li>"
+end
+
+############################################################################
+# Log exception to rails log. Usefull for debugging eval errors.
+############################################################################
+def dc_add_option(source, options)
+  options.each do |k, v|
+    key = k.to_s
+    source[key] ||= ''
+    source[key] << v
+  end
+  source
 end
 
 ############################################################################

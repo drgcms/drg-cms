@@ -69,6 +69,7 @@ en:
     toggle_cms: Toggle CMS edit/view mode
     edit: Edit
     show: Show
+    duplicate: Duplicate
     new: New
     sort: Sort
     filter: Filter
