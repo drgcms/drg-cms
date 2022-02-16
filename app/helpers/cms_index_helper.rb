@@ -351,7 +351,7 @@ def dc_actions_for_result(document)
     %(
 <ul class="dc-result-actions" style="width: #{width}px;">#{main_menu}
   <li><div class="dc-result-submenu">#{fa_icon('more_vert')}
-    <ul>#{sub_menu}</ul>
+    <ul id="menu-#{document.id}">#{sub_menu}</ul>
   </div></li>
 </ul>)
   else

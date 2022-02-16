@@ -295,6 +295,7 @@ border-radius: 1px;
 .dc-result-actions i, .dc-result-actions .dc-link-ajax i {
   color: #666;
   font-size: 22px;
+  cursor: pointer;
 }
 
 .dc-result-actions .dc-link-ajax:hover i {
@@ -315,21 +316,16 @@ border-radius: 1px;
   filter: drop-shadow(1px 2px 6px #ccc);
   border: 1px solid #eee;
   position: fixed;
-  margin: -6px 0 0 13px;
+  margin: -6px 0 0 16px;
 }
 
 .dc-result-submenu ul li {
   padding: 4px 8px;
-  text-transform: uppercase;
+  /*text-transform: uppercase;*/
 }
 
 .dc-result-submenu ul .dc-link-ajax {
   text-align: left;
-}
-
-.dc-result-submenu:hover > ul {
-  display: block;
-
 }
 
 .dc-result-submenu ul li a:link, .dc-result-submenu .dc-link a:link   {
@@ -340,10 +336,14 @@ border-radius: 1px;
 
 .dc-result-submenu ul li:hover {
   background-color: #f7f7f7;
+  background-color: rgba(44, 142, 255, 1);
 }
 
-.dc-result-submenu ul li i, .dc-result-submenu ul li:hover i, .dc-result-submenu ul li:hover a {
+.dc-result-submenu ul li i { color: rgba(44, 142, 255, 1); }
+
+.dc-result-submenu ul li:hover i, .dc-result-submenu ul li:hover a {
   color: rgba(44, 142, 255, 1);
+  color: #fff;
 }
 
 .dc-result-header .dc-check-all {
@@ -413,10 +413,10 @@ display: inline-table;
   text-align: center;
   border-radius: 4px;
   background: #fff;
-  padding: 8px 14px 6px;
-  text-transform: uppercase;
+  padding: 6px 12px 5px;
+  /*text-transform: uppercase;*/
   text-decoration: none;
-  line-height: 22px;
+  line-height: 26px;
   filter: drop-shadow(1px 2px 4px #ccc);
   border: 0;
 }
@@ -443,14 +443,15 @@ display: inline-table;
 .dc-link-no {
   text-align: left;
   font-weight: 500;
-  padding: 8px 14px 6px;
+  padding: 6px 12px 5px;
   vertical-align: middle;
   filter: drop-shadow(0 1px 2px #ccc);
   border: 1px solid #eee;
   border-radius: 4px;
   color: #999;
   background: #f7f7f7;
-  text-transform: uppercase;
+  line-height: 26px;
+  /*text-transform: uppercase;*/
 }
 
 .dc-link-ajax.in-menu {
@@ -589,7 +590,7 @@ border: solid 1px #ccc;;
   border-spacing:  0;
   margin:  0;
   background-color: #f7f7f7;
-  text-transform: uppercase;
+  /*text-transform: uppercase;*/
 }
 
 .dc-title .dc-paginate {
@@ -761,7 +762,7 @@ border: solid 1px #ccc;;
   line-height: 1.2em;
   padding: 10px 1rem;
   border-bottom: 3px solid rgba(98, 0, 238, 0.4);;
-  text-transform: uppercase;
+  /*text-transform: uppercase;*/
 }
 
 .dc-form-li:hover, .dc-form-li-selected {
@@ -1049,7 +1050,7 @@ background-color: lightyellow;
 }
 #dc-login .label {
   padding: 12px 0 4px;
-  text-transform: uppercase;
+  /*text-transform: uppercase;*/
   font-weight: 500;
 }
 
@@ -1346,7 +1347,7 @@ background-color: lightyellow;
 .filter-popup div {
   padding: 5px 10px;
   text-align: center;
-  text-transform: uppercase; 
+  /*text-transform: uppercase;*/ 
   background-color: #222;
   color: #fff;
 }

@@ -1046,14 +1046,36 @@ $(document).ready( function() {
     url = url + '&filter_field=' + field + '&filter_oper=' + operation
     simple_ajax_call(url);
    });
-   
- /*******************************************************************
-  * Toggle one cmsedit menu level
-  *******************************************************************/
-   $('.cmsedit-top-level-menu').on('click', function(e) {
-     $(e.target).find('ul').toggle('fast');
-   });
-   
+
+  /*******************************************************************
+   * Toggle one cmsedit menu level
+   *******************************************************************/
+  $('.cmsedit-top-level-menu').on('click', function(e) {
+    $(e.target).find('ul').toggle('fast');
+  });
+
+  /*******************************************************************
+   * Toggle result set record menu
+   *******************************************************************/
+  $('.dc-result-submenu .mi-more_vert').on('click', function(e) {
+    let ul = $(e.target).siblings('ul');
+    // hide last selected menu if not the same
+    if (typeof dc_last_menu_selected !== 'undefined' && dc_last_menu_selected.attr('id') !== ul.attr('id')) dc_last_menu_selected.hide();
+    // if menu is past the bottom fix it to bottom
+    let menu_bottom = ul.height() + ul.parent().position().top + 20;
+    if (menu_bottom > $(document).height()) ul.css('bottom', 0);
+
+    ul.toggle('fast');
+    dc_last_menu_selected = ul;
+  });
+
+  /*******************************************************************
+   * Result set record menu is left open if action is canceled. Ex. delete confirm. This will hide menu.
+   *******************************************************************/
+  $('.dc-result-submenu ul li').on('click', function(e) {
+    if (typeof dc_last_menu_selected !== 'undefined') dc_last_menu_selected.hide();
+  });
+
 /*******************************************************************
   * Resize result table columns. For now an idea.
   *******************************************************************/
