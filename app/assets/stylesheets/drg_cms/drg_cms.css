@@ -498,10 +498,14 @@ display: inline-table;
 }
 
 .dc-link-icon {
-padding: 3px;
-border-radius: 3px;
-background: transparent linear-gradient(to bottom, #fff 0%, #e2e2e2 100%) repeat scroll 0 0;
-border: solid 1px #ccc;;
+  padding: 3px;
+  border-radius: 3px;
+  color: rgba(44, 142, 255, 1);
+}
+
+.dc-link-icon:hover {
+  color: #222;
+  cursor: pointer;
 }
 
 .dc-link-selected {
