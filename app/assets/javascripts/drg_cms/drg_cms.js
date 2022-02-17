@@ -784,20 +784,7 @@ $(document).ready( function() {
     $(this).toggleClass('dc-animate-button'); 
   });
  */
- /*******************************************************************
- * Animate button on click
- *******************************************************************/
-  $('.dc-animate').mousedown( function() {
-    $(this).toggleClass('dc-animate-button');
-  });
-  
- /*******************************************************************
- * Animate button on click
- *******************************************************************/
-  $('.dc-animate').mouseup( function() {
-    $(this).toggleClass('dc-animate-button'); 
-  });
- 
+
  /*******************************************************************
   * App menu option clicked
   *******************************************************************/
@@ -1050,8 +1037,9 @@ $(document).ready( function() {
   /*******************************************************************
    * Toggle one cmsedit menu level
    *******************************************************************/
-  $('.cmsedit-top-level-menu').on('click', function(e) {
-    $(e.target).find('ul').toggle('fast');
+  $('.cmsedit-top-level-menu div').on('click', function(e) {
+    $(e.target).siblings('ul').toggle('fast');
+    $(e.target).toggleClass('expanded');
   });
 
   /*******************************************************************
@@ -1262,7 +1250,7 @@ $(document).ready( function() {
    * Show-Hide CMS menu on hamburger click
    *******************************************************************/
   $('#menu-hamburger').on('click', function(e) {
-    $('.cmsedit-container #menu').toggleClass('visible');
+    $('.cmsedit-container #cms-menu').toggleClass('visible');
   });
 
 });

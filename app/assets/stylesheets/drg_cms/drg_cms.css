@@ -394,8 +394,6 @@ border-radius: 1px;
 
 
 
-
-
 /* */
 .dc-menu {
 padding: 8px 0;
@@ -417,7 +415,7 @@ display: inline-table;
   text-align: center;
   border-radius: 4px;
   background: #fff;
-  padding: 6px 12px 5px;
+  padding: 5px 12px 4px;
   /*text-transform: uppercase;*/
   text-decoration: none;
   line-height: 26px;
@@ -426,7 +424,7 @@ display: inline-table;
 }
 
 .dc-link:hover, .dc-link-ajax:hover, .dc-submit:hover {
-  background: rgba(12, 110, 223, 1);
+  background: rgba(44, 142, 255, 1);
   transition: 0.3s;
   cursor: pointer;
   color: #fff;
@@ -447,7 +445,7 @@ display: inline-table;
 .dc-link-no {
   text-align: left;
   font-weight: 500;
-  padding: 6px 12px 5px;
+  padding: 5px 12px 4px;
   vertical-align: middle;
   filter: drop-shadow(0 1px 2px #ccc);
   border: 1px solid #eee;
@@ -590,7 +588,7 @@ border: solid 1px #ccc;;
   font-weight: 600;
   font-size: 1.2em;
   color: #222;
-  padding: 12px 4px 4px;
+  padding: 12px 4px 0;
   border-spacing:  0;
   margin:  0;
   background-color: #f7f7f7;
@@ -833,7 +831,7 @@ display: flex;
 .cms-toggle.mode-1:before {
   font-family: MI;
   content: '\e417';
-  color: lightskyblue;
+  color: rgba(44, 142, 255, 1);
   vertical-align: text-bottom;
   padding-right: 2px;
 }
@@ -880,31 +878,30 @@ font-size: 1.2em;
 .cmsedit-top {
   width: 100%;
   background-color: #fff;
-  border: 4px solid #fff;
+  border-top: 4px solid #fff;
 }
 
-.cmsedit-top #menu {
+.cmsedit-top #cms-top-menu {
   padding: 8px 4px 0 4rem;
   color: #666;
   background-color: #fff;
   border-bottom: 3px solid #666;
 }
-.cmsedit-top #menu a {
- margin-right: 5px;
+
+.cmsedit-top #cms-top-menu a {
+  margin-right: 6px;
 }
 
-.cmsedit-top #menu select#record_select { 
-  padding:  0;
-  max-width: 300px;
-  height: 26px;
+.cmsedit-top #cms-top-menu a:hover {
+  color: rgba(44, 142, 255, 1);
 }
-.cmsedit-top #menu .fa {width: 20px;}
 
-.cmsedit-top #menu span {
+.cmsedit-top #cms-top-menu span {
   font-size: 22px;
   vertical-align: top;
   padding: 0 4px;
 }
+
 
 .cmsedit-container {
   display: flex;
@@ -912,50 +909,66 @@ font-size: 1.2em;
   background-color: #fff;
 }
 
-.cmsedit-container #menu {
+.cmsedit-container #cms-menu {
   display: inline-block;
-  min-width: 20%;
-  height: 100%;
-  font-size: 16px;
-  font-weight: 600;
+  width: 25%;
+  max-width: 300px;
+  font-size: 15px;
+  font-weight: 500;
   color: #222;
   background-color: #fcfcfc;
-  padding: 4px 0;
-
+  border-right: 2px solid #888;
 }
 
-.cmsedit-container #menu a {
-font-weight: normal;
-color: #222;
+.cmsedit-container #cms-menu div {
+  line-height: 20px;
+  position: relative;
 }
 
-.cmsedit-container #menu ul {
+.cmsedit-container #cms-menu div:after {
+  font-family: 'MI';
+  content: '\e5cf';
+  right: 4px;
+  position: absolute;
+  color: #444;
+  font-size: 22px;
+}
+
+.cmsedit-container #cms-menu div.expanded:after {
+  content: '\e5ce';
+}
+
+.cmsedit-container #cms-menu i {
+  font-size: 22px;
+  padding-right: 4px;
+}
+
+.cmsedit-container #cms-menu a {
+  font-weight: normal;
+  color: #222;
+  line-height: 18px;
+}
+
+.cmsedit-container #cms-menu ul {
   margin: 0 5px;
   line-height: 1.5rem;
 }
 
-.cmsedit-container #menu ul ul {
-  margin: 0 0 0 0.5rem;
+.cmsedit-container #cms-menu li {
+  list-style-type: none;
+  padding: 5px;
+  width: 100%;
 }
 
-.cmsedit-container #menu li {
-list-style-type: none;
-padding: 3px;
-width: 100%;
-
+.cmsedit-container #cms-menu a:hover,
+.cmsedit-container #cms-menu div:hover {
+  color: rgba(44, 142, 255, 1);
+  cursor: pointer;
 }
 
-.cmsedit-container #menu a:hover {
-font-weight: normal;
-color: rgba(44, 142, 255, 1);
-}
 
-.cmsedit-container #menu .cmsedit-top-level-menu:hover {
-cursor: pointer;
-}
-
-.cmsedit-container #menu ul li ul {
-display: none;
+.cmsedit-container #cms-menu ul li ul {
+  display: none;
 }
 
 .default-table {
@@ -1112,7 +1125,7 @@ background-color: lightyellow;
   font-weight: bold;
   color: #888;
   display: block;
-  margin: 6px 0;
+  margin: 12px 0 6px;
 }
 
 .dc-action-menu ul li {
@@ -1417,6 +1430,7 @@ color: #669;
   display: inline-flex;
   padding-bottom: 2px;
 }
+
 #drgcms_filter .dc-menu div {
   margin-right: 3px;
   padding: 9px 6px 7px 6px;
@@ -1524,8 +1538,8 @@ color: #669;
   }
 
   .cmsedit-container {display: block;}
-  .cmsedit-container #menu {display: none;}
-  .cmsedit-container #menu.visible {
+  .cmsedit-container #cms-menu {display: none;}
+  .cmsedit-container #cms-menu.visible {
     display: initial;
     width: 200%;
     font-weight: 500;

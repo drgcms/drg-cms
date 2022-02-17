@@ -2,8 +2,8 @@
   <button class="cms-toggle mode-<%= session[:edit_mode] %>" title="<%= t('drgcms.toggle_cms')%>">CMS</button>
   <% # = link_to('CMS', controller: 'dc_common', action: 'toggle_edit_mode', return_to: request.url) %>
   <% if session[:edit_mode] > 1 %>
-    <div class="cmsedit-table cmsedit-top">
-      <div id="menu">
+    <div class="cmsedit-top">
+      <div id="cms-top-menu">
 
         <% if @page %>
           <%= link_to( fa_icon('description-o', title: "#{t('drgcms.edit_page')}"),
@@ -42,7 +42,7 @@
     <div id="menu-hamburger"><%= fa_icon('bars') %></div>
 
     <div class="cmsedit-container">
-      <div id="menu">
+      <div id="cms-menu">
         <%= dc_choices4_cmsmenu.html_safe %>
       </div>
 

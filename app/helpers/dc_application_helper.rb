@@ -782,7 +782,7 @@ def dc_choices4_cmsmenu
   menus.to_a.sort.each do |index, menu|    # sort menus, result is array of sorted hashes
     next unless menu['caption']
     icon = menu['icon'].match('/') ? image_tag(menu['icon']) : fa_icon(menu['icon']) #external or fa- image
-    html << "<li class=\"cmsedit-top-level-menu\">#{icon}#{t(menu['caption'])}<ul>"
+    html << %(<li class="cmsedit-top-level-menu"><div>#{icon}#{t(menu['caption'])}</div><ul>)
     menu['items'].to_a.sort.each do |index1, value|   # again, sort menu items first 
       html << if value['link']
         opts = { target: value['target'] || 'iframe_cms' }
