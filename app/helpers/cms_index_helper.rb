@@ -416,8 +416,8 @@ def dc_clicks_for_result(document)
     opts = {}
     opts[:controller] = yaml['controller'] || 'cmsedit'
     opts[:action]     = yaml['action']
-    opts[:table]      = CmsHelper.table_param(params)
-    opts[:form_name]  = CmsHelper.form_param(params) || opts[:table]
+    opts[:table]      = yaml['table'] || CmsHelper.table_param(params)
+    opts[:form_name]  = yaml['form_name'] || CmsHelper.form_param(params) || opts[:table]
     opts[:method]     = yaml['method'] || 'get'
     opts[:id]         = document['id']
     opts[:readonly]   = yaml['readonly'] if yaml['readonly']

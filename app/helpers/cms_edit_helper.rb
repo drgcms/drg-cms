@@ -410,6 +410,7 @@ def dc_head_for_form
   @css ||= ''
   head = @form['form']['head']
   return '' if head.nil?
+
   html    = %(<div class="dc-head #{head['class']}">\n<div class="dc-row">)
   split   = head['split'] || 4
   percent = 100/split

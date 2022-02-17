@@ -331,6 +331,7 @@ border-radius: 1px;
 
 .dc-result-submenu ul li a:link, .dc-result-submenu .dc-link a:link   {
   font-size: 15px;
+  line-height: 18px;
   font-weight: 500;
   color: #666;
 }
@@ -346,6 +347,16 @@ border-radius: 1px;
   color: rgba(44, 142, 255, 1);
   color: #fff;
 }
+
+.dc-result-submenu .dc-link-no {
+  color: #bbb;
+  filter: none;
+}
+
+.dc-result-submenu .dc-link-no i {
+  color: #bbb;
+}
+
 
 .dc-result-header .dc-check-all {
   font-size: 18px;
