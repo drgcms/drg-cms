@@ -246,11 +246,11 @@ process_json_result = function(json) {
 /**** display popup message ****/
       case 'popup':
         if (selector == 'url') {
-          $('#popup').bPopup({ loadUrl: value });
+          $('#popup').bPopup({ loadUrl: value,position: ['auto', 0], opacity: 0 });
         }
         else {
           $('#popup').html(value);
-          $('#popup').bPopup({speed: 650, transition: 'slideUp', position: ['auto',1]});
+          $('#popup').bPopup({ transition: 'slideUp', position: ['auto', 0], opacity: 0 });
         }
         break;
 
@@ -767,8 +767,7 @@ $(document).ready( function() {
     let h = this.getAttribute("data-y") || 800;
 
     url = dc_url_add_params(this, url)
-    $('#popup').bPopup({ loadUrl: url, opacity: 0.4, position: ['auto', 10], closeClass: 'dc-link',
-                       onClose: function() {$('#popup').clearQueue(); console.log('closed');} });
+    $('#popup').bPopup({ loadUrl: url, opacity: 0, position: ['auto', 0], closeClass: 'dc-link' });
   });
 
  /*******************************************************************
@@ -1007,7 +1006,9 @@ $(document).ready( function() {
   $('#open_drgcms_filter').on('click', function(e) {
     $('#drgcms_filter').bPopup({
       speed: 650,
-      transition: 'slideDown'
+      transition: 'slideDown',
+      position: ['auto', 0],
+      opacity: 0
     });      
   });
   
@@ -1018,9 +1019,10 @@ $(document).ready( function() {
 //      var img = $('.img1 img').attr('src');
       var img = $(this).children(":first").attr('src');
       $('#dc-image-preview').bPopup({
-            content:'image', //'ajax', 'iframe' or 'image'
+            content: 'image', //'ajax', 'iframe' or 'image'
             contentContainer:'#dc-image-preview',
-            loadUrl: img
+            loadUrl: img,
+            opacity: 0
         });
   });
   
@@ -1065,8 +1067,7 @@ $(document).ready( function() {
   $('.dc-result-submenu ul').hover(function(e) {
   },
     function(e) {
-      let ul = $(e.target).parent();
-      ul.hide();
+      dc_last_menu_selected.hide();
       dc_last_menu_selected = undefined;
   });
 
