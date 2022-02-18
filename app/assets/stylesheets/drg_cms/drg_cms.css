@@ -123,20 +123,25 @@ font-family: DrgSans,arial,sans-serif;
 }
 
 textarea, input, select {
-color: #000;
-padding: 8px 4px;
-margin-left: 1px;
-border: 1px dashed #888;;
-border-radius: 4px;
-font: 16px DrgSans,arial,sans-serif;
-max-width: 100%;
-vertical-align: middle;
+  color: #000;
+  padding: 8px 4px;
+  margin-left: 1px;
+  border: 1px dashed #888;;
+  border-radius: 4px;
+  font: 16px DrgSans,arial,sans-serif;
+  max-width: 100%;
+  vertical-align: middle;
+}
+
+.dc-action-menu textarea, .dc-action-menu input, .dc-action-menu select {
+  padding: 6px 4px;
+  max-width: 200px;
 }
 
 textarea:focus, input:focus, select:focus {
   border: 1px solid rgba(44, 142, 255, 1);
   outline: 1px solid rgba(44, 142, 255, 1);
-  border-radius: 1px;
+  border-radius: 4px;
 }
 
 input[type=submit]:focus {
@@ -315,7 +320,6 @@ border-radius: 1px;
   display: none;
   background-color: #fff;
   filter: drop-shadow(1px 2px 6px #ccc);
-  border: 1px solid #eee;
   position: fixed;
   margin: -6px 0 0 16px;
 }
@@ -1055,8 +1059,8 @@ color: #000;
 }
 
 
-.dc-red { color: #d99;}
-.dc-red:hover { color: #e66;}
+.dc-red { color: #f76;}
+.dc-red:hover { color: #c43;}
 .dc-green { color: #9c9;}
 .dc-green:hover { color: #6a6;}
 
@@ -1296,7 +1300,7 @@ background-color: lightyellow;
 }
 
 #popup .dc-help h1 {
-  background: darkred;
+  background: #c43;
   color: #fff;
   font-weight: 600;
   padding: 4px;

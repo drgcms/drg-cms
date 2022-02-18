@@ -767,7 +767,8 @@ $(document).ready( function() {
     let h = this.getAttribute("data-y") || 800;
 
     url = dc_url_add_params(this, url)
-    $('#popup').bPopup({ loadUrl: url, opacity: 0.4, position: ['auto', 10] });
+    $('#popup').bPopup({ loadUrl: url, opacity: 0.4, position: ['auto', 10], closeClass: 'dc-link',
+                       onClose: function() {$('#popup').clearQueue(); console.log('closed');} });
   });
 
  /*******************************************************************
@@ -1044,23 +1045,36 @@ $(document).ready( function() {
 
   /*******************************************************************
    * Toggle result set record menu
+   *
+   * This and additional two event hadlers provide expected behavior of submenus popup and close.
    *******************************************************************/
   $('.dc-result-submenu .mi-more_vert').on('click', function(e) {
     let ul = $(e.target).siblings('ul');
     // hide last selected menu if not the same
-    if (typeof dc_last_menu_selected !== 'undefined' && dc_last_menu_selected.attr('id') !== ul.attr('id')) dc_last_menu_selected.hide();
+    if (typeof dc_last_menu_selected !== 'undefined') { dc_last_menu_selected.hide(); }
     // if menu is past the bottom fix it to bottom
     let menu_bottom = ul.height() + ul.parent().position().top + 20;
     if (menu_bottom > $(document).height()) ul.css('bottom', 0);
-
-    ul.toggle('fast');
+    ul.show();
     dc_last_menu_selected = ul;
+   });
+
+  /*******************************************************************
+   * Result record menu has lost focus. Hide menu.
+   *******************************************************************/
+  $('.dc-result-submenu ul').hover(function(e) {
+  },
+    function(e) {
+      let ul = $(e.target).parent();
+      ul.hide();
+      dc_last_menu_selected = undefined;
   });
 
   /*******************************************************************
    * Result set record menu is left open if action is canceled. Ex. delete confirm. This will hide menu.
    *******************************************************************/
   $('.dc-result-submenu ul li').on('click', function(e) {
+    console.log('ups');
     if (typeof dc_last_menu_selected !== 'undefined') dc_last_menu_selected.hide();
   });
 
@@ -1201,7 +1215,7 @@ $(document).ready( function() {
     );
     $(this).removeClass(old_sort_icon).addClass('mi-ads_click');
   // bring back old sort icon
-  }, function(){
+  }, function() {
     $(this).removeClass('mi-ads_click').addClass(old_sort_icon);
   });
 
