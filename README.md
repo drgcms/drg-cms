@@ -1,21 +1,28 @@
-# What is DRG CMS
+# drg-cms
+
+[![Gem Version](http://img.shields.io/gem/v/drg_cms.svg)](https://rubygems.org/gems/drg_cms)
+[![Gem Downloads](https://img.shields.io/gem/dt/drg_cms.svg)](https://rubygems.org/gems/drg_cms)
+
 
 DRG CMS simplifies the programming of business applications. 
-No database experience and only basic programming skills are needed to create a data entry program. You can do it in 6 simple steps.
+No database experience and only basic programming skills are needed 
+to create a data entry program. You can do it in 6 simple steps.
 
-Step 1: Create Mode<br>
+Step 1: Create Model<br>
 Step 2: Generate Form<br>
 Step 3: Edit Form<br>
 Step 4: Define Labels and Help Text<br>
 Step 5: Create Controls File (if required)<br>
-Step 6: Include in Menu<br>
+Step 6: Include in application menu<br>
 
 Most of the time, you will end up with two source files.
 
-Model file is a Ruby source file, which holds fields definitions, 
-index definitions, dependencies, validations, transformations 
-for a document (record). This is an example of a typical simple 
-model file example.
+<b>Model:</b> Model file is a database document definition file written in Ruby
+language. Mode file holds fields definitions, 
+index definitions, dependencies, validations, callbacks and transformations 
+for a database document (record). 
+
+An example of a typical model file app/models/note.rb
 
 ```ruby
 class Note
@@ -39,14 +46,22 @@ validates :duration,   presence: true
 end
 ```
 
-Form file is a text file, written in the YAML markup language, and 
-defines fields and actions which make application web facing view.
+<b>Form:</b> Form file is a text file, written in the YAML markup language. It consists
+of three main parts.<br>
+
+<b>index:</b> Which defines actions usually performed on database documents or 
+set of document.<br>
+<b>result_set:</b> Defines set of documents, document fields and actions 
+which can be performed on the document.<br>
+<b>form:</b> Defines data entry fields for editing and displaying the document.<br>
+
+Example of form file for Note model app/forms/note.yaml
 
 ```yaml
 table: note
 
 index:
-  filter: title
+  filter: search as text_field
   actions: standard
 
 result_set:
@@ -91,39 +106,99 @@ form:
     options: "height: 500"
 ```
 
-Include it into your application menu with this line:
+Add labels and help text to your project locales files.
+```yaml
+en:
+  helpers:
+    label:
+      diary:
+        tabletitle: Diary
+        choices4_duration: "10 min:10,15 min:15,20 min:20,30 min:30,45 min:45,1 hour:60,1 hour 30 min:90,2 hours:120,2 hours 30 min:150,3 hours:180,4 hours:240,5 hours:300,6 hours:360,7 hours:420,8 hours:480"
+
+        title: Title
+        body: Description
+        time_started: Start time
+        duration: Duration 
+        search: Search
+        user_id: Owner
+
+    help:
+      diary:
+        title: Short title
+        body: Description of event or note
+        time_started: Time or date when note is created or event started
+        duration: Duration of event
+        search: Data used for searching data
+        user_id: Owner of the note
+  ```
+Combination of two source files and localisation data makes application
+data entry program. Application data entry program implements basic data
+entry operations on a database:<br>
+<li>add new document<br>
+<li>edit document<br>
+<li>delete document<br>
+<li>show document
+<br><br>Add it into your application menu with this code:
 
 ```ruby
 dc_link_to('Notes', 'book', { table: 'note' }, target: 'iframe_edit')
 ```
 
 And when you need advanced program logic, you will implement it in 
-the controls source file.
+the control file. Control files code is injected into drgcms edit
+controller during form load, and provides additional program logic required
+by data entry program.
+```ruby
+######################################################################
+# Drgcms controls for Notes application
+######################################################################
+module NoteControl
 
+######################################################################
+# Fill in currently logged user on new record action.
+######################################################################
+def dc_new_record
+  @record.user_id = session[:user_id]
+  @record.time_started = Time.now.localtime
+end
+
+###########################################################################
+# Allow only current user documents to be displayed
+###########################################################################
+def current_user_documents()
+  user_filter_options(Note).and(user_id: session[:user_id]).order_by(id: -1)
+end
+
+end
+```
+
+## Features
 DRG CMS uses Ruby on Rails, one of the most popular frameworks for 
 building web sites. Ruby on Rails guarantees highest level of application security and huge base of extensions which will help you when your application grows.
-
+<br><br>
 DRG CMS uses MongoDB, leading NO-SQL document database, as database 
 back-end with a help of mongoid gem. Mongoid's flexible document model 
 defines all document fields, indexes, dependencies, validations in a 
 single model file with no database migrations required.
-
+<br><br>
 DRG CMS has built-in user friendly role based database access system. Administrator
 defines roles and roles rights (no access, can read, can edit) as web site policies.
 Roles are then assigned to users and policies can be assigned to documents (web pages)
 or even parts of a documents.
-
+<br><br>
 DRG CMS can coexist with other frameworks which use MongoDB as database
 back-end. Use your favorite framework for data presentation and 
 use DRG Forms for rapid development of data entry forms.
-
+<br><br>
 DRG CMS can coexist with other databases and Rails controllers. I can 
 highly recommend using DRG CMS in heterogeneous database Intranet 
 projects. For the last few years, DRG has been used for development of 
 an in-house Intranet portal which uses MongoDB as primary database and
 connects frequently to Oracle and MS-SQL databases.
 
-Go and [jumpstart](https://github.com/drgcms/drg-portal-jumpstart) 
+## Installation
+
+Go and [jumpstart](https://github.com/drgcms/drg-portal-jumpstart)
 internal portal application with DRG CMS in just few minutes.
 
 Project Tracking

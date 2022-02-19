@@ -14,9 +14,6 @@
  *= require drg_cms/jstree
 
  *= require jquery-ui/all
- 
  *= require drg_material_icons
 */
 
-/* Required for link buttons to look alike */
-.dc-link a, .dc-link-submit input {font-weight: 600; }   
