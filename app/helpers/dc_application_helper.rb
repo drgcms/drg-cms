@@ -531,7 +531,7 @@ def dc_link_for_create(opts)
   opts['action']       = 'new'
   opts['controller'] ||= 'cmsedit'
   js = "$('##{target}').attr('src', '#{_origin.url_for(opts)}'); return false;"
-  dc_link_to(nil, _origin.fa_icon('plus-circle lg', class: 'dc-inline-link'), '#',
+  dc_link_to(nil, _origin.fa_icon('plus-circle', class: 'dc-inline-link'), '#',
              { onclick: js, title: title, alt: 'Create'}).html_safe
 end
 
@@ -554,7 +554,7 @@ def dc_link_for_edit(opts)
   title  = opts.delete('title') #
   title  = t(title)
   target = opts.delete('target') || 'iframe_cms'
-  icon   = opts.delete('icon') || 'edit lg'
+  icon   = opts.delete('icon') || 'edit-o'
   opts['controller'] ||= 'cmsedit'
   opts['action']     ||= 'edit'
   opts['form_name']  ||= opts['table'].to_s.split(';').last
@@ -570,7 +570,7 @@ def dc_link_menu_tag(title) #:nodoc:
   html = %(
 <dl>
   <dt><div class='drgcms_popmenu' href="#">
-    #{_origin.fa_icon('file-text-o lg', class: 'dc-inline-link', title: title)}
+    #{_origin.fa_icon('file-text-o', class: 'dc-inline-link', title: title)}
   </div></dt>
   <dd>
     <ul class=' div-hidden drgcms_popmenu_class'>

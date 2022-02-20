@@ -111,7 +111,7 @@ def render
   @yaml['html']['placeholder'] = t('drgcms.search_placeholder')
   _name = '_' + @yaml['name']
   @html << '<div class="ui-autocomplete-border">'
-  @html << @parent.link_to(@parent.fa_icon('plus-square lg', class: 'dc-green'), '#',onclick: 'return false;') # dummy add. But it is usefull.
+  @html << @parent.link_to(@parent.fa_icon('plus-square', class: 'dc-green'), '#',onclick: 'return false;') # dummy add. But it is usefull.
 
   record = record_text_for(@yaml['name'])
   # text field for autocomplete
@@ -119,7 +119,7 @@ def render
   # direct link for adding new documents to collection
   if @yaml['with_new'] and !@readonly
     @html << ' ' + 
-             @parent.fa_icon('plus-square lg', class: 'in-edit-add', title: t('drgcms.new'), 
+             @parent.fa_icon('plus-square', class: 'in-edit-add', title: t('drgcms.new'),
              style: "vertical-align: top;", 'data-table' => @yaml['with_new'] )    
   end
   # div to list active selections
@@ -137,9 +137,9 @@ def render
       end
 # Related data is missing. It happends.
       @html << if rec
-        link  = @parent.link_to(@parent.fa_icon('remove lg', class: 'dc-red'), '#',
+        link  = @parent.link_to(@parent.fa_icon('remove', class: 'dc-red'), '#',
                 onclick: "$('##{rec.id}').hide(); var v = $('##{record}_#{@yaml['name']}_#{rec.id}'); v.val(\"-\" + v.val());return false;")
-        link  = @parent.fa_icon('check lg', class: 'dc-green') if @readonly      
+        link  = @parent.fa_icon('check', class: 'dc-green') if @readonly
         field = @parent.hidden_field(record, "#{@yaml['name']}_#{rec.id}", value: element)
         "<div id=\"#{rec.id}\" style=\"padding:4px;\">#{link} #{rec.send(field_name)}<br>#{field}</div>"
       else
@@ -149,7 +149,7 @@ def render
   end
   @html << "</div></div>"
 # Create text for div to be added when new category is selected  
-  link    = @parent.link_to(@parent.fa_icon('remove lg', class: 'dc-red'), '#',
+  link    = @parent.link_to(@parent.fa_icon('remove', class: 'dc-red'), '#',
             onclick: "$('#rec_id').hide(); var v = $('##{record}_#{@yaml['name']}_rec_id'); v.val(\"-\" + v.val());return false;")
   field   = @parent.hidden_field(record, "#{@yaml['name']}_rec_id", value: 'rec_id')
   one_div = "<div id=\"rec_id\" style=\"padding:4px;\">#{link} rec_search<br>#{field}</div>"

@@ -118,7 +118,7 @@ def dc_actions_for_index
     # menu
     when action == 'menu'
       code = if options['caption']
-               caption = t(options['caption'], options['caption']) + '&nbsp;' + fa_icon('caret-down lg')
+               caption = t(options['caption'], options['caption']) + '&nbsp;' + fa_icon('caret-down')
                caption + eval(options['eval'])
              else # when caption is false, provide own actions
                eval(options['eval'])

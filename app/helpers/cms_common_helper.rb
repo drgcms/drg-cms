@@ -228,7 +228,7 @@ end
 #        eval: dc_icon4_boolean
 ############################################################################
 def dc_icon_for_boolean(value=false)
-  dc_dont?(value, true) ? fa_icon('check_box_outline_blank lg') : fa_icon('check_box-o lg')
+  dc_dont?(value, true) ? fa_icon('check_box_outline_blank') : fa_icon('check_box-o')
 end
 
 ############################################################################
