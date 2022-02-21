@@ -246,11 +246,17 @@ process_json_result = function(json) {
 /**** display popup message ****/
       case 'popup':
         if (selector == 'url') {
-          $('#popup').bPopup({ loadUrl: value,position: ['auto', 0], opacity: 0 });
+          $('#popup').bPopup({ loadUrl: value,
+            transition: 'slideDown', transitionClose: 'slideDown', speed: 300,
+            opacity: 0, position: ['auto', 20],
+            closeClass: 'dc-link' });
         }
         else {
           $('#popup').html(value);
-          $('#popup').bPopup({ transition: 'slideUp', position: ['auto', 0], opacity: 0 });
+          $('#popup').bPopup( {
+            transition: 'slideDown', transitionClose: 'slideDown', speed: 300,
+            opacity: 0, position: ['auto', 20],
+            closeClass: 'dc-link' });
         }
         break;
 
@@ -767,7 +773,10 @@ $(document).ready( function() {
     let h = this.getAttribute("data-y") || 800;
 
     url = dc_url_add_params(this, url)
-    $('#popup').bPopup({ loadUrl: url, opacity: 0, position: ['auto', 0], closeClass: 'dc-link' });
+    $('#popup').bPopup({ loadUrl: url,
+                             transition: 'slideDown', transitionClose: 'slideDown', speed: 300,
+                             opacity: 0, position: ['auto', 20],
+                             closeClass: 'dc-link' });
   });
 
  /*******************************************************************
@@ -1005,11 +1014,10 @@ $(document).ready( function() {
   *******************************************************************/
   $('#open_drgcms_filter').on('click', function(e) {
     $('#drgcms_filter').bPopup({
-      speed: 650,
-      transition: 'slideDown',
-      position: ['auto', 0],
-      opacity: 0
-    });      
+      transition: 'slideDown', transitionClose: 'slideDown', speed: 300,
+      opacity: 0, position: ['auto', 20],
+      closeClass: 'dc-link' });
+    });
   });
   
   /*******************************************************************
@@ -1020,7 +1028,7 @@ $(document).ready( function() {
       var img = $(this).children(":first").attr('src');
       $('#dc-image-preview').bPopup({
             content: 'image', //'ajax', 'iframe' or 'image'
-            contentContainer:'#dc-image-preview',
+            contentContainer: '#dc-image-preview',
             loadUrl: img,
             opacity: 0
         });
