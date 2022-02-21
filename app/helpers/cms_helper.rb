@@ -36,7 +36,7 @@ module CmsHelper
 def dc_script_action(yaml)
   icon = dc_icon_for_link yaml['icon']
   data = %(data-request="script" data-script="#{yaml['js'] || yaml['script']}" data-url="script")
-  %Q[<li><div class="dc-link-ajax" #{data}>#{icon} #{ t(yaml['caption'],yaml['caption']) }</div></li>]
+  %(<li><div class="dc-link-ajax" #{data}>#{icon} #{ t(yaml['caption'],yaml['caption']) }</div></li>)
 end
 
 ############################################################################
@@ -246,7 +246,7 @@ def dc_link_ajax_window_submit_action(yaml, record = nil, action_active = true)
        data-request="#{request}" title="#{yaml['title']}">#{icon}#{caption}</div>)
 
   when 'link'  # link button
-    yaml['html'] = dc_add_option(yaml['html'], class: 'dc-link')
+    yaml['html'] = dc_yaml_add_option(yaml['html'], class: 'dc-link')
     link = dc_link_to(caption, yaml['icon'], parms, yaml['html'] )
     %(#{action_active ? link : caption})
 
@@ -265,13 +265,14 @@ def dc_link_ajax_window_submit_action(yaml, record = nil, action_active = true)
 end
 
 ############################################################################
-# Log exception to rails log. Usefull for debugging eval errors.
+# Add new option to yaml. Subroutine of dc_link_ajax_window_submit_action.
 ############################################################################
-def dc_add_option(source, options)
+def dc_yaml_add_option(source, options) #nodoc
   options.each do |k, v|
     key = k.to_s
     source[key] ||= ''
-    source[key] << v
+    # only if not already present
+    source[key] << " #{v}" unless source[key].match(v.to_s)
   end
   source
 end

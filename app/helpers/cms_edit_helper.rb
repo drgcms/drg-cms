@@ -142,14 +142,14 @@ def dc_actions_for_form(position)
   actions.each do |key, options|
     session[:form_processing] = "form:actions: #{key} #{options}"
     next if options.nil?  # yes it happens
+
     parms = @parms.clone
     if options.class == String
       next if @form['readonly'] and !options.match(/back|close/)
 
-      #      html << '<li class="dc-link">'
       html << '<li>'
       html << case
-        when (options == 'back' or options == 'cancle')
+        when (options == 'back' || options == 'cancle')
           # If return_to is present link directly to URL
           if parms['xreturn_to'] # disabled for now
             dc_link_to( 'drgcms.back', 'arrow_back', parms['return_to'], class: 'dc-link' )
@@ -223,11 +223,11 @@ def dc_actions_for_form(position)
         '<li class="">' +
           dc_link_to( caption, icon, parms, data: t('drgcms.confirm_delete'), method: :delete, class: 'dc-link' ) +
         '</li>'
-      
+
       # ajax or link button
       when %w(ajax link window popup).include?(options['type'])
         dc_link_ajax_window_submit_action(options, @record)
-        
+
       # Javascript action
       when options['type'] == 'script'
         dc_script_action(options)
@@ -235,6 +235,7 @@ def dc_actions_for_form(position)
         '<li>err2</li>'
       end
     end
+
   end
   (html << '</ul>').html_safe
 end

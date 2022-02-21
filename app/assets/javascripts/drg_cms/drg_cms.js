@@ -776,7 +776,8 @@ $(document).ready( function() {
     $('#popup').bPopup({ loadUrl: url,
                              transition: 'slideDown', transitionClose: 'slideDown', speed: 300,
                              opacity: 0, position: ['auto', 20],
-                             closeClass: 'dc-link' });
+                             closeClass: 'dc-link'
+    });
   });
 
  /*******************************************************************
@@ -1017,21 +1018,19 @@ $(document).ready( function() {
       transition: 'slideDown', transitionClose: 'slideDown', speed: 300,
       opacity: 0, position: ['auto', 20],
       closeClass: 'dc-link' });
-    });
   });
   
   /*******************************************************************
   * Click on preview selected image
   *******************************************************************/
   $('.dc-image-preview').on('click', function(e) {
-//      var img = $('.img1 img').attr('src');
-      var img = $(this).children(":first").attr('src');
-      $('#dc-image-preview').bPopup({
-            content: 'image', //'ajax', 'iframe' or 'image'
-            contentContainer: '#dc-image-preview',
-            loadUrl: img,
-            opacity: 0
-        });
+    let img = $(this).children(":first").attr('src');
+    $('#dc-image-preview').bPopup({
+          content: 'image', //'ajax', 'iframe' or 'image'
+          contentContainer: '#dc-image-preview',
+          loadUrl: img,
+          opacity: 0
+    });
   });
   
  /*******************************************************************
