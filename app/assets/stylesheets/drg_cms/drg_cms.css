@@ -500,13 +500,13 @@ display: inline-table;
   background-color: #fff;
 }
 
-.dc-link-icon {
+.dc-link-icon i {
   padding: 3px;
   border-radius: 3px;
   color: rgba(44, 142, 255, 1);
 }
 
-.dc-link-icon:hover {
+.dc-link-icon i:hover {
   color: #222;
   cursor: pointer;
 }

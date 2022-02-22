@@ -377,6 +377,7 @@ def dc_link_to(caption, icon, parms, rest={})
   if parms.class == Hash
     parms.stringify_keys!
     rest.stringify_keys!
+    url = parms.delete('url')
     rest['target'] ||=  parms.delete('target')
     parms['controller'] ||= 'cmsedit'
     icon_pos = parms.delete('icon_pos') || 'first'
@@ -387,9 +388,9 @@ def dc_link_to(caption, icon, parms, rest={})
     caption = t(caption, caption)
     icon_image << ' ' if icon_image
   end
-  %w[first left].include?(icon_pos) ?
-    _origin.link_to("#{icon_image}#{caption}".html_safe, parms, rest) :
-    _origin.link_to("#{caption} #{icon_image}".html_safe, parms, rest)
+
+  body = (%w[first left].include?(icon_pos) ? "#{icon_image}#{caption}" : "#{caption} #{icon_image}").html_safe
+  url ? _origin.link_to(body, url, rest) : _origin.link_to(body, parms, rest)
 end
 
 ####################################################################
@@ -458,13 +459,11 @@ def dc_error_messages_for(doc)
     r << "<li>#{label} : #{error.message}</li>"
   end
 
-  html = <<eot
+  %(
 <div class="dc-form-error"> 
   <h2>#{t('drgcms.errors_no')} #{doc.errors.size}</h2>  
   <ul>#{msgs}</ul>  
-</div>
-eot
-  html.html_safe
+</div>).html_safe
 end
 
 ####################################################################
@@ -487,13 +486,11 @@ def dc_warning_messages_for(doc)
     msgs << "<li>#{label} : #{error.message}</li>"
   end
 
-  html = <<eot
+  %(
 <div class="dc-form-warning"> 
   <h2>#{t('drgcms.warnings_no')} #{doc.warnings.size}</h2>  
   <ul>#{msgs}</ul>  
-</div>
-eot
-  html.html_safe
+</div>).html_safe
 end
 
 ####################################################################
