@@ -259,7 +259,8 @@ border-radius: 1px;
 }
 
 .dc-result-data:hover {
-  box-shadow: inset 0 0 0 2px rgba(44, 142, 255, 1);
+  /*box-shadow: inset 0 0 0 2px rgba(44, 142, 255, 1);*/
+  background-color: #e7e7e7;
 }
 
 .dc-result-header .th {
@@ -1524,8 +1525,6 @@ color: #669;
   .dc-form-label label {
     font-size: 15px;
   }
-
-  .app-menu li {margin-bottom: 4px;}
 
   .dc-menu { padding: 0;}
   .dc-menu li { margin: 2px 4px 2px 0;}
