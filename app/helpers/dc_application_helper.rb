@@ -531,8 +531,8 @@ def dc_link_for_create(opts)
   opts['action']       = 'new'
   opts['controller'] ||= 'cmsedit'
   js = "$('##{target}').attr('src', '#{_origin.url_for(opts)}'); return false;"
-  dc_link_to(nil, _origin.fa_icon('plus-circle', class: 'dc-inline-link'), '#',
-             { onclick: js, title: title, alt: 'Create'}).html_safe
+  dc_link_to(nil, _origin.fa_icon('plus-circle'), '#',
+             { onclick: js, title: title, alt: 'Create', class: 'dc-inline-link'}).html_safe
 end
 
 ####################################################################
@@ -559,8 +559,8 @@ def dc_link_for_edit(opts)
   opts['action']     ||= 'edit'
   opts['form_name']  ||= opts['table'].to_s.split(';').last
   js  = "$('##{target}').attr('src', '#{_origin.url_for(opts)}'); return false;"
-  dc_link_to(nil, _origin.fa_icon(icon, class: 'dc-inline-link'), '#', 
-             { onclick: js, title: title, alt: 'Edit'})
+  dc_link_to(nil, _origin.fa_icon(icon), '#',
+             { onclick: js, title: title, class: 'dc-inline-link', alt: 'Edit'})
 end
 
 ####################################################################
@@ -569,8 +569,8 @@ end
 def dc_link_menu_tag(title) #:nodoc:
   html = %(
 <dl>
-  <dt><div class='drgcms_popmenu' href="#">
-    #{_origin.fa_icon('file-text-o', class: 'dc-inline-link', title: title)}
+  <dt><div class='drgcms_popmenu dc-inline-link' href="#">
+    #{_origin.fa_icon('file-text-o', title: title)}
   </div></dt>
   <dd>
     <ul class=' div-hidden drgcms_popmenu_class'>
@@ -625,17 +625,17 @@ def dc_page_edit_menu(opts = @opts)
   title = "#{t('drgcms.edit')}: #{page.subject}"
   opts[:editparams] ||= {}
   dc_link_menu_tag(title) do |html|
-    opts[:editparams].merge!( controller: 'cmsedit', action: 'edit', 'icon' => 'edit' )
+    opts[:editparams].merge!( controller: 'cmsedit', action: 'edit', 'icon' => 'edit-o' )
     opts[:editparams].merge!( :id => page.id, :t => _origin.site.page_class.underscore, f: opts[:form_name], edit_only: 'body' )
     html << dc_link_for_edit1( opts[:editparams], t('drgcms.edit_content') )
     
-    opts[:editparams].merge!( edit_only: nil, 'icon' => 'edit' )
+    opts[:editparams].merge!( edit_only: nil, 'icon' => 'edit-o' )
     html << dc_link_for_edit1( opts[:editparams], t('drgcms.edit_advanced') )
     
     opts[:editparams].merge!( action: 'new', 'icon' => 'plus' )
     html << dc_link_for_edit1( opts[:editparams], t('drgcms.edit_new_page') )
 
-    opts[:editparams].merge!(ids: page.id, form_name: 'dc_part', 'icon' => 'add_circle-o',
+    opts[:editparams].merge!(ids: page.id, form_name: 'dc_part', 'icon' => 'plus',
                              table: "#{_origin.site.page_class.underscore};dc_part"  )
     html << dc_link_for_edit1( opts[:editparams], t('drgcms.edit_new_part') )
   end.html_safe
