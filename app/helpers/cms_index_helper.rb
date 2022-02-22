@@ -562,7 +562,7 @@ def dc_process_column_eval(yaml, document)
 
   # defined in helpers. For example dc_icon_for_boolean
   elsif respond_to?(yaml['eval'])
-    send(yaml['eval'], document[yaml['name']])
+    send(yaml['eval'], document, yaml['name'])
 
   # defined in model
   elsif document.respond_to?(yaml['eval'])

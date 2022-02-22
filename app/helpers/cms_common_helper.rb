@@ -213,13 +213,14 @@ end
 
 ############################################################################
 # Return html code for icon presenting boolean value. Icon is a picture of checked or unchecked box.
+# If second parameter (fiel_name) is ommited value is supplied as first parameter.
 # 
 # Parameters:
 # [value] Boolean.  
 # 
 # Example:
 #    # usage from program
-#    dc_icon4_boolean(some_value)
+#    dc_icon4_boolean(document, field_name)
 #
 #    # usage from form description
 #    columns:
@@ -227,16 +228,17 @@ end
 #        name: active
 #        eval: dc_icon4_boolean
 ############################################################################
-def dc_icon_for_boolean(value=false)
+def dc_icon_for_boolean(document = false, field_name = nil)
+  value = field_name.nil? ? document : document[field_name]
   dc_dont?(value, true) ? fa_icon('check_box_outline_blank') : fa_icon('check_box-o')
 end
 
 ############################################################################
 #
 ############################################################################
-def dc_icon4_boolean(value=false) #nodoc
+def dc_icon4_boolean(document = false, field_name = false) #nodoc
   #dc_deprecate('dc_icon4_boolean will be deprecated. Use dc_icon_for_boolean instead.')
-  dc_icon_for_boolean(value)
+  dc_icon_for_boolean(document, field_name)
 end
 
 ############################################################################
