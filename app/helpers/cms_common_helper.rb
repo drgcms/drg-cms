@@ -230,7 +230,7 @@ end
 ############################################################################
 def dc_icon_for_boolean(document = false, field_name = nil)
   value = field_name.nil? ? document : document[field_name]
-  dc_dont?(value, true) ? fa_icon('check_box_outline_blank') : fa_icon('check_box-o')
+  dc_dont?(value, true) ? fa_icon('check_box_outline_blank md-18') : fa_icon('check_box-o md-18')
 end
 
 ############################################################################
