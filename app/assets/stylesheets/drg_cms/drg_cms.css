@@ -245,7 +245,7 @@ border-radius: 1px;
 .dc-result-header {
   display: flex;
   padding: 6px 0;
-  border-bottom: 2px solid #888;
+  border-bottom: 2px solid #bbb;
 }
 
 .dc-result-data {
@@ -910,7 +910,7 @@ font-size: 1.2em;
   padding: 8px 4px 0 4rem;
   color: #666;
   background-color: #fff;
-  border-bottom: 3px solid #666;
+  border-bottom: 1px solid #eee;
 }
 
 .cmsedit-top #cms-top-menu i {
