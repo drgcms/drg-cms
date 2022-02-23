@@ -115,6 +115,9 @@ def dc_actions_for_index
     when action == 'close'
       html_left << %(<li><div class="dc-link" onclick="window.close();"'>#{fa_icon('close')} #{t('drgcms.close')}</div></li>)
 
+    when action == 'back'
+      html_left << %(<li><div class="dc-link" onclick="history.back();"'>#{fa_icon('arrow_back')} #{t('drgcms.back')}</div></li>)
+
     # menu
     when action == 'menu'
       code = if options['caption']
@@ -202,7 +205,7 @@ def dc_div_filter
     #{ select(nil, 'filter_field1', options_for_select(choices, field_name), { include_blank: true }) }
     #{ select(nil, 'filter_oper', options_for_select(choices4_operators, operators_value)) }
     <div class="dc-menu">
-      <div class="dc-link dc-filter-set" data-url="#{url_on}">#{fa_icon('check-square-o')} #{t('drgcms.filter_on')}</div>
+      <div class="dc-link dc-filter-set" data-url="#{url_on}">#{fa_icon('done')} #{t('drgcms.filter_on')}</div>
       <div class="dc-link-ajax" data-url="#{url_off}">
          #{mi_icon('close')}#{t('drgcms.filter_off')}
       </div>
@@ -263,11 +266,8 @@ def dc_actions_column
   end
   # check must be first action
   has_check = actions.first[1] == 'check'
-  width = if has_check
-            actions.size > 1 ? 44 : 22
-          else
-            22
-          end
+  width = actions.size == 1 ? 22 : 44
+  width = 22 if actions.size > 2 and !has_check
   [actions, width, has_check]
 end
 
@@ -289,7 +289,7 @@ def dc_actions_for_result(document)
   return '' if actions.nil? || @form['readonly']
 
   actions, width, has_check = dc_actions_column()
-  has_sub_menu = (has_check && actions.size > 2) || (!has_check && actions.size > 1)
+  has_sub_menu = actions.size > 2 || (has_check && actions.size > 1)
 
   main_menu, sub_menu = '', ''
   actions.sort_by(&:first).each do |num, action|
