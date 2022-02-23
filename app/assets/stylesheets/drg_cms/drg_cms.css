@@ -235,11 +235,6 @@ border-spacing:  0;
 border-radius: 1px;  
 }
 
-.dc-result i {
-  padding-bottom: 2px;
-  font-size: 20px;
-}
-
 .dc-result .dc-link-no {
   padding: 0;
   border: none;
@@ -306,7 +301,7 @@ border-radius: 1px;
   cursor: pointer;
 }
 
-.dc-result-actions .dc-link-ajax:hover i {
+.dc-result-actions .dc-link-ajax:hover i, .dc-result-actions i:hover {
   color: rgba(44, 142, 255, 1);
 }
 
@@ -318,17 +313,13 @@ border-radius: 1px;
   white-space: nowrap;
 }
 
+
 .dc-result-submenu ul {
   display: none;
   background-color: #fff;
   filter: drop-shadow(1px 2px 6px #ccc);
   position: fixed;
   margin: -6px 0 0 16px;
-}
-
-.dc-result-submenu ul li {
-  padding: 4px 8px;
-  /*text-transform: uppercase;*/
 }
 
 .dc-result-submenu ul .dc-link-ajax {
@@ -339,20 +330,29 @@ border-radius: 1px;
   font-size: 15px;
   line-height: 18px;
   font-weight: 500;
+  padding: 4px 10px;
   color: #666;
+  display: inline-block;
+  width: 100%;
+  text-align: left;
 }
 
 .dc-result-submenu ul li:hover {
   background-color: rgba(44, 142, 255, 1);
 }
 
-.dc-result-submenu ul li i { color: rgba(44, 142, 255, 1); }
+.dc-result-submenu ul li i {
+  color: rgba(44, 142, 255, 1);
+  padding-right: 2px;
+}
 
 .dc-result-submenu ul li:hover :not(.dc-link-no) i, .dc-result-submenu ul li:hover a {
   color: #fff;
+  transition: 0.3s;
 }
 
 .dc-result-submenu .dc-link-no {
+  padding: 4px 10px;
   color: #bbb;
   filter: none;
 }
@@ -629,6 +629,7 @@ display: inline-table;
   height: 1em;
   border: none;
   background: none;
+  filter: none;
 }
 
 .dc-title .dc-help-icon i {
@@ -817,9 +818,8 @@ display: inline-table;
  font-size: 1.2em;
  line-height: 1.6em;
  font-weight: bold;
- background-color: #e5f2ff;
- background-color: rgba(76,154,255, 0.15);
- border: 1px dotted #ccc;
+ background-color: #E0EEFF;
+
 }
 .dc-head .dc-row {
 display: flex;
@@ -943,7 +943,7 @@ font-size: 1.2em;
   font-weight: 500;
   color: #222;
   background-color: #fcfcfc;
-  border-right: 2px solid #888;
+  border-right: 1px solid #eee;
 }
 
 .cmsedit-container #cms-menu div {
@@ -1174,7 +1174,7 @@ background-color: lightyellow;
 }
 
 .dc-action-menu ul ul li {
-  display: block;
+  display: initial;
   white-space: nowrap;
   font-weight: 500;
   background: #fff;
@@ -1186,7 +1186,6 @@ background-color: lightyellow;
 }
 
 .dc-action-menu ul ul a {
-  /*white-space: nowrap;*/
   padding: 7px;
   cursor: pointer;
 }
@@ -1208,9 +1207,10 @@ background-color: lightyellow;
   color: #222;
 }
 
+/******  menu filter ****/
+
 .menu-filter {
   min-width: 200px;
-  /*max-width: 400px;*/
   position: initial;
 }
 
@@ -1310,10 +1310,10 @@ background-color: lightyellow;
 }
 
 #popup .dc-help h1 {
-  background: #c43;
+  background: rgba(44, 142, 255, 1);
   color: #fff;
   font-weight: 600;
-  padding: 4px;
+  padding: 8px;
   font-size: 1.2em;
   border-radius: 2px;
 }
@@ -1450,10 +1450,9 @@ z-index: 100;
 }
 
 #drgcms_filter h1 {
-font-size: 1.8em; 
-padding-top: 5px;
-border-bottom: 2px solid #669;
-color: #669;
+  font-size: 1.8em;
+  font-width: 600;
+  color: rgba(44, 142, 255, 1);
 }
 
 #drgcms_filter .dc-menu {
@@ -1462,8 +1461,8 @@ color: #669;
 }
 
 #drgcms_filter .dc-menu div {
-  margin-right: 3px;
-  padding: 9px 6px 7px 6px;
+  margin: 0 3px 0 2px;
+  padding: 7px 6px 6px;
 }
 
 .tree-select {

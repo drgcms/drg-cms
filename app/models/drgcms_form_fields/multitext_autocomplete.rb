@@ -137,7 +137,7 @@ def render
       end
 # Related data is missing. It happends.
       @html << if rec
-        link  = @parent.link_to(@parent.fa_icon('remove', class: 'dc-red'), '#',
+        link  = @parent.link_to(@parent.fa_icon('remove_circle', class: 'dc-red'), '#',
                 onclick: "$('##{rec.id}').hide(); var v = $('##{record}_#{@yaml['name']}_#{rec.id}'); v.val(\"-\" + v.val());return false;")
         link  = @parent.fa_icon('check', class: 'dc-green') if @readonly
         field = @parent.hidden_field(record, "#{@yaml['name']}_#{rec.id}", value: element)
@@ -149,7 +149,7 @@ def render
   end
   @html << "</div></div>"
 # Create text for div to be added when new category is selected  
-  link    = @parent.link_to(@parent.fa_icon('remove', class: 'dc-red'), '#',
+  link    = @parent.link_to(@parent.fa_icon('remove_circle', class: 'dc-red'), '#',
             onclick: "$('#rec_id').hide(); var v = $('##{record}_#{@yaml['name']}_rec_id'); v.val(\"-\" + v.val());return false;")
   field   = @parent.hidden_field(record, "#{@yaml['name']}_rec_id", value: 'rec_id')
   one_div = "<div id=\"rec_id\" style=\"padding:4px;\">#{link} rec_search<br>#{field}</div>"

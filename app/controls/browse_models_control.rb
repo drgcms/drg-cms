@@ -1,4 +1,3 @@
-#encoding: utf-8
 #--
 # Copyright (c) 2014+ Damjan Rems
 #
@@ -26,31 +25,19 @@
 # 
 ######################################################################
 module BrowseModelsControl
-include DcApplicationHelper
-
-#########################################################################
-# Determine model class from filename.
-#########################################################################
-def determine_model(path)
-  path =~ /(.*)\/(.*).rb/
-  begin
-    $2.camelize.constantize 
-    $2
-  rescue Exception # it happends
-    nil
-  end
-end
 
 #########################################################################
 # Return array of all models found in application.
 #########################################################################
-def all_collections()
+def all_collections
   collections = []
   DrgCms.paths(:forms).each do |path|
     models_dir = File.expand_path("../models", path)
-    Dir["#{models_dir}/*.rb"].each do |model_file| 
-      collection_name = determine_model(model_file)
-      collections << collection_name if collection_name
+    Dir["#{models_dir}/*.rb"].each do |model_file|
+      model_file =~ /(.*)\/(.*).rb/
+      # check if model exists
+      collection = $2.camelize.constantize.new rescue nil
+      collections << collection.class.to_s.underscore if collection&.respond_to?(:_id)
     end
   end
   collections.sort
@@ -59,10 +46,10 @@ end
 ######################################################################
 # List all collections
 ######################################################################
-def collections()
+def collections
   @records = []
   all_collections.each do |collection|
-    @records << {'id' =>  collection, 'description' => t("helpers.label.#{collection}.tabletitle") } 
+    @records << DcMemory.new({'id' =>  collection, 'description' => t("helpers.label.#{collection}.tabletitle") })
   end
   @records
 end
@@ -70,7 +57,7 @@ end
 ######################################################################
 # List field definition for single model
 ######################################################################
-def all_fields()
+def all_fields
   @records = []
   model = params[:id].classify.constantize
   document = model.new
@@ -80,12 +67,13 @@ def all_fields()
     description = I18n.t("helpers.label.#{params[:id]}.#{attribute_name}") if description.match('missing:')
     description = attribute_name if description.match('missing:')
 
-    @records << {'collection' =>  params[:id], 
+    @records << DcMemory.new({id: attribute_name,
+                 'collection' =>  params[:id],
                  'field' => attribute_name, 
                  'type' => options[:type],
                  'description' => description, 
                  '_default' => options[:default]
-                } 
+                })
   end
 # embedded documents
   document.embedded_relations.each do |a_embedded|
@@ -94,11 +82,12 @@ def all_fields()
     description = I18n.t("helpers.label.#{params[:id]}.#{embedded.key}") if description.match('missing:')
     description = embedded.key if description.match('missing:')
 
-    @records << {'collection' =>  params[:id], 
+    @records << DcMemory.new({ id: embedded.key,
+                 'collection' =>  params[:id],
                  'field' => embedded.key, 
                  'type' => 'Embedded:' + embedded.class_name,
                  'description' => description
-                }
+                })
   end
 
   @records
