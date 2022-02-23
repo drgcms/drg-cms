@@ -1185,6 +1185,10 @@ background-color: lightyellow;
   filter: drop-shadow(1px 2px 6px #ccc);
 }
 
+.dc-action-menu ul .dc-filter ul li {
+  display: block;
+}
+
 .dc-action-menu ul ul a {
   padding: 7px;
   cursor: pointer;
