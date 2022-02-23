@@ -521,27 +521,24 @@ display: inline-table;
 }
 
 .dc-link-border {
-  border:1px solid #eee;
+  border: 1px solid #eee;
 }
 
 .dc-inline-link {
-  color: rgba(44, 142, 255, 1);
-  padding: 8px;
   cursor: pointer;
-  height: 30px;
-  width: 30px;
 }
 
-.dc-inline-link i:before {
+.dc-inline-link i {
   box-sizing: initial;
+  color: rgba(44, 142, 255, 1);
+  padding: 8px 8px 12px 12px;
 }
-.dc-inline-link:hover {
+
+.dc-inline-link i:hover {
   color: #444;
-  background-color: #eee;
-  border-radius: 20px;
+  background-color: #ddd;
+  border-radius: 26px;
 }
-
-
 
 .skip-next {
   text-align: center;
@@ -1110,27 +1107,30 @@ background-color: lightyellow;
 }
 
 .drgcms_popmenu_class {
-  padding:4px;
   position:absolute;
-  background-color: #eee;
-  border: solid 1px #ccc;;
-  border-radius: 4px;
+  background-color: #fff;
+  border-radius: 2px;
   z-index: 100;
   list-style-type: none;
+  filter: drop-shadow(1px 2px 6px #aaa);
+}
+
+.drgcms_popmenu_class i {
+  vertical-align: sub;
+  color: rgba(44, 142, 255, 1);
 }
 
 .drgcms_popmenu_item {
-  padding: 6px;
-  border: 1px solid #eee;
+  padding: 4px;
 }
 
 .drgcms_popmenu_item:hover {
-  background-color: white;
-  border: 1px solid rgba(44, 142, 255, 1);
-  box-shadow: inset 0 0 0 1px rgba(44, 142, 255, 1);
-  border-radius: 4px;
+  background-color: rgba(44, 142, 255, 1);
+  color: white;
 }
-
+.drgcms_popmenu_item:hover i {
+  color: white;
+}
 .iframe_embedded {
   padding: 4px;
   background-color: #f8f8f8;
