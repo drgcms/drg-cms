@@ -111,7 +111,7 @@ def render
   @yaml['html']['placeholder'] = t('drgcms.search_placeholder')
   _name = '_' + @yaml['name']
   @html << '<div class="ui-autocomplete-border">'
-  @html << @parent.link_to(@parent.fa_icon('plus-square', class: 'dc-green'), '#',onclick: 'return false;') # dummy add. But it is usefull.
+  @html << @parent.link_to(@parent.fa_icon('plus-square-o', class: 'dc-green'), '#',onclick: 'return false;') # dummy add. But it is usefull.
 
   record = record_text_for(@yaml['name'])
   # text field for autocomplete
@@ -119,7 +119,7 @@ def render
   # direct link for adding new documents to collection
   if @yaml['with_new'] and !@readonly
     @html << ' ' + 
-             @parent.fa_icon('plus-square', class: 'in-edit-add', title: t('drgcms.new'),
+             @parent.fa_icon('plus-square-o', class: 'in-edit-add', title: t('drgcms.new'),
              style: "vertical-align: top;", 'data-table' => @yaml['with_new'] )    
   end
   # div to list active selections

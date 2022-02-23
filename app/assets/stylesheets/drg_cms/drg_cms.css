@@ -1017,14 +1017,22 @@ font-size: 1.2em;
   padding: 8px 4px 8px 12px;
   border-radius: 4px;
 }
+
 .dc-text-autocomplete {
   position: relative;
+}
+
+.dc-text-autocomplete i {
+  color: #666;
+}
+
+.dc-text-autocomplete i:hover {
+  color: rgba(44, 142, 255, 1);;
 }
 
 .dc-text-autocomplete input {
   border: 1px dashed #555;
 }
-
 
 .dc-text-autocomplete input+span:before {
   font-family: 'MI';
@@ -1314,10 +1322,9 @@ background-color: lightyellow;
 }
 
 #popup .dc-help h1 {
-  background: rgba(44, 142, 255, 1);
-  color: #fff;
+  color: rgba(44, 142, 255, 1);
   font-weight: 600;
-  padding: 8px;
+  padding: 4px 0;
   font-size: 1.2em;
   border-radius: 2px;
 }
@@ -1338,30 +1345,29 @@ background-color: lightyellow;
 
 #popup .dc-help .help-tab {
   display: table;
-  margin: 8px 0 0;
-  padding: 3px 12px;
-  color: #fff;
-  background: #555;
-  border-radius: 5px 5px 0 0;
-  font-weight: 600;
+  font-weight: 500;
+  color: rgba(98, 0, 238, 1);
+  background-color: rgba(98, 0, 238, 0.1);
+  padding: 8px 12px;
+  margin-top: 1rem
 }
 
 #popup .dc-help .help-tab-help {
   font-weight: 600;
   color: #fff;
-  background: #777;
+  background: rgba(98, 0, 238, 0.6);
   padding: 3px 12px;
 }
 
 #popup .dc-help .help-fields {
   margin-top: 1rem;
-  border-top: 1px solid #222;
+  border-top: 1px solid #888;
 }
 
 #popup .dc-help .help-field {
   display: flex;
   background-color: #eee;
-  padding: 3px;
+  padding: 5px;
 }
 
 #popup .dc-help .help-field:nth-child(odd) {
@@ -1377,12 +1383,28 @@ background-color: lightyellow;
 }
 
 #popup .dc-help .help-body {
-  border-top: 1px solid #222;
+  border-top: 1px solid #888;
   padding-top: 8px;
 }
 
 #popup .dc-help .help-buttons {
-  padding: 4px 0;
+  padding: 8px 0;
+}
+
+#popup .dc-help .help-buttons button {
+  font-weight: 500;
+  color: #666;
+  padding: 4px 10px 6px;
+  border: none;
+  background-color: #fff;
+  border-radius: 4px;
+  filter: drop-shadow(0 2px 6px #ccc);
+}
+
+#popup .dc-help .help-buttons button:hover {
+  background-color: rgba(44, 142, 255, 1);
+  transition: 0.3s;
+  color: #fff;
 }
 
 #popup .dc-help .dc-link {

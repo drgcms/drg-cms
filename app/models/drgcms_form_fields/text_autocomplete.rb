@@ -110,12 +110,12 @@ def render
   @html << '<span class="dc-text-autocomplete">' + @parent.text_field(record, _name, @yaml['html']) + '<span></span>'
   # with new icon
   if @yaml['with_new']
-    @html << ' ' + @parent.fa_icon('plus-square', class: 'in-edit-add', title: t('drgcms.new'),
+    @html << ' ' + @parent.fa_icon('plus-square-o', class: 'in-edit-add', title: t('drgcms.new'),
              style: "vertical-align: top;", 'data-table' => @yaml['with_new'] )
   end
   # with edit icon
   if @yaml['with_edit'] && @record[@yaml['name']].present?
-    @html << ' ' + @parent.fa_icon('edit', class: 'in-edit-add', title: t('drgcms.edit'),
+    @html << ' ' + @parent.fa_icon('edit-o', class: 'in-edit-add', title: t('drgcms.edit'),
              style: "vertical-align: top;", 'data-table' => @yaml['with_edit'], 'data-id' => @record[@yaml['name']] )
   end
   @html << '</span>' + @parent.hidden_field(record, @yaml['name'], value: value) # actual value will be in hidden field
