@@ -127,7 +127,7 @@ textarea, input, select {
   padding: 8px 4px;
   margin-left: 1px;
   border: 1px dashed #888;;
-  border-radius: 4px;
+  border-radius: 3px;
   font: 16px DrgSans,arial,sans-serif;
   max-width: 100%;
   vertical-align: middle;
@@ -141,7 +141,7 @@ textarea, input, select {
 textarea:focus, input:focus, select:focus {
   border: 1px solid rgba(44, 142, 255, 1);
   outline: 1px solid rgba(44, 142, 255, 1);
-  border-radius: 4px;
+  border-radius: 3px;
 }
 
 input[type=submit]:focus {
@@ -152,8 +152,8 @@ input[type=submit]:focus {
 }
 
 textarea[readonly], input[readonly], select[readonly] {
-  background-color: #eee !important;
-  border: 1px dotted #ddd !important;
+  background-color: #f4f4f4 !important;
+  border: 1px solid #ddd !important;
 }
 
 input.file {
@@ -295,13 +295,13 @@ border-radius: 1px;
   flex-grow: 1;
 }
 
-.dc-result-actions i, .dc-result-actions .dc-link-ajax i {
+.dc-result-actions i, .dc-result-actions .dc-link i, .dc-result-actions .dc-link-ajax i {
   color: #666;
   font-size: 22px;
   cursor: pointer;
 }
 
-.dc-result-actions .dc-link-ajax:hover i, .dc-result-actions i:hover {
+.dc-result-actions i:hover, .dc-result-actions .dc-link:hover i, .dc-result-actions .dc-link-ajax:hover i {
   color: rgba(44, 142, 255, 1);
 }
 
@@ -317,7 +317,7 @@ border-radius: 1px;
 .dc-result-submenu ul {
   display: none;
   background-color: #fff;
-  filter: drop-shadow(1px 2px 6px #ccc);
+  filter: drop-shadow(1px 1px 6px #aaa);
   position: fixed;
   margin: -6px 0 0 16px;
 }
@@ -330,7 +330,7 @@ border-radius: 1px;
   font-size: 15px;
   line-height: 18px;
   font-weight: 500;
-  padding: 4px 10px;
+  padding: 5px 10px;
   color: #666;
   display: inline-block;
   width: 100%;
@@ -417,7 +417,7 @@ display: inline-table;
 
 .dc-menu li {
   display: inline-flex;
-  margin-right: 4px;
+  margin-right: 5px;
   vertical-align: middle;
 }
 
@@ -434,7 +434,7 @@ display: inline-table;
   /*text-transform: uppercase;*/
   text-decoration: none;
   line-height: 26px;
-  filter: drop-shadow(1px 2px 6px #ccc);
+  filter: drop-shadow(1px 1px 6px #aaa);
   border: 0;
 }
 
@@ -613,7 +613,7 @@ display: inline-table;
   padding: 12px 4px 0;
   border-spacing:  0;
   margin:  0;
-  background-color: #f7f7f7;
+/*  background-color: #f7f7f7;*/
   /*text-transform: uppercase;*/
 }
 
@@ -636,6 +636,7 @@ display: inline-table;
 .dc-title .dc-help-icon i {
   color: #888;
 }
+
 .dc-title .dc-help-icon i:hover {
   color: rgba(44, 142, 255, 1);
 }
@@ -643,7 +644,7 @@ display: inline-table;
 .dc-form-frame {
   margin: 0px;
   padding: 4px;
-  background-color: #f7f7f7;
+  /*background-color: #f7f7f7;*/
 }
 
 .dc-form {
@@ -746,13 +747,13 @@ display: inline-table;
   color: #222;
   padding: 8px 4px;
   border: dotted 1px #ddd;;
-  background-color: #eee;
-  border-radius: 4px;
+  background-color: #f4f4f4;
+  border-radius: 3px;
 }
 
 .tree-select.dc-readonly {
  display: block;
- background-color: #eee;
+ background-color: #f4f4f4;
 }
 
 .dc-color-odd {
@@ -801,7 +802,7 @@ display: inline-table;
 }
 
 .dc-odd {
-/* background-color: #f8f8f8;*/
+ background-color: #f7f7f7;
 }
 .dc-even {
  background-color: #fff;
@@ -896,7 +897,7 @@ background: transparent;
 
 #cmsedit-div #record_select  {
 border: 1px solid #aaa;
-border-radius: 4px;
+border-radius: 3px;
 font-size: 1.2em;
 }
 
@@ -1016,7 +1017,7 @@ font-size: 1.2em;
 /****** jquery ui-autocomplete widget ***************/
 .ui-autocomplete-input {
   padding: 8px 4px 8px 12px;
-  border-radius: 4px;
+  border-radius: 3px;
 }
 
 .dc-text-autocomplete {
@@ -1064,7 +1065,7 @@ color: #000;
 
 .ui-autocomplete-border {
   display: inline-block;
-  border-radius: 4px;
+  border-radius: 3px;
   border: dashed 1px #555;;
   padding: 8px;
   background-color: #fff;
@@ -1092,7 +1093,7 @@ background-color: lightyellow;
   font-size: 1em;
   padding: 1em 5em 1em 1em;
   border: 1px solid #ddd;
-  background-color: #f7f7f7;
+/*  background-color: #f7f7f7;*/
   border-radius: 6px;
 }
 #dc-login h2 {
@@ -1121,7 +1122,7 @@ background-color: lightyellow;
   border-radius: 2px;
   z-index: 100;
   list-style-type: none;
-  filter: drop-shadow(1px 2px 6px #aaa);
+  filter: drop-shadow(1px 1px 6px #aaa);
 }
 
 .drgcms_popmenu_class i {
@@ -1142,7 +1143,7 @@ background-color: lightyellow;
 }
 .iframe_embedded {
   padding: 4px;
-  background-color: #f8f8f8;
+  /*background-color: #f7f7f7;*/
   border-radius: 2px;
   border: 2px solid #666;
 }
@@ -1170,7 +1171,7 @@ background-color: lightyellow;
   display: inline-flex;
   position: relative;
   white-space: nowrap;
-  margin-right: 4px;
+  margin-right: 5px;
   vertical-align: middle;
 }
 
@@ -1191,7 +1192,7 @@ background-color: lightyellow;
   padding: 6px 10px;
   float: none;
   margin-right:  0;
-  filter: drop-shadow(1px 2px 6px #ccc);
+  filter: drop-shadow(1px 1px 6px #aaa);
 }
 
 .dc-action-menu ul .dc-filter ul li {
@@ -1299,7 +1300,7 @@ background-color: lightyellow;
 
 #popup {
   min-width: 50%;
-  background-color: #f7f7f7;
+  /*background-color: #f7f7f7;*/
   padding: 4px;
   filter: drop-shadow(0 1rem 2rem #222);
 }
@@ -1372,7 +1373,7 @@ background-color: lightyellow;
 }
 
 #popup .dc-help .help-field:nth-child(odd) {
-  background-color: #f8f8f8;
+  background-color: #f7f7f7;
 }
 
 #popup .dc-help .help-label {
@@ -1399,7 +1400,7 @@ background-color: lightyellow;
   border: none;
   background-color: #fff;
   border-radius: 4px;
-  filter: drop-shadow(0 2px 6px #ccc);
+  filter: drop-shadow(0 2px 6px #aaa);
 }
 
 #popup .dc-help .help-buttons button:hover {
@@ -1508,7 +1509,7 @@ z-index: 100;
   background-color: #fff;
   padding: 7px 0 9px;
   border: 1px dashed #666;
-  border-radius: 4px;
+  border-radius: 3px;
   margin-left: 1px;
 }
 .dc-radio div {
@@ -1529,6 +1530,8 @@ z-index: 100;
 @media only screen and (max-device-width: 600px) {
   #body-cms {font-size: 11px;}
   #site-top div:nth-of-type(2) {padding-top: 0 !important;}
+  .dc-title { font-size: 1.5em;}
+
 
   .dc-form {
     border: none;
@@ -1553,7 +1556,7 @@ z-index: 100;
   }
 
   .dc-menu { padding: 0;}
-  .dc-menu li { margin: 2px 4px 2px 0;}
+  .dc-menu li, .dc-action-menu ul li { margin: 2px 3px 2px; }
 
   .dc-submit {
     line-height: 20px;
@@ -1561,12 +1564,6 @@ z-index: 100;
   .dc-link div, .dc-link-no {
     padding: 4px 8px;
   }
-
-  .dc-result a:link, .dc-result a:active, .dc-result a:visited {
-
-  }
-
-  .dc-title .dc-paginate {float: left;}
 
   #result {width: 200%;}
 
