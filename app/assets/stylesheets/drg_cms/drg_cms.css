@@ -529,15 +529,16 @@ display: inline-table;
 }
 
 .dc-inline-link i {
-  box-sizing: initial;
+  display: inline;
   color: rgba(44, 142, 255, 1);
-  padding: 8px 8px 12px 12px;
+  padding: 8px;
+  background-color: #ddd;
+  border-radius: 26px;
 }
 
 .dc-inline-link i:hover {
-  color: #444;
-  background-color: #ddd;
-  border-radius: 26px;
+  color: #fff;
+  background-color: #444;
 }
 
 .skip-next {
