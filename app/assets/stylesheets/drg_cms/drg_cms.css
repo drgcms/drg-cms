@@ -317,7 +317,7 @@ border-radius: 1px;
 .dc-result-submenu ul {
   display: none;
   background-color: #fff;
-  filter: drop-shadow(1px 1px 6px #aaa);
+  filter: drop-shadow(1px 1px 4px #eee);
   position: fixed;
   margin: -6px 0 0 16px;
 }
@@ -326,7 +326,8 @@ border-radius: 1px;
   text-align: left;
 }
 
-.dc-result-submenu ul li a:link, .dc-result-submenu .dc-link a:link   {
+.dc-result-submenu ul li a:link, .dc-result-submenu .dc-link a:link,
+ .dc-result-submenu .dc-link.dc-window-open{
   font-size: 15px;
   line-height: 18px;
   font-weight: 500;
@@ -341,7 +342,7 @@ border-radius: 1px;
   background-color: rgba(44, 142, 255, 1);
 }
 
-.dc-result-submenu ul li i {
+.dc-result-actions .dc-result-submenu ul li i {
   color: rgba(44, 142, 255, 1);
   padding-right: 2px;
 }
@@ -434,8 +435,8 @@ display: inline-table;
   /*text-transform: uppercase;*/
   text-decoration: none;
   line-height: 26px;
-  filter: drop-shadow(1px 1px 6px #aaa);
-  border: 0;
+  filter: drop-shadow(1px 1px 4px #eee);
+  border: 1px solid #eee;
 }
 
 .dc-link:hover, .dc-link-ajax:hover, .dc-submit:hover {
@@ -1122,7 +1123,7 @@ background-color: lightyellow;
   border-radius: 2px;
   z-index: 100;
   list-style-type: none;
-  filter: drop-shadow(1px 1px 6px #aaa);
+  filter: drop-shadow(1px 1px 4px #eee);
 }
 
 .drgcms_popmenu_class i {
@@ -1192,7 +1193,7 @@ background-color: lightyellow;
   padding: 6px 10px;
   float: none;
   margin-right:  0;
-  filter: drop-shadow(1px 1px 6px #aaa);
+  filter: drop-shadow(1px 1px 4px #eee);
 }
 
 .dc-action-menu ul .dc-filter ul li {
@@ -1400,7 +1401,7 @@ background-color: lightyellow;
   border: none;
   background-color: #fff;
   border-radius: 4px;
-  filter: drop-shadow(0 2px 6px #aaa);
+  filter: drop-shadow(1px 1px 4px #eee);
 }
 
 #popup .dc-help .help-buttons button:hover {
