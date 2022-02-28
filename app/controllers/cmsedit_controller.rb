@@ -128,12 +128,10 @@ end
 # Login can be called directly with url http://site.com/cmsedit/login
 ########################################################################
 def login
-  if    params[:id] == 'test' then set_test_site
-  elsif params[:ok]           then render action: 'login', layout: 'cms' 
-  else
-    session[:edit_mode] = 0
-    render action: 'login', layout: 'cms'
-  end
+  return set_test_site if params[:id] == 'test'
+
+  session[:edit_mode] = 0 if !params[:ok]
+  render action: 'login', layout: 'cms'
 end
 
 ########################################################################

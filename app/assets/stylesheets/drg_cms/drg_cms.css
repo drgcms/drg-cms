@@ -1063,7 +1063,7 @@ color: #000;
 .dc-green:hover { color: #6a6;}
 
 .aui-corner-all {
-background-color: lightyellow;
+  background-color: lightyellow;
 }
 
 #dc-login {
@@ -1073,24 +1073,24 @@ background-color: lightyellow;
   transform: translate(-50%, -50%);
   font-size: 1em;
   padding: 1em 5em 1em 1em;
-  border: 1px solid #ddd;
-/*  background-color: #f7f7f7;*/
-  border-radius: 6px;
+  border: 1px solid #eee;
+  border-radius: 4px;
+  background-color: #fafafa;
 }
+
 #dc-login h2 {
   font-weight: bold;
   font-size: 1.4em;
   margin-bottom: 8px;
 }
 #dc-login .label {
-  padding: 12px 0 4px;
-  /*text-transform: uppercase;*/
-  font-weight: 500;
+  padding: 12px 0 6px;
+  font-weight: 400;
 }
 
 #dc-login .dc-submit {
-  padding: 8px 14px;
-  margin-top: 12px;
+  padding: 6px 14px;
+  margin-top: 4px;
 }
 
 .div-hidden {
@@ -1281,7 +1281,7 @@ background-color: lightyellow;
 
 #popup {
   min-width: 50%;
-  /*background-color: #f7f7f7;*/
+  background-color: #fff;
   padding: 4px;
   filter: drop-shadow(0 1rem 2rem #222);
 }

@@ -159,7 +159,7 @@ $(function() {
  *  record_name: will replace value of record[name] field on a form with supplied value
  *
  *  msg_error: will display error message.
- *  msg_warn: will display warning message.
+ *  msg_warning: will display warning message.
  *  msg_info: will display informational message.
  *  
  *  popup: will display popup message
@@ -815,7 +815,7 @@ $(document).ready( function() {
 /*******************************************************************
  * Display spinner on link with spinner, submit link
  *******************************************************************/
-  $('.dc-link-spinner').on('click', function(e) {
+  $('.dc-link.spin').on('click', function(e) {
     $('.dc-spinner').show();
   });  
   
@@ -1232,6 +1232,8 @@ $(document).ready( function() {
   *******************************************************************/
   $('.dc-result-header .th i').click( function(e) {
     e.preventDefault();
+    if ($(this).hasClass('no-filter')) return;
+
     // additional click will close dialog when visible
     if ($('.filter-popup').is(':visible')) {
       $('.filter-popup').hide();
@@ -1242,7 +1244,7 @@ $(document).ready( function() {
     let field_name = header.attr("data-name");
     $('.filter-popup').attr('data-name', field_name);
     // change popup position and show
-    $('.filter-popup').css({'top':e.pageY + 5, 'left':e.pageX, 'position':'absolute'});
+    $('.filter-popup').css({'top': e.pageY + 5, 'left': e.pageX, 'position': 'absolute'});
     $('.filter-popup').show();    
   });
   

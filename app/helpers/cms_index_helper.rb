@@ -174,22 +174,20 @@ end
 ############################################################################
 def dc_div_filter
   choices = []
-  filter = (@form['index'] and @form['index']['filter']) ? @form['index']['filter'] + ',' : ''
+  filter = @form['index'] && @form['index']['filter'] ? @form['index']['filter'] + ',' : ''
   filter << 'id as text_field' # filter id is added by default
   filter.split(',').each do |f| 
     f.strip!
     name = f.match(' as ') ? f.split(' ').first : f
     # like another field on the form
-    if f.match(' like ')
-      a    = f.split(' ')
-      name = a.first
-      f    = a.last
-    end
-    choices << [ t("helpers.label.#{@form['table']}.#{name}", name), f ] 
+    name, like, f = f.split(' ') if f.match(' like ')
+    choices << [ t("helpers.label.#{@form['table']}.#{name}", name), f ]
   end
-  choices4_operators = t('drgcms.choices4_filter_operators').chomp.split(',').inject([]) {|r,v| r << (v.match(':') ? v.split(':') : v )}
+  choices4_operators = t('drgcms.choices4_filter_operators').chomp.split(',').inject([]) do |r, v|
+    r << (v.match(':') ? v.split(':') : v )
+  end
   # currently selected options
-  if session[@form['table']] and session[@form['table']][:filter]
+  if session[@form['table']] && session[@form['table']][:filter]
     field_name, operators_value, dummy = session[@form['table']][:filter].split("\t")
   else
     field_name, operators_value = nil, nil
@@ -198,7 +196,7 @@ def dc_div_filter
                     t: CmsHelper.table_param(params), f: CmsHelper.form_param(params), filter_input: 1)
   url_off = url_for(controller: 'cmsedit', action: :run, control: 'cmsedit.filter_off',
                     t: CmsHelper.table_param(params), f: CmsHelper.form_param(params))
-  html =<<EOT
+  %(
   <div id="drgcms_filter" class="div-hidden">
     <h1>#{t('drgcms.filter_set')}</h1>
     
@@ -210,9 +208,7 @@ def dc_div_filter
          #{mi_icon('close')}#{t('drgcms.filter_off')}
       </div>
     </div>
-  </div>
-EOT
-  html.html_safe
+  </div>).html_safe
 end
 
 ############################################################################
@@ -384,23 +380,28 @@ def dc_header_for_result
       label = v['caption'] || v['label']
       label = (v['name'] ? "helpers.label.#{@form['table']}.#{v['name']}" : '') if label.nil?
       label = t(label) if label.match(/\./)
-      # no sorting when embedded documents or custom filter is active 
-      #sort_ok = @form['result_set'].nil? || (@form['result_set'] && @form['result_set']['filter'].nil?)
+      # no sorting when embedded documents or custom filter is active
       sort_ok = !dc_dont?(@form['result_set']['sort'], false)
       sort_ok = sort_ok || (@form['index'] && @form['index']['sort'])
       sort_ok = sort_ok && !dc_dont?(v['sort'], false)
       if @tables.size == 1 && sort_ok
         icon = 'sort_unset md-18'
+        filter_class = form_has_input_field?(v['name']) ? nil : 'no-filter'
         if v['name'] == sort_field
           icon = sort_direction == '1' ? 'sort_down md-18' : 'sort_up md-18'
+        else
+          # no icon if filter can not be set
+          icon = nil if filter_class
         end
+        # sort and filter icon
+        icon = mi_icon(icon, class: filter_class) if icon
         url = url_for(controller: 'cmsedit', action: 'run', control: 'cmsedit.sort', sort: v['name'],
                       t: CmsHelper.table_param(params), f: CmsHelper.form_param(params))
-        th << %(><span data-url="#{url}">#{label}</span>#{mi_icon(icon)}</div>) #{dc_link_to(label, icon, sort: v['name'], t: params[:table], f: CmsHelper.form_param(params), action: :index, icon_pos: :last )}</div>"
+        th << %(><span data-url="#{url}">#{label}</span>#{icon}</div>)
       else
         th << ">#{label}</div>"
       end
-      html << "<div class=\"spacer\"></div>" + th
+      html << %(<div class="spacer"></div>) + th
     end
   end
   (html << '</div>').html_safe
@@ -646,6 +647,16 @@ def dc_process_result_set_method
       I18n.t('drgcms.no_method', method: method)
     end
   end
+end
+
+############################################################################
+# Check if form has defined input field for field_name and that is not readonly field.
+############################################################################
+def form_has_input_field?(field_name)
+  field = dc_get_field_form_definition(field_name)
+  return if field.nil?
+
+  !(field['type'] == 'readonly' || field['readonly'])
 end
 
 end
