@@ -418,7 +418,7 @@ display: inline-table;
 
 .dc-menu li {
   display: inline-flex;
-  margin-right: 5px;
+  margin-right: 3px;
   vertical-align: middle;
 }
 
@@ -432,11 +432,10 @@ display: inline-table;
   border-radius: 4px;
   background: #fff;
   padding: 5px 12px 4px;
-  /*text-transform: uppercase;*/
   text-decoration: none;
   line-height: 26px;
   filter: drop-shadow(1px 1px 4px #eee);
-  border: 1px solid #eee;
+  border: 1px solid #e7e7e7;
 }
 
 .dc-link:hover, .dc-link-ajax:hover, .dc-submit:hover {
@@ -558,55 +557,7 @@ display: inline-table;
 .skip-next a:hover { text-decoration: none; color: #c43; }
 
 
-/* Pagination */
-
-.dc-paginate .pagination {
-  display: flex;
-}
-.dc-paginate .pagination span {
-  border: 2px solid #eee;
-  background: #fff;
-  margin-left: 1px;
-  border-radius: 1px;
-}
-.dc-paginate .pagination span.page.gap {
-  padding: 1px 4px 4px 4px;
-  color: #aaa;
-}
-
-.dc-paginate .pagination span.next a, .dc-paginate .pagination span.last a,
-.dc-paginate .pagination span.prev a, .dc-paginate .pagination span.first a {
-  padding: 3px 6px 4px 7px;  
-}
-.dc-paginate .pagination span a {
-  display: block;
-  color: #888;
-  padding: 4px 6px 3px 7px;
-  text-decoration: none;
-}
-
-.dc-paginate .pagination span.page.current {
-  padding: 4px 6px 3px 7px;
-}
-
-.dc-paginate .pagination span:hover > a {
-  color: #000;
-}
-
-.dc-paginate .pagination span:hover {
-  border: 2px solid rgba(44, 142, 255, 1);
-}
-
-.dc-paginate .pagination .current {
-  background: #fff;
-  border: 2px solid rgba(44, 142, 255, 1);
-  color: #000;
-}
-
-.dc-paginate .pagination .current:hover  {
-  outline: none;
-}
-
+/******* TITLE  *******/
 .dc-title {
   font-weight: 600;
   font-size: 1.2em;
@@ -614,14 +565,12 @@ display: inline-table;
   padding: 12px 4px 0;
   border-spacing:  0;
   margin:  0;
-/*  background-color: #f7f7f7;*/
-  /*text-transform: uppercase;*/
 }
 
 .dc-title .dc-paginate {
   float:right; 
   padding-top: 4px;
-  font-size: 0.8em;
+  font-size: 0.9em;
 }
 
 .dc-title .dc-help-icon {
@@ -641,6 +590,37 @@ display: inline-table;
 .dc-title .dc-help-icon i:hover {
   color: rgba(44, 142, 255, 1);
 }
+
+/*****   Pagination   *****/
+
+.dc-paginate .pagination {
+  display: flex;
+}
+.dc-paginate .pagination span {
+  background: #eee;
+  margin-left: 2px;
+  border-radius: 2px;
+}
+
+.dc-paginate .pagination span a, .dc-paginate .pagination .gap {
+  display: block;
+  color: #666;
+  padding: 4px 6px 4px 7px;
+  text-decoration: none;
+}
+
+.dc-paginate .pagination span.page.current {
+  padding: 4px 6px 4px 7px;
+  color: #fff;
+  background-color: #666;
+}
+
+.dc-paginate .pagination span:hover > a {
+  color: #fff;
+  background-color: rgba(44, 142, 255, 1);
+}
+
+/*****   FORM    *****/
 
 .dc-form-frame {
   margin: 0px;
