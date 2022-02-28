@@ -219,21 +219,22 @@ end
 ###############################################################################
 def self.routes
   Rails.application.routes.draw do
-    #  match '/dc_common/:action' => 'dc_common#:action', via: [:get, :put, :post]
     controller :dc_common do
       post 'dc_common/autocomplete'     => :autocomplete
       post 'dc_common/ad_click'         => :ad_click
       get 'dc_common/toggle_edit_mode'  => :toggle_edit_mode
       match 'dc_common/process_login'   => :process_login, via: [:put, :post]
-      get 'dc_common/logout'            => :logout
       get 'dc_common/login'             => :login
+      get 'dc_common/logout'            => :logout
       get 'dc_common/copy_clipboard'    => :copy_clipboard
       match 'dc_common/paste_clipboard' => :paste_clipboard, via: [:get, :post]
       put 'dc_common/restore_from_journal'  => :restore_from_journal
       get 'dc_common/add_json_ld_schema'    => :add_json_ld_schema
       get 'dc_common/help' => :help
     end
-    match 'elfinder' => 'dc_elfinder#connector', via: [:get, :post]
+    match 'elfinder'    => 'dc_elfinder#connector', via: [:get, :post]
+    get   'cms/login'   => 'cmsedit#login'
+    get   'cms/logout'  => 'cmsedit#logout'
     match 'cmsedit/run' => 'cmsedit#run', via: [:get, :put, :post]
     resources :cmsedit
   end
