@@ -202,7 +202,7 @@ def self.menu_filter(parent)
   end
 # divide standard and custom filter options  
   html << '<hr>' if html.size > 30 # 
-  html << '<li id="open_drgcms_filter">' + I18n.t('drgcms.filter_set') + '</li></ul>'
+  html << %(<li class="dc-link in-menu" id="open_drgcms_filter">#{I18n.t('drgcms.filter_set')}</li></ul>)
   html.html_safe
 end
 

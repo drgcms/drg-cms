@@ -118,7 +118,7 @@ en:
       simple_message: Please write in the name of month no %{number} in a year.
 
     filters:
-      this_site_only: Documents for currently selected site only
+      this_site_only: Only documents of currently selected web site
 
     dc_help:
       help: HELP

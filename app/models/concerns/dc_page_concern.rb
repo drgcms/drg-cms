@@ -161,7 +161,7 @@ end
 # Return filter options
 ########################################################################
 def self.dc_filters
-  {'title' => 'drgcms.filters.this_site_only', 'operation' => 'eq', 
+  {'title' => I18n.t('drgcms.filters.this_site_only'), 'operation' => 'eq',
    'field' => 'dc_site_id', 'value' => '@current_site'}
 end
 

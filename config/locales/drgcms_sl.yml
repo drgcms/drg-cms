@@ -115,7 +115,7 @@ sl:
       restore: Restavriraj      
       
     filters:
-      this_site_only: Dokumenti samo trenutno izbrane strani
+      this_site_only: Samo dokumenti trenutne spletne strani
 
     dc_help:
       help: POMOČ
