@@ -563,8 +563,8 @@ display: inline-table;
   font-size: 1.2em;
   color: #222;
   padding: 12px 4px 0;
-  border-spacing:  0;
-  margin:  0;
+  border-spacing: 0;
+  margin: 0;
 }
 
 .dc-title .dc-paginate {
@@ -598,19 +598,19 @@ display: inline-table;
 }
 .dc-paginate .pagination span {
   background: #eee;
-  margin-left: 2px;
+  margin-left: 3px;
   border-radius: 2px;
 }
 
 .dc-paginate .pagination span a, .dc-paginate .pagination .gap {
   display: block;
   color: #666;
-  padding: 4px 6px 4px 7px;
+  padding: 4px 7px 5px 8px;
   text-decoration: none;
 }
 
 .dc-paginate .pagination span.page.current {
-  padding: 4px 6px 4px 7px;
+  padding: 4px 7px 5px 8px;
   color: #fff;
   background-color: #666;
 }
@@ -1153,7 +1153,7 @@ color: #000;
   display: inline-flex;
   position: relative;
   white-space: nowrap;
-  margin-right: 5px;
+  margin-right: 3px;
   vertical-align: middle;
 }
 
