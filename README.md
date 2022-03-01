@@ -5,7 +5,7 @@
 
 
 DRG CMS simplifies the programming of business applications. 
-No database experience and only basic programming skills are needed 
+Minimal database experience and only basic programming skills are needed 
 to create a data entry program. You can do it in 6 simple steps.
 
 Step 1: Create Model<br>
@@ -18,7 +18,7 @@ Step 6: Include in application menu<br>
 Most of the time, you will end up with two source files.
 
 <b>Model:</b> Model file is a database document definition file written in Ruby
-language. Mode file holds fields definitions, 
+language. Model file holds fields definitions, 
 index definitions, dependencies, validations, callbacks and transformations 
 for a database document (record). 
 
@@ -52,8 +52,8 @@ of three main parts.<br>
 <b>index:</b> Which defines actions usually performed on database documents or 
 set of document.<br>
 <b>result_set:</b> Defines set of documents, document fields and actions 
-which can be performed on the document.<br>
-<b>form:</b> Defines data entry fields for editing and displaying the document.<br>
+which can be performed on a document.<br>
+<b>form:</b> Defines data entry fields for editing and viewing the document.<br>
 
 Example of form file for Note model app/forms/note.yaml
 
@@ -132,12 +132,12 @@ en:
         user_id: Owner of the note
   ```
 Combination of two source files and localisation data makes application
-data entry program. Application data entry program implements basic data
+data entry program. Application data entry program implements all data
 entry operations on a database:<br>
 <li>add new document<br>
 <li>edit document<br>
 <li>delete document<br>
-<li>show document
+<li>view document
 <br><br>Add it into your application menu with this code:
 
 ```ruby
@@ -145,7 +145,7 @@ dc_link_to('Notes', 'book', { table: 'note' }, target: 'iframe_edit')
 ```
 
 And when you need advanced program logic, you will implement it in 
-the control file. Control files code is injected into drgcms edit
+the control file. Control files code is injected into cmsedit
 controller during form load, and provides additional program logic required
 by data entry program.
 ```ruby
@@ -165,7 +165,7 @@ end
 ###########################################################################
 # Allow only current user documents to be displayed
 ###########################################################################
-def current_user_documents()
+def current_user_documents
   user_filter_options(Note).and(user_id: session[:user_id]).order_by(id: -1)
 end
 
