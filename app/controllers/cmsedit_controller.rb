@@ -547,7 +547,6 @@ def check_authorization
     return render(action: 'error', locals: { error: t('drgcms.not_authorized')} )
   end
   read_drg_form
-  return render( plain: t('drgcms.form_error') ) if @form.nil?
 
   # Permissions can be also defined on form
   #TODO So far only can_view is used. Think about if using other permissions has sense

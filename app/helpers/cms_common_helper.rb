@@ -374,4 +374,24 @@ def dc_help_body
   (params[:type] == 'index' ? @help['index'] : @help['form']).html_safe
 end
 
+############################################################################
+# Will return code for help button if there is any help text available for the form.
+############################################################################
+def dc_help_button(result_set)
+  type = result_set.nil? ? 'form' : 'index'
+  form_name = CmsHelper.form_param(params) || CmsHelper.table_param(params)
+  url = url_for(controller: :dc_common, action: :help, type: type, f: form_name)
+  html = %(<div class="dc-help-icon dc-link-ajax" data-url=#{url}>#{fa_icon('question-circle')}</div>)
+  return html if type == 'form'
+
+  # check if index has any help available
+  help_file_name = @form['help'] || @form['extend'] || form_name
+  help_file_name = DcApplicationController.find_help_file(help_file_name)
+  if help_file_name
+    help = YAML.load_file(help_file_name)
+    return html if help['index']
+  end
+  ''
+end
+
 end

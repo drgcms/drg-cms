@@ -105,11 +105,13 @@ def dc_label_help(options)
   return [nil, nil] if %w(comment action).include?(options['type'])
 
   label = options['caption'] || options['text'] || options['label']
-  label = if label.blank?
-            t_name(options['name'], options['name'].capitalize.gsub('_',' ') )
-          elsif options['name']
-            t(label, label)
-          end
+  if options['name']
+    label = if label.blank?
+              t_name(options['name'], options['name'].capitalize.gsub('_',' ') )
+            elsif options['name']
+              t(label, label)
+            end
+  end
   # help text can be defined in form or in translations starting with helpers. or as helpers.help.collection.field
   help = options['help']
   help ||= "helpers.help.#{@form['table']}.#{options['name']}" if options['name']

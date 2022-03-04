@@ -283,12 +283,10 @@ end
 # Will provide help data
 ########################################################################
 def help
+  read_drg_form
   form_name = CmsHelper.form_param(params) || CmsHelper.table_param(params)
-  @form = form_name ? YAML.load_file(dc_find_form_file(form_name)) : {}
-  return render json: {} if @form.nil?
-
   help_file_name = @form['help'] || @form['extend'] || form_name
-  help_file_name = find_help_file(help_file_name)
+  help_file_name = DcApplicationController.find_help_file(help_file_name)
   @help = YAML.load_file(help_file_name) if help_file_name
   # no auto generated help on index action
   return render json: {} if params[:type] == 'index' && @help.nil?
@@ -297,18 +295,6 @@ def help
 end
 
 protected
-
-########################################################################
-# Will search for help file and return it's path if found
-########################################################################
-def find_help_file(help_file_name)
-  file_name = nil
-  DrgCms.paths(:forms).reverse.each do |path|
-    f = "#{path}/help/#{help_file_name}.#{I18n.locale}"
-    file_name = f and break if File.exist?(f)
-  end
-  file_name
-end
 
 ########################################################################
 # Subroutine of add_json_ld_schema for adding one element

@@ -936,4 +936,16 @@ def read_drg_form
   }
 end
 
+########################################################################
+# Will search for help file and return it's full path name if found.
+########################################################################
+def self.find_help_file(help_file_name)
+  file_name = nil
+  DrgCms.paths(:forms).reverse.each do |path|
+    f = "#{path}/help/#{help_file_name}.#{I18n.locale}"
+    file_name = f and break if File.exist?(f)
+  end
+  file_name
+end
+
 end
