@@ -690,11 +690,12 @@ display: inline-table;
 }
 
 .dc-form-label-top {
-  color: #555;
   text-align: right;
   vertical-align: middle;
-  font-weight: bold;
-  padding: 3px 5px;
+  color: #555;
+  font-weight: 500;
+  line-height: 1.8em;
+  margin-top: 8px;
 }
 
 .dc-form-label.dc-color-odd, .dc-form-label.dc-color-even {background-color: transparent;}
