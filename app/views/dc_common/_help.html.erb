@@ -8,6 +8,7 @@
     <% if @commnets %>
       <button onclick="location.href='#comments'; return false;"><%= t('drgcms.dc_help.comments_button') %></button>
     <% end %>
+    <div style="float: right"><%= fa_icon('close', class: 'dc-link') %></div>
   </div>
 
   <div class="help-body"><%= dc_help_body if @help %></div>
