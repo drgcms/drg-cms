@@ -258,6 +258,13 @@ process_json_result = function(json) {
             opacity: 0, position: ['auto', 20],
             closeClass: 'dc-link' });
         }
+        // resize parent iframe if smaller then 500px to ensure popup some space
+        let document_height = document.body.scrollHeight;
+        if (document_height < 500) {
+          let frame = window.frameElement
+          if (frame === null) frame = document.body;
+          frame.style.height = '500px';
+        }
         break;
 
 /**** update div ****/
