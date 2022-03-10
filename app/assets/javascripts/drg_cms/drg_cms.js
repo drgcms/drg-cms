@@ -674,11 +674,13 @@ $(document).ready( function() {
     if (url.length < 5) return false;
 
     // check HTML5 validations
-    if ($("form")[0] && !$("form")[0].checkValidity() ) {
-      $("form")[0].reportValidity();
-      return false;
+    let validate = this.getAttribute("data-validate");
+    if (validate == null || validate == true) {
+      if ($("form")[0] && !$("form")[0].checkValidity()) {
+        $("form")[0].reportValidity();
+        return false;
+      }
     }
-
     let data = {};
     let request = this.getAttribute("data-request");
     switch (request) {
