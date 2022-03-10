@@ -35,8 +35,16 @@ module CmsHelper
 ############################################################################
 def dc_script_action(yaml)
   icon = dc_icon_for_link yaml['icon']
-  data = %(data-request="script" data-script="#{yaml['js'] || yaml['script']}" data-url="script")
-  %(<li><div class="dc-link-ajax" #{data}>#{icon} #{ t(yaml['caption'],yaml['caption']) }</div></li>)
+  yaml['html'] ||= {}
+  yaml['html']['data-url'] = 'script'
+  yaml['html']['data-request'] = 'script'
+  yaml['html']['data-script'] = "#{yaml['js'] || yaml['script']}"
+  yaml['html']['class'] ||= 'dc-link-ajax'
+  attributes = yaml['html'].inject('') { |r, e| r << "#{e.first}=\"#{e.last}\"" }
+
+  #  data = %(data-request="script" data-script="#{yaml['js'] || yaml['script']}" data-url="script")
+  #%(<li><div class="dc-link-ajax" #{data}>#{icon} #{ t(yaml['caption'], yaml['caption']) }</div></li>)
+  %(<li><div #{attributes}>#{icon} #{ t(yaml['caption'], yaml['caption']) }</div></li>)
 end
 
 ############################################################################
@@ -284,7 +292,7 @@ end
 ############################################################################
 def dc_log_exception(exception, where = '')
   log = exception ? "\n*** Error:#{where + ':'} #{exception.message}\n#{exception.backtrace.first.inspect}\n" : ''
-  log << "DRG Form processing line: #{session[:form_processing]}\n"
+  log << "DRG Form: #{CmsHelper.form_param(params)}, line: #{session[:form_processing]}\n"
   
   logger.error log
 end
