@@ -207,12 +207,14 @@ def dc_link_ajax_window_submit_action(yaml, record = nil, action_active = true)
   unless dc_is_action_active?(yaml)
     return %(<li><div class="dc-link-no">#{icon} #{caption}</div></li>)
   end
-  # set data-confirm when confirm 
+  # set data-confirm when confirm shortcut present
   yaml['html'] ||= {}
-  confirm = yaml['html']['data-confirm'] || yaml['confirm']
-  yaml['html']['data-confirm'] = t(confirm) if confirm.present?
-  yaml['html']['title'] ||= yaml['title']
-  yaml['html']['title'] = t(yaml['title']) if yaml['title'].present?
+  text = yaml['html']['data-confirm'] || yaml['confirm']
+  yaml['html']['data-confirm'] = t(text) if text.present?
+
+  text = yaml['html']['title'] || yaml['title']
+  yaml['html']['title'] = t(text) if text.present?
+
   yaml['html']['target'] ||= yaml['target']
   # direct url
   if yaml['url']

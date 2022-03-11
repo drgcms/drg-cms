@@ -156,6 +156,8 @@ form:
       or
       active:
         method: SomeClass.is_active_method
+      html:
+        data-validate: no
 
     5: 
       type: window
