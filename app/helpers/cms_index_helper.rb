@@ -261,9 +261,10 @@ def dc_actions_column
     actions.delete('standard')
   end
   # check must be first action
-  has_check = actions.first[1] == 'check'
+  has_check = actions[0] && actions[0]['type'] == 'check'
   width = actions.size == 1 ? 22 : 44
-  width = 22 if actions.size > 2 and !has_check
+  width = 22 if actions.size > 2 && !has_check
+  pp has_check, actions.size, width,actions.first[1]
   [actions, width, has_check]
 end
 
@@ -362,7 +363,7 @@ def dc_header_for_result
   html = '<div class="dc-result-header">'
   if @form['result_set']['actions'] && !@form['readonly']
     ignore, width, has_check = dc_actions_column()
-    check_all = fa_icon('check-square-o', class: 'dc-check-all') if has_check
+    check_all = fa_icon('check-box-o', class: 'dc-check-all') if has_check
     html << %(<div class="dc-result-actions" style="width:#{width}px;">#{check_all}</div>)
   end
   # preparation for sort icon  

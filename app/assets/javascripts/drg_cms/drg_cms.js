@@ -561,20 +561,20 @@ $(document).ready( function() {
    *******************************************************************/
   $('.dc-check-all').on('click',function(e) {
     let checkboxes = $('.dc-check');
-    if ($(this).hasClass('fa-check-square-o')) {
+    if ($(this).hasClass('mi-check_box')) {
       // check all checkboxes
       checkboxes.each( function() {
         $(this).prop('checked', true);
         $(this).parent().closest('div').addClass('dc-checked');
       });
-      $(this).removeClass('fa-check-square-o').addClass('fa-square-o');
+      $(this).removeClass('mi-check_box').addClass('mi-check_square');
     } else {
       // uncheck all checkboxes
       checkboxes.each( function() {
         $(this).prop('checked', false);
         $(this).parent().closest('div').removeClass('dc-checked');
       });
-      $(this).removeClass('fa-square-o').addClass('fa-check-square-o');
+      $(this).removeClass('mi-check_square').addClass('mi-check_box');
     }
   });
 

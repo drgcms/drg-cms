@@ -321,8 +321,9 @@ border-radius: 1px;
   margin: -6px 0 0 16px;
 }
 
-.dc-result-submenu ul .dc-link-ajax {
+.dc-result-submenu ul li {
   text-align: left;
+  padding: 5px;
 }
 
 .dc-result-submenu ul li a:link, .dc-result-submenu .dc-link a:link,
@@ -330,7 +331,6 @@ border-radius: 1px;
   font-size: 15px;
   line-height: 18px;
   font-weight: 500;
-  padding: 5px 10px;
   color: #666;
   display: inline-block;
   width: 100%;
