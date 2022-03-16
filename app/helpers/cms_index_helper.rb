@@ -264,7 +264,6 @@ def dc_actions_column
   has_check = actions[0] && actions[0]['type'] == 'check'
   width = actions.size == 1 ? 22 : 44
   width = 22 if actions.size > 2 && !has_check
-  pp has_check, actions.size, width,actions.first[1]
   [actions, width, has_check]
 end
 

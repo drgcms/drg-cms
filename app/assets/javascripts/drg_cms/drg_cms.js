@@ -701,7 +701,7 @@ $(document).ready( function() {
     if (checkboxes.length > 0) {
       let checked = [];
       checkboxes.each( function() {
-        if ($(this).prop('checked')) checked.push($(this).attr("id"));
+        if ($(this).prop('checked')) checked.push($(this).attr("id").replace('check-', ''));
       })
       data['checked'] = checked;
     }

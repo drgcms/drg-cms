@@ -374,6 +374,7 @@ border-radius: 1px;
 .dc-result-data .dc-link, .dc-result-data .dc-link-ajax {
   background-color: transparent;
   border: 0;
+  text-align: left;
 }
 
 .dc-result-data .dc-link, .dc-result-data .dc-link a, .dc-result-data .dc-link-ajax {
