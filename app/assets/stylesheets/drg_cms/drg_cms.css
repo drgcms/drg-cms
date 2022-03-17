@@ -1405,22 +1405,24 @@ color: #000;
 
 .filter-popup {
   background-color: #fff;
-  box-shadow: 2px 2px 5px #666;
+  filter: drop-shadow(2px 2px 8px #888);
+  border-radius: 2px;
 }
 
 .filter-popup div {
+  font-weight: 500;
   padding: 5px 10px;
   text-align: center;
-  background-color: #222;
-  color: #fff;
+  color: rgba(44, 142, 255, 1);
+  border-bottom: 2px solid rgba(44, 142, 255, 1);
 }
 
 .filter-popup li {
-  padding: 4px 8px;
+  padding: 5px 10px;
 }
 
 .filter-popup li:hover {
-  background-color: #aaa;
+  background-color: rgba(44, 142, 255, 1);
   color: #fff;
   cursor: pointer;
 }
@@ -1438,14 +1440,15 @@ cursor: pointer;
 }
 
 #dc-document-info-popup {
-text-align: left;
-padding: 6px;
-font-size: 0.9em;
-position:absolute;
-background-color: #fff;
-border: solid 1px #ccc;
-border-radius: 4px;
-z-index: 100;
+  text-align: left;
+  padding: 6px;
+  font-size: 0.9em;
+  position:absolute;
+  background-color: #fff;
+  border: solid 1px #eee;
+  border-radius: 2px;
+  z-index: 100;
+  filter: drop-shadow(0 8px 8px #ccc);
 }
 
 #dc-document-info-popup div span:first-child {
@@ -1456,6 +1459,7 @@ z-index: 100;
 }
 #dc-document-info-popup div span:last-child {font-weight: 600;}
 
+#dc-document-info-popup i {height: initial;}
 
 /************************** filter popup *************************/
 #drgcms_filter {

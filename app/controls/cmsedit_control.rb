@@ -47,7 +47,10 @@ def filter_on
   set_session_filter(table_name)
   url = url_for( controller: 'cmsedit', t: table_name, f: CmsHelper.form_param(params))
 
-  render json: { url: url }
+  respond_to do |format|
+    format.json { render json: { url: url } }
+    format.html { redirect_to url }
+  end
 end
 
 ########################################################################

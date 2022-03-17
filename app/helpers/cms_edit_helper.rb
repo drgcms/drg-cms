@@ -444,13 +444,13 @@ def dc_head_for_form
     #
     klass = dc_style_or_class(nil, options['class'], field, @record)
     style = dc_style_or_class(nil, options['style'], field, @record)
-    html << %Q[<div class="dc-column #{klass}" style="width:#{percent*span}%;#{style}">
+    html << %(<div class="dc-column #{klass}" style="width:#{percent*span}%;#{style}">
   #{label.blank? ? '' : "<span class=\"label\">#{label}</span>"}
   <span id="head-#{options['name']}" class="field">#{field}</span>
-</div>]
+</div>)
     current += span
     if current == split
-      html << %Q[</div>\n<div class="dc-row">]
+      html << %(</div>\n<div class="dc-row">)
       current = 0
     end
   end
@@ -488,18 +488,20 @@ def dc_document_statistics
   parms[:controller] = 'dc_common'
   parms[:action]     = 'copy_clipboard'
   url = url_for(parms.permit!)
+  html << '<div>'
   html << fa_icon('content_copy-o md-18', class: 'dc-link-img dc-link-ajax',
                   'data-url' => url, 'data-request' => 'get', title: t('drgcms.doc_copy_clipboard') )
 
-  url = url_for(controller: 'cmsedit', action: :index, table: 'dc_journal', filter: 'on',
+  url = url_for(controller: :cmsedit, action: :run, table: 'dc_journal', control: 'cmsedit.filter_on',
                 filter_oper: 'eq', filter_field: 'doc_id', filter_value: @record.id)
+
   html << fa_icon('history md-18', class: 'dc-link-img dc-window-open',
                   'data-url' => url, title: t('helpers.label.dc_journal.tabletitle') )
-  html << %(<span>ID: </span><span id="record-id" class="hover" onclick="dc_copy_to_clipboard('record-id');" title="Copy document ID to clipboard">#{@record.id}</span>)
+  html << %(<span>ID: </span>
+            <span id="record-id" class="hover" onclick="dc_copy_to_clipboard('record-id');" title="Copy document ID to clipboard">#{@record.id}
+            </span>)
 
-  #dc_copy_to_clipboard
-
-  (html << '</div>').html_safe
+  (html << '</div></div>').html_safe
 end
 
 private
