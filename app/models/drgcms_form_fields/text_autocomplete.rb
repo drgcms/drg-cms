@@ -114,7 +114,7 @@ def render
              style: "vertical-align: top;", 'data-table' => @yaml['with_new'] )
   end
   # with edit icon
-  if @yaml['with_edit'] && @record[@yaml['name']].present?
+  if @yaml['with_edit'] && @record && @record[@yaml['name']].present?
     @html << ' ' + @parent.fa_icon('edit-o', class: 'in-edit-add', title: t('drgcms.edit'),
              style: "vertical-align: top;", 'data-table' => @yaml['with_edit'], 'data-id' => @record[@yaml['name']] )
   end
