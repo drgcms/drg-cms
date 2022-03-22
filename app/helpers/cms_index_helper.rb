@@ -90,8 +90,10 @@ def dc_actions_for_index
         end
       end
       data = t('drgcms.sort') + select('sort', 'sort', choices, { include_blank: true }, { class: 'dc-sort-select',
-                                 'data-table' => @form['table'], 'data-form' => CmsHelper.form_param(params)} )
-      html_right << %(<li><div class="dc-sort">#{data}</li>)
+                                                                                           'data-table' => @form['table'], 'data-form' => CmsHelper.form_param(params)} )
+      data = mi_icon('sort') + select('sort', 'sort', choices, { include_blank: true }, { class: 'dc-sort-select',
+                                                                                           'data-table' => @form['table'], 'data-form' => CmsHelper.form_param(params)} )
+      html_right << %(<li title="#{t('drgcms.sort')}"><div class="dc-sort">#{data}</li>)
 
     # filter
     when action == 'filter'
@@ -372,22 +374,20 @@ def dc_header_for_result
   end
 
   if (columns = @form['result_set']['columns'])
-    columns.sort.each do |k, v|
-      session[:form_processing] = "result_set:columns: #{k}=#{v}"
-      next if v['width'].to_s.match(/hidden|none/i)
+    columns.sort.each do |key, options|
+      session[:form_processing] = "result_set:columns: #{key}=#{options}"
+      next if options['width'].to_s.match(/hidden|none/i)
 
-      th = %(<div class="th" style="width:#{v['width'] || '15%'};text-align:#{v['align'] || 'left'};" data-name="#{v['name']}")
-      label = v['caption'] || v['label']
-      label = (v['name'] ? "helpers.label.#{@form['table']}.#{v['name']}" : '') if label.nil?
-      label = t(label) if label.match(/\./)
+      th = %(<div class="th" style="width:#{options['width'] || '15%'};text-align:#{options['align'] || 'left'};" data-name="#{options['name']}")
+      label = t_label_for_column(options)
       # no sorting when embedded documents or custom filter is active
       sort_ok = !dc_dont?(@form['result_set']['sort'], false)
       sort_ok = sort_ok || (@form['index'] && @form['index']['sort'])
-      sort_ok = sort_ok && !dc_dont?(v['sort'], false)
+      sort_ok = sort_ok && !dc_dont?(options['sort'], false)
       if @tables.size == 1 && sort_ok
         icon = 'sort_unset md-18'
-        filter_class = form_has_input_field?(v['name']) ? nil : 'no-filter'
-        if v['name'] == sort_field
+        filter_class = form_has_input_field?(options['name']) ? nil : 'no-filter'
+        if options['name'] == sort_field
           icon = sort_direction == '1' ? 'sort_down md-18' : 'sort_up md-18'
         else
           # no icon if filter can not be set
@@ -395,7 +395,7 @@ def dc_header_for_result
         end
         # sort and filter icon
         icon = mi_icon(icon, class: filter_class) if icon
-        url = url_for(controller: 'cmsedit', action: 'run', control: 'cmsedit.sort', sort: v['name'],
+        url = url_for(controller: 'cmsedit', action: 'run', control: 'cmsedit.sort', sort: options['name'],
                       t: CmsHelper.table_param(params), f: CmsHelper.form_param(params))
         th << %(><span data-url="#{url}">#{label}</span>#{icon}</div>)
       else
