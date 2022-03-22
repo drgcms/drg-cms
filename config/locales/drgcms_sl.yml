@@ -98,6 +98,7 @@ sl:
     updated_by: Spremenil
     created_at: Ustvarjeno
     updated_at: Spremenjeno
+    active: Aktiven
     new_record: Nov zapis
     
     filter_poll: Filter

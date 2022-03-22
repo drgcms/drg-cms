@@ -115,7 +115,7 @@ def dc_label_help(options)
   label = options['caption'] || options['text'] || options['label']
   if options['name']
     label = if label.blank?
-              t_name(options['name'], options['name'].capitalize.gsub('_',' ') )
+              t_label_for_field(options['name'], options['name'].capitalize.gsub('_',' ') )
             elsif options['name']
               t(label, label)
             end
@@ -139,10 +139,10 @@ end
 ############################################################################
 def dc_tab_label_help(tab_name)
   label = @form['form']['tabs'][tab_name]['caption'] || tab_name
-  label = t(label, t_name(label, label))
+  label = t(label, t_label_for_field(label, label))
 
   help = @form['form']['tabs'][tab_name]['help'] || "helpers.help.#{@form['table']}.#{tab_name}"
-  help = t(help, t_name(help, help))
+  help = t(help, t_label_for_field(help, help))
   help = nil if help.match('helpers.') # help not found in translation
 
   [label, help]

@@ -426,7 +426,7 @@ def dc_head_for_form
     label   = if caption.blank?
       ''
     elsif options['name'] == caption
-      t_name(options['name'], options['name'].capitalize.gsub('_',' ') )
+      t_label_for_field(options['name'], options['name'].capitalize.gsub('_',' ') )
     else
       t(caption, caption) 
     end

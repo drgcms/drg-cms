@@ -98,6 +98,7 @@ en:
     updated_by: Updated by
     created_at: Created at
     updated_at: Updated at
+    active: Active
     new_record: New record
     
     filter_poll: Filter

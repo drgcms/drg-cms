@@ -1268,10 +1268,6 @@ color: #000;
   padding-top: 2px;
 }
 
-.dc-sort:hover > select {
-  color: rgba(44, 142, 255, 1);
-}
-
 .dc-sort-select {
   width: 18px;
   background: none;
