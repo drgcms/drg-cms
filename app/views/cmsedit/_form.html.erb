@@ -4,14 +4,14 @@
 <%= dc_warning_messages_for @record %>
 
 <div class="dc-form-frame">
-
+  <% fields = dc_fields_for_form %>
   <%= dc_actions_for_form 'top' %>
-  
-  <%= dc_fields_for_form %>
+
+  <%= fields %>
   <%= dc_document_statistics %>
 
   <%= dc_actions_for_form 'bottom' %>
 </div>
 
 <%= javascript_tag(@js)  unless @js.blank? %>
-<% unless @css.blank? %><style type="text/css"><%= @css %></style><% end %>
+<% unless @css.blank? %><style><%= @css %></style><% end %>

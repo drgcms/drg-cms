@@ -75,7 +75,9 @@ en:
     filter: Filter
     refresh: Refresh
     back: Back
+    next: Next
     close: Close
+    cancel: Cancel
     delete: Delete
     enable: Enable
     disable: Disable

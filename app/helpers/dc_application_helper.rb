@@ -298,11 +298,11 @@ end
 # Returns:
 # String. HTML code for title.
 ############################################################################
-def dc_new_title()
+def dc_new_title
   session[:form_processing] = "form:title:"
   title = @form['form']['title']
   # defined as form:title:new
-  if title and title['new']
+  if title && title['new']
     t( title['new'], title['new'] )
   else
     # in memory structures

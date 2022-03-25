@@ -279,126 +279,28 @@ def dc_check_and_default(value, default, values=nil) #:nodoc:
 end
 
 ############################################################################
-# Creates input fields for one tab. Subroutine of dc_fields_for_form.
-############################################################################
-def dc_fields_for_tab(fields_on_tab) #:nodoc:
-  html = '<div class="dc-form">'
-  labels_pos = dc_check_and_default(@form['form']['labels_pos'], 'right', ['top', 'left', 'right'])
-  hidden_fields, odd_even = '', nil
-  group_option, group_count = 0, 0
-  reset_cycle()
-  # Select form fields and sort them by key
-  form_fields  = fields_on_tab.select {|field| field.class == Integer }
-  form_fields.to_a.sort.each do |number, options|
-    session[:form_processing] = "form:fields: #{number}=#{options}"
-    # ignore if edit_only singe field is required
-    next if params[:edit_only] and params[:edit_only] != options['name'] 
-    # hidden_fields. Add them at the end
-    if options['type'] == 'hidden_field'
-      hidden_fields << DrgcmsFormFields::HiddenField.new(self, @record, options).render
-      next
-    end
-    # label
-    field_html,label,help = dc_field_label_help(options)
-    # Line separator
-    html << dc_top_bottom_line(:top, options)
-    # Beginning of new row
-    if group_count == 0
-      html << '<div class="row-div">' 
-      odd_even = cycle('odd','even')
-      group_count  = options['group'] || 1 
-      group_option = options['group'] || 1 
-    end
-
-    html << if labels_pos == 'top'
-%(
-<div class="dc-form-label-top dc-color-#{odd_even} dc-align-left" title="#{help}">
-  <label for="record_#{options['name']}">#{label} </label>
-  <div id="td_record_#{options['name']}">#{field_html}</div>
-</div> )
-    else
-      # no label
-      if dc_dont?(options['caption'])
-        label = ''
-        label_width = 0
-        data_width  = 100
-      elsif group_option > 1 
-        label_width = group_option != group_count ? 10 : 14        
-        data_width  = 21
-      else
-        label_width = 14
-        data_width  = 85      
-      end
-      help.gsub!('<br>',"\n") if help.present?
-%(
-<div class="dc-form-label dc-color-#{odd_even} dc-align-#{labels_pos} dc-width-#{label_width}" title="#{help}">
-  <label for="record_#{options['name']}">#{label} </label>
-</div>
-<div id="td_record_#{options['name']}" class="dc-form-field dc-color-#{odd_even} dc-width-#{data_width}">#{field_html}</div>
-)
-    end
-    # check if group end
-    if (group_count -= 1) == 0
-      html << '</div>'
-      # insert dummy div when only two fields in group
-      html << '<div></div>' if group_option == 2
-    end
-    
-    html << dc_top_bottom_line(:bottom, options)
-  end
-  html << '</div>' << hidden_fields
-end
-
-############################################################################
-# Creates edit form from fields or tabs options
+# Creates input fields defined in form options
 ############################################################################
 def dc_fields_for_form
-  html, tabs, tab_data = '',[], ''
+  html = "<div id='data_fields' " + (@form['form']['height'] ? "style=\"height: #{@form['form']['height']}px;\">" : '>')
   @js  ||= ''
   @css ||= ''
-  # Only fields defined
-  if (form_fields = @form['form']['fields'])
-    html << "<div id='data_fields' " + (@form['form']['height'] ? "style=\"height: #{@form['form']['height']}px;\">" : '>')  
-    html << dc_fields_for_tab(form_fields) + '</div>'
-  else
-    # there are multiple tabs on form
-    first = true # first tab 
-    @form['form']['tabs'].keys.sort.each do |tab_name|
-      next if tab_name.match('actions')
-      # Tricky when editing single field. If field is not present on the tab skip to next tab
-      if params[:edit_only]
-        is_on_tab = false
-        @form['form']['tabs'][tab_name].each { |k, v| is_on_tab = true if params[:edit_only] == v['name'] }
-        next unless is_on_tab
-      end
-      # first div is displayed, all others are hidden
-      tab_data << "<div id=\"data_#{tab_name.delete("\s\n")}\""
-      tab_data << ' class="div-hidden"' unless first
-      tab_data << " style=\"height: #{@form['form']['height']}px;\"" if @form['form']['height']
-      tab_data << ">#{dc_fields_for_tab(@form['form']['tabs'][tab_name])}</div>"
-
-      tab_label, tab_title = dc_tab_label_help(tab_name)
-      tabs << [tab_name, tab_label, tab_title]
-      first = false      
-    end
-    # make it all work together
-    html << '<ul class="dc-form-ul" >'
-    first = true # first tab must be selected
-    tabs.each do |tab_name, tab_label, tab_title|
-      html << %(<li id="li_#{tab_name}" data-div="#{tab_name.delete("\s\n")}" title="#{tab_title}" class="dc-form-li)
-      html << ' dc-form-li-selected' if first
-      html << "\">#{tab_label}</li>"
-      first = false
-    end
-    html << '</ul>'
-    html << tab_data
+  # steps
+  if @form['form']['steps']
+    html << dc_steps_form_create()
+  # fields
+  elsif (form_fields = @form['form']['fields'])
+    html << dc_input_form_create(form_fields) + '</div>'
+  # tabs
+  elsif @form['form']['tabs']
+    html = dc_tabs_form_create()
   end
   # add last_updated_at hidden field so controller can check if record was updated in db during editing
   html << hidden_field(nil, :last_updated_at, value: @record.updated_at.to_i) if @record.respond_to?(:updated_at)
   # add form time stamp to prevent double form submit
   html << hidden_field(nil, :form_time_stamp, value: Time.now.to_i)
   # add javascript code if defined by form
-  @js << "\n#{@form['script']}"
+  @js << "\n#{@form['script']} #{@form['js']}"
   @css << "\n#{@form['css']}" 
   html.html_safe
 end
@@ -409,6 +311,7 @@ end
 ############################################################################
 def dc_head_for_form
   @css ||= ''
+  pp '***************************', @form['form']
   head = @form['form']['head']
   return '' if head.nil?
 
@@ -520,6 +423,165 @@ def dc_top_bottom_line(location, options)
   else
     ''
   end
+end
+
+############################################################################
+# Creates input fields for one tab. Subroutine of dc_fields_for_form.
+############################################################################
+def dc_input_form_create(fields_on_tab) #:nodoc:
+  html = '<div class="dc-form">'
+  labels_pos = dc_check_and_default(@form['form']['labels_pos'], 'right', ['top', 'left', 'right'])
+  hidden_fields, odd_even = '', nil
+  group_option, group_count = 0, 0
+  reset_cycle()
+  # Select form fields and sort them by key
+  form_fields  = fields_on_tab.select {|field| field.class == Integer }
+  form_fields.to_a.sort.each do |number, options|
+    session[:form_processing] = "form:fields: #{number}=#{options}"
+    # ignore if edit_only singe field is required
+    next if params[:edit_only] and params[:edit_only] != options['name']
+    # hidden_fields. Add them at the end
+    if options['type'] == 'hidden_field'
+      hidden_fields << DrgcmsFormFields::HiddenField.new(self, @record, options).render
+      next
+    end
+    # label
+    field_html,label,help = dc_field_label_help(options)
+    # Line separator
+    html << dc_top_bottom_line(:top, options)
+    # Beginning of new row
+    if group_count == 0
+      html << '<div class="row-div">'
+      odd_even = cycle('odd','even')
+      group_count  = options['group'] || 1
+      group_option = options['group'] || 1
+    end
+
+    html << if labels_pos == 'top'
+              %(
+<div class="dc-form-label-top dc-color-#{odd_even} dc-align-left" title="#{help}">
+  <label for="record_#{options['name']}">#{label} </label>
+  <div id="td_record_#{options['name']}">#{field_html}</div>
+</div> )
+            else
+              # no label
+              if dc_dont?(options['caption'])
+                label = ''
+                label_width = 0
+                data_width  = 100
+              elsif group_option > 1
+                label_width = group_option != group_count ? 10 : 14
+                data_width  = 21
+              else
+                label_width = 14
+                data_width  = 85
+              end
+              help.gsub!('<br>',"\n") if help.present?
+              %(
+<div class="dc-form-label dc-color-#{odd_even} dc-align-#{labels_pos} dc-width-#{label_width}" title="#{help}">
+  <label for="record_#{options['name']}">#{label} </label>
+</div>
+<div id="td_record_#{options['name']}" class="dc-form-field dc-color-#{odd_even} dc-width-#{data_width}">#{field_html}</div>
+)
+            end
+    # check if group end
+    if (group_count -= 1) == 0
+      html << '</div>'
+      # insert dummy div when only two fields in group
+      html << '<div></div>' if group_option == 2
+    end
+
+    html << dc_top_bottom_line(:bottom, options)
+  end
+  html << '</div>' << hidden_fields
+end
+
+############################################################################
+# Will create html code required for input form with steps defined
+############################################################################
+def dc_steps_one_element(element, tab_name = nil)
+  def add_one_step(key, tab_name)
+    fields = tab_name ? @form['form']['tabs'][tab_name] :  @form['form']['fields']
+    { key => fields[key] }
+  end
+
+  fields = {}
+  element.split(',').each do |particle|
+    if particle.match('-')
+      tabs_fields = tab_name ? @form['form']['tabs'][tab_name] : @form['form']['fields']
+      start, to_end = particle.split('-').map(&:to_i)
+      tabs_fields.each { |key, data| fields.merge!(add_one_step(key, tab_name)) if (start..to_end).include?(key) }
+    else
+      fields.merge!(add_one_step(particle.to_i, tab_name))
+    end
+  end
+  fields
+end
+
+############################################################################
+# Will create html code required for input form with steps defined
+############################################################################
+def dc_steps_form_create
+  form = {}
+  step = params[:step].to_i
+  step_data = @form['form']['steps'].to_a[step - 1]
+
+  step_data.last.each do |element|
+    if element.first == 'fields'
+      form.merge!(dc_steps_one_element(element.second))
+    else
+      element.last.each do |tab_name, data|
+        form.merge!(dc_steps_one_element(data, tab_name))
+      end
+    end
+  end
+  # update steps data on form
+  @form['form']['actions'][20]['params']['step'] = step
+  if step < 2
+    @form['form']['actions'].delete(10)
+  else
+    @form['form']['actions'][10]['params']['next_step'] = step - 1
+  end
+  @form['form']['actions'][20]['params']['next_step'] = step + 1
+  dc_input_form_create(form)
+end
+
+############################################################################
+# Will create html code required for input form with tabs
+############################################################################
+def dc_tabs_form_create
+  html, tabs, tab_data = '', [], ''
+  # there are multiple tabs on form
+  first = true # first tab
+  @form['form']['tabs'].keys.sort.each do |tab_name|
+    next if tab_name.match('actions')
+    # Tricky when editing single field. If field is not present on the tab skip to next tab
+    if params[:edit_only]
+      is_on_tab = false
+      @form['form']['tabs'][tab_name].each { |k, v| is_on_tab = true if params[:edit_only] == v['name'] }
+      next unless is_on_tab
+    end
+    # first div is displayed, all others are hidden
+    tab_data << "<div id=\"data_#{tab_name.delete("\s\n")}\""
+    tab_data << ' class="div-hidden"' unless first
+    tab_data << " style=\"height: #{@form['form']['height']}px;\"" if @form['form']['height']
+    tab_data << ">#{dc_input_form_create(@form['form']['tabs'][tab_name])}</div>"
+
+    tab_label, tab_title = dc_tab_label_help(tab_name)
+    tabs << [tab_name, tab_label, tab_title]
+    first = false
+  end
+  # make it all work together
+  html << '<ul class="dc-form-ul" >'
+  first = true # first tab must be selected
+  tabs.each do |tab_name, tab_label, tab_title|
+    html << %(<li id="li_#{tab_name}" data-div="#{tab_name.delete("\s\n")}" title="#{tab_title}" class="dc-form-li)
+    html << ' dc-form-li-selected' if first
+    html << "\">#{tab_label}</li>"
+    first = false
+  end
+  html << '</ul>'
+  html << tab_data
 end
 
 end
