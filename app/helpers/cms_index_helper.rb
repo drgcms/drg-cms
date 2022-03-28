@@ -104,7 +104,7 @@ def dc_actions_for_index
       html_right << %(
 <li>
   <div class="dc-filter" title="#{DcFilter.title4_filter_off(table)}" data-url="#{url.html_safe}">
-    #{mi_icon(url.blank? ? 'search' : 'search_off') }#{DcFilter.menu_filter(self).html_safe}
+    #{mi_icon(url.blank? ? 'search' : 'filter_alt_off') }#{DcFilter.menu_filter(self).html_safe}
   </div>
 </li>#{DcFilter.get_filter_field(self)}).html_safe
 

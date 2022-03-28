@@ -726,7 +726,7 @@ $(document).ready( function() {
   /*******************************************************************
    * Click on filter off
    *******************************************************************/
-  $('.mi-search_off').on('click', function(e) {
+  $('.mi-filter_alt_off').on('click', function(e) {
     let url = $(this).parents('.dc-filter').attr("data-url");
     if (url.length > 5) simple_ajax_call(url);
   });

@@ -1257,8 +1257,9 @@ color: #000;
   margin-right: 5px;
 }
 
-.dc-filter .mi-search_off {
+.dc-filter .mi-filter_alt_off {
   color: #c43;
+  font-size: 20px;
 }
 .dc-filter i:hover {
   color: rgba(44, 142, 255, 1);
