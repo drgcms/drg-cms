@@ -55,6 +55,6 @@ class DcJournal
   field :time,        type: DateTime
   field :diff,        type: String
   
-  index( { user_id: 1, time: -1 } )  
-  index( { time: 1 } )  
+  index user_id: 1
+  index doc_id: 1
 end
