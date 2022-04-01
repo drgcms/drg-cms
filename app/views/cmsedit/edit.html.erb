@@ -1,9 +1,13 @@
-<%= dc_head_for_form %>
-<%= dc_table_title dc_edit_title() %>
+<% dc_form_update %>
 
-<%= form_tag( @parms, method: :put, id: params['form_name'] || params['table'],
-              class: 'cmsform', multipart: @form['form']['multipart'] ) do %>
-  <%= render partial: 'form' %>
-<% end %>
+<div <%= dc_form_id %>>
+  <%= dc_head_for_form %>
+  <%= dc_table_title dc_edit_title() %>
+
+  <%= form_tag( @parms, method: :put, id: params['form_name'] || params['table'],
+                class: 'cmsform', multipart: @form['form']['multipart'] ) do %>
+    <%= render partial: 'form' %>
+  <% end %>
+</div>
 
 <div id="popup" style="display: none;"></div>

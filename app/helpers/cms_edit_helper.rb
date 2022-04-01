@@ -285,11 +285,8 @@ def dc_fields_for_form
   html = "<div id='data_fields' " + (@form['form']['height'] ? "style=\"height: #{@form['form']['height']}px;\">" : '>')
   @js  ||= ''
   @css ||= ''
-  # steps
-  if @form['form']['steps']
-    html << dc_steps_form_create()
   # fields
-  elsif (form_fields = @form['form']['fields'])
+  if (form_fields = @form['form']['fields'])
     html << dc_input_form_create(form_fields) + '</div>'
   # tabs
   elsif @form['form']['tabs']
@@ -311,7 +308,6 @@ end
 ############################################################################
 def dc_head_for_form
   @css ||= ''
-  pp '***************************', @form['form']
   head = @form['form']['head']
   return '' if head.nil?
 
@@ -407,6 +403,30 @@ def dc_document_statistics
   (html << '</div></div>').html_safe
 end
 
+############################################################################
+# Updates form prior to processing form
+############################################################################
+def dc_form_update
+  # update form for steps options
+  if @form['form']['steps']
+    dc_form_update_steps
+  end
+end
+
+############################################################################
+# If form is divided into two parts, this method gathers html to be painted
+# on right side of the form pane.
+############################################################################
+def dc_form_left
+  yaml = @form['form']['form_left']
+  return '' unless yaml
+
+  html = ''
+  html << dc_process_eval(yaml['eval'], self) if yaml['eval']
+
+  html.html_safe
+end
+
 private
 
 ############################################################################
@@ -430,7 +450,7 @@ end
 ############################################################################
 def dc_input_form_create(fields_on_tab) #:nodoc:
   html = '<div class="dc-form">'
-  labels_pos = dc_check_and_default(@form['form']['labels_pos'], 'right', ['top', 'left', 'right'])
+  labels_pos = dc_check_and_default(@form['form']['labels_pos'], 'right', %w[top left right])
   hidden_fields, odd_even = '', nil
   group_option, group_count = 0, 0
   reset_cycle()
@@ -506,7 +526,7 @@ def dc_steps_one_element(element, tab_name = nil)
   end
 
   fields = {}
-  element.split(',').each do |particle|
+  element.to_s.split(',').each do |particle|
     if particle.match('-')
       tabs_fields = tab_name ? @form['form']['tabs'][tab_name] : @form['form']['fields']
       start, to_end = particle.split('-').map(&:to_i)
@@ -521,13 +541,15 @@ end
 ############################################################################
 # Will create html code required for input form with steps defined
 ############################################################################
-def dc_steps_form_create
+def dc_form_update_steps
   form = {}
   step = params[:step].to_i
   step_data = @form['form']['steps'].to_a[step - 1]
 
   step_data.last.each do |element|
-    if element.first == 'fields'
+    if element.first == 'title'
+      @form['form']['title']['new'] = element.last
+    elsif element.first == 'fields'
       form.merge!(dc_steps_one_element(element.second))
     else
       element.last.each do |tab_name, data|
@@ -543,7 +565,8 @@ def dc_steps_form_create
     @form['form']['actions'][10]['params']['next_step'] = step - 1
   end
   @form['form']['actions'][20]['params']['next_step'] = step + 1
-  dc_input_form_create(form)
+
+  @form['form']['fields'] = form
 end
 
 ############################################################################

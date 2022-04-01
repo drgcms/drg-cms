@@ -1,17 +1,24 @@
+<div id="dc-form-container">
+  <div id="dc-form-left">
+    <%= dc_form_left %>
+  </div>
 
-<%= dc_flash_messages %>
-<%= dc_error_messages_for @record %>
-<%= dc_warning_messages_for @record %>
+  <div id="dc-form-right">
+    <%= dc_flash_messages %>
+    <%= dc_error_messages_for @record %>
+    <%= dc_warning_messages_for @record %>
 
-<div class="dc-form-frame">
-  <% fields = dc_fields_for_form %>
-  <%= dc_actions_for_form 'top' %>
+    <div class="dc-form-frame">
+    <% fields = dc_fields_for_form %>
+    <%= dc_actions_for_form 'top' %>
 
-  <%= fields %>
-  <%= dc_document_statistics %>
+    <%= fields %>
+    <%= dc_document_statistics %>
 
-  <%= dc_actions_for_form 'bottom' %>
+    <%= dc_actions_for_form 'bottom' %>
+    </div>
+
+    <%= javascript_tag(@js)  unless @js.blank? %>
+    <% unless @css.blank? %><style><%= @css %></style><% end %>
+  </div>
 </div>
-
-<%= javascript_tag(@js)  unless @js.blank? %>
-<% unless @css.blank? %><style><%= @css %></style><% end %>

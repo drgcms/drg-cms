@@ -300,6 +300,13 @@ def dc_log_exception(exception, where = '')
 end
 
 ############################################################################
+# Will return form id, to be used on each form for simpler css selecting.
+############################################################################
+def dc_form_id
+  %( id=#{CmsHelper.form_param(params) || CmsHelper.table_param(params)} )
+end
+
+############################################################################
 # Will return form_name from parameter regardless if set as form_name or just f.
 ############################################################################
 def self.form_param(params)

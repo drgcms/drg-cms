@@ -623,10 +623,23 @@ display: inline-table;
 
 /*****   FORM    *****/
 
+#dc-form-container {
+  display: flex;
+  padding-left: 4px;
+}
+
+#dc-form-left {
+  padding: 8px;
+  background-color: #eee;
+}
+
+#dc-form-right {
+  flex: 1;
+}
+
 .dc-form-frame {
   margin: 0px;
   padding: 4px;
-  /*background-color: #f7f7f7;*/
 }
 
 .dc-form {
@@ -816,6 +829,35 @@ display: flex;
 }
 .dc-head .text {
   font-weight: normal;  
+}
+
+#dc-form-left #dc-steps-menu {
+  color: #666;
+}
+#dc-form-left #dc-steps-menu h2 {
+  font-size: 2em;
+  padding-top: 8px;
+  font-weight: 600;
+  border-bottom: 2px solid #444;
+  margin-bottom: 8px;
+}
+
+#dc-form-left #dc-steps-menu li {
+  filter: none;
+  border: none;
+  text-align: left;
+  background-color: transparent;
+  padding: 8px 0;
+  font-size: 1.1em;
+}
+
+#dc-form-left #dc-steps-menu li.active {
+  color: #000;
+  font-weight: 700;
+}
+
+#dc-form-left #dc-steps-menu .dc-link-ajax:hover {
+  color: rgba(44, 142, 255, 1);
 }
 
 /*** CMS toggle button */

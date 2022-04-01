@@ -408,4 +408,34 @@ def dc_help_button(result_set)
   ''
 end
 
+############################################################################
+# Will return html code for steps menu when form with steps is processed.
+############################################################################
+def dc_steps_menu_get(parent)
+  yaml = @form['form']['steps']
+  return '' unless yaml
+
+  html = %(<ul id="dc-steps-menu"><h2>#{t('drgcms.steps')}</h2>)
+  parms = { controller: 'cmsedit', action: 'run', control: 'steps',
+            table: CmsHelper.table_param(params),
+            form_name: CmsHelper.form_param(params),
+            id: @record.id }
+
+  yaml.sort.each_with_index do |data, i|
+    n = i + 1
+    step = data.last # it's an array
+    url = case params[:step].to_i
+          when n + 1 then url_for(parms.merge({ step: n + 1, next_step: n}))
+          when n then url_for(parms.merge({ step: n, next_step: n}))
+          when n - 1 then url_for(parms.merge({ step: n - 1, next_step: n}))
+          else
+            ''
+          end
+    _class = url.present? ? 'dc-link-ajax' : ''
+    _class << (params[:step].to_i == n ? ' active' : '')
+    html << %(<li class="#{_class}" data-url="#{url}">#{step['title']}</li>)
+  end
+  html << '</ul>'
+end
+
 end
