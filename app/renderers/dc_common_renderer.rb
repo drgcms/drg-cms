@@ -68,9 +68,10 @@ end
 #    dc_render(:dc_common_renderer, method: 'google_analytics', code: 'UA-12345678-9')
 ########################################################################
 def google_analytics
+  html = ''
   ga_acc = @opts[:code] || @opts[:ga_acc]
-  return '' if ga_acc.nil? or ga_acc == '/'
-  html =<<EOT 
+  if ga_acc && ga_acc != '/'
+    html << %(
   <!-- Google analytics. -->
 <script type="text/javascript">
   (function(i,s,o,g,r,a,m){
@@ -86,7 +87,23 @@ def google_analytics
     ga('send', 'pageview')
   }
 </script>
-EOT
+)
+  end
+
+  ga4_acc = @opts[:code4] || @opts[:ga4_acc]
+  if ga4_acc && ga4_acc != '/'
+    html << %(
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=#{ga4_acc}"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', '#{ga4_acc}');
+</script>)
+  end
+
   html.html_safe
 end
 
