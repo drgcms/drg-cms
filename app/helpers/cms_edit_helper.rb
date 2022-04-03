@@ -548,6 +548,7 @@ def dc_form_update_steps
 
   step_data.last.each do |element|
     if element.first == 'title'
+      @form['form']['title'] ||= {}
       @form['form']['title']['new'] = element.last
     elsif element.first == 'fields'
       form.merge!(dc_steps_one_element(element.second))
@@ -558,6 +559,7 @@ def dc_form_update_steps
     end
   end
   # update steps data on form
+=begin
   @form['form']['actions'][20]['params']['step'] = step
   if step < 2
     @form['form']['actions'].delete(10)
@@ -565,7 +567,8 @@ def dc_form_update_steps
     @form['form']['actions'][10]['params']['next_step'] = step - 1
   end
   @form['form']['actions'][20]['params']['next_step'] = step + 1
-
+=end
+  @form['form']['form_left'] ||= { 'eval' => 'dc_steps_menu_get'}
   @form['form']['fields'] = form
 end
 
