@@ -298,7 +298,7 @@ def dc_fields_for_form
   html << hidden_field(nil, :form_time_stamp, value: Time.now.to_i)
   # add javascript code if defined by form
   @js << "\n#{@form['script']} #{@form['js']}"
-  @css << "\n#{@form['css']}" 
+  @css << "\n#{@form['css']}\n#{@form['form']['css']}"
   html.html_safe
 end
 
@@ -539,7 +539,8 @@ def dc_steps_one_element(element, tab_name = nil)
 end
 
 ############################################################################
-# Will create html code required for input form with steps defined
+# Will create html code required for input form with steps defined and update
+# actions.
 ############################################################################
 def dc_form_update_steps
   form = {}
@@ -547,27 +548,35 @@ def dc_form_update_steps
   step_data = @form['form']['steps'].to_a[step - 1]
 
   step_data.last.each do |element|
-    if element.first == 'title'
-      @form['form']['title'] ||= {}
-      @form['form']['title']['new'] = element.last
-    elsif element.first == 'fields'
+    if element.first == 'fields'
       form.merge!(dc_steps_one_element(element.second))
-    else
+    elsif element.first == 'tabs'
       element.last.each do |tab_name, data|
         form.merge!(dc_steps_one_element(data, tab_name))
       end
     end
   end
   # update steps data on form
-=begin
   @form['form']['actions'][20]['params']['step'] = step
+  @form['form']['actions'][20]['params']['next_step'] = step + 1
+  @form['form']['actions'][10]['params']['step'] = step
+  @form['form']['actions'][10]['params']['next_step'] = step - 1
+  # remove not needed steps
   if step < 2
     @form['form']['actions'].delete(10)
-  else
-    @form['form']['actions'][10]['params']['next_step'] = step - 1
+  elsif step == @form['form']['steps'].size
+    @form['form']['actions'].delete(20)
   end
-  @form['form']['actions'][20]['params']['next_step'] = step + 1
-=end
+  @form['form']['actions'].delete(100) unless step == @form['form']['steps'].size
+  # update form_name and control name if defined
+  %w[1 10 20 100].each do |i|
+    next unless @form['form']['actions'][i.to_i]
+
+    @form['form']['actions'][i.to_i]['form_name'] = CmsHelper.form_param(params)
+    control = @form['control'] ? @form['control'] : @form['table']
+    @form['form']['actions'][i.to_i]['control'].sub!('x.', "#{control}.")
+  end
+
   @form['form']['form_left'] ||= { 'eval' => 'dc_steps_menu_get'}
   @form['form']['fields'] = form
 end

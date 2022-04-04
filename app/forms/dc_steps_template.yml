@@ -1,62 +1,51 @@
-## Template to add some fields to dc_steps
-
+## Template for standard options on wizard form
 form:
-  title:
-    new: Change it
-
+  css: '#dc-form-left {display: block;width: 20%}'
   actions:
     1:
       type: ajax
       caption: drgcms.cancel
-      method: post
-      table: x
       icon: cancel
+      method: post
+      form_name: x
       action: run
-      control: steps
+      control: x.steps_cancel
       params:
         step: x
         next_step: x
-        idp:
-          method: id
 
     10:
       type: ajax
       caption: drgcms.back
-      method: post
-      table: x
       icon: arrow-back
+      method: post
+      form_name: x
       action: run
-      control: steps
+      control: x.steps
       params:
         step: x
         next_step: x
-        idp:
-          method: id
 
     20:
       type: ajax
       caption: drgcms.next
-      method: post
-      table: x
       icon: arrow-forward
+      method: post
+      form_name: x
       action: run
-      control: steps
+      control: x.steps
       params:
         step: x
         next_step: x
-        idp:
-          method: id
 
     100:
       type: ajax
       caption: drgcms.finish
-      method: post
-      table: x
       icon: arrow-forward
+      method: post
+      form_name: x
       action: run
-      control: steps
+      control: x.steps_finish
       params:
         step: x
         next_step: x
-        idp:
-          method: id

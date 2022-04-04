@@ -416,7 +416,8 @@ def dc_steps_menu_get(parent)
   return '' unless yaml
 
   html = %(<ul id="dc-steps-menu"><h2>#{t('drgcms.steps')}</h2>)
-  parms = { controller: 'cmsedit', action: 'run', control: 'steps',
+  control = @form['control'] ? @form['control'] : @form['table']
+  parms = { controller: 'cmsedit', action: 'run', control: "#{control}.steps",
             table: CmsHelper.table_param(params),
             form_name: CmsHelper.form_param(params),
             id: @record.id }

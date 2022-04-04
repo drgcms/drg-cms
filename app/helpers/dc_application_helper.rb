@@ -242,7 +242,7 @@ end
 # and renderers during page rendering.
 ########################################################################
 def dc_page_bottom
-  %(<style type="text/css">#{@css}</style>#{javascript_tag @js}).html_safe
+  %(<style>#{@css}</style>#{javascript_tag @js}).html_safe
 end
 
 ############################################################################
