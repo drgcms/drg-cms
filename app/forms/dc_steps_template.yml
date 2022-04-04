@@ -1,0 +1,62 @@
+## Template to add some fields to dc_steps
+
+form:
+  title:
+    new: Change it
+
+  actions:
+    1:
+      type: ajax
+      caption: drgcms.cancel
+      method: post
+      table: x
+      icon: cancel
+      action: run
+      control: steps
+      params:
+        step: x
+        next_step: x
+        idp:
+          method: id
+
+    10:
+      type: ajax
+      caption: drgcms.back
+      method: post
+      table: x
+      icon: arrow-back
+      action: run
+      control: steps
+      params:
+        step: x
+        next_step: x
+        idp:
+          method: id
+
+    20:
+      type: ajax
+      caption: drgcms.next
+      method: post
+      table: x
+      icon: arrow-forward
+      action: run
+      control: steps
+      params:
+        step: x
+        next_step: x
+        idp:
+          method: id
+
+    100:
+      type: ajax
+      caption: drgcms.finish
+      method: post
+      table: x
+      icon: arrow-forward
+      action: run
+      control: steps
+      params:
+        step: x
+        next_step: x
+        idp:
+          method: id

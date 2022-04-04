@@ -132,7 +132,7 @@ end
 # Export data to Excel
 ######################################################################
 def export_to_excel(report_id)
-  read_drg_form if @form.blank?
+  dc_form_read if @form.blank?
   # use report options if present
   columns = (@form['report'] ? @form['report'] : @form)['result_set']['columns'].sort
 

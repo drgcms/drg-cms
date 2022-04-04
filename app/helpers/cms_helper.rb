@@ -320,4 +320,42 @@ def self.table_param(params)
   params[:table] || params[:t]
 end
 
+########################################################################
+# Searches forms path for file_name and returns full file name or nil if not found.
+#
+# @param [String] Form file name. File name can be passed as gem_name.filename. This can
+# be useful when you are extending form but want to retain same name as original form
+# For example. You are extending dc_user form from drg_cms gem and want to
+# retain same dc_user name. This can be done by setting drg_cms.dc_user as extend option.
+#
+# @return [String] Form file name including path or nil if not found.
+########################################################################
+def self.form_file_find(form_file)
+  form_path = nil
+  form_path, form_file = form_file.split(/\.|\//) if form_file.match(/\.|\//)
+
+  DrgCms.paths(:forms).reverse.each do |path|
+    f = "#{path}/#{form_file}.yml"
+    return f if File.exist?(f) && (form_path.nil? || path.to_s.match(/\/#{form_path}(-|\/)/i))
+  end
+  raise "Exception: Form file '#{form_file}' not found!"
+end
+
+########################################################################
+# Merges two forms when current form extends other form. Subroutine of dc_form_read.
+# With a little help of https://www.ruby-forum.com/topic/142809
+########################################################################
+def self.forms_merge(hash1, hash2)
+  target = hash1.dup
+  hash2.keys.each do |key|
+    if hash2[key].is_a?(Hash) && hash1[key].is_a?(Hash)
+      target[key] = CmsHelper.forms_merge(hash1[key], hash2[key])
+      next
+    end
+    target[key] = hash2[key] == '/' ? nil :  hash2[key]
+  end
+  # delete keys with nil value
+  target.delete_if { |k, v| v.nil? }
+end
+
 end

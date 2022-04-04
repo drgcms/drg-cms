@@ -268,7 +268,7 @@ end
 ########################################################################
 def add_json_ld_schema
   edited_document = DcJsonLd.find_document_by_ids(CmsHelper.table_param(params), params[:ids])
-  yaml = YAML.load_file( dc_find_form_file('json_ld_schema') )
+  yaml = YAML.load_file( CmsHelper.form_file_find('json_ld_schema') )
   schema_data = yaml[params[:schema]]
   # Existing document
   if edited_document.dc_json_lds.find_by(type: "@#{params[:schema]}")
@@ -283,7 +283,7 @@ end
 # Will provide help data
 ########################################################################
 def help
-  read_drg_form
+  dc_form_read
   form_name = CmsHelper.form_param(params) || CmsHelper.table_param(params)
   help_file_name = @form['help'] || @form['extend'] || form_name
   help_file_name = DcApplicationController.find_help_file(help_file_name)

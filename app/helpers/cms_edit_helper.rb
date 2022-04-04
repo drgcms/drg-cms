@@ -408,7 +408,7 @@ end
 ############################################################################
 def dc_form_update
   # update form for steps options
-  if @form['form']['steps']
+  if @form.dig('form', 'steps')
     dc_form_update_steps
   end
 end
@@ -418,7 +418,7 @@ end
 # on right side of the form pane.
 ############################################################################
 def dc_form_left
-  yaml = @form['form']['form_left']
+  yaml = @form.dig('form', 'form_left')
   return '' unless yaml
 
   html = ''

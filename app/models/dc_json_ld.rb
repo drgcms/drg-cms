@@ -37,21 +37,21 @@
 # 
 ########################################################################
 class DcJsonLd 
-  include Mongoid::Document
-  include Mongoid::Timestamps
+include Mongoid::Document
+include Mongoid::Timestamps
 
-  field :name,        type: String
-  field :type,        type: String
-  field :data,        type: String
-  field :active,      type: Boolean,      default: true
+field :name,        type: String
+field :type,        type: String
+field :data,        type: String
+field :active,      type: Boolean,      default: true
 
-  embeds_many :dc_json_lds, :cyclic => true
+embeds_many :dc_json_lds, :cyclic => true
 
-  field :created_by,  type: BSON::ObjectId
-  field :updated_by,  type: BSON::ObjectId
-  
-  validates :name, presence: true
-  validates :type, presence: true
+field :created_by,  type: BSON::ObjectId
+field :updated_by,  type: BSON::ObjectId
+
+validates :name, presence: true
+validates :type, presence: true
   
 ##########################################################################
 # Returns JSON LD data as YAML
@@ -72,29 +72,6 @@ def get_json_ld(parent_data)
 end
 
 ########################################################################
-# Searches forms path for file_name and returns full file name or nil if not found.
-# 
-# @param [String] Form file name. File name can be passed as gem_name.filename. This can
-# be useful when you are extending form but want to retain same name as original form
-# For example. You are extending dc_user form from drg_cms gem and want to
-# retain same dc_user name. This can be done by setting drg_cms.dc_user to extend option. 
-# 
-# @return [String] Form file name including path or nil if not found.
-########################################################################
-def self.dc_find_form_file(form_file)
-  form_path=nil
-  if form_file.match(/\.|\//)
-    form_path,form_file=form_file.split(/\.|\//)
-  end
-  DrgCms.paths(:forms).reverse.each do |path|
-    f = "#{path}/#{form_file}.yml"
-    return f if File.exist?(f) and (form_path.nil? or path.to_s.match(/\/#{form_path}\//i))
-  end
-  p "Form file #{form_file} not found!"
-  nil
-end
-
-########################################################################
 # Find document by ids when document are embedded into main d even if embedded
 # 
 # @param [tables] Tables parameter as send in url. Tables are separated by ;
@@ -105,9 +82,9 @@ end
 def self.find_document_by_ids(tables, ids)
   collection = tables.split(';').first.classify.constantize
   ar_ids = ids.split(';')
-# Find top document  
+  # Find top document
   document = collection.find(ar_ids.shift)
-# Search for embedded document
+  # Search for embedded document
   ar_ids.each {|id| document = document.dc_json_lds.find(id) }
   document
 end
@@ -116,7 +93,7 @@ end
 # Returns possible options for type select field on form.
 #########################################################################
 def self.choices4_type()
-  yaml = YAML.load_file( dc_find_form_file('json_ld_schema') )
+  yaml = YAML.load_file( CmsHelper.form_file_find('json_ld_schema') )
   
   yaml.inject([]) {|result, schema_name| result << schema_name.first }
 end
@@ -125,7 +102,7 @@ end
 # Create menu to add schema element. Called from DRGCMS Form action.
 #########################################################################
 def self.add_schema_menu(parent)
-  yaml = YAML.load_file( dc_find_form_file('json_ld_schema') )
+  yaml = YAML.load_file( CmsHelper.form_file_find('json_ld_schema') )
   if (level = parent.params['ids'].split(';').size) == 1
     # select only top level elements
     yaml.delete_if { |schema_name, schema_data| schema_data['level'].nil? }
@@ -139,7 +116,7 @@ def self.add_schema_menu(parent)
     end
     yaml = _yaml
   end
-# create menu code
+  # create menu code
   html = '<ul>'
   yaml.each do |schema_name, schema_data|
     next if level == 1 and schema_data['level'].nil?

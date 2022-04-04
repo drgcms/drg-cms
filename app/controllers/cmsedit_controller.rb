@@ -546,7 +546,7 @@ def check_authorization
      (table.size < 3 or !dc_user_can(DcPermission::CAN_VIEW))
     return render(action: 'error', locals: { error: t('drgcms.not_authorized')} )
   end
-  read_drg_form
+  dc_form_read
 
   # Permissions can be also defined on form
   #TODO So far only can_view is used. Think about if using other permissions has sense

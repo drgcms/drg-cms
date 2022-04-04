@@ -77,6 +77,7 @@ sl:
     back: Nazaj
     next: Naprej
     steps: Koraki
+    finish: Zaključi
     close: Zapri
     cancel: Prekliči
     delete: Izbris

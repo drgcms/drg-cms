@@ -114,27 +114,6 @@ def set_page_title
   dc_add_meta_tag(:name, 'description', @page.meta_description)
 end
 
-########################################################################
-# Searches forms path for file_name and returns full file name or nil if not found.
-# 
-# @param [String] Form file name. File name can be passed as gem_name.filename. This can
-# be useful when you are extending form but want to retain same name as original form
-# For example. You are extending dc_user form from drg_cms gem and want to
-# retain same dc_user name. This can be done by setting drg_cms.dc_user as extend option.
-# 
-# @return [String] Form file name including path or nil if not found.
-########################################################################
-def dc_find_form_file(form_file)
-  form_path = nil
-  form_path, form_file = form_file.split(/\.|\//) if form_file.match(/\.|\//)
-
-  DrgCms.paths(:forms).reverse.each do |path|
-    f = "#{path}/#{form_file}.yml"
-    return f if File.exist?(f) && (form_path.nil? || path.to_s.match(/\/#{form_path}(-|\/)/i))
-  end
-  raise "Exception: Form file '#{form_file}' not found!"
-end
-
 #######################################################################
 # Will render public/404.html file with some debug code includded.
 # 
@@ -834,34 +813,17 @@ def redis
 end
 
 ########################################################################
-# Merges two forms when current form extends other form. Subroutine of read_drg_form.
-# With a little help of https://www.ruby-forum.com/topic/142809
-########################################################################
-def forms_merge(hash1, hash2)
-  target = hash1.dup
-  hash2.keys.each do |key|
-    if hash2[key].is_a? Hash and hash1[key].is_a? Hash
-      target[key] = forms_merge(hash1[key], hash2[key])
-      next
-    end
-    target[key] = hash2[key] == '/' ? nil :  hash2[key]
-  end
-  # delete keys with nil value
-  target.delete_if { |k, v| v.nil? }
-end
-
-########################################################################
 # Extends DRGCMS form file. Extended file is processed first and then merged
 # with code in this form file. Form can extend only single form file.
 #
 # [Parameters:]
 # [extend_option] : Value of @form['extend'] option
 ########################################################################
-def extend_drg_form(extend_option)
-  form_file_name = dc_find_form_file(extend_option)
+def dc_form_extend(extend_option)
+  form_file_name = CmsHelper.form_file_find(extend_option)
   @form_js << read_js_drg_form(form_file_name)
   form  = YAML.load_file( form_file_name )
-  @form = forms_merge(form, @form)
+  @form = CmsHelper.forms_merge(form, @form)
   # If combined form contains tabs and fields options, merge fields into tabs
   if @form['form']['tabs'] && @form['form']['fields']
     @form['form']['tabs']['fields'] = @form['form']['fields']
@@ -876,13 +838,13 @@ end
 # [Parameters:]
 # [include_option] : Value of @form['include'] option
 ########################################################################
-def include_drg_form(include_option)
+def dc_form_include(include_option)
   includes = include_option.class == Array ? include_option : include_option.split(/\,|\;/)
   includes.each do |include_file|
-    form_file_name = dc_find_form_file(include_file)
+    form_file_name = CmsHelper.form_file_find(include_file)
     @form_js << read_js_drg_form(form_file_name)
     form  = YAML.load_file(form_file_name)
-    @form = forms_merge(@form, form)
+    @form = CmsHelper.forms_merge(@form, form)
   end
 end
 
@@ -900,7 +862,7 @@ end
 ########################################################################
 # Read DRG form into @form object. Subroutine of check_authorization.
 ########################################################################
-def read_drg_form
+def dc_form_read
   params[:table] ||= params[:t] || CmsHelper.form_param(params)
   table_name = decamelize_type(CmsHelper.table_param(params).strip)
   @tables = table_name.split(';').inject([]) { |r, v| r << [(v.classify.constantize rescue nil), v] }
@@ -917,14 +879,14 @@ def read_drg_form
   @form = if CmsHelper.form_param(params) == 'method'
             dc_eval_class_method(params[:form_method], params)
           else
-            form_file_name = dc_find_form_file(form_name)
+            form_file_name = CmsHelper.form_file_find(form_name)
             @form_js = read_js_drg_form(form_file_name)
             YAML.load_file(form_file_name)
           end
 
   # form includes or extends another form file
-  include_drg_form(@form['include']) if @form['include']
-  extend_drg_form(@form['extend'])   if @form['extend']
+  dc_form_include(@form['include']) if @form['include']
+  dc_form_extend(@form['extend'])   if @form['extend']
   @form['script'] = (@form['script'].blank? ? @form_js : @form['script'] + @form_js)
   # add readonly key to form if readonly parameter is passed in url
   @form['readonly'] = 1 if params['readonly'] #and %w(1 yes true).include?(params['readonly'].to_s.downcase.strip)

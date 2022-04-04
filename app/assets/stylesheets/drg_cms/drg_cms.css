@@ -630,7 +630,9 @@ display: inline-table;
 
 #dc-form-left {
   padding: 8px;
-  background-color: #eee;
+  background-color: rgba(44, 142, 255, 0.15);;
+  display: none;
+  margin-top: 12px;
 }
 
 #dc-form-right {
@@ -832,11 +834,10 @@ display: flex;
 }
 
 #dc-form-left #dc-steps-menu {
-  color: #666;
+  color: #222;
 }
 #dc-form-left #dc-steps-menu h2 {
-  font-size: 2em;
-  padding-top: 8px;
+  font-size: 1.6em;
   font-weight: 600;
   border-bottom: 2px solid #444;
   margin-bottom: 8px;
@@ -851,9 +852,20 @@ display: flex;
   font-size: 1.1em;
 }
 
+#dc-form-left #dc-steps-menu li {
+  color: #222;
+}
+
 #dc-form-left #dc-steps-menu li.active {
   color: #000;
-  font-weight: 700;
+  font-weight: 600;
+}
+
+#dc-form-left #dc-steps-menu li.active:before {
+  font-family: MI;
+  content: '\e409';
+  vertical-align: middle;
+  margin-left: -4px;
 }
 
 #dc-form-left #dc-steps-menu .dc-link-ajax:hover {

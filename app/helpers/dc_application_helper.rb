@@ -741,23 +741,6 @@ def dc_choices4_all_collections
   choices.invert.to_a.sort # hash has to be inverted for values to be returned right
 end
 
-########################################################################
-# Merges two forms when current form extends other form. Subroutine of dc_choices4_cmsmenu.
-# With a little help of https://www.ruby-forum.com/topic/142809 
-########################################################################
-def forms_merge(hash1, hash2) #:nodoc:
-  target = hash1.dup
-  hash2.keys.each do |key|
-    if hash2[key].is_a? Hash and hash1[key].is_a? Hash
-      target[key] = forms_merge(hash1[key], hash2[key])
-      next
-    end
-    target[key] = hash2[key] == '/' ? nil :  hash2[key]
-  end
-  # delete keys with nil value
-  target.delete_if{ |k, v| v.nil? }
-end
-
 ##########################################################################
 # Returns choices for creating collection edit select field on CMS top menu.
 ##########################################################################
@@ -768,7 +751,7 @@ def dc_choices4_cmsmenu
     next unless File.exist?(filename)
     menu = YAML.load_file(filename) rescue nil      # load menu
     next if menu.nil? or !menu['menu']              # not menu or error
-    menus = forms_merge(menu['menu'], menus)        # ignore top level part
+    menus = CmsHelper.forms_merge(menu['menu'], menus) # ignore top level part
  end
 
   html = '<ul>'
