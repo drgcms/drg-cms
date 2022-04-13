@@ -143,7 +143,7 @@ def dc_actions_for_form(position)
     session[:form_processing] = "form:actions: #{key} #{options}"
     next if options.nil?  # yes it happens
 
-    parms = @parms.clone
+    parms = @form_params.clone
     if options.class == String
       next if @form['readonly'] and !options.match(/back|close/)
 

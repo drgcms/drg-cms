@@ -3,7 +3,7 @@
 <div <%= dc_form_id %>>
   <%= dc_table_title dc_new_title %>
 
-  <%= form_tag(@parms, method: :post, id: params['form_name'] || params['table'],
+  <%= form_tag(@form_params, method: :post, id: CmsHelper.form_param(params) || CmsHelper.table_param(params),
                class: 'cmsform', multipart: @form['form']['multipart']) do %>
     <%= render partial: 'form' %>
   <% end %>

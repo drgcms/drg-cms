@@ -59,7 +59,7 @@ def dc_actions_for_index
     session[:form_processing] = "index:actions: #{key}=#{options}"
     next if options.nil? # must be
 
-    url = @parms.clone
+    url = @form_params.clone
     yaml = options.class == String ? {'type' => options} : options # if single definition simulate type parameter
     action = yaml['type'].to_s.downcase 
     if action == 'url'
@@ -134,7 +134,7 @@ def dc_actions_for_index
 # reorder      
     when action == 'reorder' then  
       caption = t('drgcms.reorder')
-      parms = @parms.clone
+      parms = @form_params.clone
       parms['operation'] = v
       parms['id']       = params[:ids]
       parms['table']     = @form['table']
@@ -292,7 +292,7 @@ def dc_actions_for_result(document)
   main_menu, sub_menu = '', ''
   actions.sort_by(&:first).each do |num, action|
     session[:form_processing] = "result_set:actions: #{num}=#{action}"
-    parms = @parms.clone
+    parms = @form_params.clone
     # if single definition simulate type parameter
     yaml = action.class == String ? { 'type' => action } : action
 

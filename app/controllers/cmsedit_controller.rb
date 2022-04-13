@@ -196,7 +196,7 @@ def new
   end
   # new_record callback. Set default values for new record
   if (m = callback_method('new_record') ) then call_callback_method(m)  end
-  @parms['action'] = 'create'
+  @form_params['action'] = 'create'
 end
 
 ########################################################################
@@ -279,8 +279,8 @@ def create
       flash[:info] = t('drgcms.doc_saved')
       params[:return_to] = 'index' if params[:commit] == t('drgcms.save&back') # save & back
       return process_return_to(params[:return_to]) if params[:return_to]
-      
-      @parms['id'] = @record.id # must be set, for proper update link
+
+      @form_params['id'] = @record.id # must be set, for proper update link
       params[:id]  = @record.id # must be set, for find_record
       edit
     else # error
@@ -309,7 +309,7 @@ def edit
     # don't do anything if return is false
     return index if ret.class == FalseClass
   end
-  @parms['action'] = 'update'
+  @form_params['action'] = 'update'
   render action: :edit
 end
 
@@ -331,7 +331,7 @@ def update
 
     if save_data
       params[:return_to] = 'index' if params[:commit] == t('drgcms.save&back') # save & back
-      @parms['action'] = 'update'
+      @form_params['action'] = 'update'
       # Process return_to
       return process_return_to(params[:return_to]) if params[:return_to]
     else
@@ -422,7 +422,7 @@ def destroy
 
   end
 
-  @parms['action'] = 'update'
+  @form_params['action'] = 'update'
   render action: :edit
 end
 

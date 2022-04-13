@@ -891,11 +891,10 @@ def dc_form_read
   # add readonly key to form if readonly parameter is passed in url
   @form['readonly'] = 1 if params['readonly'] #and %w(1 yes true).include?(params['readonly'].to_s.downcase.strip)
 
-  # !!!!!! Always use strings for key names since @parms['table'] != @parms[:table]
-  @parms = { 'table' => table_name, 'ids' => params[:ids], 'form_name' => form_name,
-             'return_to' => params['return_to'], 'edit_only' => params['edit_only'],
-             'readonly' => params['readonly']
-  }
+  # !!!!!! Always use strings for key names since @form_params['table'] != @form_params[:table]
+  @form_params = { 'table' => table_name, 'ids' => params[:ids], 'form_name' => form_name,
+                   'return_to' => params['return_to'], 'edit_only' => params['edit_only'],
+                   'readonly' => params['readonly'], 'window_close' => params['window_close']}
 end
 
 ########################################################################
