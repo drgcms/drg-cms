@@ -49,6 +49,8 @@ end
 def collections
   @records = []
   all_collections.each do |collection|
+    next if params[:filter] && !collection.match(/#{params[:filter]}/i)
+
     @records << DcMemory.new({'id' =>  collection, 'description' => t("helpers.label.#{collection}.tabletitle") })
   end
   @records
@@ -75,7 +77,7 @@ def all_fields
                  '_default' => options[:default]
                 })
   end
-# embedded documents
+  # embedded documents
   document.embedded_relations.each do |a_embedded|
     embedded = a_embedded.last
     description = I18n.t("helpers.help.#{params[:id]}.#{embedded.key}")

@@ -6,6 +6,16 @@ controls: browse_models
 permissions:
   can_view: admin
 
+index:
+  actions:
+    10:
+      type: field
+      name: filter
+      field_type: text_field
+      caption: Filter
+      size: 10
+
+
 result_set:
   filter: collections
 
@@ -19,8 +29,20 @@ result_set:
     10:   
       name: id
       caption: Collection
-      td_style: 'font-weight: bold;width: 150px;'
-      
+      td_style: 'font-weight: bold;'
+
     20:  
       name: description
       caption: Decription
+
+script: '
+$(document).ready( function() {
+  $("#record_filter").keydown( function(e) {
+    if (e.which == "13" || e.which == "9") {
+      let url = "/cmsedit?form_name=dc_browse_models&table=dc_memory&filter=" + this.value;
+      window.location.href = url;
+      e.preventDefault();
+    };
+  });
+});
+'

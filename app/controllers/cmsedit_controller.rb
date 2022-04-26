@@ -636,7 +636,7 @@ def callback_method(key) #:nodoc:
   callback = case
     when params['data'] && params['data'][data_key] then params['data'][data_key]
     # dc_ + key method is present then call it automatically
-    when @form['form'][key] then @form['form'][key]
+    when @form.dig('form', key) then @form['form'][key]
     when respond_to?('dc_' + key) then 'dc_' + key
     when params[data_key] then params[data_key]
     else nil

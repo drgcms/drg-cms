@@ -41,7 +41,7 @@ form:
     100:
       type: ajax
       caption: drgcms.finish
-      icon: arrow-forward
+      icon: done
       method: post
       form_name: x
       action: run
