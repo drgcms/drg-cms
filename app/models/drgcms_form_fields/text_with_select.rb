@@ -83,6 +83,7 @@ $(document).ready(function() {
  $('##{@yaml['name']}_').change( function() {
   if ($(this).val().toString().length > 0) {
     $('##{record}_#{@yaml['name']}').val( $(this).val() );
+    $('##{record}_#{@yaml['name']}').trigger("change");
   }
   $('##{record}_#{@yaml['name']}').focus();
  });

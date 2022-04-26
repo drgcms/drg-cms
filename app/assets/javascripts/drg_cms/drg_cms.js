@@ -67,7 +67,7 @@ update_embedded_on_tab_select = function(div_name) {
  *  Return false when confirmation is not required 
  *******************************************************************/
 confirmation_is_cancled = function(object) {
-  var confirmation = object.getAttribute("data-confirm");
+  let confirmation = object.getAttribute("data-confirm");
   // if confirmation required
   if (confirmation !== null) {
     if (!confirm(confirmation)) {return true;}
@@ -81,8 +81,8 @@ confirmation_is_cancled = function(object) {
  * methodname and depend field value to obtain new values for select field.
  *******************************************************************/
 update_select_depend = function(select_name, depend_name, method) {
-  var select_field = $('#'+select_name);
-  var depend_field = $('#'+depend_name);
+  let select_field = $('#' + select_name);
+  let depend_field = $('#' + depend_name);
   
   $.ajax({
     url: "/dc_common/autocomplete",
