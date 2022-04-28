@@ -1181,7 +1181,7 @@ color: #000;
 }
 .iframe_embedded {
   padding: 4px;
-  /*background-color: #f7f7f7;*/
+  background-color: #fff;
   border-radius: 2px;
   border: 2px solid #666;
 }

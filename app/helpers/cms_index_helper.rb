@@ -472,27 +472,29 @@ end
 def dc_columns_for_result(document)
   return '' unless @form['result_set']['columns']
 
-  html = ''  
-  @form['result_set']['columns'].sort.each do |k,v|
+  html, index = '', 0
+  @form['result_set']['columns'].sort.each do |k, v|
     session[:form_processing] = "result_set:columns: #{k}=#{v}"
     next if v['width'].to_s.match(/hidden|none/i)
 
     # convert shortcut to hash 
     v = {'name' => v} if v.class == String    
     begin
-      # eval
-      value = if v['eval']
-        dc_process_column_eval(v, document)
-      # as field        
-      elsif document.respond_to?(v['name'])
-        dc_format_value(document.send( v['name'] ), v['format']) 
-      # as hash (dc_memory)
-      elsif document.class == Hash 
-        dc_format_value(document[ v['name'] ], v['format'])
-      # error
-      else
-        "??? #{v['name']}"
-      end
+              # as Array (footer)
+      value = if document.class == Array
+                dc_format_value(document[index], v['format']) if document[index]
+              # as Hash (dc_memory)
+              elsif document.class == Hash
+                dc_format_value(document[ v['name'] ], v['format'])
+              # eval
+              elsif v['eval']
+                dc_process_column_eval(v, document)
+              # as field
+              elsif document.respond_to?(v['name'])
+                dc_format_value(document.send( v['name'] ), v['format'])
+              else
+                "??? #{v['name']}"
+              end
     rescue Exception => e
       dc_log_exception(e, 'dc_columns_for_result')
       value = '!!!Error'
@@ -507,6 +509,7 @@ def dc_columns_for_result(document)
     style = "style=\"#{width_align}#{style}\" "
 
     html << "<div class=\"td #{clas}\" #{style}>#{value}</div>"
+    index += 1
   end
   html.html_safe
 end
