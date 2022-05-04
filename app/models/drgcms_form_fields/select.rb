@@ -146,8 +146,8 @@ def add_view_code
 
   table, form_name = @yaml['view'].split(/\ |\,/).delete_if { |e| e.blank? }
   url  = @parent.url_for(controller: 'cmsedit', id: data, action: :edit, table: table, form_name: form_name, readonly: true, window_close: 1 )
-  icon = @parent.fa_icon('eye')
-  %(<span class="dc-window-open" data-url="#{url}">#{icon}</span>)
+  icon = @parent.mi_icon('eye-o md-18')
+  %(<span class="dc-window-open" data-url="#{url}"> #{icon}</span>)
 end
 
 ###########################################################################

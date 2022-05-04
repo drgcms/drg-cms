@@ -446,6 +446,11 @@ display: inline-table;
   cursor: pointer;
   filter: none;
 }
+.dc-window-open:hover {
+  transition: 0.3s;
+  color: rgba(44, 142, 255, 1);
+  cursor: pointer;
+}
 
 .dc-link:hover > i, .dc-link-ajax:hover > i, .dc-submit:hover > i {
   color: #fff;
