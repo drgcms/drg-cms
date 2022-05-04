@@ -259,14 +259,8 @@ def dc_actions_column
   actions = { 'standard' => true } if actions.class == String && actions == 'standard'
   std_actions = { 2 => 'edit', 5 => 'delete' }
   if actions['standard']
-    if @form['readonly']
-      actions = { 1 => 'show' }
-    else
-      actions.merge!(std_actions)
-      actions.delete('standard')
-    end
-  elsif @form['readonly']
-    actions = {}
+    actions.merge!(std_actions)
+    actions.delete('standard')
   end
   # check must be first action
   has_check = actions[0] && actions[0]['type'] == 'check'
@@ -290,7 +284,7 @@ end
 ############################################################################
 def dc_actions_for_result(document)
   actions = @form['result_set']['actions']
-  return '' if actions.nil?# || @form['readonly']
+  return '' if actions.nil? || @form['readonly']
 
   actions, width, has_check = dc_actions_column()
   has_sub_menu = actions.size > 2 || (has_check && actions.size > 1)
