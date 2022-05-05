@@ -549,7 +549,7 @@ end
 def dc_form_update_steps
   def add_step_to_form(index, step, next_step)
     @form['form']['actions'][index]['params']['step'] = step
-    @form['form']['actions'][index]['params']['next_step'] = step + 1
+    @form['form']['actions'][index]['params']['next_step'] = next_step
   end
 
   form = {}
