@@ -77,9 +77,9 @@ sl:
     back: Nazaj
     next: Naprej
     steps: Koraki
-    finish: Zaključi
+    finish: Zaključek
     close: Zapri
-    cancel: Prekliči
+    cancel: Preklic
     delete: Izbris
     enable: Omogoči
     disable: Onemogoči

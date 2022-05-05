@@ -460,6 +460,8 @@ def dc_input_form_create(fields_on_tab) #:nodoc:
     session[:form_processing] = "form:fields: #{number}=#{options}"
     # ignore if edit_only singe field is required
     next if params[:edit_only] and params[:edit_only] != options['name']
+    next if options.nil?
+
     # hidden_fields. Add them at the end
     if options['type'] == 'hidden_field'
       hidden_fields << DrgcmsFormFields::HiddenField.new(self, @record, options).render
@@ -520,19 +522,21 @@ end
 # Will create html code required for input form with steps defined
 ############################################################################
 def dc_steps_one_element(element, tab_name = nil)
-  def add_one_step(key, tab_name)
+  def add_one_step(key, tab_name, key_number)
     fields = tab_name ? @form['form']['tabs'][tab_name] :  @form['form']['fields']
-    { key => fields[key] }
+    { key_number => fields[key] }
   end
 
-  fields = {}
+  key_number, fields = 0, {}
   element.to_s.split(',').each do |particle|
     if particle.match('-')
       tabs_fields = tab_name ? @form['form']['tabs'][tab_name] : @form['form']['fields']
+      next if tabs_fields.nil?
+
       start, to_end = particle.split('-').map(&:to_i)
-      tabs_fields.each { |key, data| fields.merge!(add_one_step(key, tab_name)) if (start..to_end).include?(key) }
+      tabs_fields.each { |key, data| fields.merge!(add_one_step(key, tab_name, key_number += 10)) if (start..to_end).include?(key) }
     else
-      fields.merge!(add_one_step(particle.to_i, tab_name))
+      fields.merge!(add_one_step(particle.to_i, tab_name, key_number += 10))
     end
   end
   fields
@@ -543,6 +547,11 @@ end
 # actions.
 ############################################################################
 def dc_form_update_steps
+  def add_step_to_form(index, step, next_step)
+    @form['form']['actions'][index]['params']['step'] = step
+    @form['form']['actions'][index]['params']['next_step'] = step + 1
+  end
+
   form = {}
   step = params[:step].to_i
   step_data = @form['form']['steps'].to_a[step - 1]
@@ -556,11 +565,12 @@ def dc_form_update_steps
       end
     end
   end
+  # fraction updates of newly created form
+  form.deep_merge!(step_data.last['update']) if step_data.last['update']
   # update steps data on form
-  @form['form']['actions'][20]['params']['step'] = step
-  @form['form']['actions'][20]['params']['next_step'] = step + 1
-  @form['form']['actions'][10]['params']['step'] = step
-  @form['form']['actions'][10]['params']['next_step'] = step - 1
+  add_step_to_form(10, step, step - 1)
+  add_step_to_form(20, step, step + 1)
+  add_step_to_form(100, step, step + 1)
   # remove not needed steps
   if step < 2
     @form['form']['actions'].delete(10)
