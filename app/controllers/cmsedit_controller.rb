@@ -625,6 +625,7 @@ def save_journal(operation, changes = {})
                      time:    Time.now,
                      diff:    changes.to_json)
   end
+  @record.send(:set_history, self) if @record.respond_to?(:set_history)
 end
 
 ########################################################################
