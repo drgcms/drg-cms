@@ -595,6 +595,7 @@ def update_standards(record = @record)
     # and will be directly visible only to admins
     record.dc_site_id = dc_get_site.id if record.respond_to?('dc_site_id') && record.dc_site_id.nil?
   end
+  record.send(:set_history, self) if record.respond_to?(:set_history)
 end
 
 ########################################################################
@@ -625,7 +626,6 @@ def save_journal(operation, changes = {})
                      time:    Time.now,
                      diff:    changes.to_json)
   end
-  @record.send(:set_history, self) if @record.respond_to?(:set_history)
 end
 
 ########################################################################

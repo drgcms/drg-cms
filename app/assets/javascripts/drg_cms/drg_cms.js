@@ -199,8 +199,10 @@ process_json_result = function(json) {
       
 /**** update fields on form ****/
     case 'record':
-      let name = key.replace('record_','record[') + ']';
-      field = $('[name="' + name + '"]');
+      //let name = key.replace('record_','record[') + ']';
+      //field = $('[name="' + name + '"]');
+      field = $('#' + key);
+      console.log(field);
       // checkbox field
       if (field.is(':checkbox')) {
         field.prop('checked', value);
