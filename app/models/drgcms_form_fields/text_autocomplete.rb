@@ -148,7 +148,7 @@ $(document).ready(function() {
     change: function (event, ui) { 
       #{not_id_code}
       if (ui.item == null) return;
-      $("##{record}_#{@yaml['name']}").val(ui.item.id);
+      $("##{record}_#{@yaml['name']}").val(ui.item.id).trigger('change');
     },
 
     minLength: 2
