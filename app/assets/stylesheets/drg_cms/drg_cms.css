@@ -449,6 +449,7 @@ display: inline-table;
 .dc-window-open:hover {
   transition: 0.3s;
   color: #fff;
+  background: rgba(44, 142, 255, 1);
   cursor: pointer;
 }
 
