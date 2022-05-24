@@ -202,7 +202,7 @@ process_json_result = function(json) {
       //let name = key.replace('record_','record[') + ']';
       //field = $('[name="' + name + '"]');
       field = $('#' + key);
-      console.log(field);
+      // console.log(field);
       // checkbox field
       if (field.is(':checkbox')) {
         field.prop('checked', value);
@@ -1144,9 +1144,10 @@ $(document).ready( function() {
     } else { 
       sign = '';
     }
-// save value to hidden field which holds return value
+// save value to field holding return value and trigger change event
     var field = '#' + $(this).attr("id").slice(0,-1);
     $(field).val(val);
+    $(field).trigger("change")
     
 // decimal part
     if (decimals == 0) separator = '';
