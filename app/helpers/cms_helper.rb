@@ -138,10 +138,10 @@ end
 #   help : String : Help text
 ############################################################################
 def dc_tab_label_help(tab_name)
-  label = @form['form']['tabs'][tab_name]['caption'] || tab_name
+  label = @form.dig('form', 'tabs', tab_name, 'caption') || tab_name
   label = t(label, t_label_for_field(label, label))
 
-  help = @form['form']['tabs'][tab_name]['help'] || "helpers.help.#{@form['table']}.#{tab_name}"
+  help = @form.dig('form', 'tabs', tab_name, 'help') || "helpers.help.#{@form['table']}.#{tab_name}"
   help = t(help, t_label_for_field(help, help))
   help = nil if help.match('helpers.') # help not found in translation
 
