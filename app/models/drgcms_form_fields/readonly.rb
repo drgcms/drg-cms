@@ -56,7 +56,7 @@ def render
   @record[@yaml['name']] = @yaml['html']['value'] if @yaml['html']['value']
 
   @html << @parent.hidden_field('record', @yaml['name']) # retain field as hidden field
-  @html << '<div class="dc-readonly">'
+  @html << %(<div class="dc-readonly" id="record_#{@yaml['name']}_">)
 
   @html << if @yaml['eval']
              if @yaml['eval'].match(/dc_name4_id|dc_name_for_id/)

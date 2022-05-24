@@ -359,8 +359,8 @@ border-radius: 1px;
 
 .dc-link-no i {
   color: #bbb;
+  vertical-align: top;
 }
-
 
 .dc-result-header .dc-check-all {
   font-size: 18px;
