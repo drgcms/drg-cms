@@ -683,6 +683,15 @@ $(document).ready( function() {
         return false;
       }
     }
+
+    // update html editor fields before data serialization
+    let cke_elements = document.querySelectorAll(`div[id^="cke_record"]`);
+    cke_elements.forEach(e => {
+      let field_id = e.id.replace('cke_', '');
+      let text = CKEDITOR.instances[field_id].getData();
+      $('#' + field_id).val(text);
+    });
+
     let data = {};
     let request = this.getAttribute("data-request");
     switch (request) {
