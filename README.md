@@ -210,7 +210,7 @@ Compatibility
 -------------
 
 DRG CMS is being actively developed since 2012 and has been live tested in production 
-since beginning. It runs against latest technology Ruby (3.0), Rails (6.1) 
+since beginning. It runs against latest technology Ruby (3.1), Rails (7.0) 
 and MongoDB (5.0) and had so far little or no problems advancing to latest versions 
 of required programs.
 
