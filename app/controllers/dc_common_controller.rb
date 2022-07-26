@@ -128,15 +128,15 @@ def process_login
 
   unless params[:record][:password].blank? #password must not be empty
     user  = DcUser.find_by(username: params[:record][:username], active: true)
-    if user and user.authenticate(params[:record][:password])
+    if user && user.authenticate(params[:record][:password])
       fill_login_data(user, params[:record][:remember_me].to_i == 1)
-      return redirect_to params[:return_to] ||  '/'
+      return redirect_to(params[:return_to] ||  '/', allow_other_host: true)
     else
       clear_login_data # on the safe side
     end
   end
   flash[:error] = t('drgcms.invalid_username')
-  redirect_to params[:return_to_error] ||  '/'
+  redirect_to(params[:return_to] ||  '/', allow_other_host: true)
 end
 
 ####################################################################
@@ -163,7 +163,7 @@ def login
   end
   # Display login
   route = params[:route] || 'poll'
-  redirect_to "/#{route}?poll_id=login&return_to=#{params[:return_to]}"
+  redirect_to("/#{route}?poll_id=login&return_to=#{params[:return_to]}", allow_other_host: true)
 end
 
 ####################################################################
