@@ -116,7 +116,7 @@ def toggle_edit_mode
   end
   url << (url.match(/\?/) ? '&' : '?')
   url << "return_to_ypos=#{ypos}"
-  redirect_to url
+  redirect_to(url, allow_other_host: true)
 end
 
 ####################################################################
@@ -144,7 +144,7 @@ end
 ####################################################################
 def logout
   clear_login_data
-  redirect_to params[:return_to] || '/'
+  redirect_to(params[:return_to] || '/', allow_other_host: true)
 end
 
 ####################################################################
@@ -156,7 +156,7 @@ def login
     user = DcUser.find(cookies.signed[:remember_me])
     if user and user.active
       fill_login_data(user, true)
-      return redirect_to params[:return_to]
+      return(redirect_to params[:return_to], allow_other_host: true)
     else
       clear_login_data # on the safe side
     end
