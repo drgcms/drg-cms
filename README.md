@@ -9,7 +9,7 @@ Minimal database experience and only basic programming skills are needed
 to create a data entry program. You can do it in 6 simple steps.
 
 Step 1: Create Model<br>
-Step 2: Generate Form<br>
+Step 2: Generate DRG Form<br>
 Step 3: Edit Form<br>
 Step 4: Define Labels and Help Text<br>
 Step 5: Create Controls File (if required)<br>
@@ -46,14 +46,14 @@ validates :duration,   presence: true
 end
 ```
 
-<b>Form:</b> Form file is a text file, written in the YAML markup language. It consists
+<b>Form:</b> DRG Form file is a text file, written in the YAML markup language. It consists
 of three main parts.<br>
 
-<b>index:</b> Which defines actions usually performed on database documents or 
+<b>index:</b> Which defines actions performed on database documents or 
 set of document.<br>
 <b>result_set:</b> Defines set of documents, document fields and actions 
 which can be performed on a document.<br>
-<b>form:</b> Defines data entry fields for editing and viewing the document.<br>
+<b>form:</b> Defines data entry fields for editing and viewing a single document.<br>
 
 Example of form file for Note model app/forms/note.yaml
 
@@ -171,6 +171,10 @@ end
 
 end
 ```
+<br>
+
+Visit [gallery](https://www.drgcms.org/gallery) of DRG Forms
+usage in production.
 
 ## Features
 DRG CMS uses Ruby on Rails, one of the most popular frameworks for 
