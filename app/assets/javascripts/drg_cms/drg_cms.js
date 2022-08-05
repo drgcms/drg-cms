@@ -133,7 +133,20 @@ format_number_field = function(e) {
   if (delimiter !== '') whole = ar.join(delimiter);
   e.val(whole + separator + dec + currency);
 };
-  
+
+/*******************************************************************
+ * Dynamically loads javascript file from filesystem
+ *******************************************************************/
+function load_script( url, callback ) {
+  let script = document.createElement( "script" )
+  script.type = "text/javascript";
+  script.src = url;
+  script.onload = function() {
+    callback()
+  };
+  document.head.appendChild(script);
+}
+
 /*******************************************************************
  * Activate jquery UI tooltip. This needs jquery.ui >= 1.9
  *******************************************************************/
