@@ -259,7 +259,39 @@ end
 #      
 ####################################################################
 def hash_to_options(hash)
+  ActiveSupport::Deprecation.warn("hash_to_options(hash) will be deprecated. Use hash.to_json instead.")
   hash.to_a.inject([]) {|r,v| r << "#{v[0]}: #{v[1]}" }.join(',')
+end
+
+####################################################################
+# Options may be defined on form as hash or as string. This method will
+# ensure conversion of options into hash.
+#
+# Parameters:
+# [String or Hash] : Form options
+#
+# Form example: As used in forms
+#    options:
+#      height: 400
+#      width: 800
+#      toolbar: "'basic'"
+#  or
+#
+#  options: "height:400, width:800, toolbar:'basic'"
+#
+# Return:
+# Hash: Options as Hash
+####################################################################
+def options_to_hash(options)
+  return options unless options.class == String
+
+  options.chomp.split(',').inject({}) do |r, e|
+    key, value = e.chomp.split(':')
+    value.strip!
+    value = value[1..value.size - 2] if value[0] =~ /\'|\"/
+    r[key.strip] = value
+    r
+  end
 end
 
 ####################################################################
