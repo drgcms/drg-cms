@@ -619,7 +619,7 @@ def dc_page_edit_menu(opts = @opts)
   opts[:editparams] ||= {}
   dc_link_menu_tag(title) do |html|
     opts[:editparams].merge!( controller: 'cmsedit', action: 'edit', 'icon' => 'edit-o' )
-    opts[:editparams].merge!( :id => page.id, :t => _origin.site.page_class.underscore, f: opts[:form_name], edit_only: 'body' )
+    opts[:editparams].merge!( :id => page.id, :table => _origin.site.page_class.underscore, form_name: opts[:form_name], edit_only: 'body' )
     html << dc_link_for_edit1( opts[:editparams], t('drgcms.edit_content') )
     
     opts[:editparams].merge!( edit_only: nil, 'icon' => 'edit-o' )
