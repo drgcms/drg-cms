@@ -26,7 +26,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'non-stupid-digest-assets'  
 
   s.add_dependency 'bcrypt' #, '~> 3.0.0'
-  s.add_dependency 'mongoid', '~> 7'
+  s.add_dependency 'mongoid'#, '~> 7'
 
   s.add_dependency 'kaminari-mongoid'
   s.add_dependency 'kaminari-actionview'
