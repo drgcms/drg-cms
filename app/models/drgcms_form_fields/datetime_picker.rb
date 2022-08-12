@@ -30,12 +30,12 @@ module DrgcmsFormFields
 # * +name:+ Field name (required) 
 # * +options:+ options which apply to date_picker field. All options can be found here http://xdsoft.net/jqplugins/datetimepicker/ .
 # Options can be defined in single line like:
-# * options: 'step: 15,inline: true,lang: "sl"' or
+# * options: 'step: 15,inline: true,lang: sl' or
 # 
 # * options: 
 #   * step: 15
 #   * inline: true
-#   * lang: '"sl"'
+#   * lang: sl
 #   
 # * +html:+ html options which apply to date_time_picker field (optional)
 # 
@@ -52,27 +52,26 @@ class DatetimePicker < DrgcmsField
 ###########################################################################
 def render
   value = @record.try(@yaml['name']) ? I18n.localize(@record[@yaml['name']].localtime) : nil
-  #return ro_standard( @parent.dc_format_value(value)) if @readonly
-
-  @yaml['options'] ||= {}
   set_initial_value
+
   @yaml['html']['size'] ||= @yaml['size'] || 14
   @yaml['html']['value'] ||= value if @record[@yaml['name']]
   @yaml['html']['autocomplete'] ||= 'off'
   @yaml['html']['class'] = @yaml['html']['class'].to_s + ' date-picker'
 
-  @yaml['options']['lang']   ||= "'#{I18n.locale}'"
-  @yaml['options']['format'] ||= "'#{t('datetimepicker.formats.datetime')}'"
+  options = options_to_hash(@yaml['options'])
+  options['lang']   ||= I18n.locale
+  options['format'] ||= t('datetimepicker.formats.datetime')
 
   record = record_text_for(@yaml['name'])
   @html << @parent.text_field(record, @yaml['name'], @yaml['html'])
-  @js << %Q[
+  @js << %(
 $(document).ready(function() {
-  $("##{record}_#{@yaml['name']}").datetimepicker( {
-    #{hash_to_options(@yaml['options'])}
-  });
+  $("##{record}_#{@yaml['name']}").datetimepicker(
+    #{options.to_json}
+  );
 }); 
-] unless @readonly
+) unless @readonly
   
   self
 end

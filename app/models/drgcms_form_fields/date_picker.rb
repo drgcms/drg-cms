@@ -66,30 +66,28 @@ class DatePicker < DrgcmsField
 ###########################################################################
 def render
   value = @record.try(@yaml['name']) ? I18n.localize(@record[@yaml['name']].to_date) : nil
-  #return ro_standard( @parent.dc_format_value(value)) if @readonly
-
-  @yaml['options'] ||= {}
   set_initial_value
   @yaml['html']['size'] ||= @yaml['size'] || 10
   @yaml['html']['value'] ||= value
   @yaml['html']['autocomplete'] ||= 'off'
   @yaml['html']['class'] = @yaml['html']['class'].to_s + ' date-picker'
 
-  @yaml['options']['lang']   ||= "'#{I18n.locale}'"
-  @yaml['options']['format'] ||= "'#{t('datetimepicker.formats.date')}'"
-  @yaml['options']['timepicker'] = false
-  @yaml['options']['scrollMonth'] ||= false
-  @yaml['options']['scrollInput'] ||= false
+  options = options_to_hash(@yaml['options'])
+  options['lang']   ||= I18n.locale
+  options['format'] ||= t('datetimepicker.formats.date')
+  options['timepicker'] = false
+  options['scrollMonth'] ||= false
+  options['scrollInput'] ||= false
 
   record = record_text_for(@yaml['name'])
   @html << @parent.text_field(record, @yaml['name'], @yaml['html'])
-  @js << %Q[
+  @js << %(
 $(document).ready(function() {
-  $("##{record}_#{@yaml['name']}").datetimepicker( {
-    #{hash_to_options(@yaml['options'])}
-  });
+  $("##{record}_#{@yaml['name']}").datetimepicker(
+    #{options.to_json}
+  );
 });
-] unless @readonly
+) unless @readonly
   
   self
 end

@@ -283,6 +283,7 @@ end
 # Hash: Options as Hash
 ####################################################################
 def options_to_hash(options)
+  return {} if options.nil?
   return options unless options.class == String
 
   options.chomp.split(',').inject({}) do |r, e|
