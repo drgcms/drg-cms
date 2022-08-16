@@ -903,27 +903,33 @@ def dc_user_can_view(ctrl, policy_id)
   if policy_id
     part_policy = Mongoid::QueryCache.cache { policies.find(policy_id) }
     return false, 'Access policy not found for part!' unless part_policy
+
     part_policy.dc_policy_rules.to_a.each { |v| permissions[v.dc_policy_role_id] = v.permission }
   end
   # apply guest role if no roles defined
   if ctrl.session[:user_roles].nil?
     role = Mongoid::QueryCache.cache { DcPolicyRole.find_by(system_name: 'guest', active: true) }
     return false, 'System guest role not defined!' unless role
+
     ctrl.session[:user_roles] = [role.id]
   end
   # Check if user has any role that allows him to view part
-  can_view, msg = false,''
+  can_view, msg = false, ''
   ctrl.session[:user_roles].each do |role|
     next unless permissions[role]          # role not yet defined. Will die in next line.
+
     if permissions[role] > 0
       can_view = true
       break
     end
   end
-  msg = if !can_view
-    part_policy ? t(part_policy.message,part_policy.message) : t(default_policy.message,default_policy.message)
+
+  if !can_view
+    msg = part_policy ? t(part_policy.message, part_policy.message) : t(default_policy.message, default_policy.message)
+    # message may have variable content
+    msg = _origin.render(inline: msg, layout: nil) if msg.match('<%=')
   end
-  return can_view, msg
+  [can_view, msg]
 end
 
 ####################################################################
