@@ -67,9 +67,9 @@ def render
   @html << @parent.text_field(record, @yaml['name'], @yaml['html'])
   @js << %(
 $(document).ready(function() {
-  $("##{record}_#{@yaml['name']}").datetimepicker(
-    #{options.to_json}
-  );
+  $("##{record}_#{@yaml['name']}").datetimepicker({
+    #{hash_to_options(options)}
+  });
 }); 
 ) unless @readonly
   

@@ -250,17 +250,26 @@ end
 #    options:
 #      height: 400
 #      width: 800
-#      toolbar: "'basic'"
+#      toolbar: "basic"
 #      
-#  => "height:400, width:800, toolbar:'basic'"
+#  => "height:400, width:800, toolbar: 'basic'"
 # 
 # Return: 
 # String: Options formated as javascript options.
 #      
 ####################################################################
-def hash_to_options(hash)
-  ActiveSupport::Deprecation.warn("hash_to_options(hash) will be deprecated. Use hash.to_json instead.")
-  hash.to_a.inject([]) {|r,v| r << "#{v[0]}: #{v[1]}" }.join(',')
+def hash_to_options(options)
+  c = ''
+  options.each do |key, option|
+    c << "#{key} : "
+    c << case
+         when option.to_s.match(/function/i) then option
+         when option.class == String then "\"#{option}\""
+         else option.to_s
+         end
+    c << ",\n"
+  end
+  c
 end
 
 ####################################################################
