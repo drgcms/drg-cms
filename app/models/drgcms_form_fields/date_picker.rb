@@ -73,7 +73,7 @@ def render
   @yaml['html']['class'] = @yaml['html']['class'].to_s + ' date-picker'
 
   options = options_to_hash(@yaml['options'])
-  options['lang']   ||= I18n.locale
+  options['lang']   ||= I18n.locale.to_s
   options['format'] ||= t('datetimepicker.formats.date')
   options['timepicker'] = false
   options['scrollMonth'] ||= false
