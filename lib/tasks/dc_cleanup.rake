@@ -36,30 +36,29 @@ namespace :drg_cms do
   task :clear_sessions, [:name] => :environment do |t, args|
     p 'This is just an example how to clear sessions collection. It wont do anything because of next line.'
     return if true
-# This should remove all sessions documents created by robots
-# It is quite a task to compare two dates in mongoid. This should not be problem if it is run daily
+    # This should remove all sessions documents created by robots
+    # It is quite a task to compare two dates in mongoid. This should not be problem if it is run daily
     ActionDispatch::Session::MongoidStore::Session.all.each do |doc|
-      doc.delete if (doc.created_at == doc.updated_at or doc.updated_at < 100.days.ago)
+      doc.delete if (doc.created_at == doc.updated_at || doc.updated_at < 100.days.ago)
     end
-# or if you want to clear everything older than 1 week    
+    # or if you want to clear everything older than 1 week
     ActionDispatch::Session::MongoidStore::Session.where(:updated_at.lt => 1.week.ago).delete
-    DcSite.collection.database.command(eval: "db.runCommand ( { compact: 'sessions' } )" )
+    DcSite.collection.database.command(compact: 'sessions')
   end
 
 ###########################################################################
   desc 'Clears mongodb session documents created by web robots'
   task :clear_sessions_from_robots, [:name] => :environment do |t, args|
-# This should remove all sessions documents created by web robots
-# ActionDispatch::Session::MongoidStore::Session.where('$where' => 'this.created_at == this.updated_at').limit(1000).each do |doc|
+    # This should remove all sessions documents created by web robots
     n = 0
     ActionDispatch::Session::MongoidStore::Session.batch_size(1000).all.each do |doc|
-      if (doc.created_at + 2 > doc.updated_at or doc.updated_at < 1.year.ago)
+      if (doc.created_at + 2 > doc.updated_at || doc.updated_at < 1.year.ago)
         doc.delete 
-        p "Deleted #{n}" if (n+=1)%1000 == 0
+        p "Deleted #{n}" if (n += 1) % 1000 == 0
       end
     end
     p "Deleted #{n}"
-    DcSite.collection.database.command(eval: "db.runCommand ( { compact: 'sessions' } )" )
+    DcSite.collection.database.command(compact: 'sessions')
   end
 
 ###########################################################################
@@ -72,16 +71,14 @@ namespace :drg_cms do
     return (p "#{archive_file} exists") if File.exist?(archive_file)
 
     date_to = Time.local(date[0,4].to_i, date[4,2].to_i, date[6,2].to_i).beginning_of_day
-    n = 0
-    save = ''
+    n, save = 0, ''
     DcVisit.where(:time.lt => date_to).each do |visit|
       save << visit.to_json + "\n"
-#      visit.delete
-      p "Deleted #{n}" if (n+=1)%10000 == 0
+      p "Deleted #{n}" if (n += 1) % 10000 == 0
     end
     DcVisit.where(:time.lt => date_to).delete
-    File.open(archive_file,'w') {|f| f.write(save)}
-    DcSite.collection.database.command(eval: "db.runCommand ( { compact: 'dc_visits' } )" )
+    File.write(archive_file, save)
+    DcSite.collection.database.command(compact: 'dc_visits')
   end
 
 ###########################################################################
@@ -90,39 +87,20 @@ namespace :drg_cms do
     input = read_input("Just press Enter to start. If you type in anything process won't start.")
     return unless input.to_s.size == 0
     today = Time.now.beginning_of_day
-    n = 0
-    save_stat, save_ads = '', ''
+    n, save_stat, save_ads = 0, '', ''
     DcAd.all.each do |ad|
-      if !ad.active or (ad.valid_to and ad.valid_to < today)
+      if !ad.active || (ad.valid_to && ad.valid_to < today)
         save_ads << ad.to_json + "\n"
         DcAdStat.where(:dc_ad_id => ad._id).each do |stat|
           save_stat << stat.to_json + "\n"
-          p "Deleted #{n}" if (n+=1)%10000 == 0
+          p "Deleted #{n}" if (n += 1) % 10000 == 0
         end        
         DcAdStat.where(:dc_ad_id => ad._id).delete
       end
     end
-    File.open("ads_stat_#{Time.now.strftime('%Y%d%m')}.json",'w') {|f| f.write(save_stat)}
-    File.open("ads_#{Time.now.strftime('%Y%d%m')}.json",'w') {|f| f.write(save_ads)}
-    DcSite.collection.database.command(eval: "db.runCommand ( { compact: 'dc_ad_stats' } )" )
+    File.write("ads_stat_#{Time.now.strftime('%Y%d%m')}.json", save_stat)
+    File.write("ads_#{Time.now.strftime('%Y%d%m')}.json", save_ads)
+    DcSite.collection.database.command(compact: 'dc_ad_stats')
   end
-  
-=begin  
-###########################################################################
-  desc "Correct error when ad_id ield is used instead of dc_ad_id."
-  task :repair_ad_stats, [:name] => :environment do |t, args|
-    input = read_input("Just press Enter to start. If you type in anything process won't start.")
-    return unless input.to_s.size == 0
-    n = 0
-    p DcAdStat.only(:id).where(:dc_ad_id => nil).to_a.size
-    DcAdStat.where(:dc_ad_id => nil).each do |stat|
-      stat.dc_ad_id = stat.ad_id
-      stat.ad_id = nil
-      stat.save
-      
-      p n if (n+=1)%1000 == 0
-    end
-  end
-=end
-  
+
 end
