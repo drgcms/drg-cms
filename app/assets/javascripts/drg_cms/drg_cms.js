@@ -1003,35 +1003,31 @@ $(document).ready( function() {
   });
 
  $('#1menu-filter').on('click', function(e) {
-    var target = e.target;
-//    if (e.target.src !== undefined) {
-//      target = e.target.parent(); // picture
-//    };
-//    dumpAttributes(target);
+    let target = e.target;
     req = target.getAttribute("data-request");
     $('.menu-filter').toggle(300);
-    
   });
   
  /*******************************************************************
-  * This will fire cmsedit index action and pass value entered into
-  * filter field and thus refresh browsed result set.
+  * Pressing Enter in search field will trigger click event on search icon
+  * and thus force search event.
   *******************************************************************/
   $('#_record__filter_field').keydown( function(e) {
     if (e.which == '13' || e.which == '9') {
-      let url = $(this).parents('span').attr("data-url");
-      url = url + "&filter_value=" + this.value;
-      simple_ajax_call(url);
+//      let url = $(this).parents('span').attr("data-url");
+//      url = url + "&filter_value=" + this.value;
+//      simple_ajax_call(url);
+      $('.record_filter_field_icon').trigger("click")
     };
   });
 
   /*******************************************************************
-  * Same as above, but when clicked on filter icon. enter and tab don't 
-  * work on all field types.
+  * Will set internal filter value and fire reload event to enable
+  * filtering documents of browsed collection.
   *******************************************************************/
   $('.record_filter_field_icon').on('click', function(e) {
     let field = $('#_record__filter_field');
-    let url = $(this).parents('span').attr("data-url");
+    let url   = $(this).parents('span').attr("data-url");
     let value = null;
 
     if (field.is(':checkbox')) {
@@ -1048,8 +1044,11 @@ $(document).ready( function() {
   *******************************************************************/
   $('#open_drgcms_filter').on('click', function(e) {
     $('#drgcms_filter').bPopup({
-      transition: 'slideDown', transitionClose: 'slideDown', speed: 300,
-      opacity: 0, position: ['auto', 20],
+      transition: 'slideDown',
+      transitionClose: 'slideDown',
+      speed: 300,
+      opacity: 0,
+      position: ['auto', 20],
       closeClass: 'dc-link' });
   });
   
