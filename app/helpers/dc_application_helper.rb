@@ -867,7 +867,7 @@ end
 # 
 # Parameters:
 # [ctrl] Controller object or object which holds methods to access session object. For example @parent
-# variable when called from renderer.
+# when called from renderer.
 # [policy_id] Document or documents policy_id field value required to view data. Method will automatically 
 # check if parameter send has policy_id field defined and use value of that field.
 # 
@@ -882,9 +882,11 @@ end
 # False and message from policy that is blocking view if access is not allowed.
 ############################################################################
 def dc_user_can_view(ctrl, policy_id)
-  policy_id = policy_id.policy_id if policy_id and policy_id.respond_to?(:policy_id)
+  @can_view_cache ||= {}
+  policy_id = policy_id.policy_id if policy_id&.respond_to?(:policy_id)
   # Eventualy object without policy_id will be checked. This is to prevent error
   policy_id = nil unless policy_id.class == BSON::ObjectId
+  return @can_view_cache[policy_id] if @can_view_cache[policy_id]
 
   site = ctrl.site
   policies = if site.inherit_policy.blank? 
@@ -894,7 +896,7 @@ def dc_user_can_view(ctrl, policy_id)
   end
   # permission defined by default policy
   default_policy = Mongoid::QueryCache.cache { policies.find_by(is_default: true) }
-  return false, 'Default access policy not found for the site!' unless default_policy
+  return cache_add(policy_id, false, 'Default access policy not found for the site!') unless default_policy
 
   permissions = {}
   default_policy.dc_policy_rules.to_a.each { |v| permissions[v.dc_policy_role_id] = v.permission }
@@ -902,34 +904,29 @@ def dc_user_can_view(ctrl, policy_id)
   part_policy = nil
   if policy_id
     part_policy = Mongoid::QueryCache.cache { policies.find(policy_id) }
-    return false, 'Access policy not found for part!' unless part_policy
+    return cache_add(policy_id, false, 'Access policy not found for part!') unless part_policy
 
     part_policy.dc_policy_rules.to_a.each { |v| permissions[v.dc_policy_role_id] = v.permission }
   end
   # apply guest role if no roles defined
   if ctrl.session[:user_roles].nil?
     role = Mongoid::QueryCache.cache { DcPolicyRole.find_by(system_name: 'guest', active: true) }
-    return false, 'System guest role not defined!' unless role
+    return cache_add(policy_id, false, 'System guest role not defined!') unless role
 
     ctrl.session[:user_roles] = [role.id]
   end
   # Check if user has any role that allows him to view part
-  can_view, msg = false, ''
-  ctrl.session[:user_roles].each do |role|
-    next unless permissions[role]          # role not yet defined. Will die in next line.
-
-    if permissions[role] > 0
-      can_view = true
-      break
-    end
+  can_view = ctrl.session[:user_roles].reduce(false) do |result, role|
+    break true if permissions[role] && permissions[role] > 0
   end
 
-  if !can_view
+  msg = ''
+  unless can_view
     msg = part_policy ? t(part_policy.message, part_policy.message) : t(default_policy.message, default_policy.message)
     # message may have variable content
     msg = _origin.render(inline: msg, layout: nil) if msg.match('<%=')
   end
-  [can_view, msg]
+  cache_add(policy_id, can_view, msg)
 end
 
 ####################################################################
@@ -1238,6 +1235,13 @@ def dc_img_alt(file_name, text=nil)
   return text unless text.blank?
   name = File.basename(file_name.to_s)
   name[0,name.index('.')].downcase rescue name
+end
+
+private
+
+# will cache dc_user_can_view response
+def cache_add(id, can_view, msg)
+  @can_view_cache[id] = [can_view, msg]
 end
 
 
