@@ -1,5 +1,6 @@
 .ms-container{
-  max-width: 200px;
+  width: fit-content;
+  max-width: 600px;
 }
 
 .ms-container:after{
@@ -62,7 +63,7 @@
 }
 
 .ms-container .ms-selectable li.ms-elem-selectable{
-  padding: 2px 10px;
+  padding: 3px 10px;
   color: #444;
   font-size: 14px;
 }
@@ -96,4 +97,5 @@
 .pull-right.ms-elem-selected{
   float: right;
   font-size: smaller;
+  padding-left: 4px;
 }
