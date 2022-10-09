@@ -59,6 +59,7 @@ class TreeSelect < Select
 ###########################################################################
 def make_tree(parent)
   return '' unless @choices[parent.to_s]
+
   @html << '<ul>'
   choices = if @choices[parent.to_s].first[3] != 0
     @choices[parent.to_s].sort_by {|e| e[3].to_i } # sort by order if first is not 0
@@ -66,7 +67,7 @@ def make_tree(parent)
     @choices[parent.to_s].sort_alphabetical_by(&:first) # use UTF-8 sort
   end
   choices.each do |choice|
-    data = [ %Q["selected" : #{choice.last ? 'true' : 'false'} ] ]
+    data = [ %("selected" : #{choice.last ? 'true' : 'false'} ) ]
     # only for parent objects
     if @choices[ choice[1].to_s ]
     # parent is not selectable
@@ -75,7 +76,7 @@ def make_tree(parent)
       data << '"opened" : true' unless @parent.dc_dont?(@yaml['parent_opened'], true)
     end
     # data-jstree must be singe quoted
-    @html << %Q[<li data-id="#{choice[1]}" data-jstree='{#{data.join(' , ')}}'>#{choice.first}\n]
+    @html << %(<li data-id="#{choice[1]}" data-jstree='{#{data.join(' , ')}}'>#{choice.first}\n)
     # call recursively for children     
     make_tree(choice[1]) if @choices[ choice[1].to_s ]
     @html << "</li>"
@@ -87,25 +88,24 @@ end
 # Render tree_select field html code
 ###########################################################################
 def render
-  #return ro_standard if @readonly  
   set_initial_value('html','value')
   require 'sort_alphabetical'  
   
   record = record_text_for(@yaml['name'])
   clas   = 'tree-select' + (@readonly ? ' dc-readonly' : '')
   @html << "<div id=\"#{@yaml['name']}\" class=\"#{clas}\" #{set_style()} >"
-# Fill @choices hash. The key is parent object id
+  # Fill @choices hash. The key is parent object id
   @choices = {}
   choices_in_eval(@yaml['eval']).each do |data| 
     @choices[ data[2].to_s ] ||= [] 
     @choices[ data[2].to_s ] << (data << false)
   end
-# put current values hash with. To speed up selection when there is a lot of categories
+  # put current values hash with. To speed up selection when there is a lot of categories
   current_values = {}
   current = @record[@yaml['name']] || []
   current = [current] unless current.class == Array # non array fields
-  current.each {|e| current_values[e.to_s] = true}
-# set third element of @choices when selected
+  current.each { |e| current_values[e.to_s] = true }
+  # set third element of @choices when selected
   @choices.keys.each do |key|
     0.upto( @choices[key].size - 1 ) do |i|
       choice = @choices[key][i]
@@ -114,16 +114,16 @@ def render
   end
   make_tree(nil)
   @html << '</div>'
-# add hidden communication field  
+  # add hidden communication field
   @html << @parent.hidden_field(record, @yaml['name'], value: current.join(','))
-# save multiple indicator for data processing on return
+  # save multiple indicator for data processing on return
   @html << @parent.hidden_field(record, "#{@yaml['name']}_multiple", value: 1) if @yaml['multiple']
-# javascript to update hidden record field when tree looses focus
-readonly_code = %Q[
+  # javascript to update hidden record field when tree looses focus
+readonly_code = %(
 ,
 "conditionalselect" : function (node) {
 return false; }
-]
+)
 
   @js =<<EOJS
 $(function(){
@@ -155,13 +155,14 @@ end
 ###########################################################################
 def self.get_data(params, name)
   return nil if params['record'][name].blank?
-#
+
   result = params['record'][name].split(',')
-  result.delete_if {|e| e.blank? }
+  result.delete_if(&:blank?)
   return nil if result.size == 0
-# convert to BSON objects if is BSON object ID
+
+  # convert to BSON objects if is BSON object ID
   result = result.map{ |e| BSON::ObjectId.from_string(e) } if BSON::ObjectId.legal?(result.first)
-# return only first element if multiple values select was not alowed
+  # return only first element if multiple values select was not allowed
   params['record']["#{name}_multiple"] == '1' ? result : result.first  
 end
 

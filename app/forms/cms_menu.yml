@@ -62,12 +62,18 @@ menu:
         controller: cmsedit
         icon: more_horiz-o
         table: dc_simple_menu
-      90: 
+      90:
         caption: helpers.label.dc_category.tabletitle
         controller: cmsedit
         icon: list
         table: dc_category
-      100: 
+      95:
+        caption: helpers.label.dc_category.tabletitle
+        controller: cmsedit
+        icon: account_tree
+        table: dc_category
+        form_name: dc_category_as_tree
+      100:
         caption: helpers.label.dc_poll.tabletitle
         controller: cmsedit
         icon: poll-o

@@ -1,0 +1,8 @@
+## YAML Template for page
+---
+extend: dc_category
+index:
+  actions: /
+result_set:
+  type: method
+  eval: categories_as_tree

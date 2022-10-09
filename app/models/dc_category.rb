@@ -80,8 +80,8 @@ def self.choices4_ctype(site_id=nil)
     DcBigTable.choices4('dc_category_type', site_id)
   else
     opts = I18n.t('helpers.label.dc_category.choices4_ctype')
-# not defined    
-    return [] if opts.blank?
+    return [] if opts.blank? # not defined
+
     opts.split(',').inject([]) {|result, e| result << e.split(':')}    
   end
 end
@@ -89,13 +89,11 @@ end
 #########################################################################
 # Returns choices for all categories, prepared for tree_select input field
 #########################################################################
-def self.choices4_categories(site_id=nil)
+def self.choices4_categories(site_id = nil)
   qry = where(active: true)
-# 
   ar = [nil]
   ar << site_id.id if site_id
   qry = qry.in(dc_site_id: ar)
-#
   qry.inject([]) { |result, category| result << [category.name, category.id, category.parent, category.order] }
 end
 
