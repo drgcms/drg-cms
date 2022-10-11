@@ -314,50 +314,22 @@ def dc_new_title
   end
 end
 
-####################################################################
-# Formats label and html input code for display on edit form.
-#  
-#  Parameters:
-#  [input_html] String. HTML code for data input field.
-#  [label] String. Input field label.
-####################################################################
-def dc_label_for(input_html, label)
-  c =<<eot
-<tr>
-  <td class="dc-edit-label">#{label}</td>
-  <td class="dc-edit-field">#{input_html}</td>
-</tr>
-eot
-  c.html_safe
-end
-
 ############################################################################
 # Similar to rails submit_tag, but also takes care of link icon, translation, ...
 ############################################################################
-def dc_submit_tag(caption, icon, parms, rest={})
-  parms['class'] ||= 'dc-link'
-  if icon
-    icon_image = if icon.match(/\./)
-      image_tag(icon)
-    elsif icon.match('<i')
-      icon
-    else
-      fa_icon(icon)
-    end
-  end
-  html = icon_image || ''
-  #html << submit_tag(t(caption, caption), parms)
-  %Q[<button type="submit" class="dc-submit" name="commit" value="#{t(caption, caption)}">#{icon_image} #{t(caption, caption)}</button>].html_safe
+def dc_submit_tag(caption, icon, parms, rest = {})
+  icon_image = dc_icon_for_link(icon, nil)
+  %(<button type="submit" class="dc-submit" name="commit" value="#{t(caption, caption)}">#{icon_image} #{t(caption, caption)}</button>).html_safe
 end
 
 ############################################################################
 # Returns icon code if icon is specified
 ############################################################################
-def dc_icon_for_link(icon)
+def dc_icon_for_link(icon, clas = 'dc-link-img')
   return '' if icon.blank?
 
   if icon.match(/\./)
-    _origin.image_tag(icon, class: 'dc-link-img')
+    _origin.image_tag(icon, class: clas)
   elsif icon.match('<i')
     icon
   else

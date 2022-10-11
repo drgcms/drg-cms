@@ -424,7 +424,7 @@ end
 #   decamelize_type(ModelName) # 'ModelName' => 'model_name'
 ########################################################################
 def decamelize_type(model_string)
-  model_string ? model_string.underscore : nil
+  model_string ? model_string.to_s.underscore : nil
 end
 
 ####################################################################
@@ -439,7 +439,8 @@ def dc_error_messages_for(document)
 
   msg = ''
   document.errors.each do |error|
-    label = t("helpers.label.#{decamelize_type(document.class)}.#{error.attribute}", error.attribute)
+    label = t("helpers.label.#{decamelize_type(document.class)}.#{error.attribute}")
+    label = error.attribute if label.match( 'translation missing' )
     msg << "<li>#{label} : #{error.message}</li>"
   end
 

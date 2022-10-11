@@ -42,32 +42,60 @@
 # is most useful for grouping news, blog entries ...
 #####################################################################
 class DcCategory
-  include Mongoid::Document
-  include Mongoid::Timestamps
+include Mongoid::Document
+include Mongoid::Timestamps
 
-  field   :name,        type: String
-  field   :description, type: String
-  field   :ctype,       type: Integer, default: 1 
-  field   :parent,      type: BSON::ObjectId
-  field   :active,      type: Boolean, default: true
-  field   :order,       type: Integer, default: 0
-  field   :created_by,  type: BSON::ObjectId
-  field   :updated_by,  type: BSON::ObjectId
-  field   :dc_site_id,  type: BSON::ObjectId
+field   :name,        type: String
+field   :description, type: String
+field   :ctype,       type: Integer, default: 1
+field   :parent,      type: BSON::ObjectId
+field   :active,      type: Boolean, default: true
+field   :order,       type: Integer, default: 0
+field   :created_by,  type: BSON::ObjectId
+field   :updated_by,  type: BSON::ObjectId
+field   :dc_site_id,  type: BSON::ObjectId
 
-  validates :name, :presence => true
-  
-  index  name: 1
-  index  ctype: 1
-  index  site_id: 1
+index  name: 1
+index  ctype: 1
+index  site_id: 1
+
+validates :name, presence: true
+
+before_destroy :can_destroy?
+
+private
+
+#########################################################################
+# Can't delete if category document has children documents
+#########################################################################
+def can_destroy?
+  if DcCategory.where(parent: id).count > 0
+    errors.add(:base, I18n.t('drgcms.category_has_subs'))
+    throw :abort
+  end
+end
   
 #########################################################################
-# Returns all values vhich can be used as parent select field.
+# Returns all values for use as parent select field.
 #########################################################################
-def self.values_for_parent(site_id=nil) #:nodoc:
+def self.values_for_parent(site_id = nil) #:nodoc:
   qry = where(active: true)
   qry = qry.and(dc_site_id: site_id.id) if site_id
-  qry.sort(name: 1).inject([]) {|r,v| r << [v.name, v._id]} 
+  parents = {} # cache parent names to minimize database usage
+  qry.inject([]) do |r, v|
+    if parents[v.parent].nil?
+       name   = ''
+       parent = v.parent
+       until parent.nil?
+         doc    = find(parent)
+         name   = doc.name + ' / ' + name
+         parent = doc.parent
+       end
+       parents[v.parent] = name
+    end
+    name = v.parent ? parents[v.parent] + v.name : v.name
+    r << [name, v._id]
+  end.sort { |a, b| a.first <=> b.first }
 end
 
 #########################################################################

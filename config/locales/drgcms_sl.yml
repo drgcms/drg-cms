@@ -113,6 +113,8 @@ sl:
     choices4_filter_operators: 'Je enak:eq,Vsebuje:like,Je večji od:gt,Je manjši od:lt,Je prazen:empty'
     
     browse_collections: Brskanje po definicijah zbirk
+    category_has_subs: Kategorije ni mogoče izbrisati, ker vsebuje podrejene elemente.
+    category_as_tree: Uredi v drevesnem pogledu
 
     dc_journal:
       zero_selected: Ni izbranih podatkov!

@@ -113,6 +113,8 @@ en:
     choices4_filter_operators: 'Equal to:eq,Contains:like,Greater then:gt,Less then:lt,Is empty:empty'
     
     browse_collections: Browse all collections
+    category_has_subs: Category can't be deleted, because it contains sub-elements.
+    category_as_tree: Edit in treeview
 
     dc_journal:
       zero_selected: No data selected!

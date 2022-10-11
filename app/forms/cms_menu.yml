@@ -67,12 +67,7 @@ menu:
         controller: cmsedit
         icon: list
         table: dc_category
-      95:
-        caption: helpers.label.dc_category.tabletitle
-        controller: cmsedit
-        icon: account_tree
-        table: dc_category
-        form_name: dc_category_as_tree
+
       100:
         caption: helpers.label.dc_poll.tabletitle
         controller: cmsedit

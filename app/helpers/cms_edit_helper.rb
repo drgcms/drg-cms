@@ -137,7 +137,7 @@ def dc_actions_for_form(position)
   actions.delete('standard')
   actions = actions.to_a.sort { |x, y| x[0] <=> y[0] }
   # Add spinner to the beginning
-  html = %Q[<span class="dc-spinner">#{fa_icon('settings-o spin')}</span><ul class="dc-menu #{position}">]
+  html = %(<span class="dc-spinner">#{mi_icon('settings-o spin')}</span><ul class="dc-menu #{position}">)
 
   actions.each do |key, options|
     session[:form_processing] = "form:actions: #{key} #{options}"
@@ -211,7 +211,7 @@ def dc_actions_for_form(position)
              dc_submit_tag(caption, icon, { data: parameters, title: options['title'] }) +
           '</li>'
         else
-          %(<li><div class="dc-link-no">#{fa_icon(icon)} #{caption}</div></li>)
+          %(<li><div class="dc-link-no">#{mi_icon(icon)} #{caption}</div></li>)
         end
       
       # delete with some sugar added

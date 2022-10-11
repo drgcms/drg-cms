@@ -31,10 +31,10 @@ module DcCategoryHelper
 #
 ####################################################################
 def categories_as_tree
-  html = '<div id="catagories-as-tree">'
-  data = DcCategory.where(parent: nil, active: true).order_by(order: 1).to_a
-  data_for_tree(html, data)
-  (html << '</div>' << js_for_tree).html_safe
+  html = '<div id="catagories-as-tree"><ul><li data-id="nil"><span class="mi-o mi-home"></span>'
+  data = DcCategory.where(parent: nil).order_by(order: 1).to_a
+  html_for_category_tree(html, data)
+  (html << '</li></ul></div>' << js_for_category_tree).html_safe
 end
 
 private
@@ -42,14 +42,14 @@ private
 ####################################################################
 #
 ####################################################################
-def data_for_tree(html, data)
+def html_for_category_tree(html, data)
   html << '<ul>'
   data.each do |category|
-    p category.name
-    html << %(<li data-id="#{category.id}" data-jstree="{enabled}">#{category.name}\n)
-    childreen = DcCategory.where(parent: category.id, active: true).order_by(order: 1).to_a
+    icon = category.active ? 'check_box' : 'check_box_outline_blank'
+    html << %(<li id="#{category.id}" data-parent="#{category.parent}"><span class="mi-o mi-#{icon} mi-18"></span>#{category.name}\n)
+    children = DcCategory.where(parent: category.id).order_by(order: 1).to_a
 
-    data_for_tree(html, childreen) if childreen.size > 0
+    html_for_category_tree(html, children) if children.size > 0
     html << '</li>'
   end
   html << '</ul>'
@@ -58,23 +58,71 @@ end
 ####################################################################
 #
 ####################################################################
-def js_for_tree
+def js_for_category_tree
   %(<script>
 $(function() {
   $("#catagories-as-tree").jstree( {
-    "checkbox" : {"three_state" : false},
-    "core" : { "themes" : { "icons": true } },
-    "plugins" : [ "conditionalselect"],
-    "conditionalselect" : function (node) { return false; }
+    core: { themes: { icons: false },
+            multiple: false
+          },
+    plugins: ["types", "contextmenu"],
+    contextmenu: {
+        items: function ($node) {
+            return {
+                edit: {
+                    label: "<span class='dc-result-submenu'>#{t('drgcms.edit')}</span>",
+                    icon: "mi-o mi-edit",
+                    action: function (obj) {
+                        let id = $('#catagories-as-tree').jstree('get_selected', true)[0].id;
+                        let params = "&ids=" + id;
+                        location.href = "/cmsedit/" + id + "/edit?t=dc_category&f=dc_category_as_tree" + params;
+                    }
+                },
+
+                new_child: {
+                    label: "<span class='dc-result-submenu'>#{t('drgcms.new')}</span>",
+                    icon: "mi-o mi-plus",
+                    action: function (obj) {
+                        let id = $('#catagories-as-tree').jstree('get_selected', true)[0].id;
+                        let params = "&ids=" + id + "&p_parent=" + id;
+                        location.href = "/cmsedit/new?t=dc_category&f=dc_category_as_tree" + params
+                    }
+                },
+
+                delete: {
+                    label: "<span class='dc-result-submenu'>#{t('drgcms.delete')}</span>",
+                    icon: "mi-o mi-delete",
+                    action: function (obj) {
+                        if (confirmation_is_cancled("#{t('drgcms.confirm_delete')}") === true) return false;
+
+                        let id = $('#catagories-as-tree').jstree('get_selected', true)[0].id;
+                        let id_return = $('#catagories-as-tree').jstree('get_selected', true)[0].data["parent"];
+
+                        $.ajax({
+                            url: "/cmsedit/" + id + "?t=dc_category",
+                            type: 'DELETE',
+                            success: function(data) {
+                              let error = data.match("#{I18n.t('drgcms.category_has_subs')}");
+                              if (error !== null) {
+                                alert(error[0]);
+                                params = "?t=dc_category&f=dc_category_as_tree&ids=" + id;
+                                location.href = "/cmsedit" + params;
+                                return true;
+                              }
+                            }
+                        });
+
+                        let params = "?t=dc_category&f=dc_category_as_tree&ids=" + id_return;
+                        location.href = "/cmsedit" + params;
+                    }
+                },
+            }
+          },
+       },
     });
+    $("#catagories-as-tree").jstree(true).select_node("#{params[:ids]}");
 });
 
-$(document).ready(function() {
-  $('.jstree-icon.jstree-themeicon').on('click', function(e) {
-    console.log(e);
-    //e.attr("data-id");
-  });
-});
 </script>)
 end
 

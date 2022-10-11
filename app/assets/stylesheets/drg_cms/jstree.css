@@ -117,11 +117,9 @@
 .vakata-context,
 .vakata-context ul {
   margin: 0;
-  padding: 2px;
   position: absolute;
-  background: #f5f5f5;
-  border: 1px solid #979797;
-  box-shadow: 2px 2px 2px #999999;
+  background: #fff;
+  filter: drop-shadow(1px 1px 6px #ddd);
 }
 .vakata-context ul {
   list-style: none;
@@ -140,19 +138,20 @@
 }
 .vakata-context li > a {
   display: block;
-  padding: 0 2em 0 2em;
+  padding: 4px;
   text-decoration: none;
   width: auto;
   color: black;
   white-space: nowrap;
-  line-height: 2.4em;
-  text-shadow: 1px 1px 0 white;
   border-radius: 1px;
 }
 .vakata-context li > a:hover {
   position: relative;
-  background-color: #e8eff7;
-  box-shadow: 0 0 2px #0a6aa1;
+  background-color: rgba(44, 142, 255, 1);
+  color: #fff;
+}
+.vakata-context li > a:hover > i {
+  color: #fff;
 }
 .vakata-context li > a.vakata-context-parent {
   background-image: url("data:image/gif;base64,R0lGODlhCwAHAIAAACgoKP///yH5BAEAAAEALAAAAAALAAcAAAIORI4JlrqN1oMSnmmZDQUAOw==");
@@ -164,8 +163,6 @@
 }
 .vakata-context .vakata-context-hover > a {
   position: relative;
-  background-color: #e8eff7;
-  box-shadow: 0 0 2px #0a6aa1;
 }
 .vakata-context .vakata-context-separator > a,
 .vakata-context .vakata-context-separator > a:hover {
@@ -177,7 +174,6 @@
   max-height: 1px;
   padding: 0;
   margin: 0 0 0 2.4em;
-  border-left: 1px solid #e0e0e0;
   text-shadow: 0 0 0 transparent;
   box-shadow: 0 0 0 transparent;
   border-radius: 0;
@@ -195,25 +191,15 @@
 .vakata-context li > a > i {
   text-decoration: none;
   display: inline-block;
-  width: 2.4em;
-  height: 2.4em;
   background: transparent;
-  margin: 0 0 0 -2em;
-  vertical-align: top;
+  vertical-align: bottom;
   text-align: center;
-  line-height: 2.4em;
+  color: rgba(44, 142, 255, 1);
 }
 .vakata-context li > a > i:empty {
-  width: 2.4em;
-  line-height: 2.4em;
 }
 .vakata-context li > a .vakata-contextmenu-sep {
   display: inline-block;
-  width: 1px;
-  height: 2.4em;
-  background: white;
-  margin: 0 0.5em 0 0;
-  border-left: 1px solid #e2e3e3;
 }
 .vakata-context .vakata-contextmenu-shortcut {
   font-size: 0.8em;
@@ -233,9 +219,7 @@
   background-repeat: no-repeat;
 }
 .vakata-context-rtl .vakata-context-separator > a {
-  margin: 0 2.4em 0 0;
   border-left: 0;
-  border-right: 1px solid #e2e3e3;
 }
 .vakata-context-rtl .vakata-context-left ul {
   right: auto;
@@ -954,7 +938,8 @@
     margin-top: -10px;
   }
 }
-@media (max-width: 768px) {
+
+@media (max-width: 600px) {
   .jstree-default-responsive {
     /*
 	.jstree-open > .jstree-ocl,
@@ -1099,4 +1084,24 @@
     margin-left: 0;
     margin-right: 0;
   }
+}
+
+/* edit categorise as tree */
+#catagories-as-tree {
+  margin: 8px 4px;
+  border-top: 2px solid #bbb;
+  padding: 8px;
+  background-color: #f8f8f8;
+}
+
+#catagories-as-tree .jstree-anchor {
+  padding: 2px 4px;
+  font-weight: 400;
+}
+
+#catagories-as-tree .mi-o {
+  font-size: 22px;
+  color: #666;
+  padding-right: 4px;
+  vertical-align: top;
 }

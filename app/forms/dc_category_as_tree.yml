@@ -1,8 +1,31 @@
 ## YAML Template for page
 ---
 extend: dc_category
+
 index:
-  actions: /
+  actions:
+    10: /
+
 result_set:
   type: method
   eval: categories_as_tree
+
+form:
+  actions:
+    standard: /
+    1:
+      type: link
+      caption: drgcms.back
+      icon: arrow-back
+      form_name: dc_category_as_tree
+      table: dc_category
+      params:
+        ids:
+          object: params
+          method: ids
+
+    10:
+      type: submit
+      caption: 'drgcms.save&back'
+      form_name: dc_category_as_tree
+      table: dc_category

@@ -3,8 +3,17 @@
 table: dc_category
 
 index:
-  filter: name, description, ctype, parent
-  actions: standard
+  filter: name, description, dc_site_id, parent
+  actions:
+    1: new
+    2: filter
+    10:
+      type: link
+      icon: account_tree-o
+      caption: drgcms.category_as_tree
+      table: dc_category
+      form_name: dc_category_as_tree
+#        controller: cmsedit
 
 result_set:
   actions: 
@@ -36,13 +45,11 @@ form:
     10:
       name: name
       type: text_field
-      html:
-        size: 30
+      size: 30
     20:
       name: description
       type: text_field
-      html:
-        size: 100
+      size: 100
     30:
       name: ctype
       type: select
@@ -51,8 +58,7 @@ form:
     40:
       name: order
       type: text_field
-      html:
-        size: 5
+      size: 5
     50:
       name: dc_site_id
       type: select
@@ -65,4 +71,7 @@ form:
       eval: DcCategory.values_for_parent
       html:
         include_blank: true
+    70:
+      name: active
+      type: check_box
 

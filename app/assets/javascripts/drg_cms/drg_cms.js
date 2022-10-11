@@ -67,7 +67,12 @@ update_embedded_on_tab_select = function(div_name) {
  *  Return false when confirmation is not required 
  *******************************************************************/
 confirmation_is_cancled = function(object) {
-  let confirmation = object.getAttribute("data-confirm");
+  let confirmation = '';
+  if ($.type(object) === "string") {
+    confirmation = object;
+  } else {
+    confirmation = object.getAttribute("data-confirm");
+  }
   // if confirmation required
   if (confirmation !== null) {
     if (!confirm(confirmation)) {return true;}
@@ -1114,7 +1119,6 @@ $(document).ready( function() {
    * Result set record menu is left open if action is canceled. Ex. delete confirm. This will hide menu.
    *******************************************************************/
   $('.dc-result-submenu ul li').on('click', function(e) {
-    console.log('ups');
     if (typeof dc_last_menu_selected !== 'undefined') dc_last_menu_selected.hide();
   });
 

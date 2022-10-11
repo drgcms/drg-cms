@@ -70,9 +70,9 @@ def make_tree(parent)
     data = [ %("selected" : #{choice.last ? 'true' : 'false'} ) ]
     # only for parent objects
     if @choices[ choice[1].to_s ]
-    # parent is not selectable
+      # parent is not selectable
       data << '"disabled" : true' unless @parent.dc_dont?(@yaml['parent_disabled'], true)
-    # parents are opened on start
+      # parents are opened on start
       data << '"opened" : true' unless @parent.dc_dont?(@yaml['parent_opened'], true)
     end
     # data-jstree must be singe quoted
@@ -131,7 +131,7 @@ $(function(){
     "checkbox" : {"three_state" : false},        
     "core" : { "themes" : { "icons": false },
                "multiple" : #{@yaml['multiple'] ? 'true' : 'false'}  },
-    "plugins" : ["checkbox","conditionalselect"]
+    "plugins" : ["checkbox", "conditionalselect"]
     #{@readonly ? readonly_code : ''}
   });
 });
