@@ -15,7 +15,7 @@ Gem::Specification.new do |s|
   s.summary     = 'DRG: Rapid web application development tool and CMS for Ruby, Rails and MongoDB'
   s.description = 'DRG, development tool for rapid building of in-house (Intranet, private cloud) applications as well as CMS for creating complex, data-entry intensive web sites.'
   s.license     = 'MIT'
-  s.files       = Dir['{app,config,db,lib}/**/*'] + %w[MIT-LICENSE Rakefile README.md History.log drg_cms.gemspec]
+  s.files       = Dir['{app,config,db,lib}/**/*'] + %w[MIT-LICENSE Rakefile README.md CHANGELOG.md drg_cms.gemspec]
   s.test_files  = Dir['test/**/*']
 
   s.required_ruby_version = '>= 2.7'
