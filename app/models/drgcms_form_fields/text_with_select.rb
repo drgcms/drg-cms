@@ -80,13 +80,11 @@ def render
   # javascript to update text field if new value is selected in select field
   @js =<<EOJS
 $(document).ready(function() {
- $('##{@yaml['name']}_').change( function() {
-  if ($(this).val().toString().length > 0) {
-    $('##{record}_#{@yaml['name']}').val( $(this).val() );
+  $('##{@yaml['name']}_').on("click", function() {
+    $('##{record}_#{@yaml['name']}').val( $(this).val().toString() );
     $('##{record}_#{@yaml['name']}').trigger("change");
-  }
-  $('##{record}_#{@yaml['name']}').focus();
- });
+    $('##{record}_#{@yaml['name']}').focus();
+  });
 });
 EOJS
   self

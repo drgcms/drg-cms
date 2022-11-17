@@ -96,7 +96,7 @@ def choices_in_eval(e)
   if @yaml['depend'].nil?
     method = e.split(/\ |\(/).first
     return eval(e) if respond_to?(method) # id method defined here
-    return eval('@parent.' + e) if @parent.respond_to?(method) # is method defined in helpers
+    return eval('@parent.' + e) if @parent.respond_to?(method) # is method defined in helper methods
     # eval whatever it is there
     eval e
   else
