@@ -212,6 +212,13 @@ img { vertical-align:bottom; }
 .dc-image-preview img { max-height: 2rem; padding-left: 0.5rem;}
 .dc-image-preview img:hover { cursor: zoom-in;}
 
+#dc-image-preview {
+  padding: 2px;
+  background-color: #fff;
+  filter: drop-shadow(0 0 1rem #000);
+  display: none;
+}
+
 .text-with-select { width: 20px; }
 
 .no-borders {
@@ -875,6 +882,10 @@ display: flex;
 }
 
 #dc-form-left #dc-steps-menu .dc-link-ajax:hover {
+  color: rgba(44, 142, 255, 1);
+}
+
+.dc-popup-open:hover {
   color: rgba(44, 142, 255, 1);
 }
 
@@ -1576,12 +1587,24 @@ cursor: pointer;
   margin: 6px 4px 0 0;
 }
 
+.dc-image-preview-1 {
+  right: 1rem;
+  position: absolute;
+  top: 5rem;
+  max-height: 150px;
+  max-width: 200px;
+}
+
+#dc_image .dc-image-preview img {
+  max-height: 150px;
+  max-width: 200px;
+}
+
 /****** MOBILE DEVICE *****/
 @media only screen and (max-device-width: 600px) {
   #body-cms {font-size: 11px;}
   #site-top div:nth-of-type(2) {padding-top: 0 !important;}
   .dc-title { font-size: 1.5em;}
-
 
   .dc-form {
     border: none;

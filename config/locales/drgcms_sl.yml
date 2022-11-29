@@ -64,7 +64,8 @@ sl:
     img_large: Klik za večjo sliko
     no_class: Razred (class) [%{class}] ni definiran!
     no_method: Metoda (helper) [%{method}] ne obstaja!
-    img_alt_not_present: Vse slike v vsebini morajo imeti vpisano nadomestno besedilo    
+    img_alt_not_present: Vse slike v vsebini morajo imeti vpisano nadomestno besedilo
+    not_valid: Nedovoljena vrednost!
 
     toggle_cms: Preklopi med CMS urejanjem in prikazom
     edit: Urejanje
@@ -87,6 +88,7 @@ sl:
     save: Shrani
     save&back: Shrani in nazaj
     save&close: Shrani in zapri
+    search: Išči
     filter_on: Vklopi filter
     filter_off: Izklopi filter
     filter_set: Nastavi filter
@@ -139,4 +141,12 @@ sl:
       2index: Index
       3form: Forma
 
-
+    dc_image:
+      wrong_type: Nedovoljena vrsta slike. Dovoljene so vrste (jpg jpeg png gif svg webp).
+      no_file: Nisem našel originalne slike. Predlagam, da sliko ponovno naložite.
+      invoke: Zagon iskalnika slik.
+      search: Poiščite in izberite sliko
+      select: Kliknite za izbiro
+      preview: Kliknite za ogled slike
+      image: Slika
+      available: Velikosti na voljo

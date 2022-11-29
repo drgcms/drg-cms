@@ -1,5 +1,5 @@
 #--
-# Copyright (c) 2012-2013 Damjan Rems
+# Copyright (c) 2012+ Damjan Rems
 #
 # Permission is hereby granted, free of charge, to any person obtaining
 # a copy of this software and associated documentation files (the
@@ -65,7 +65,8 @@ en:
     no_class: Class [%{class}] not defined!
     no_method: Method (helper) [%{method}] not defined!
     img_alt_not_present: All images in body must have alternative text entered
-    
+    not_valid: Value is not valid!
+
     toggle_cms: Toggle CMS edit/view mode
     edit: Edit
     show: Show
@@ -87,6 +88,7 @@ en:
     save: Save
     save&back: Save & back
     save&close: Save & close
+    search: Search
     filter_on: Filter ON
     filter_off: Filter OFF
     filter_set: Set filter
@@ -141,3 +143,12 @@ en:
       1basic: Basic
       2index: Index
       3form: Form
+
+    dc_image:
+      wrong_type: Image type not allowed! Types allowed are (jpg jpeg png gif svg webp).
+      no_file: Original image file not present. Try to upload image file again.
+      invoke: Invoke images manager.
+      search: Search and select image
+      select: Click to select
+      preview: Click to view image
+      available: Available image sizes

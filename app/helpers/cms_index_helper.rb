@@ -522,15 +522,13 @@ def dc_eval_to_array(expression)
   expression.split(/\ |\,|\(|\)/).delete_if {|e| e.blank? }.map {|e| e.gsub(/\'|\"/,'').strip }
 end
 
-private
-
 ############################################################################
 # Process eval. Breaks eval option and calls with send method.
 # Parameters:
 #   evaluate : String : Expression to be evaluated
 #   parameters : Array : array of parameters which will be send to method
 ############################################################################
-def dc_process_eval(evaluate, parameters)
+def dc_process_eval(evaluate, parameters = nil)
   # evaluate by calling send method 
   clas, method = evaluate.split('.')
   if method.nil?
@@ -540,6 +538,8 @@ def dc_process_eval(evaluate, parameters)
     klass.send(method, *parameters)
   end  
 end
+
+private
 
 ############################################################################
 # Process eval option for field value. 

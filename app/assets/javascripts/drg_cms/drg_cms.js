@@ -1045,7 +1045,7 @@ $(document).ready( function() {
   });
 
  /*******************************************************************
-  * Click on show filter form
+  * on click => show filter form
   *******************************************************************/
   $('#open_drgcms_filter').on('click', function(e) {
     $('#drgcms_filter').bPopup({
@@ -1056,9 +1056,9 @@ $(document).ready( function() {
       position: ['auto', 20],
       closeClass: 'dc-link' });
   });
-  
+
   /*******************************************************************
-  * Click on preview selected image
+  * on click => Preview image in popup window
   *******************************************************************/
   $('.dc-image-preview').on('click', function(e) {
     let img = $(this).children(":first").attr('src');
@@ -1069,9 +1069,9 @@ $(document).ready( function() {
           opacity: 0
     });
   });
-  
+
  /*******************************************************************
-  * Set new filter
+  * on click => set new filter
   *******************************************************************/
   $('.dc-filter-set').on('click', function(e) {
     let url = $(this).attr( 'data-url' );
@@ -1082,7 +1082,7 @@ $(document).ready( function() {
    });
 
   /*******************************************************************
-   * Toggle one cmsedit menu level
+   * on click => toggle one cmsedit menu level
    *******************************************************************/
   $('.cmsedit-top-level-menu div').on('click', function(e) {
     $(e.target).siblings('ul').toggle('fast');
@@ -1090,7 +1090,7 @@ $(document).ready( function() {
   });
 
   /*******************************************************************
-   * Toggle result set record menu
+   * on click => toggle result set record menu
    *
    * This and additional two event hadlers provide expected behavior of submenus popup and close.
    *******************************************************************/

@@ -1,0 +1,117 @@
+# Form for dc_image
+table: dc_image
+
+index:
+  actions: standard
+
+result_set:
+  actions: standard
+
+# Choose from
+# _id,created_at,updated_at,name,text,size_l,size_m,size_s,categories,created_by,dc_user_id
+  columns:
+    10:
+      name: short
+      width: 20%
+    20:
+      name: created_by
+      eval: dc_name4_id,dc_user,name
+    30:
+      name: created_at
+      format: '%d.%m.%Y'
+    40:
+      name: categories_line
+      width: 40%
+
+form:
+  actions: standard
+  multipart: true
+
+  fields:
+    10:
+      name: upload_file
+      type: file_field
+      group: 2
+    20:
+      name: image
+      type: method
+      caption: '&nbsp;'
+      eval: dc_image_preview
+    30:
+      name: short
+      type: text_field
+      size: 50
+    40:
+      name: text
+      type: text_area
+      size: 80x5
+    50:
+      name: cats_input
+      type: text_area
+      size: 50x5
+      line: bottom
+    60:
+      name: keep_original
+      type: check_box
+    70:
+      name: size_o
+      type: readonly
+
+    100:
+      name: size_ls
+      type: text_with_select
+      eval: dc_image_choices_for_image_size
+      size: 8
+      group: 3
+    110:
+      name: size_ms
+      type: text_with_select
+      eval: dc_image_choices_for_image_size
+      size: 8
+    120:
+      name: size_ss
+      type: text_with_select
+      eval: dc_image_choices_for_image_size
+      size: 8
+
+    210:
+      name: offset_lx
+      type: text_field
+      size: 3
+      group: 3
+    220:
+      name: offset_mx
+      type: text_field
+      size: 3
+    230:
+      name: offset_sx
+      type: text_field
+      size: 3
+
+    310:
+      name: offset_ly
+      type: text_field
+      size: 3
+      group: 3
+    320:
+      name: offset_my
+      type: text_field
+      size: 3
+    330:
+      name: offset_sy
+      type: text_field
+      size: 3
+
+    410:
+      name: preview_l
+      type: method
+      group: 3
+      eval: dc_image_preview_resized
+    420:
+      name: preview_m
+      type: method
+      eval: dc_image_preview_resized
+    430:
+      name: preview_s
+      type: method
+      eval: dc_image_preview_resized

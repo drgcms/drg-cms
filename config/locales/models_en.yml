@@ -570,6 +570,26 @@ en:
         dc_json_lds: Schema sub element
         active: Active
 
+      dc_image:
+        tabletitle: Images manager
+
+        upload_file: Upload
+        name: File name
+        short: Short description
+        text: Description text
+        keep_original: Keep original
+        size_o: Original dimension
+        size_l: Large dimension
+        size_m: Medium dimension
+        size_s: Small dimension
+        size_ls: Large dimension
+        size_ms: Medium dimension
+        size_ss: Small dimension
+        categories: Categories
+        cats_input: Categories
+        categories_line: Categories
+        created_by: Uploaded by
+
 # help for forms #####################################################
 
     help:
@@ -973,3 +993,16 @@ en:
         active: Document is active
         add_schema: Add new schema
         add_error: Schema element %{schema} already exists!
+
+      dc_image:
+        upload_file: Select file to upload
+        name: Original file name
+        short: Short image description
+        text: Longer image description text
+        keep_original: Keep original image
+        size_o: Dimension of original image
+        size_l: Dimension for large image
+        size_m: Dimension form medium size image
+        size_s: Dimension for small size image
+        categories: Categories for later searching of image
+        created_by: Image was uploaded by

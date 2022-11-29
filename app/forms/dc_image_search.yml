@@ -1,0 +1,77 @@
+# Form for dc_image search
+table: dc_image
+title: drgcms.dc_image.search
+
+index:
+  actions:
+    1: close
+    2:
+      type: ajax
+      action: run
+      icon: search
+      caption: drgcms.search
+      method: post
+      control: dc_image.images_search
+
+    10:
+      type: field
+      name: short
+      field_type: text_field
+      size: 20
+
+    20:
+      type: field
+      name: categories
+      field_type: text_field
+      size: 40
+
+    30:
+      type: field
+      caption: user
+      name: created_by
+      field_type: select
+      eval: DcImage.all_users
+
+result_set:
+  filter: search_filter
+  actions: false
+
+  # Choose from
+  # _id,created_at,updated_at,name,text,size_l,size_m,size_s,categories,created_by,dc_user_id
+  columns:
+    10:
+      name: preview
+      eval: dc_image_first
+      caption: drgcms.dc_image.image
+      width: 20%
+    20:
+      name: short
+    30:
+      name: links
+      eval: dc_image_select_links
+      caption: drgcms.dc_image.available
+
+css: "
+.img-link {padding: 2px 4px; margin-right: 1rem; background-color: #ddd; border-bottom: 3px solid #222;}
+.dc-image-preview img {max-height: 3rem;}
+.img-link i:hover {color: #2C8EFF; cursor: pointer;}
+"
+
+script: "
+
+  image_preview = function(img) {
+    $('#dc-image-preview').bPopup({
+      content: 'image', 
+      contentContainer: '#dc-image-preview',
+      loadUrl: img,
+      opacity: 0
+    });
+  };
+
+  image_select = function(img) {
+    let field_name = $.getUrlParam('field_name');
+    console.log(field_name);
+    window.opener.document.getElementById(field_name).value = img;
+    window.close();
+  };
+"

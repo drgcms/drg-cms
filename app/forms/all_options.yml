@@ -135,7 +135,8 @@ form:
   title:
     edit: Title for edit
     show: Title for show
-  labels_pos: top    
+  labels_pos: top
+  multipart: true
 
   actions: standard
   actions: none
@@ -280,6 +281,10 @@ form:
         name: gender
         type: radio
         inline: true
+      30:
+        name: galery
+        type: method
+        eval: show_gallery
         
       40:
         name: customer_id

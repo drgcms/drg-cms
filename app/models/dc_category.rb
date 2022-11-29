@@ -88,6 +88,8 @@ def self.values_for_parent(site_id = nil) #:nodoc:
        parent = v.parent
        until parent.nil?
          doc    = find(parent)
+         break if doc.nil?
+
          name   = doc.name + ' / ' + name
          parent = doc.parent
        end

@@ -87,7 +87,7 @@
     case ('image'):
      open();
      $('<img />')
-         .on('load', function() {
+         .on('load',function() {
           triggerCall(o.loadCallback);
           recenter($(this));
          }).attr('src', o.loadUrl).hide().appendTo(o.contentContainer);
@@ -95,7 +95,7 @@
     default:
      open();
      $('<div class="b-ajax-wrapper"></div>')
-         .on('load', o.loadUrl, o.loadData, function(response, status, xhr) {
+         .load(o.loadUrl, o.loadData, function(response, status, xhr) {
           triggerCall(o.loadCallback, status);
           recenter($(this));
          }).hide().appendTo(o.contentContainer);

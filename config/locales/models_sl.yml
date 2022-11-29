@@ -1,5 +1,5 @@
 #--
-# Copyright (c) 2012-2013 Damjan Rems
+# Copyright (c) 2012+ Damjan Rems
 #
 # Permission is hereby granted, free of charge, to any person obtaining
 # a copy of this software and associated documentation files (the
@@ -574,6 +574,36 @@ sl:
         active: Aktiven
         dc_json_lds: Podelement strukture
 
+      dc_image:
+        tabletitle: Organizator slik
+
+        upload_file: Naloži datoteko
+        name: Originalno ime
+        short: Kratek opis
+        text: Daljši opis
+        keep_original: Ohrani original
+        size_o: Prvotna dimenzija
+        size_l: Velika dimenzija
+        size_m: Srednja dimenzija
+        size_s: Mala dimenzija
+        size_ls: Velika dimenzija
+        size_ms: Srednja dimenzija
+        size_ss: Mala dimenzija
+        offset_lx: Zamik X
+        offset_ly: Zamik Y
+        offset_mx: Zamik X
+        offset_my: Zamik Y
+        offset_sx: Zamik X
+        offset_sy: Zamik Y
+        preview_s: Slika
+        preview_m: Slika
+        preview_l: Slika
+
+        categories: Kategorije
+        cats_input: Kategorije
+        categories_line: Kategorije
+        created_by: Naložil
+
 # help pomoč na obrazcih ####################################################
 
     help:
@@ -985,3 +1015,15 @@ sl:
         add_schema: Dodaj strukturo
         add_error: Element %{schema} že obstaja!
 
+      dc_image:
+        upload_file: Naloži datotekov obdelavo
+        name: Originalno ime datoteke
+        short: Kratek opis slike
+        text: Daljši opis slike
+        keep_original: Ohrani originalno sliko
+        size_o: Dimenzije originalne slike
+        size_l: Dimenzije velike slike
+        size_m: Dimenzije srednje velike slike
+        size_s: Dimenzije male slike
+        categories: Kategorije za poznejše lažje iskanje slike
+        created_by: Uporabnik, ki je naložil sliko

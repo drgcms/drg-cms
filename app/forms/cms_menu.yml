@@ -37,12 +37,17 @@ menu:
         controller: cmsedit
         icon: web
         table: dc_design
-      30: 
+      30:
         caption: helpers.label.dc_page.tabletitle
         controller: cmsedit
         icon: description-o
         table: dc_page
-      50: 
+      40:
+        caption: helpers.label.dc_image.tabletitle
+        controller: cmsedit
+        icon: image-o
+        table: dc_image
+      50:
         caption: helpers.label.dc_piece.tabletitle
         controller: cmsedit
         icon: extension-o
