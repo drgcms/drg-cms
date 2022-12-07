@@ -1027,3 +1027,4 @@ sl:
         size_s: Dimenzije male slike
         categories: Kategorije za poznejše lažje iskanje slike
         created_by: Uporabnik, ki je naložil sliko
+        offset: Offset image before resizing. Offset origin is the top left corner.

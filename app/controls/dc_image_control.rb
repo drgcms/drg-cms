@@ -100,48 +100,36 @@ end
 ######################################################################
 # Crop and resize image
 #
-# @param [String] new_size wxh 300x200
-# @param [String] New image file name
+# @new_size [String] new_size widthxheight+offsetx+offsety 300x200+1000+0
+# @file_name [String] Image file name
 ######################################################################
 def image_magick_do(new_size, file_name)
   image = MiniMagick::Image.open(@record.name)
-  img_w, img_h = image.width, image.height
 
   a = new_size.split(/x|\+/).map(&:to_i)
   a += [0, 0] if a.size < 4
-  new_size = a[0, 2].join('x')
-  offset = a[2, 2].join('+')
+  image_offset(image, a[2, 2]) if a[2, 2] != [0, 0]
 
-  new_w, new_h = new_size.split('x').map(&:to_i)
+  img_w, img_h = image.width, image.height
+  new_w, new_h = a[0, 2]
   img_ratio = img_w.to_f / img_h
   new_ratio = new_w.to_f / new_h
-  if new_ratio > img_ratio
-    if a[2] > 0
-      #f = "#{img_w - a[2]}x#{img_h}+0+0"
-    else
-      #f = "#{img_w}x#{img_w/new_ratio}+#{offset}"
-    end
-    f = "#{img_w}x#{img_w/new_ratio}+#{offset}"
-    image.crop(f)
-  elsif new_ratio < img_ratio
-    if a[3] > 0
-      #f = "#{img_w}x#{img_h - a[3]}+0+0"
-    else
-      #f = "#{img_h*new_ratio}x#{img_h}+#{offset}"
-    end
-    f = "#{img_h*new_ratio}x#{img_h}+#{offset}"
-    image.crop(f)
-  end
+  formula = if new_ratio > img_ratio
+              "#{img_w}x#{img_w/new_ratio}+0+0"
+            else
+              "#{img_h*new_ratio}x#{img_h}+0+0"
+            end
+  image.crop(formula)
 
-  image.resize(new_size)
+  image.resize("#{new_w}x#{new_h}")
   image.write(file_name)
-  image_magick_reduce(file_name)
+  image_reduce(file_name)
 end
 
 ######################################################################
 # Reduce image quality of image
 ######################################################################
-def image_magick_reduce(file_name)
+def image_reduce(file_name)
   if (quality = dc_get_site.params.dig('dc_image', 'quality').to_i) > 0
     convert = MiniMagick::Tool::Convert.new
     convert << file_name
@@ -149,6 +137,14 @@ def image_magick_reduce(file_name)
     convert << file_name
     convert.call
   end
+end
+
+######################################################################
+# Offset image if requested
+######################################################################
+def image_offset(image, offset)
+  img_w, img_h = image.width - offset[0], image.height - offset[1]
+  image.crop("#{img_w}x#{img_h}+#{offset[0]}+#{offset[1]}")
 end
 
 ######################################################################

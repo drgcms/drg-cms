@@ -484,6 +484,33 @@ function dc_copy_to_clipboard(div) {
 }
 
 /*******************************************************************
+ * Image preview called in images manager. Preview image in bPopup window.
+ *******************************************************************/
+dc_image_preview = function(img) {
+  $('#dc-image-preview').bPopup({
+    content: 'image',
+    contentContainer: '#dc-image-preview',
+    loadUrl: img,
+    opacity: 0
+  });
+};
+
+/*******************************************************************
+ * Image selected in images manager. Return selected image file name to caller.
+ *******************************************************************/
+dc_image_select = function(img) {
+  let ck_func_name = $.getUrlParam('CKEditorFuncNum');
+  let field_name = $.getUrlParam('field_name');
+  if (ck_func_name !== '') {
+    window.opener.CKEDITOR.tools.callFunction(ck_func_name, img);
+  } else {
+    window.opener.document.getElementById(field_name).value = img;
+  }
+  window.close();
+};
+
+
+/*******************************************************************
  * Events start here
  *******************************************************************/
 $(document).ready( function() {

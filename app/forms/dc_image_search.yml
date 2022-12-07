@@ -56,22 +56,3 @@ css: "
 .dc-image-preview img {max-height: 3rem;}
 .img-link i:hover {color: #2C8EFF; cursor: pointer;}
 "
-
-script: "
-
-  image_preview = function(img) {
-    $('#dc-image-preview').bPopup({
-      content: 'image', 
-      contentContainer: '#dc-image-preview',
-      loadUrl: img,
-      opacity: 0
-    });
-  };
-
-  image_select = function(img) {
-    let field_name = $.getUrlParam('field_name');
-    console.log(field_name);
-    window.opener.document.getElementById(field_name).value = img;
-    window.close();
-  };
-"

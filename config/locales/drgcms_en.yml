@@ -152,3 +152,4 @@ en:
       select: Click to select
       preview: Click to view image
       available: Available image sizes
+      offset_error: Enter either X or Y offset.

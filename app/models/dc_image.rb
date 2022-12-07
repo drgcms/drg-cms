@@ -92,9 +92,8 @@ def validate_image_values
     value = send(field)
     next if value.blank?
 
-    a = value.strip.split('x')
-    errors.add(field, I18n.t('drgcms.not_valid')) and next unless a.size == 2
-    a.each { |e| errors.add(field, I18n.t('drgcms.not_valid')) unless e.to_i > 0 }
+    a = value.strip.split(/x|\+/)
+    a[0, 2].each { |e| errors.add(field, I18n.t('drgcms.not_valid')) unless e.to_i > 0 }
   end
 end
 

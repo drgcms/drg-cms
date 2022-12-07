@@ -96,8 +96,8 @@ def dc_image_link_for_select(doc, what)
   %(
 <div class="img-link"><div>
  #{value}<br>
-  <i class="mi-o mi-preview" onclick="image_preview('#{src}');" title="#{t('drgcms.dc_image.preview')}"></i>
-  <i class="mi-o mi-check_circle" onclick="image_select('#{src}');" title="#{t('drgcms.dc_image.select')}"></i>
+  <i class="mi-o mi-preview" onclick="dc_image_preview('#{src}');" title="#{t('drgcms.dc_image.preview')}"></i>
+  <i class="mi-o mi-check_circle" onclick="dc_image_select('#{src}');" title="#{t('drgcms.dc_image.select')}"></i>
 </div></div>)
 end
 

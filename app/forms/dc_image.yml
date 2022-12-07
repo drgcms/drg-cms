@@ -77,29 +77,35 @@ form:
     210:
       name: offset_lx
       type: text_field
+      help: helpers.help.dc_image.offset
       size: 3
       group: 3
     220:
       name: offset_mx
       type: text_field
+      help: helpers.help.dc_image.offset
       size: 3
     230:
       name: offset_sx
       type: text_field
+      help: helpers.help.dc_image.offset
       size: 3
 
     310:
       name: offset_ly
       type: text_field
+      help: helpers.help.dc_image.offset
       size: 3
       group: 3
     320:
       name: offset_my
       type: text_field
+      help: helpers.help.dc_image.offset
       size: 3
     330:
       name: offset_sy
       type: text_field
+      help: helpers.help.dc_image.offset
       size: 3
 
     410:
