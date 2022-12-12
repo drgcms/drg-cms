@@ -385,7 +385,7 @@ def destroy
       save_journal(:delete)
       flash[:info] = t('drgcms.record_deleted')
       # after_delete callback
-      if (m = callback_method('after_delete') ) 
+      if (m = callback_method('after_delete') )
         call_callback_method(m)
       elsif params['after-delete'].to_s.match('return_to')
         params[:return_to] = params['after-delete']

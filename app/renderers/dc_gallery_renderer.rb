@@ -52,14 +52,20 @@ end
 def default
   can_view, msg = dc_user_can_view(@parent, @page)
   return msg unless can_view
-# 
+
   html = '<div class="picture-gallery"><ul>'
   DcGallery.where(doc_id: @opts[:doc_id], active: true).order_by(order: 1).each do |picture|
     html << '<li>'
-    html << edit_menu(picture) if @opts[:edit_mode] > 1
+    if @opts[:edit_mode] > 1
+      html << edit_menu(picture)
+      html << %(
+      <span class="dc-inline-link dc-link-ajax" data-url="/cmsedit/run?control=DcGalleryControl.picture_remove;id=#{picture.id};table=DcGallery"
+        data-confirm="#{t('drgcms.confirm_delete')}" title="#{t('drgcms.delete')}">
+        <i class="mi-o mi-delete"></i>
+      </span>)
+    end
     html << "#{@parent.link_to(i@parent.mage_tag(picture.thumbnail, title: picture.title), picture.picture)}<li>"
   end
-# 
   html << '</ul></div>'
 end
 
@@ -88,7 +94,7 @@ def edit_menu(picture)
   opts[:id]    = picture.id
   opts[:table] = 'dc_gallery'
   
-  '<li>'+dc_link_for_edit(opts)+'</li>'
+  '<li>' + dc_link_for_edit(opts) + '</li>'
 end
 
 

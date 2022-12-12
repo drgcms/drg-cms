@@ -1,7 +1,7 @@
 # Form for dc_gallery
 table: dc_gallery
 index:
-  filter: id as text_field, doc_id as text_field
+  filter: doc_id as text_field
   actions: standard
 
 result_set:

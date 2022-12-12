@@ -555,6 +555,12 @@ display: inline-table;
   background-color: #444;
 }
 
+.dc-inline-link.dc-link-ajax {
+  padding: initial;
+  border: none;
+  background: initial;
+}
+
 .skip-next {
   text-align: center;
   border:1px solid #888;
