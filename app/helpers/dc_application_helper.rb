@@ -307,7 +307,9 @@ def dc_new_title
   else
     # in memory structures
     if @form['table'] == 'dc_memory'
-      t( @form['title'], @form['title'] )
+      return t( @form['title'], @form['title'] ) if @form['title']
+
+      t("#{@form['i18n_prefix']}.tabletitle", '')
     else
       "#{t('drgcms.new')} : #{t_tablename(@form['table'])}"    
     end

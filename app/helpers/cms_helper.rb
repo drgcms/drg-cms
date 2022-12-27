@@ -110,7 +110,7 @@ end
 ############################################################################
 def dc_label_help(options)
   # no label or help in comments
-  return [nil, nil] if %w(comment action).include?(options['type'])
+  return [nil, nil] if %w[comment action].include?(options['type'])
 
   label = options['caption'] || options['text'] || options['label']
   if options['name']
@@ -122,8 +122,16 @@ def dc_label_help(options)
   end
   # help text can be defined in form or in translations starting with helpers. or as helpers.help.collection.field
   help = options['help']
-  help ||= "helpers.help.#{@form['table']}.#{options['name']}" if options['name']
-  help = t(help, ' ') if help.to_s.match(/helpers\./)
+  if help.blank?
+    help = if options['name']
+             # if defined as i18n_prefix replace "label" with "help"
+             prefix = @form['i18n_prefix'] ? @form['i18n_prefix'].sub('label', 'help') : "helpers.help.#{@form['table']}"
+             "#{prefix}.#{options['name']}"
+           end
+    help = help.to_s
+  end
+  help = t(help, ' ') if help.to_s.match(/help\./)
+
   [label, help]
 end
 

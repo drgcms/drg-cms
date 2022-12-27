@@ -44,7 +44,7 @@ module CmsCommonHelper
 # Returns: 
 # String. Translated text. 
 ####################################################################
-def self.t(key, default=nil)
+def self.t(key, default = nil)
   c = I18n.t(key)
   if c.class == Hash or c.match( 'translation missing' )
     c = I18n.t(key, locale: 'en') 
@@ -57,7 +57,7 @@ def self.t(key, default=nil)
 end
 
 ####################################################################
-def t(key, default=nil) #:nodoc
+def t(key, default = nil) #:nodoc
   CmsCommonHelper.t(key, default)
 end
 
@@ -72,7 +72,7 @@ end
 # Returns: 
 # String. Translated text. 
 ####################################################################
-def t_tablename(tablename, default=nil)
+def t_tablename(tablename, default = nil)
   t('helpers.label.' + tablename + '.tabletitle', default || tablename)
 end
 
@@ -81,21 +81,27 @@ end
 # Translation is provided by lang.helpers.label.table_name.field_name locale. If
 # translation is not found method will capitalize field_name and replace '_' with ' '.
 ############################################################################
-def t_label_for_field(field_name, default='')
-  c = t("helpers.label.#{@form['table']}.#{field_name}", default)
-  c = field_name.capitalize.gsub('_',' ') if c.match( 'translation missing' )
-  c
+def t_label_for_field(field_name, default = '')
+  c = (@form['i18n_prefix'] || "helpers.label.#{@form['table']}") + ".#{field_name}"
+  label = t(c, default)
+  label = field_name.capitalize.gsub('_', ' ') if c.match( 'translation missing' )
+  label
 end
 
 ############################################################################
-# Returns label for field translated to current locale for usage browser header.
+# Returns label for field translated to current locale for usage in browser header.
 # Translation is provided by lang.helpers.label.table_name.field_name locale. If
 # not found method will look in standard drgcms translations.
-#
 ############################################################################
 def t_label_for_column(options)
   label = options['caption'] || options['label']
-  label = (options['name'] ? "helpers.label.#{@form['table']}.#{options['name']}" : '') if label.nil?
+  if label.blank?
+    label = if options['name']
+              prefix = @form['i18n_prefix'] || "helpers.label.#{@form['table']}"
+              "#{prefix}.#{options['name']}"
+            end
+    label = label.to_s
+  end
   label = t(label) if label.match(/\./)
   label = t("drgcms.#{options['name']}") if label.match('helpers.') # standard field names like created_by, updated_at
   label
