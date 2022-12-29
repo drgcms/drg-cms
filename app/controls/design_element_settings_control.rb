@@ -1,4 +1,3 @@
-#encoding: utf-8
 #--
 # Copyright (c) 2014+ Damjan Rems
 #
@@ -23,7 +22,7 @@
 #++
 
 ######################################################################
-# DrgcmsControls for editing settings in a document.
+# DRG Controls for editing settings in a document.
 # 
 # Parameters to settings call:
 # :location - model_name where settings document is located. Typicaly dc_page or dc_site.
@@ -40,33 +39,36 @@ module DesignElementSettingsControl
 # Return:
 #   [document, data] : Mongoid document, yaml as String
 ######################################################################
-def get_settings()
-# On save. Set required variables
+def get_settings
+  # On save. Set required variables
   if params[:record]
     params[:location]   = params[:record][:dc_location]
     params[:field_name] = params[:record][:dc_field_name]
     params[:element]    = params[:record][:dc_element]
     params[:id]         = params[:record][:dc_document_id]    
   end
-# Check model
+
+  # Check model
   begin
     model = params[:location].classify.constantize    
   rescue 
     flash[:error] = "Invalid or undefined model name! #{params[:location]}"
     return false    
   end
-# Check fild name 
+
+  # Check fild name
   begin
     document = model.find(params[:id])
     params[:field_name] ||= (params[:location] == 'dc_site' ? 'settings' : 'params')
-# field not defined on document   
+    # field not defined on document
     raise unless document.respond_to?(params[:field_name])
     yaml = document[params[:field_name]] || ''
   rescue 
     flash[:error] = 'Invalid or undefined field name!'
     return false    
   end
-# Check data
+
+  # Check data
   begin
     data = YAML.load(yaml) || {}
   rescue 
@@ -81,14 +83,14 @@ end
 # 
 # Load fields on form with values from settings document.
 ######################################################################
-def dc_new_record()
+def dc_new_record
   document, data = get_settings
-  return false if document.class == FalseClass and data.nil?
-# fill values with settings values
-  if data['settings'] and data['settings'][ params[:element] ]
+  return false if document.class == FalseClass && data.nil?
+  # fill values with settings values
+  if data['settings'] && data['settings'][ params[:element] ]
     data['settings'][ params[:element] ].each { |key, value| @record.send("#{key}=", value) }
   end
-# add some fields required at post as hidden fields to form
+  # add some fields required at post as hidden fields to form
   form = @form['form']['tabs'] ? @form['form']['tabs'].to_a.last : @form['form']['fields']
   form[9999] = {'type' => 'hidden_field', 'name' => 'dc_location', 'html' => {'value' => params[:location]}}
   form[9998] = {'type' => 'hidden_field', 'name' => 'dc_field_name'}
@@ -104,29 +106,29 @@ end
 # 
 # Convert data from fields on form to yaml and save it to document settings field.
 ######################################################################
-def dc_before_save()
+def dc_before_save
   document, data = get_settings
-  return false if document.class == FalseClass and data.nil?
-#
-  fields_on_form.each do |v|
-    session[:form_processing] = v['name'] # for debuging
-    next if v['type'].nil? or
-            v['readonly'] # fields with readonly option don't return value and would be wiped
-# return value from form field definition
-    value = DrgcmsFormFields.const_get(v['type'].camelize).get_data(params, v['name'])
-    value = value.map {|e| e.to_s} if value.class == Array
-# set to nil if blank
+  return false if document.class == FalseClass && data.nil?
+
+  fields_on_form.each do |field|
+    session[:form_processing] =   field['name'] # for debuging
+    next if field['type'].nil? or field['readonly'] # fields with readonly option don't return value and would be wiped
+
+    # return value from form field definition
+    value = DrgcmsFormFields.const_get(field['type'].camelize).get_data(params, field['name'])
+    value = value.map(&:to_s) if value.class == Array
+    # set to nil if blank
     value = nil if value.blank?
     data['settings'] ||= {}
     data['settings'][ params[:element] ] ||= {}
-    data['settings'][ params[:element] ][ v['name'] ] = value
+    data['settings'][ params[:element] ][ field['name'] ] = value
   end
-# remove nil elements  
+  # remove nil elements
   data['settings'][ params[:element] ].compact!
-# save data to document field  
+  # save data to document field
   document.send("#{params[:field_name]}=", data.to_yaml)
   document.save
-# to re-set form again
+  # to re-set form again
   dc_new_record
   false # must be 
 end

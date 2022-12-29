@@ -22,14 +22,14 @@
 #++
 
 ######################################################################
-# DrgcmsControls for DcPage model.
+# DRG Controls for DcPage model.
 ######################################################################
 module DcPageControl
 
 ######################################################################
 # Called when new empty record is created
 ######################################################################
-def dc_new_record()
+def dc_new_record
   # Called from menu. Fill in values, that could be obtained from menu
   if params[:from_menu]
     # find menu and submenu. Menu class is defined in Site.
@@ -59,7 +59,7 @@ end
 ######################################################################
 # Called just after record is saved to DB.
 ######################################################################
-def dc_after_save()
+def dc_after_save
   if params.dig(:_record,:_update_menu).to_s == '1'
     dc_get_site.menu_klass.update_menu_item_link(@record)
   end

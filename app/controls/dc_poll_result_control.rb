@@ -1,4 +1,3 @@
-#encoding: utf-8
 #--
 # Copyright (c) 2014+ Damjan Rems
 #
@@ -23,14 +22,14 @@
 #++
 
 ######################################################################
-# DrgcmsControls for DcPage model.
+# DRG Controls for DcPage model.
 ######################################################################
 module DcPollResultControl
 
 ######################################################################
 # Filter result data when filter is set
 ######################################################################
-def poll_filter()
+def poll_filter
   get_query
 end
 
@@ -55,15 +54,15 @@ def do_export
     # ensure, that fields are always in same order
     data = YAML.load(doc.data)
     if c.blank?
-      data.each {|k,v| keys << k}
+      data.each { |k, v| keys << k }
       c << I18n.t('helpers.label.dc_poll_result.created_at') + "\t"
       c << keys.join("\t") + "\n"
     end
     c << doc.created_at.strftime(I18n.t('date.formats.default') ) + "\t"
-    keys.each {|k| c << data[k] + "\t"}
+    keys.each { |k| c << data[k] + "\t" }
     c << "\n"
   end
-  File.write(Rails.root.join('public','export.csv'), c)
+  File.write(Rails.root.join('public', 'export.csv'), c)
   dc_render_ajax(operation: :window, value: 'export.csv')
 end
 
@@ -71,8 +70,8 @@ private
 ######################################################################
 # Creates query for Poll results
 ######################################################################
-def get_query()
-  if params.dig(:record,:dc_poll_id).nil?
+def get_query
+  if params.dig(:record, :dc_poll_id).nil?
     qry = DcPollResult.all
   else  
     qry = DcPollResult.where(dc_poll_id: params[:record][:dc_poll_id])

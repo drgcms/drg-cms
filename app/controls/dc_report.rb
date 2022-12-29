@@ -55,7 +55,7 @@ def print
     render json: { msg_error: t('drgcms.runtime_error') } and return
   end
 
-  pdf_file = "tmp/dokument-#{Time.now.to_i}.pdf"
+  pdf_file = "tmp/document-#{Time.now.to_i}.pdf"
   @pdf.render_file Rails.root.join('public', pdf_file)
 
   render json: print_response(pdf_file)
