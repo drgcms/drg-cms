@@ -686,51 +686,35 @@ end
 ############################################################################
 # Returns list of all collections (tables) as array of choices for usage in select fields.
 # List is collected from cms_menu.yml files and may not include all collections used in application.
-# Currently list is only used for helping defining collection names on dc_permission form. 
-# 
+# Currently list is only used for helping defining collection names on dc_permission form.
+#
 # Example (as used in forms):
 #    form:
 #      fields:
 #        10:
 #          name: table_name
 #          type: text_with_select
-#          eval: dc_choices4_all_collections      
+#          eval: dc_choices4_all_collections
 ############################################################################
 def dc_choices4_all_collections
-  choices = {}
-  DrgCms.paths(:forms).reverse.each do |path|
-    filename = "#{path}/cms_menu.yml"
-    next if !File.exist?(filename)
-
-    menu = YAML.load_file(filename) rescue nil      # load menu
-    next if menu.nil? or !menu['menu']              # not menu or error
-
-    menu['menu'].each do |section|
-      next unless section.last['items']             # next if no items
-
-      section.last['items'].each do |k, v|          # look for caption and 
-        key = v['table']
-        choices[key] ||= "#{key} - #{t(v['caption'], v['caption'])}" 
-      end
-    end
-  end  
-  choices.invert.to_a.sort # hash has to be inverted for values to be returned right
+  models = Mongoid.models.map(&:to_s).uniq.map(&:underscore).delete_if { |e| e.match('/') }
+  models.sort.inject([]) do |r, model_name|
+    r << ["#{model_name} - #{t("helpers.label.#{model_name}.tabletitle", '')}", model_name]
+  end
 end
 
 ##########################################################################
-# Returns choices for creating collection edit select field on CMS top menu.
+# Code for top CMS menu.
 ##########################################################################
-def dc_choices4_cmsmenu
+def dc_cms_menu
   menus = {}
   DrgCms.paths(:forms).reverse.each do |path|
     filename = "#{path}/cms_menu.yml"
     next if !File.exist?(filename)
 
-    menu = YAML.load_file(filename) rescue nil      # load menu
-    next if menu.nil? || !menu['menu']              # not menu or error
-
-    menus = CmsHelper.forms_merge(menu['menu'], menus) # ignore top level part
- end
+    menu  = YAML.load_file(filename) rescue nil # load menu
+    menus = CmsHelper.forms_merge(menu['menu'], menus) if menu.dig('menu') # merge menus
+  end
 
   html = '<ul>'
   menus.to_a.sort.each do |index, menu|    # sort menus, result is array of sorted hashes
@@ -743,10 +727,8 @@ def dc_choices4_cmsmenu
         opts = { target: value['target'] || 'iframe_cms' }
         "<li>#{dc_link_to(t(value['caption']), value['icon'] || '', value['link'], opts)}</li>"
       else
-        opts = { controller: value['controller'],
-                 action: value['action'],
-                 table: value['table'],
-                 form_name: value['form_name'] || value['table'],
+        opts = { controller: value['controller'], action: value['action'],
+                 table: value['table'], form_name: value['form_name'] || value['table'],
                  target: value['target'] || 'iframe_cms',
                }
         # additional parameters
@@ -756,7 +738,7 @@ def dc_choices4_cmsmenu
     end   
     html << '</ul></li>'  
   end
-  html
+  html.html_safe
 end
 
 ############################################################################
@@ -768,7 +750,7 @@ def dc_choices4_folders_list
   home   = File.join(public,dc_get_site.files_directory)
   choices = Dir.glob(home + '/**/*/').select { |fn| File.directory?(fn) }
   choices << home # add home
-  choices.collect! {|e| e.gsub(public,'')} # remove public part
+  choices.collect! { |e| e.gsub(public,'') } # remove public part
   choices.sort
 end
 
@@ -790,7 +772,7 @@ end
 #      type: select
 #      eval: dc_choices4('dc_poll','name','_id')
 ############################################################################
-def dc_choices4(model, name, id='_id', options = {})
+def dc_choices4(model, name, id = '_id', options = {})
   model = model.classify.constantize
   qry   = model.only(id, name)
   if (param = options[:site])
@@ -800,8 +782,6 @@ def dc_choices4(model, name, id='_id', options = {})
   end
   qry = qry.and(active: true) if model.method_defined?(:active)
   qry = qry.order_by(name => 1).collation(locale: I18n.locale.to_s)
-  #choices = qry.inject([]) {|result,e| result << [ e[name], e[id] ]}
-  #choices.sort_alphabetical_by(&:first) # use UTF-8 sort
   qry.map { |e| [e[name], e[id]] }
 end
 
