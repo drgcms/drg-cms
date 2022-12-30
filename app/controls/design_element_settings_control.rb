@@ -85,11 +85,9 @@ end
 ######################################################################
 def dc_new_record
   document, data = get_settings
-  return false if document.class == FalseClass && data.nil?
-  # fill values with settings values
-  if data['settings'] && data['settings'][ params[:element] ]
-    data['settings'][ params[:element] ].each { |key, value| @record.send("#{key}=", value) }
-  end
+  return false if document.class == FalseClass
+
+  record_fill_with_values(data)
   # add some fields required at post as hidden fields to form
   form = @form['form']['tabs'] ? @form['form']['tabs'].to_a.last : @form['form']['fields']
   form[9999] = {'type' => 'hidden_field', 'name' => 'dc_location', 'html' => {'value' => params[:location]}}
@@ -98,7 +96,6 @@ def dc_new_record
   form[9997] = {'type' => 'hidden_field', 'name' => 'dc_element'}
   @record.dc_element = params[:element]
   form[9996] = {'type' => 'hidden_field', 'name' => 'dc_document_id', 'html' => {'value' => params[:id]}}
-  true
 end
 
 ######################################################################
@@ -108,30 +105,82 @@ end
 ######################################################################
 def dc_before_save
   document, data = get_settings
-  return false if document.class == FalseClass && data.nil?
+  return false if document.class == FalseClass
 
+  field_fill_with_values(data)
+  document.send("#{params[:field_name]}=", data.to_yaml)
+  # save to journal
+  params[:table] = params[:location] # for journal
+  save_journal(:update, document.changes)
+  document.save
+  params[:table] = 'dc_memory' # restore
+  # to re-set form again
+  dc_new_record
+  false # must be 
+end
+
+private
+
+######################################################################
+# Fill @record with values found in document hash field
+######################################################################
+def record_fill_with_values(data)
+  # settings
+  if params[:element]
+    if data['settings'] && data['settings'][params[:element]]
+      data['settings'][params[:element]].each { |key, value| @record.send("#{key}=", value) }
+    end
+  else
+    # any field
+    fields_on_form.each do |field|
+      keys  = field['key'] ? field['key'].split(/\.|\,|\;/) : [field['name']]
+      value = data.dig(*keys)
+      @record.send("#{field['name']}=", value)
+    end
+  end
+end
+
+######################################################################
+# Fill field with values entered on a form
+######################################################################
+def field_fill_with_values(data)
   fields_on_form.each do |field|
-    session[:form_processing] =   field['name'] # for debuging
-    next if field['type'].nil? or field['readonly'] # fields with readonly option don't return value and would be wiped
+    session[:form_processing] = field['name'] # for debuging
+    next if field['type'].nil? || field['readonly']
 
     # return value from form field definition
     value = DrgcmsFormFields.const_get(field['type'].camelize).get_data(params, field['name'])
     value = value.map(&:to_s) if value.class == Array
     # set to nil if blank
     value = nil if value.blank?
-    data['settings'] ||= {}
-    data['settings'][ params[:element] ] ||= {}
-    data['settings'][ params[:element] ][ field['name'] ] = value
+
+    keys = field['key'] ? field['key'].split(/\.|\,|\;/) : [field['name']]
+    if params[:element].present?
+      keys = ['settings', params[:element]] + keys
+    end
+
+    h = data
+    if value.blank?
+      # remove field from hash if empty
+      keys.each_with_index do |key, i|
+        if i + 1 == keys.size
+          h.delete(keys.last) if h
+        else
+          h = h[key]
+        end
+        break if h.nil?
+      end
+      # set hash element
+    else
+      keys.each_with_index do |key, i|
+        break if i + 1 == keys.size
+
+        h[key] = {} unless h.key?(key)
+        h = h[key]
+      end
+      h[keys.last] = value
+    end
   end
-  # remove nil elements
-  data['settings'][ params[:element] ].compact!
-  # save data to document field
-  document.send("#{params[:field_name]}=", data.to_yaml)
-  document.save
-  # to re-set form again
-  dc_new_record
-  false # must be 
 end
 
-
-end 
+end
