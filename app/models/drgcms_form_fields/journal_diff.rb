@@ -49,8 +49,8 @@ def render
     old_value = v.class == Array ? v[0] : v
     new_value = v.class == Array ? v[1] : v
     @html << "<div style='background-color: #eee;'>#{@parent.check_box('select', k)} #{k}</div>
-              <div style='background-color: #fcc;'>-<br>#{old_value}</div>
-              <div style='background-color: #cfc;'>+<br>#{new_value}</div><br>"
+              <div style='background-color: #fcc;'>-<br>#{old_value.to_s.gsub("\n", '<br>')}</div>
+              <div style='background-color: #cfc;'>+<br>#{new_value.to_s.gsub("\n", '<br>')}</div><br>"
   end
   @html << '</div>'
   self
