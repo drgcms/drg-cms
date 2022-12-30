@@ -613,7 +613,7 @@ def save_journal(operation, changes = {})
 
   if (operation != :update) || changes.size > 0
     # determine site_id
-    site_id = @record.site_id if @record.respond_to?('site_id')
+    site_id = @record.site_id if @record && @record.respond_to?('site_id')
     site_id = dc_get_site._id if site_id.nil? && dc_get_site
 
     DcJournal.create(site_id: site_id,
