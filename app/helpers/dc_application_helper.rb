@@ -700,12 +700,14 @@ def dc_choices4_all_collections
   choices = {}
   DrgCms.paths(:forms).reverse.each do |path|
     filename = "#{path}/cms_menu.yml"
-    next unless File.exist?(filename)
+    next if !File.exist?(filename)
 
     menu = YAML.load_file(filename) rescue nil      # load menu
     next if menu.nil? or !menu['menu']              # not menu or error
+
     menu['menu'].each do |section|
       next unless section.last['items']             # next if no items
+
       section.last['items'].each do |k, v|          # look for caption and 
         key = v['table']
         choices[key] ||= "#{key} - #{t(v['caption'], v['caption'])}" 
@@ -722,15 +724,18 @@ def dc_choices4_cmsmenu
   menus = {}
   DrgCms.paths(:forms).reverse.each do |path|
     filename = "#{path}/cms_menu.yml"
-    next unless File.exist?(filename)
+    next if !File.exist?(filename)
+
     menu = YAML.load_file(filename) rescue nil      # load menu
-    next if menu.nil? or !menu['menu']              # not menu or error
+    next if menu.nil? || !menu['menu']              # not menu or error
+
     menus = CmsHelper.forms_merge(menu['menu'], menus) # ignore top level part
  end
 
   html = '<ul>'
   menus.to_a.sort.each do |index, menu|    # sort menus, result is array of sorted hashes
     next unless menu['caption']
+
     icon = menu['icon'].match('/') ? image_tag(menu['icon']) : fa_icon(menu['icon']) #external or fa- image
     html << %(<li class="cmsedit-top-level-menu"><div>#{icon}#{t(menu['caption'])}</div><ul>)
     menu['items'].to_a.sort.each do |index1, value|   # again, sort menu items first 
@@ -738,13 +743,14 @@ def dc_choices4_cmsmenu
         opts = { target: value['target'] || 'iframe_cms' }
         "<li>#{dc_link_to(t(value['caption']), value['icon'] || '', value['link'], opts)}</li>"
       else
-        opts =        
-        { controller: value['controller'], 
-          action: value['action'], 
-          table: value['table'],
-          form_name: value['form_name'] || value['table'],
-          target: value['target'] || 'iframe_cms',
-        }
+        opts = { controller: value['controller'],
+                 action: value['action'],
+                 table: value['table'],
+                 form_name: value['form_name'] || value['table'],
+                 target: value['target'] || 'iframe_cms',
+               }
+        # additional parameters
+        value['params'].each { |k, v| opts[k] = dc_value_for_parameter(v) } if value['params']
         "<li>#{dc_link_to(t(value['caption']), value['icon'] || '', opts)}</li>"
       end
     end   
@@ -1075,14 +1081,14 @@ end
 ########################################################################
 def dc_internal_var(object, var_name, current_document = nil)
   begin
-    case
-    when object == 'session' then _origin.session[var_name]
-    when object == 'params'  then _origin.params[var_name]
-    when object == 'site'    then _origin.dc_get_site.send(var_name)
-    when object == 'page'    then _origin.page.send(var_name)
-    when object == 'record'  then
+    case object
+    when 'session' then _origin.session[var_name]
+    when 'params'  then _origin.params[var_name]
+    when 'site'    then _origin.dc_get_site.send(var_name)
+    when 'page'    then _origin.page.send(var_name)
+    when 'record'  then
       current_document ? current_document.send(var_name) : _origin.record.send(var_name)
-    when object == 'class'   then
+    when 'class'   then
       clas, method_name = var_name.split('.')
       klas = clas.classify.constantize
       # call method. Error will be caught below.
