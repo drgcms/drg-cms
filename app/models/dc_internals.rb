@@ -28,11 +28,10 @@
 ##########################################################################
 module DcInternals
   INTERNALS = {
-    'current_user' => 'session[:user_id]',
+    'current_user' => 'session[:user_id].to_s',
     'current_user_name' => 'session[:user_name]',
-    'current_site' => 'dc_get_site.id'
+    'current_site' => 'dc_get_site.id.to_s'
   }
-#
   @additions = {}
   
 ##########################################################################
@@ -40,7 +39,7 @@ module DcInternals
 # to be added to structure and be used together with predefined values.
 ##########################################################################
 def self.add_internal(hash)
-  hash.each {|key,value| additions[key] = value} 
+  hash.each { |key, value| additions[key] = value }
 end
 
 ##########################################################################
@@ -48,11 +47,8 @@ end
 # to be added to structure and be used together with predefined values.
 ##########################################################################
 def self.get(key)
-  key = key.sub('@','')
-
-  value = INTERNALS[key]
-  value = @additions[key] if value.nil?
-  value
+  key.sub!('@', '')
+  INTERNALS[key] || @additions[key]
 end
 
 end
