@@ -30,12 +30,17 @@ module DcImageControl
 #
 ######################################################################
 def search_filter
-  params[:p_record_created_by] = session[:user_id] if params[:p_record_created_by].nil?
+  flash[:record] ||= {}
 
-  qry = DcImage.where(created_by: params[:p_record_created_by])
-  qry = qry.and(short: /#{params[:p_record_short]}/i) if params.dig(:p_record_short).to_s.size > 2
-  qry = qry.and(categories: :p_record_categories) if params.dig(:p_record_categories).to_s.size > 2
-  qry.limit(20).order_by(created_at: -1)
+  created_by = flash[:record][:created_by] || session[:user_id]
+  qry = DcImage.where(created_by: created_by)
+
+  short_name = flash[:record][:short]
+  qry = qry.and(short: /#{short_name}/i) if short_name.present?
+
+  category = flash[:record][:categories]
+  qry = qry.and(categories: category) if category.present?
+  qry.limit(30).order_by(created_at: -1)
 end
 
 ######################################################################
@@ -43,8 +48,12 @@ end
 # be taken into account on reload.
 ######################################################################
 def images_search
-  url = url_for(controller: :cmsedit, table: :dc_image, form_name: :dc_image_search, p_record_short: params[:record][:short],
-                p_record_created_by: params[:record][:created_by], p_record_categories: params[:record][:categories] )
+  flash[:record] = {}
+  flash[:record][:short] = params[:record][:short]
+  flash[:record][:created_by] = params[:record][:created_by]
+  flash[:record][:categories] = params[:record][:categories]
+
+  url = url_for(controller: :cmsedit, table: :dc_image, form_name: :dc_image_search)
   render json: { url: url }
 end
 
@@ -89,7 +98,9 @@ def image_convert(which)
     return
   end
 
-  unless File.exist?(@record.name)
+  original_file_name = Rails.root.join('public', images_location, "#{@record.id}-o.#{@record.img_type}")
+  @record.name = original_file_name if !File.exist?(@record.name)
+  if !File.exist?(@record.name)
     flash[:warning] = t 'drgcms.dc_image.no_file'
     return
   end

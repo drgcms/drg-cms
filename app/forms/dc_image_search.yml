@@ -6,6 +6,14 @@ index:
   actions:
     1: close
     2:
+      type: window
+      action: new
+      icon: plus
+      caption: drgcms.new
+      table: dc_image
+      params:
+        window_close: 0
+    3:
       type: ajax
       action: run
       icon: search
