@@ -157,8 +157,9 @@ def set_initial_value(opt1 = 'html', opt2 = 'value')
   value_send_as = 'p_' + @yaml['name']
   if @parent.params[value_send_as]
     @yaml[opt1][opt2] = @parent.params[value_send_as] 
-  elsif @parent.flash[:record] and @parent.flash[:record][@yaml['name']]
-    @yaml[opt1][opt2] = @parent.flash[:record][@yaml['name']]
+  elsif @parent.flash[:record]
+    value = @parent.flash[:record][@yaml['name']] || @parent.flash[:record][@yaml['name'].to_sym]
+    @yaml[opt1][opt2] = value if value
   end
   set_default_value(opt1, opt2) if @yaml['default']
 end
