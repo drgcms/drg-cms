@@ -32,8 +32,8 @@ module DcImageControl
 def search_filter
   flash[:record] ||= {}
 
-  created_by = flash[:record][:created_by] || session[:user_id]
-  qry = DcImage.where(created_by: created_by)
+  created_by = flash[:record][:created_by]
+  qry = created_by.present? ? DcImage.where(created_by: created_by) : DcImage.all
 
   short_name = flash[:record][:short]
   qry = qry.and(short: /#{short_name}/i) if short_name.present?
@@ -53,7 +53,7 @@ def images_search
   flash[:record][:created_by] = params[:record][:created_by]
   flash[:record][:categories] = params[:record][:categories]
 
-  url = url_for(controller: :cmsedit, table: :dc_image, form_name: :dc_image_search)
+  url = url_for(controller: :cmsedit, table: :dc_image, form_name: :dc_image_search, field_name: params[:field_name])
   render json: { url: url }
 end
 

@@ -109,4 +109,27 @@ def dc_image_link_for_select(doc, what)
 </div></div>)
 end
 
+######################################################################
+# Will return image file for requested size.
+#
+# @param [String] file_name : Image file name
+# @param [String] size : Preferred image size
+#
+# @return [String] : Image file name if requested size is found. Otherwise first available image.
+######################################################################
+def dc_image_get_by_size(file_name, size)
+  id = file_name[file_name.rindex('/') + 1, 24]
+  return 'error: ID not valid' unless BSON::ObjectId.legal?(id)
+
+  image = DcImage.find(id)
+  return 'error: ID not found' unless image
+
+  what = %w[o s m l].inject('l') do |r, e|
+    field_name = "size_#{e}".to_sym
+    break e if doc.send(field_name) == size
+    e
+  end
+  "/#{dc_get_site.params.dig('dc_image', 'location')}/#{doc.id}-#{what}.#{doc.img_type}"
+end
+
 end

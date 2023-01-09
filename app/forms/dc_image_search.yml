@@ -20,6 +20,10 @@ index:
       caption: drgcms.search
       method: post
       control: dc_image.images_search
+      params:
+        field_name:
+          object: params
+          method: field_name
 
     10:
       type: field
@@ -39,6 +43,8 @@ index:
       name: created_by
       field_type: select
       eval: DcImage.all_users
+      html:
+        include_blank: true
 
 result_set:
   filter: search_filter
