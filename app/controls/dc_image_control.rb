@@ -58,21 +58,33 @@ def images_search
 end
 
 ######################################################################
+# Set some default values when new record
+######################################################################
+def dc_new_record
+  default_sizes = dc_get_site.params.dig('dc_image', 'sizes').to_s.split(',')
+  @record.size_ls = default_sizes.shift
+  @record.size_ms = default_sizes.shift
+  @record.size_ss = default_sizes.shift
+end
+
+######################################################################
 # Save uploaded file if selected and extract properties data
 ######################################################################
 def dc_before_save
-  return unless params[:upload_file]
+  return if @record.size_o.present? || !params[:upload_file]
 
-  type = File.extname(params[:upload_file].original_filename).to_s.downcase.gsub('.', '').strip
+  input_file_name = params[:upload_file].original_filename
+  type = File.extname(input_file_name).to_s.downcase.gsub('.', '').strip
   unless %w(jpg jpeg png gif svg webp).include?(type)
     flash[:error] = t 'drgcms.dc_image.wrong_type'
     return false
   end
-  name = File.basename(params[:upload_file].original_filename)
+  name = File.basename(input_file_name)
   path = File.dirname(params[:upload_file].tempfile)
-  @record.img_type = type
+
+  @record.img_type = dc_get_site.params.dig('dc_image', 'img_type') || type
+  @record.short = File.basename(input_file_name, '.*') if @record.short.blank?
   @record.name  = File.join(path, name)
-  @record.short = File.basename(params[:upload_file].original_filename, '.*') if @record.short.blank?
   FileUtils.mv(params[:upload_file].tempfile, @record.name, force: nil)
 end
 
@@ -99,7 +111,7 @@ def image_convert(which)
   end
 
   original_file_name = Rails.root.join('public', images_location, "#{@record.id}-o.#{@record.img_type}")
-  @record.name = original_file_name if !File.exist?(@record.name)
+  @record.name = original_file_name unless @record.name.present? && File.exist?(@record.name)
   if !File.exist?(@record.name)
     flash[:warning] = t 'drgcms.dc_image.no_file'
     return

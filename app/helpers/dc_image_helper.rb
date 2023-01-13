@@ -57,14 +57,6 @@ def dc_image_choices_for_image_size
 end
 
 ############################################################################
-# Will return default values for form fields
-############################################################################
-def dc_image_default(number)
-  sizes = dc_get_site.params.dig('dc_image', 'sizes')
-  sizes.split(",").map(&:strip)[number]
-end
-
-############################################################################
 # Will return code for invoking dc_image_search form to select image select on a DRG Form.
 #
 # @param [String] field_name : Field name to which selected image value will be saved.

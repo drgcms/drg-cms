@@ -63,23 +63,16 @@ form:
       eval: dc_image_choices_for_image_size
       size: 8
       group: 3
-      default:
-        eval: dc_image_default(0)
     110:
       name: size_ms
       type: text_with_select
       eval: dc_image_choices_for_image_size
       size: 8
-      default:
-        eval: dc_image_default(1)
     120:
       name: size_ss
       type: text_with_select
       eval: dc_image_choices_for_image_size
       size: 8
-      default:
-        eval: dc_image_default(2)
-
     210:
       name: offset_lx
       type: text_field
