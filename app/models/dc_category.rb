@@ -63,6 +63,16 @@ validates :name, presence: true
 
 before_destroy :can_destroy?
 
+after_save :cache_clear
+after_destroy :cache_clear
+
+####################################################################
+# Clear cache if cache is configured
+####################################################################
+def cache_clear
+  DrgCms.cache_clear(:dc_category)
+end
+
 private
 
 #########################################################################
