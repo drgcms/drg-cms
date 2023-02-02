@@ -13,6 +13,8 @@ form:
       params:
         step: x
         next_step: x
+      html:
+        data-validate: false
 
     10:
       type: ajax
