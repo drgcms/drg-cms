@@ -125,9 +125,9 @@ end
 # end user.
 ########################################################################
 def self.choices4_design(site=nil)
-  list = site.nil? ? where(active: true) : where(active: true).in(site_id: [nil,site.id]).to_a
-  list.sort! { |w1, w2| w1.description.casecmp(w2.description) }
-  list.inject([]) { |r, design| r << [ design.description, design._id] }
+  site.nil? ? where(active: true) : where(:site_id.in => [nil, site.id], active: true)
+                                      .sort { |w1, w2| w1.description.casecmp(w2.description) }
+                                      .map { |design| [design.description, design.id] }
 end
   
 end
