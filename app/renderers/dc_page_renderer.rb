@@ -41,7 +41,7 @@ include CmsCommonHelper
 ########################################################################
 # Object initialization.
 ########################################################################
-def initialize( parent, opts={} ) #:nodoc:
+def initialize( parent, opts = {} ) #:nodoc:
   @parent = parent
   @opts   = opts
   @page   = @parent.page
@@ -74,11 +74,11 @@ def iframe
   return '' if @page.if_url.blank?
 
   html =  "\n<iframe"
-  html << " id=\"#{@page.if_id}\"" unless @page.if_id.blank?
-  html << " class=\"#{@page.if_class}\"" unless @page.if_class.blank?
+  html << " id=\"#{@page.if_id}\"" if @page.if_id.present?
+  html << " class=\"#{@page.if_class}\"" if @page.if_class.present?
   html << " border=\"#{@page.if_border}\""  
-  html << " height=\"#{@page.if_height}\"" unless @page.if_height.blank?
-  html << " width=\"#{@page.if_width}\"" unless @page.if_width.blank?
+  html << " height=\"#{@page.if_height}\"" if @page.if_height.present?
+  html << " width=\"#{@page.if_width}\"" if @page.if_width.blank?
   html << " scrolling=\"#{@page.if_scroll}\""
   # Parameters
   parameters = @page.if_url.match(/\?/) ? '' : '?' 
@@ -88,7 +88,7 @@ def iframe
     val = @parent.dc_internal_var(value['object'], value['method'])
     parameters << "&#{key}=#{val}" if val # only when not nil
   end
-  url = @page.if_url + (parameters.size > 1 ? parameters : '')
+  url = @page.if_url + parameters if parameters.size > 1
   html << "src=\"#{url}\" ></iframe>\n"
   html
 end
@@ -106,7 +106,7 @@ def default
   html << @page.body
   # render poll if defined
   if @page.dc_poll_id
-    @opts.merge!(:poll_id => @page.dc_poll_id, :return_to => @parent.request.url, method: nil)
+    @opts.merge!(poll_id: @page.dc_poll_id, return_to: @parent.request.url, method: nil)
     comment = DcPollRenderer.new(@parent, @opts)
     html << "<div class='wrap row'>#{comment.render_html}</div>"
     @css << "\n#{comment.render_css}"

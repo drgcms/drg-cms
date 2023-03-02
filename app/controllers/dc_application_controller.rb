@@ -27,7 +27,7 @@
 ##########################################################################
 class DcApplicationController < ActionController::Base
 protect_from_forgery with: :null_session, only: Proc.new { |c| c.request.format.json? }
-before_action :dc_reload_patches if Rails.env.development?
+#before_action :dc_reload_patches if Rails.env.development?
 before_action :dc_set_locale
 
 ########################################################################
@@ -162,14 +162,13 @@ protected
 ############################################################################
 def dc_user_can(permission, table = params[:table])
   table = table.underscore
-  cache_key = ['dc_permission', table, session[:user_id], dc_get_site.id]
-  permissions = dc_cache_read(cache_key)
+  cache_key = ['dc_permission', table, dc_get_site.id]
+  permissions = DrgCms.cache_read(cache_key)
   if permissions.nil?
     permissions = DcPermission.permissions_for_table(table)
-    dc_cache_write(cache_key, permissions)
+    DrgCms.cache_write(cache_key, permissions)
   end
-  session[:user_roles].each { |r| return true if permissions[r] && permissions[r] >= permission }
-  false
+  session[:user_roles].inject(false) { |r, rule| break true if permissions[rule] && permissions[rule] >= permission }
 end
 
 ####################################################################

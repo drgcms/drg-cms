@@ -6,7 +6,6 @@ form:
       type: ajax
       caption: drgcms.cancel
       icon: cancel
-      method: post
       form_name: x
       action: run
       control: x.steps_cancel
