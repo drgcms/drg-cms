@@ -1046,9 +1046,7 @@ $(document).ready( function() {
   *******************************************************************/
   $('#_record__filter_field').keydown( function(e) {
     if (e.which == '13' || e.which == '9') {
-//      let url = $(this).parents('span').attr("data-url");
-//      url = url + "&filter_value=" + this.value;
-//      simple_ajax_call(url);
+      e.preventDefault();
       $('.record_filter_field_icon').trigger("click")
     };
   });

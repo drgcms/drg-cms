@@ -1210,7 +1210,7 @@ color: #000;
 }
 
 #iframe_edit, #iframe_cms {
-  height: 1px;
+/*  height: 1px;*/
   width: 100%;
   border:  0;
   margin-bottom:  0;
