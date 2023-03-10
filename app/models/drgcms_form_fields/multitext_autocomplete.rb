@@ -24,12 +24,12 @@ module DrgcmsFormFields
 
 ###########################################################################
 # Implementation of multitext_autocomplete DRG Form field.
-# 
+#
 # multitext_autocomplete field is complex data entry field which uses autocomplete
 # function when selecting multiple values for MongoDB Array field. Array typically holds
-# id's of selected documents and control typically displays value of the field name 
+# id's of selected documents and control typically displays value of the field name
 # defined by search options.
-# 
+#
 # ===Form options:
 # * +name:+ field name (required)
 # * +type:+ multitext_autocomplete (required)
@@ -40,12 +40,12 @@ module DrgcmsFormFields
 #   * collection_name.search_field_name.method_name; When searching is more complex custom search
 #   method may be defined in CollectionName model which will provide result set for search.
 # * +with_new+ Will add an icon for shortcut to add new document to collection
-#      
+#
 # Form example:
 #      90:
 #        name: kats
 #        type: multitext_autocomplete
-#        search: dc_category.name      
+#        search: dc_category.name
 #        with_new: model_name
 #        size: 30
 ###########################################################################
@@ -55,10 +55,11 @@ class MultitextAutocomplete < DrgcmsField
 # Returns value for readonly field
 ###########################################################################
 def ro_standard(table, search)
-  result = ''
-  table = table.classify.constantize
   return self if @record[@yaml['name']].nil?
-# when field name and method are defined together
+
+  result = ''
+  table  = table.classify.constantize
+  # when field name and method are defined together
   search = search.split('.').first if search.match('.')
   @record[@yaml['name']].each do |element|
     result << table.find(element)[search] + '<br>'
@@ -69,8 +70,8 @@ end
 ###########################################################################
 # Render multitext_autocomplete field html code
 ###########################################################################
-def render 
-# search field name
+def render
+  # get field name
   if @yaml['search'].class == Hash
     table    = @yaml['search']['table']
     field_name = @yaml['search']['field']
@@ -82,27 +83,28 @@ def render
   else # search and table name are separated
     search = field_name = @yaml['search']
   end
-# determine table name 
+  # get table name
   if @yaml['table']
     table = if @yaml['table'].class == String
-      @yaml['table']
-# eval(how_to_get_my_table_name)    
-    elsif @yaml['table']['eval']
-      eval @yaml['table']['eval']
-    else
-      @parent.logger.error "Field #{@yaml['name']}: Invalid table parameter!"
-      nil
-    end
+              @yaml['table']
+            # eval(how_to_get_my_table_name)
+            elsif @yaml['table']['eval']
+              eval @yaml['table']['eval']
+            else
+              Rails.logger.error "Field #{@yaml['name']}: Invalid table parameter!"
+              nil
+            end
   end
-  unless (table and search)
-    @html << 'Table or search field not defined!' 
+
+  if table.blank? || search.blank?
+    @html << 'Table or search field not defined!'
     return self
   end
-  # 
-  # TODO check if table exists    
+
+  # TODO check if table exists
   collection = table.classify.constantize
   unless @record.respond_to?(@yaml['name'])
-    @html << "Invalid field name: #{@yaml['name']}" 
+    @html << "Invalid field name: #{@yaml['name']}"
     return self
   end
   # put field to enter search data on form
@@ -117,44 +119,44 @@ def render
   # text field for autocomplete
   @html << '<span class="dc-text-autocomplete">' << @parent.text_field(record, _name, @yaml['html']) << '<span></span></span>'
   # direct link for adding new documents to collection
-  if @yaml['with_new'] and !@readonly
-    @html << ' ' + 
+  if @yaml['with_new'] && !@readonly
+    @html << ' ' +
              @parent.fa_icon('plus-square-o', class: 'in-edit-add', title: t('drgcms.new'),
-             style: "vertical-align: top;", 'data-table' => @yaml['with_new'] )    
+             style: "vertical-align: top;", 'data-table' => @yaml['with_new'] )
   end
   # div to list active selections
   @html << "<div id =\"#{record}#{@yaml['name']}\">"
-  # find value for each field inside categories 
+  # find value for each field inside categories
   unless @record[@yaml['name']].nil?
     @record[@yaml['name']].each do |element|
-# this is quick and dirty trick. We have model dc_big_table which can be used for retrive 
-# more complicated options
+  # this is quick and dirty trick. We have model dc_big_table which can be used for retrive
+  # more complicated options
 # TODO retrieve choices from big_table
       rec = if table == 'dc_big_table'
         collection.find(@yaml['name'], @parent.session)
       else
         collection.find(element)
       end
-# Related data is missing. It happends.
+      # Related data is missing. It happends.
       @html << if rec
         link  = @parent.link_to(@parent.fa_icon('remove_circle', class: 'dc-red'), '#',
-                onclick: "$('##{rec.id}').hide(); var v = $('##{record}_#{@yaml['name']}_#{rec.id}'); v.val(\"-\" + v.val());return false;")
+                onclick: %($('##{rec.id}').hide(); var v = $('##{record}_#{@yaml['name']}_#{rec.id}'); v.val("-" + v.val());return false;))
         link  = @parent.fa_icon('check', class: 'dc-green') if @readonly
         field = @parent.hidden_field(record, "#{@yaml['name']}_#{rec.id}", value: element)
-        "<div id=\"#{rec.id}\" style=\"padding:4px;\">#{link} #{rec.send(field_name)}<br>#{field}</div>"
+        %(<div id="#{rec.id}" style="padding:4px;">#{link} #{rec.send(field_name)}<br>#{field}</div>)
       else
         '** error **'
       end
     end
   end
   @html << "</div></div>"
-# Create text for div to be added when new category is selected  
+  # Create text for div to be added when new category is selected
   link    = @parent.link_to(@parent.fa_icon('remove_circle', class: 'dc-red'), '#',
             onclick: "$('#rec_id').hide(); var v = $('##{record}_#{@yaml['name']}_rec_id'); v.val(\"-\" + v.val());return false;")
   field   = @parent.hidden_field(record, "#{@yaml['name']}_rec_id", value: 'rec_id')
   one_div = "<div id=\"rec_id\" style=\"padding:4px;\">#{link} rec_search<br>#{field}</div>"
-    
-# JS stuff    
+
+  # JS stuff
   @js << <<EOJS
 $(document).ready(function() {
   $("##{record}_#{_name}").autocomplete( {
@@ -173,10 +175,12 @@ $(document).ready(function() {
     },
     change: function (event, ui) { 
       var div = '#{one_div}';
-      div = div.replace(/rec_id/g, ui.item.id)
-      div = div.replace('rec_search', ui.item.value)
-      $("##{record}#{@yaml['name']}").append(div);
-      $("##{record}_#{_name}").val('');
+      if (ui.item != null) { 
+        div = div.replace(/rec_id/g, ui.item.id)
+        div = div.replace('rec_search', ui.item.value)
+        $("##{record}#{@yaml['name']}").append(div);
+        $("##{record}_#{_name}").val('');
+      }
       $("##{record}_#{_name}").focus();
     },
     minLength: 2
@@ -184,20 +188,20 @@ $(document).ready(function() {
 });
 EOJS
 
-  self 
+  self
 end
 
 ###########################################################################
-# Class method for retrieving data from multitext_autocomplete form field.
+# Class method for retrieving data from multitext_autocomplete form field. Values are sabed
+# in parameters as name_id => id
 ###########################################################################
 def self.get_data(params, name)
   r = []
-  params['record'].each do |k,v| 
-# if it starts with - then it was removed
-    r << BSON::ObjectId.from_string(v) if k.match("#{name}_") and v[0,1] != '-'
+  params['record'].each do |k, v|
+    # if it starts with - then it was removed
+    r << BSON::ObjectId.from_string(v) if k.starts_with?("#{name}_") && v[0] != '-'
   end
-  r.uniq!
-  r
+  r.uniq
 end
 
 end
