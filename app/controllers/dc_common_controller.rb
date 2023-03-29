@@ -219,8 +219,10 @@ def copy_clipboard
     format.html do
       table = CmsHelper.table_param(params)
       doc   = dc_find_document(table, params[:id], params[:ids])
-      text  = "<br><br>[#{table},#{params[:id]},#{params[:ids]}]<br>"
-      render plain: text + doc.as_document.to_json
+      text  = '<style>body {font-family: monospace;}</style><pre>'
+      text << "JSON:<br>[#{table},#{params[:id]},#{params[:ids]}]<br>#{doc.as_document.to_json}<br><br>"
+      text << "YAML:<br>#{doc.as_document.to_hash.to_yaml.gsub("\n", '<br>')}</pre>"
+      render plain: text
     end
   end  
 end
