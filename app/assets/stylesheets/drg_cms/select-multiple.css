@@ -34,7 +34,7 @@
   -moz-border-radius: 1px;
   border-radius: 1px;
   position: relative;
-  height: 200px;
+  max-height: 200px;
   padding: 0;
   overflow-y: auto;
 }
@@ -65,7 +65,7 @@
 .ms-container .ms-selectable li.ms-elem-selectable{
   padding: 3px 10px;
   color: #444;
-  font-size: 14px;
+/*  font-size: 14px;*/
 }
 
 .ms-container .ms-selectable li:nth-child(odd) {
