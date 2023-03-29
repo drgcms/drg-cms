@@ -487,18 +487,17 @@ def dc_input_form_create(fields_on_tab) #:nodoc:
 </div> )
             else
               # no label
-              if dc_dont?(options['caption'])
-                label = ''
-                label_width = 0
-                data_width  = 100
-              elsif group_option > 1
-                label_width = group_option != group_count ? 10 : 14
-                data_width  = 21
-              else
-                label_width = 14
-                data_width  = 85
-              end
-              help.gsub!('<br>',"\n") if help.present?
+              label_width, data_width = if dc_dont?(options['caption'])
+                                          label = ''
+                                          [0, 100]
+                                        elsif group_option == 1
+                                          [14, 85]
+                                        elsif group_option == 2
+                                          group_count == 2 ? [14, 21] : [10, 45]
+                                        elsif group_option == 3
+                                          group_count == 3 ? [14, 21] : [10, 21]
+                                        end
+              help.gsub!('<br>', "\n") if help.present?
               %(
 <div class="dc-form-label dc-color-#{odd_even} dc-align-#{labels_pos} dc-width-#{label_width}" title="#{help}">
   <label for="record_#{options['name']}">#{label} </label>
