@@ -1074,12 +1074,12 @@ def dc_internal_var(object, var_name, current_document = nil)
       # call method. Error will be caught below.
       klas.send(method_name)
     else
-      'VARIABLE: UNKNOWN OBJECT'
+      'dc_internal: UNKNOWN OBJECT'
     end
   rescue Exception => e
     Rails.logger.debug "\ndc_internal_var. Runtime error. #{e.message}\n"
     Rails.logger.debug(e.backtrace.join($/)) if Rails.env.development?
-    'VARIABLE: ERROR'
+    'dc_internal: ERROR'
   end
 end
 
@@ -1110,11 +1110,10 @@ end
 def dc_get_json_ld()
   return '' if @json_ld.nil? or @json_ld.size == 0
 
-  %Q[
+  %(
 <script type="application/ld+json">
 #{JSON.pretty_generate({'@context' => 'http://schema.org', '@graph' => @json_ld})}
-</script>
-].html_safe
+</script>).html_safe
 end
 
 ########################################################################
@@ -1138,12 +1137,12 @@ end
 # Returns:
 # HTML data to be embedded into page header
 #######################################################################
-def dc_get_seo_meta_tags()
+def dc_get_seo_meta_tags
   html = ''
-  html << "<link rel=\"canonical\" href=\"#{@page.canonical_link}\">\n  " unless @page&.canonical_link.blank?
+  html << %(<link rel="canonical" href="#{@page.canonical_link}">\n  ) if @page&.canonical_link.present?
 
   html << @meta_tags.inject('') do |r, hash|
-    r << "<meta #{hash.first} content=\"#{hash.last}\">\n  "
+    r << %(<meta #{hash.first} content="#{hash.last}">\n  )
   end if @meta_tags
   html.html_safe
 end
@@ -1158,6 +1157,7 @@ end
 ########################################################################
 def dc_add_meta_tag(type, name, content)
   return if content.blank?
+
   @meta_tags ||= {}
   key = "#{type}=\"#{name}\""
   @meta_tags[key] = content
@@ -1176,7 +1176,7 @@ end
 # [String] alt="image-tag"
 #######################################################################
 def dc_img_alt_tag(file_name, text=nil)
-  " alt=\"#{dc_img_alt(file_name, text)}\" ".html_safe
+  %( alt="#{dc_img_alt(file_name, text)}" ).html_safe
 end
 
 #######################################################################
@@ -1192,9 +1192,10 @@ end
 # [String] alt_image_name
 #######################################################################
 def dc_img_alt(file_name, text=nil)
-  return text unless text.blank?
+  return text if text.present?
+
   name = File.basename(file_name.to_s)
-  name[0,name.index('.')].downcase rescue name
+  name[0, name.index('.')].downcase rescue name
 end
 
 private

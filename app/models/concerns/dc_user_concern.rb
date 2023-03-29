@@ -94,11 +94,11 @@ def has_role?(role_id)
   return false unless role_id
 
   unless BSON::ObjectId.legal?(role_id)
-    role    = DcPolicyRole.get_role(role_id)
+    role    = Mongoid::QueryCache.cache { DcPolicyRole.get_role(role_id) }
     role_id = role.id if role
   end
-  role = self.dc_user_roles.where(dc_policy_role_id: role_id).first
-  (role && role.active)
+  role = self.dc_user_roles.find_by(dc_policy_role_id: role_id)
+  role && role.active
 end
 
 ##########################################################################
