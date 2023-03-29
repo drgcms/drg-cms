@@ -211,6 +211,19 @@ def self.cache_write(keys, data)
   data
 end
 
+####################################################################
+# Reads data from mongoid cache. Mongoid has it's own cache, which can be
+# used to cache results on single request.
+#
+# @param [model] class: Model name
+# @param [id] String || BSON::ObjectId : Id
+#
+# @return [Object] data document.
+####################################################################
+def self.cached(model, id)
+  Mongoid::QueryCache.cache { model.find(id) }
+end
+
 ###############################################################################
 # All Routes required by DrgCms. 
 # 
