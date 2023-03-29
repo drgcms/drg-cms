@@ -312,6 +312,7 @@ def dc_actions_for_result(document)
       when 'edit' then
         parms['action'] = 'edit'
         parms['id'] = document.id
+        parms['readonly'] = yaml['readonly']
         dc_link_to( caption, 'edit-o', parms, title: title )
 
       when 'show' then
