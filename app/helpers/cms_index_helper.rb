@@ -502,7 +502,7 @@ def dc_columns_for_result(document)
     end
     html << '<div class="spacer"></div>'
     # set class
-    clas = dc_style_or_class(nil, v['td_class'], value, document)
+    clas = dc_style_or_class(nil, v['td_class'] || v['class'], value, document)
     # set width and align an additional style
     style = dc_style_or_class(nil, v['td_style'] || v['style'], value, document)
     flex_align  = v['align'].to_s == 'right' ? 'flex-direction:row-reverse;' : ''
@@ -595,7 +595,7 @@ end
 # Defines style or class for row (tr) or column (td)
 ############################################################################
 def dc_style_or_class(selector, yaml, value, record)
-  return '' if yaml.nil?
+  return '' if yaml.blank?
 
   # alias record and value so both names can be used in eval
   field, document = value, record
