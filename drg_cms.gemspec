@@ -23,7 +23,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'rails'#, '~> 6.1'
   s.add_dependency 'jquery-rails'
   s.add_dependency 'jquery-ui-rails'
-  s.add_dependency 'non-stupid-digest-assets'  
+  s.add_dependency 'non-digest-assets'
 
   s.add_dependency 'bcrypt' #, '~> 3.0.0'
   s.add_dependency 'mongoid'#, '~> 7'
