@@ -157,7 +157,7 @@ end
 ########################################################################
 def default
   # poll_id may be defined in params or opts
-  poll_id = @opts[:poll_id] || @parent.params[:poll_id]
+  poll_id = @opts[:id] || @opts[:poll_id] || @parent.params[:poll_id]
   return '<br>Poll id is not defined?<br>' if poll_id.nil?
 
   poll = DcPoll.find(poll_id)
