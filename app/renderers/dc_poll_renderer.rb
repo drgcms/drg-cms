@@ -110,7 +110,7 @@ def do_one_item(poll, yaml)
     if !@end_of_data 
       html << (poll.display == 'lr' ? "</div><br>\n" : "</div>\n")
       # captcha
-      if poll.captcha_type.to_s.size > 1
+      if poll.captcha_type.present?
         @opts.merge!(:captcha_type => poll.captcha_type)
         captcha = DcCaptchaRenderer.new(@parent, @opts)
         html << captcha.render_html
@@ -191,18 +191,19 @@ def default
   html <<  %(<div class="poll-div">\n)
   # edit link
   if @opts[:edit_mode] > 1
-    @opts[:editparams].merge!( controller: 'cmsedit', action: 'edit', id: poll._id, table: 'dc_poll', form_name: 'dc_poll' )
+    @opts[:editparams].merge!( controller: :cmsedit, action: :edit, id: poll._id, table: :dc_poll, form_name: :dc_poll )
     @opts[:editparams].merge!(title: "#{t('drgcms.edit')}: #{poll.name}")
     @opts[:editparams].delete(:ids) # this is from page, but it gets in a way
     html << dc_link_for_edit( @opts[:editparams] )
   end
 
   html << case
-  when poll.operation == 'poll_submit' then
-    @parent.form_tag(action: poll.operation, method: :put)
-  when poll.operation == 'link' then
-    @parent.form_tag( poll.parameters, method: :put)
-  end
+          when poll.operation == 'poll_submit'
+            @parent.form_tag(action: poll.operation, method: :put, return_to: params[:return_to])
+          when poll.operation == 'link'
+            poll.parameters << "?return_to=#{params[:return_to]}" if params[:return_to]
+            @parent.form_tag( poll.parameters, method: :put)
+          end
   # header, - on first position will not display title
   html << %(<div class="poll-title">#{poll.title}</div>) unless poll.title[0] == '-'
   html << %(<div class="poll-text">#{poll.sub_text}</div>)
@@ -212,10 +213,10 @@ def default
             %(<div class="poll-data-div">\n)
           end
   # items. Convert each item to yaml
-  @end_od_data = false
+  @end_of_data = false
   if poll.form.to_s.size < 10
     items = poll.dc_poll_items
-    items.sort! { |a,b| a.order <=> b.order }
+    items.sort! { |a, b| a.order <=> b.order }
     items.each do |item|
       next unless item.active # disabled items
       # convert options to yaml
@@ -232,12 +233,12 @@ def default
       html << do_one_item(poll, yaml)
     end
   else
-    yaml = YAML.load(poll.form.gsub('&nbsp;',' ')) # very annoying. They come with copy&paste ;-)
+    yaml = YAML.load(poll.form.gsub('&nbsp;', ' ')) # very annoying. They come with copy&paste ;-)
     # if entered without numbering yaml is returned as Hash otherwise as Array
     yaml.each { |i| html << do_one_item(poll, (i.class == Hash ? i : i.last)) } # 
   end
   # hide some fields usefull as parameters
-  html << @parent.hidden_field_tag('return_to', @opts[:return_to] || @parent.params[:return_to] || @parent.request.url)
+  html << @parent.hidden_field_tag('return_to', @opts[:return_to] || @parent.params[:return_to])
   html << @parent.hidden_field_tag('return_to_error', @parent.request.url )
   html << @parent.hidden_field_tag('poll_id', poll_id )
   html << @parent.hidden_field_tag('page_id', @parent.page.id )
