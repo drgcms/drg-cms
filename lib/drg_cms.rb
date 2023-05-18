@@ -29,7 +29,7 @@ end
 # When new plugin with its own DRG forms is added to application, path to
 # forms directory must be send to DrgCms module. Paths are saved into @@paths hash variable. 
 # 
-# Adding path is best done in plugin mudule initialization code.
+# Adding path is best done in plugin module initialization code.
 # 
 # Parameters:
 # [path] String. Path to forms directory
@@ -54,7 +54,7 @@ def self.add_forms_path(path)
 end
 
 ###############################################################################
-# Patching is one of the rubies best strenghts and also its curse. Loading 
+# Patching is one of the rubies best strengths and also its curse. Loading
 # patches in development has become real problem for developers. This is my
 # way of patch loading.
 # 
@@ -85,7 +85,7 @@ end
 # General add path method. Paths are saved into @@paths hash variable. Paths can
 # then be reused in different parts of application.
 # 
-# Adding paths is best done in plugin mudule initialization code.
+# Adding paths is best done in plugin module initialization code.
 # 
 # Parameters:
 # [type] Symbol. Defines type of data. Current used values are :forms, :patches
@@ -120,9 +120,9 @@ end
 
 ####################################################################
 # Checks if any errors exist on document and writes error log. It can also
-# crash if requested. This is mostly usefull in development for debuging
+# crash if requested. This is mostly useful in development for debugging
 # model errors or when updating multiple collections and each save must be
-# checked if succesfull.
+# checked if successful.
 #
 # @param [Document] Document object which will be checked
 # @param [Boolean] If true method should end in runtime error. Default = false.
@@ -165,6 +165,7 @@ end
 # @param [String] Optional key to be deleted
 ####################################################################
 def self.cache_clear(key = nil)
+  return unless Rails.cache
   return Rails.cache.clear if key.nil?
 
   if redis_cache_store?
