@@ -95,21 +95,27 @@ def choices_in_eval(e)
   e.strip!
   if @yaml['depend'].nil?
     method = e.split(/\ |\(/).first
-    return eval(e) if respond_to?(method) # id method defined here
+    return eval(e) if respond_to?(method) # is method defined here
     return eval('@parent.' + e) if @parent.respond_to?(method) # is method defined in helper methods
     # eval whatever it is there
     eval e
   else
-    # add event listener to depend field
-    @js << %(
-$(document).ready(function() {
-  $('#record_#{@yaml['depend']}').change( function(e) { update_select_depend('record_#{@yaml['name']}', 'record_#{@yaml['depend']}','#{e}');});
-  $('#_record_#{@yaml['depend']}').change( function(e) { update_select_depend('record_#{@yaml['name']}', '_record_#{@yaml['depend']}','#{e}');});
-});
-)
-    # depend field might be virtual field. It's value should be set in params
-    depend_value = @yaml['depend'][0] == '_' ? @parent.params["p_#{@yaml['depend']}"] : @record[@yaml['depend']]
+    # add event listener to depend field(s)
+    depend_value = ''
+    @js << "\n$(document).ready(function() {\n"
+    @yaml['depend'].split(',') do |depend|
+      depend.strip!
+      depend_value << ',' if depend_value.present?
+      # depend field might be virtual field. It's value should be set in params
+      depend_value << (depend[0] == '_' ? @parent.params["p_#{depend}"] : @record[depend]).to_s
+      next if depend == @yaml['name'] # self may be sent, but don't listen to change event
 
+      @js << %(
+$('#record_#{depend}').change( function(e) { update_select_depend('record_#{@yaml['name']}', '#{@yaml['depend']}', '#{e}');});
+$('#_record_#{depend}').change( function(e) { update_select_depend('record_#{@yaml['name']}', '#{@yaml['depend']}', '#{e}');});
+)
+    end
+    @js <<  + "});\n"
     e << " '#{depend_value}'"
     eval e
   end
