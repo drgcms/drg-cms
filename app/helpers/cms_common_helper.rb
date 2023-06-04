@@ -46,11 +46,11 @@ module CmsCommonHelper
 ####################################################################
 def self.t(key, default = nil)
   c = I18n.t(key)
-  if c.class == Hash or c.match( 'translation missing' )
+  if c.class == Hash || c.match( /translation missing/i )
     c = I18n.t(key, locale: 'en') 
-# Still not found. Return default if set
-    if c.class == Hash or c.match( 'translation missing' )
-      c = default.nil? ? key : default
+    # Still not found, return default
+    if c.class == Hash || c.match( /translation missing/i )
+      c = default || key
     end
   end
   c
@@ -83,8 +83,10 @@ end
 ############################################################################
 def t_label_for_field(field_name, default = '')
   c = (@form['i18n_prefix'] || "helpers.label.#{@form['table']}") + ".#{field_name}"
+  c = field_name if field_name.match(/helpers\./)
+
   label = t(c, default)
-  label = field_name.capitalize.gsub('_', ' ') if c.match( 'translation missing' )
+  label = field_name.capitalize.gsub('_', ' ') if c.match( /translation missing/i )
   label
 end
 
@@ -167,8 +169,8 @@ end
 ############################################################################
 def self.dc_choices_for_field(model, field)
   c = CmsCommonHelper.t('helpers.label.' + model + '.choices4_' + field )
-  return ['error'] if c.match( 'translation missing' )
-  c.chomp.split(',').inject([]) {|r,v| r << v.split(':') }
+  return ['error'] if c.match( /translation missing/i )
+  c.chomp.split(',').inject([]) { |r, v| r << v.split(':') }
 end
 
 ############################################################################
