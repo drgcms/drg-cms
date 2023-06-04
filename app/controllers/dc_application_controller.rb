@@ -168,6 +168,8 @@ def dc_user_can(permission, table = params[:table])
     permissions = DcPermission.permissions_for_table(table)
     DrgCms.cache_write(cache_key, permissions)
   end
+  return false if session[:user_roles].nil?
+
   session[:user_roles].inject(false) { |r, rule| break true if permissions[rule] && permissions[rule] >= permission }
 end
 

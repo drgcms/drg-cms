@@ -23,5 +23,5 @@
 
 # drg_cms gem version
 module DrgCms #:nodoc:
-  VERSION = '0.7.0.4'.freeze
+  VERSION = '0.7.0.6'.freeze
 end

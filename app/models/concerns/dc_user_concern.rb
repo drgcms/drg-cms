@@ -80,7 +80,7 @@ index group: 1
 validates_length_of :username, minimum: 4
 validates           :username, uniqueness: true  
 validates           :email,    uniqueness: true
-validate :do_validate
+validate            :additional_validates
 
 before_save :do_before_save
 before_validation :do_before_validation
@@ -94,11 +94,11 @@ def has_role?(role_id)
   return false unless role_id
 
   unless BSON::ObjectId.legal?(role_id)
-    role    = Mongoid::QueryCache.cache { DcPolicyRole.get_role(role_id) }
+    role    = DcPolicyRole.get_role(role_id)
     role_id = role.id if role
   end
-  role = self.dc_user_roles.find_by(dc_policy_role_id: role_id)
-  role && role.active
+  role = dc_user_roles.find_by(dc_policy_role_id: role_id)
+  role && role.active?
 end
 
 ##########################################################################
@@ -169,7 +169,7 @@ end
 ##########################################################################
 # Perform some additional validations
 ##########################################################################
-def do_validate
+def additional_validates
   if group && member.present?
     errors.add('member', I18n.t('errors.messages.present'))
   end

@@ -88,7 +88,7 @@ def iframe
     val = @parent.dc_internal_var(value['object'], value['method'])
     parameters << "&#{key}=#{val}" if val # only when not nil
   end
-  url = @page.if_url + parameters if parameters.size > 1
+  url = @page.if_url + (parameters.blank? ? '' : parameters)
   html << "src=\"#{url}\" ></iframe>\n"
   html
 end

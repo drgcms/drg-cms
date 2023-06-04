@@ -215,6 +215,7 @@ form:
         eval: "dc_choices4('model','description_field_name','_id',site: :with_nil)"
         eval: ModelName.choices4_site
         eval: dc_big_table 'key-name'
+        depend: field_on_form,another_field_on_form,and_so_on
         html:
           include_blank: true
       90:

@@ -492,7 +492,9 @@ def dc_columns_for_result(document)
                 dc_process_column_eval(v, document)
               # as field
               elsif document.respond_to?(v['name'])
-                dc_format_value(document.send( v['name'] ), v['format'])
+                dc_format_value(document.send(v['name']), v['format'])
+              elsif respond_to?(v['name'])
+                dc_format_value(send(v['name'], document), v['format'])
               else
                 "??? #{v['name']}"
               end

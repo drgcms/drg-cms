@@ -124,10 +124,11 @@ end
 # have site assigned will be selected. Too much designs to select often confuses
 # end user.
 ########################################################################
-def self.choices4_design(site=nil)
-  site.nil? ? where(active: true) : where(:site_id.in => [nil, site.id], active: true)
-                                      .sort { |w1, w2| w1.description.casecmp(w2.description) }
-                                      .map { |design| [design.description, design.id] }
+def self.choices4_design(site)
+  (site.blank? ? where(active: true) : where(:site_id.in => [nil, BSON::ObjectId.from_string(site) ], active: true))
+    .only(:id, :description)
+    .order_by(description: 1)
+    .map { |design| [design.description, design.id] }
 end
   
 end

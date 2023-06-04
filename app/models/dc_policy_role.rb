@@ -55,30 +55,30 @@ after_save :cache_clear
 after_destroy :cache_clear
 
 ####################################################################
-# Clear cache if cache is configured
+# Clear cache when cache is configured
 ####################################################################
 def cache_clear
   DrgCms.cache_clear(:dc_permission)
   DrgCms.cache_clear(:dc_site)
+  DrgCms.cache_clear(:dc_policy_role)
 end
 
 ########################################################################
 # Return all defined roles as choices for use in select field.
 ########################################################################
 def self.choices4_roles
-  where(active: true).order_by(name: 1).inject([]) { |r,role| r << [ role.name, role._id] }
+  where(active: true).order_by(name: 1).inject([]) { |r, role| r << [ role.name, role._id] }
 end
 
 ########################################################################
 # Search for role when role parameter is String.
 ########################################################################
 def self.get_role(role)
-  if role.class == String
-    rol = role
-    role = find_by(name: rol) || find_by(system_name: rol)
-  end
-  role
-end
+  doc = DrgCms.cache_read(['dc_policy_role', role])
+  return doc if doc
 
+  doc = find_by(name: role) || find_by(system_name: role)
+  DrgCms.cache_write(['dc_policy_role', role], doc)
+end
 
 end

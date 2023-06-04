@@ -87,13 +87,33 @@ confirmation_is_cancled = function(object) {
  *******************************************************************/
 update_select_depend = function(select_name, depend_name, method) {
   let select_field = $('#' + select_name);
-  let depend_field = $('#' + depend_name);
-  
+  let depend_value= ''
+  let depend_field= null;
+  let field_value= null;
+
+  depend_name.split(",").forEach( function(depend) {
+    if ( $('#record_' + depend.trim()).length ) {
+      depend_field = $('#record_' + depend.trim());
+    } else {
+      depend_field = $('#_record_' + depend.trim()); // virtual field
+    }
+
+    // checkbox
+    if (depend_field.is(':checkbox'))  {
+      field_value = depend_field.is(":checked");
+    } else {
+      field_value = depend_field.val();
+    }
+
+    if (depend_value.length > 0) depend_value = depend_value + ',';
+    depend_value = depend_value + field_value;
+  });
+
   $.ajax({
     url: "/dc_common/autocomplete",
     type: "POST",
     dataType: "json",
-    data: { input: depend_field.val(), search: method},
+    data: { input: depend_value, search: method},
     success: function(data) {
 
       select_field.empty();
@@ -478,7 +498,7 @@ function dc_url_add_params(form, url) {
  *******************************************************************/
 function dc_copy_to_clipboard(div) {
   let copyText = document.getElementById(div).innerText;
-  console.log(copyText);
+  //console.log(copyText);
   /* Copy the text inside the text field */
   navigator.clipboard.writeText(copyText);
 }

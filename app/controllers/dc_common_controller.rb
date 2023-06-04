@@ -124,19 +124,20 @@ end
 ####################################################################
 def process_login
   # Somebody is probably playing
-  return dc_render_404 unless ( params[:record] && params[:record][:username] && params[:record][:password] )
+  return dc_render_404 unless ( params.dig(:record, :username) && params.dig(:record, :password) )
 
-  unless params[:record][:password].blank? #password must not be empty
+  return_to = request.env['HTTP_REFERER'] || '/'
+  if params[:record][:password].present? #password must not be empty
     user  = DcUser.find_by(username: params[:record][:username], active: true)
     if user && user.authenticate(params[:record][:password])
       fill_login_data(user, params[:record][:remember_me].to_i == 1)
-      return redirect_to(params[:return_to] ||  '/', allow_other_host: true)
+      return redirect_to(params[:return_to] || return_to, allow_other_host: true)
     else
       clear_login_data # on the safe side
     end
   end
   flash[:error] = t('drgcms.invalid_username')
-  redirect_to(params[:return_to] ||  '/', allow_other_host: true)
+  redirect_to return_to
 end
 
 ####################################################################

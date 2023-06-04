@@ -734,7 +734,6 @@ display: inline-table;
 }
 
 .dc-form-label.dc-color-odd, .dc-form-label.dc-color-even {background-color: transparent;}
-.dc-form-field.dc-color-odd, .dc-form-field.dc-color-even {background-color: transparent;}
 
 .dc-align-left {
   text-align: left;
@@ -747,6 +746,8 @@ display: inline-table;
   text-align: left;
   padding: 4px 2px;
   z-index: 10;
+  white-space: nowrap;
+  text-overflow: fade;
 }
 
 .dc-form-field .action li {
