@@ -58,7 +58,8 @@ form:
 
       70:
         name: publish_date
-        type: datetime_select
+        type: datetime_picker
+        step: 15
 
       80:
         name: picture
@@ -69,14 +70,14 @@ form:
         type: check_box
       100:
         name: valid_from
-        type: datetime_select
-        options:
-          include_blank: true
+        type: datetime_picker
+        step: 15
+
       110:
         name: valid_to
-        type: datetime_select
-        options:
-          include_blank: true
+        type: datetime_picker
+        step: 15
+
 #      120:
 #        name: kats
 #        type: select

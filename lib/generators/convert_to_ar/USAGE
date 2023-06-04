@@ -1,0 +1,8 @@
+Description:
+    new_drg_form_generator will create DRG form from model description. 
+
+Example:
+    rails generate new_drg_form model_name
+
+    This will create:
+        forms/model_name.yml

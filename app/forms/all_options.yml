@@ -275,8 +275,10 @@ form:
         html:
           height: 800      
       20:
-        name: odhod
+        name: time
         type: datetime_picker
+        step: 15
+        inline: true
       20:
         name: gender
         type: radio
