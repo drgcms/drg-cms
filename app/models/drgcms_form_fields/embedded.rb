@@ -78,15 +78,18 @@ def render
   @html << "<iframe class='iframe_embedded' id='if_#{@yaml['name']}' name='if_#{@yaml['name']}' #{html}></iframe>"
   unless @record.new_record?
     url  = @parent.url_for(opts)
-    data = if @yaml['load'].nil? || @yaml['load'].match('default')
-      "src"
-    else
-      "data-src-#{@yaml['load']}"
-    end
-    @js << %Q[
+    attributes = case
+                 when @yaml['load'].nil? || @yaml['load'].match('default')
+                   "'src', '#{url}'"
+                 when @yaml['load'].match('delay')
+                   "'data-src-#{@yaml['load']}', '#{url}'"
+                 when @yaml['load'].match('always')
+                   "{'data-src-#{@yaml['load']}': '#{url}', src: '#{url}'}"
+                 end
+    @js << %(
 $(document).ready( function() {
-  $('#if_#{@yaml['name']}').attr('#{data}', '#{url}');
-});]
+  $('#if_#{@yaml['name']}').attr(#{attributes});
+});)
   end
   self
 end
