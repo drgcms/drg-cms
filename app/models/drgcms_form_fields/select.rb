@@ -80,9 +80,9 @@ class Select < DrgcmsField
 def choices_in_helper(helper = nil)
   helper ||= "helpers.label.#{@form['table']}.choices4_#{@yaml['name']}"
   c = t(helper)
-  if c.match( 'translation missing' )
+  if c.match(/translation missing/i)
     helper = "choices_for_#{@form['table']}_#{@yaml['name']}"
-    return "Error. #{helper} not defined" if c.match( 'translation missing' )
+    return "Error. #{helper} not defined" if c.match(/translation missing/i)
   end
   c
 end

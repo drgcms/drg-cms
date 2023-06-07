@@ -124,7 +124,7 @@ def self.get_filter_field(parent)
   # If field has choices available in labels, use them. This is most likely select input field.
   if field['name']
     choices = parent.t('helpers.label.' + parent.form['table'] + '.choices4_' + field['name'] )
-    unless choices.match( 'translation missing' ) or choices.match('helpers.label')
+    unless choices.match(/translation missing/i) || choices.match('helpers.label')
       field['choices'] = choices
     end
   end

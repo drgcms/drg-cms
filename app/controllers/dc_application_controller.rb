@@ -27,7 +27,6 @@
 ##########################################################################
 class DcApplicationController < ActionController::Base
 protect_from_forgery with: :null_session, only: Proc.new { |c| c.request.format.json? }
-#before_action :dc_reload_patches if Rails.env.development?
 before_action :dc_set_locale
 
 ########################################################################
@@ -91,7 +90,7 @@ def dc_get_site
 
   @site = DcSite.find_by(name: uri.host)
   # Site can be aliased
-  if @site && !@site.alias_for.blank?
+  if @site&.alias_for.present?
     @site = DcSite.find_by(name: @site.alias_for)
   end
   # Development environment. Check if site with name test exists and use
@@ -441,7 +440,7 @@ def dc_error_messages_for(document)
   msg = ''
   document.errors.each do |error|
     label = t("helpers.label.#{decamelize_type(document.class)}.#{error.attribute}")
-    label = error.attribute if label.match( 'translation missing' )
+    label = error.attribute if label.match(/translation missing/i)
     msg << "<li>#{label} : #{error.message}</li>"
   end
 

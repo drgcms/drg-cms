@@ -114,11 +114,11 @@ end
 # Returns: 
 # String. Translated text. 
 ####################################################################
-def t(key, default='')
+def t(key, default = '')
   c = I18n.t(key)
-  if c.match( 'translation missing' )
+  if c.match(/translation missing/i)
     c = I18n.t(key, locale: 'en') 
-# Still not found. Return default if set
+    # Still not found. Return default if set
     c = default unless default.blank?
   end
   c
@@ -127,15 +127,8 @@ end
 ####################################################################
 # Standard code for returning readonly field.
 ####################################################################
-def ro_standard(value=nil)
-  if value.nil?
-    value = if @yaml['html']['value']
-      @yaml['html']['value']
-    else
-      @record.respond_to?(@yaml['name']) ? @record.send(@yaml['name']) : nil
-    end
-  end
-  #@html << (value.blank? ? '' : "<div class='dc-readonly'>#{value}</div>")
+def ro_standard(value = nil)
+  value ||= @yaml['html']['value'] || (@record.respond_to?(@yaml['name']) ? @record.send(@yaml['name']) : nil)
   @html << %(<div id="#{@yaml['name']}" class="dc-readonly">#{value}</div>)
   self
 end
@@ -219,23 +212,12 @@ def set_style()
 end
 
 ####################################################################
-# DEPRECATED!
-#  
-# Returns css code for the field if specified. It replaces all occurences of '# ' 
-# with field name id, as defined on form.
-####################################################################
-def __css_code
-  return '' if @css.blank?
-  @css.gsub!('# ',"#td_record_#{@yaml['name']} ")
-  "\n<style type=\"text/css\">#{@css}</style>"
-end
-
-####################################################################
 # Sets css code for the field if specified. It replaces all occurences of '# ' 
 # with field name id, as defined on form.
 ####################################################################
 def set_css_code(css)
   return '' if css.blank?
+
   css.gsub!('# ',"#td_record_#{@yaml['name']} ") if css.match('# ')
   css
 end

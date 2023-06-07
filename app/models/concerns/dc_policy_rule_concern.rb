@@ -52,7 +52,7 @@ after_destroy :cache_clear
 def self.values_for_permissions
   key = 'helpers.label.dc_policy_rule.choices4_permission'
   c = I18n.t(key)  
-  c = I18n.t(key, locale: 'en') if c.class == Hash or c.match( 'translation missing' )
+  c = I18n.t(key, locale: 'en') if c.class == Hash || c.match(/translation missing/i)
   c.split(',').inject([]) { |r,e| r << (ar = e.split(':'); [ar.first, ar.last.to_i]) }
 end
 

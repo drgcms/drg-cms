@@ -142,7 +142,7 @@ def export_to_excel(report_id)
   columns.each_with_index do |column, i|
     caption = column.last['caption'] || column.last['label']
     label = t(caption)
-    excel[n, i] = label.match('translation missing') ? caption : label
+    excel[n, i] = label.match(/translation missing/i) ? caption : label
   end
 
   data_filter.each do |doc|
