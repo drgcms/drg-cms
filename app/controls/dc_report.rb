@@ -148,8 +148,13 @@ def export_to_excel(report_id)
   data_filter.each do |doc|
     n += 1
     columns.each_with_index do |column, i|
-      value = doc[column.last['name']].to_s.gsub('<br>', ";")
-      value = value.gsub(/\<\/strong\>|\<strong\>|\<\/b\>|\<b\>/, '')
+      value = doc[column.last['name']]
+      value = case value.class.to_s
+              when /Integer|Float/ then value
+              when /Decimal/ then value.to_s.to_f
+              else
+                value.to_s.gsub('<br>', ";").gsub(/\<\/strong\>|\<strong\>|\<\/b\>|\<b\>/, '')
+              end
       excel[n, i] = value
     end
   end
