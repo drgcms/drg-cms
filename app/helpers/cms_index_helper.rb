@@ -437,7 +437,7 @@ end
 ############################################################################
 # Formats value according to format supplied or data type. There is lots of things missing here.
 ############################################################################
-def dc_format_value(value, format=nil)
+def dc_format_value(value, format = nil)
   return '' if value.nil?
 
   klass = value.class.to_s
@@ -445,7 +445,7 @@ def dc_format_value(value, format=nil)
 
   format = format.to_s.upcase
   if format[0] == 'N'
-    return '' if value == 0 && format.match('Z')
+    return '' if format.match('Z') && value.to_s.to_f == 0.0
 
     format.gsub!('Z', '')
     dec = format[1].blank? ? nil : format[1].to_i

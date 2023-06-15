@@ -322,25 +322,25 @@ def dc_head_for_form
     caption = options['caption']
     span    = options['span'] || 1
     @css << "\n#{options['css']}" unless options['css'].blank?
-    label   = if caption.blank?
-      ''
-    elsif options['name'] == caption
-      t_label_for_field(options['name'], options['name'].capitalize.gsub('_',' ') )
-    else
-      t(caption, caption) 
-    end
+    label = if caption.blank?
+              ''
+            elsif options['name'] == caption
+              t_label_for_field(options['name'], options['name'].capitalize.gsub('_', ' ') )
+            else
+              t(caption, caption)
+            end
     # Field value
     begin
       field = if options['eval']
-        dc_process_column_eval(options, @record)
-      else
-        @record.send(options['name'])
-      end
+                dc_process_column_eval(options, @record)
+              else
+                dc_format_value(@record.send(options['name']), options['format'])
+              end
     rescue Exception => e
       dc_log_exception(e, 'dc_head_for_form')
       field = '!!!Error'
     end
-    #
+
     klass = dc_style_or_class(nil, options['class'], field, @record)
     style = dc_style_or_class(nil, options['style'], field, @record)
     html << %(<div class="dc-column #{klass}" style="width:#{percent*span}%;#{style}">

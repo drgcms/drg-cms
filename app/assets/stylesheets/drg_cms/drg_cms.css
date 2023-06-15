@@ -403,7 +403,7 @@ border-radius: 1px;
 .dc-result-data.footer {
   border-top: 2px solid #222;
   color: #000;
-  font-weight: bold;
+  font-weight: 600;
   background-color: #eee;
 }
 
