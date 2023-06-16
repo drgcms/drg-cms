@@ -268,26 +268,28 @@ def dc_table_title(text, result_set = nil)
 end
 
 ############################################################################
-# Creates title for cmsedit edit action dialog. 
-#  
+# Creates title for cmsedit edit action dialog.
+#
 # Returns:
 # String. HTML code for title.
 ############################################################################
 def dc_edit_title
   session[:form_processing] = "form:title:"
   title = @form['form']['title']
+  if title.class == String
+    t(title, title)
   # defined as form:title:edit
-  if title && title['edit'] && !@form['readonly']
+  elsif title&.dig('edit') && !@form['readonly']
     t( title['edit'], title['edit'] )
-  elsif title && title['show'] && @form['readonly']
+  elsif title&.dig('show') && @form['readonly']
     t( title['show'], title['show'] )
   else
     # concatenate title
     c = (@form['readonly'] ? t('drgcms.show') : t('drgcms.edit')) + " : "
     c << (@form['title'].class == String ? t( @form['title'], @form['title'] ) : t_tablename(@form['table']))
-    title = title.try('field')
+    title = title['field']
 
-    c << "#{@record[ title ]}" if title && @record.respond_to?(title)
+    c << " : #{@record[ title ]}" if title && @record.respond_to?(title)
     c
   end
 end
@@ -302,7 +304,7 @@ def dc_new_title
   session[:form_processing] = "form:title:"
   title = @form['form']['title']
   # defined as form:title:new
-  if title && title['new']
+  if title&.dig('new')
     t( title['new'], title['new'] )
   else
     # in memory structures
