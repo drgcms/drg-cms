@@ -40,7 +40,7 @@ def dc_actions_for_index
   actions = @form['index']['actions']
   return '' if actions.blank?
   
-  std_actions = {2 => 'new', 3 => 'sort', 4 => 'filter' }
+  std_actions = { 2 => 'new', 3 => 'sort', 4 => 'filter' }
   std_actions.delete(2) if @form['readonly']
 
   if actions.class == String
@@ -54,6 +54,8 @@ def dc_actions_for_index
   # Remove actions settings and sort
   only_actions = []
   actions.each { |key, value| only_actions << [key, value] if key.class == Integer }
+  pp actions, only_actions,'-------------------------------'
+
   only_actions.sort_by!(&:first)
   only_actions.each do |key, options|
     session[:form_processing] = "index:actions: #{key}=#{options}"

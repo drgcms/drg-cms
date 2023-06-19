@@ -260,7 +260,7 @@ def dc_table_title(text, result_set = nil)
   c = %(<div class="dc-title">#{text})
   c << dc_help_button(result_set)
 
-  if result_set && result_set.respond_to?(:current_page)
+  if result_set&.respond_to?(:current_page)
     c << %(<div class="dc-paginate">#{paginate(result_set, :params => {action: 'index', clear: 'no', filter: nil})}</div>)
   end
   c << '<div style="clear: both;"></div></div>'
@@ -275,21 +275,20 @@ end
 ############################################################################
 def dc_edit_title
   session[:form_processing] = "form:title:"
-  title = @form['form']['title']
-  if title.class == String
-    t(title, title)
+  title_data = @form['form']['title']
+  if title_data.class == String
+    t(title_data, title_data)
   # defined as form:title:edit
-  elsif title&.dig('edit') && !@form['readonly']
-    t( title['edit'], title['edit'] )
-  elsif title&.dig('show') && @form['readonly']
-    t( title['show'], title['show'] )
+  elsif title_data&.dig('edit') && !@form['readonly']
+    t( title_data['edit'], title_data['edit'] )
+  elsif title_data&.dig('show') && @form['readonly']
+    t( title_data['show'], title_data['show'] )
   else
-    # concatenate title
     c = (@form['readonly'] ? t('drgcms.show') : t('drgcms.edit')) + " : "
     c << (@form['title'].class == String ? t( @form['title'], @form['title'] ) : t_tablename(@form['table']))
-    title = title['field']
-
-    c << " : #{@record[ title ]}" if title && @record.respond_to?(title)
+    # add description field value to title
+    field_name = title_data['field'] if title_data
+    c << " : #{@record[ field_name ]}" if field_name && @record.respond_to?(field_name)
     c
   end
 end
@@ -302,10 +301,12 @@ end
 ############################################################################
 def dc_new_title
   session[:form_processing] = "form:title:"
-  title = @form['form']['title']
+  title_data = @form['form']['title']
+  if title_data.class == String
+    t(title_data, title_data)
   # defined as form:title:new
-  if title&.dig('new')
-    t( title['new'], title['new'] )
+  elsif title_data&.dig('new')
+    t( title_data['new'], title_data['new'] )
   else
     # in memory structures
     if @form['table'] == 'dc_memory'
