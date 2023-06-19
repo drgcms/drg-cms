@@ -113,7 +113,8 @@ def show
     ret = call_callback_method(m)
     if ret.class == FalseClass
       @form['readonly'] = nil # must be
-      return index 
+      flash[:error] ||= t('drgcms.not_authorized')
+      return index
     end
   end  
 
@@ -637,8 +638,9 @@ def callback_method(key) #:nodoc:
   callback = case
     when params['data'] && params['data'][data_key] then params['data'][data_key]
     # dc_ + key method is present then call it automatically
-    when @form.dig('form', key) then @form['form'][key]
+    when @form.dig('permissions', key) then @form['permissions'][key]
     when respond_to?('dc_' + key) then 'dc_' + key
+    when respond_to?(key) then key
     when params[data_key] then params[data_key]
     else nil
   end
