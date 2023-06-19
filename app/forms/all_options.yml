@@ -129,12 +129,14 @@ result_set:
       eval: dc_name4_value      
 
 form:
-  title: 
-    field: description
-  height: 600
+  title: Title text
   title:
-    edit: Title for edit
-    show: Title for show
+    field: field_name
+  title:
+    edit: Title text for edit
+    show: Title text for show
+
+  height: 600
   labels_pos: top
   multipart: true
 

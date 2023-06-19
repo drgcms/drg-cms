@@ -35,9 +35,7 @@ module CmsIndexHelper
 def dc_actions_for_index
   @js  = @form['script'] || @form['js'] || ''
   @css = @form['css'] || ''
-  return '' if @form['index'].nil?
-
-  actions = @form['index']['actions']
+  actions = @form.dig('index', 'actions')
   return '' if actions.blank?
   
   std_actions = { 2 => 'new', 3 => 'sort', 4 => 'filter' }
@@ -51,24 +49,16 @@ def dc_actions_for_index
   end
   
   html_left, html_right = '', ''
-  # Remove actions settings and sort
-  only_actions = []
-  actions.each { |key, value| only_actions << [key, value] if key.class == Integer }
-  pp actions, only_actions,'-------------------------------'
-
-  only_actions.sort_by!(&:first)
-  only_actions.each do |key, options|
+  # remove settings and sort
+  actions_only = actions.inject([]) { |r, action| r << action if action.first.class == Integer; r }.sort_by(&:first)
+  actions_only.each do |key, options|
     session[:form_processing] = "index:actions: #{key}=#{options}"
     next if options.nil? # must be
 
-    url = @form_params.clone
-    yaml = options.class == String ? {'type' => options} : options # if single definition simulate type parameter
+    url    = @form_params.clone
+    yaml   = options.class == String ? { 'type' => options } : options # sinle action. Simulate type parameter
     action = yaml['type'].to_s.downcase 
-    if action == 'url'
-      dc_deprecate "action: url will be deprecated. Use action: link in index: actions! Form #{params['form_name']}"
-      action = 'link' 
-    end
-    # if return_to is present link directly to URL
+
     if action == 'link' && yaml['url']
       url = yaml['url']
     else
@@ -91,10 +81,8 @@ def dc_actions_for_index
           choices << [ t("helpers.label.#{@form['table']}.#{e}"), e ]
         end
       end
-      data = t('drgcms.sort') + select('sort', 'sort', choices, { include_blank: true }, { class: 'dc-sort-select',
-                                                                                           'data-table' => @form['table'], 'data-form' => CmsHelper.form_param(params)} )
-      data = mi_icon('sort') + select('sort', 'sort', choices, { include_blank: true }, { class: 'dc-sort-select',
-                                                                                           'data-table' => @form['table'], 'data-form' => CmsHelper.form_param(params)} )
+      data = mi_icon('sort') + select('sort', 'sort', choices, { include_blank: true },
+                                      { class: 'dc-sort-select', 'data-table': @form['table'], 'data-form': CmsHelper.form_param(params)} )
       html_right << %(<li title="#{t('drgcms.sort')}"><div class="dc-sort">#{data}</li>)
 
     # filter
