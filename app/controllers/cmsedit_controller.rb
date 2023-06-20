@@ -856,7 +856,7 @@ def process_collections #:nodoc
     end
     process_select_and_deny_fields
     # pagination but only if not already set
-    unless (@form['table'] == 'dc_memory' || @records.options[:limit])
+    unless (@form['table'] == 'dc_memory' || (@records.respond_to?(:options) && @records.options[:limit]))
       per_page = (@form['result_set']['per_page'] || 25).to_i
       @records = @records.page(params[:page]).per(per_page) if per_page > 0
     end
