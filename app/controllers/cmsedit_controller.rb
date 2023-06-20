@@ -845,24 +845,20 @@ def process_collections #:nodoc
     check_sort_options()
   end  
   # result set is defined by filter method in control object
-  form_filter = @form['result_set']['filter']
-  if form_filter
-    if respond_to?(form_filter)
-      @records = send(form_filter)
-      # something went wrong. flash[] should have explanation.
-      if @records.class == FalseClass
-        @records = []
-        render(action: :index)
-        return true
-      end
-      process_select_and_deny_fields           
-      # pagination but only if not already set
-      unless (@form['table'] == 'dc_memory' || @records.options[:limit])
-        per_page = (@form['result_set']['per_page'] || 25).to_i
-        @records = @records.page(params[:page]).per(per_page) if per_page > 0
-      end
-    elsif form_filter != 'dc_filter'
-      Rails.logger.error "Error: result_set:filter: #{@form['result_set']['filter']} not found in controls!"
+  form_filter = @form['result_set']['filter'] || 'default_filter'
+  if respond_to?(form_filter)
+    @records = send(form_filter)
+    # something went wrong. flash[] should have explanation.
+    if @records.class == FalseClass
+      @records = []
+      render(action: :index)
+      return true
+    end
+    process_select_and_deny_fields
+    # pagination but only if not already set
+    unless (@form['table'] == 'dc_memory' || @records.options[:limit])
+      per_page = (@form['result_set']['per_page'] || 25).to_i
+      @records = @records.page(params[:page]).per(per_page) if per_page > 0
     end
   else
     if @tables.size > 1 
@@ -873,7 +869,7 @@ def process_collections #:nodoc
       @records = rec.send(embedded_field_name)   # current embedded set
       # sort by order if order field is present in model
       if @tables.last[1].classify.constantize.respond_to?(:order)
-        @records = @records.order_by('order asc')
+        @records = @records.order_by(order: 1)
       end
     end
   end
