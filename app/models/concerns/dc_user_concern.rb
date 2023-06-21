@@ -97,7 +97,7 @@ def has_role?(role_id)
     role    = DcPolicyRole.get_role(role_id)
     role_id = role.id if role
   end
-  role = dc_user_roles.reduce(nil) { |r, doc| break doc if doc.dc_policy_role_id == role_id }
+  role = dc_user_roles.find_by(dc_policy_role_id: role_id)
   role&.active?
 end
 
