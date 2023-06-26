@@ -308,10 +308,18 @@ def dc_log_exception(exception, where = '')
 end
 
 ############################################################################
-# Will return form id, to be used on each form for simpler css selecting.
+# Will return form id. id can be used for css selecting of fields on form.
+# Form id is by default form_name || table parameter.
 ############################################################################
 def dc_form_id
-  %( id=#{CmsHelper.form_param(params) || CmsHelper.table_param(params)} )
+  %(id="#{CmsHelper.form_param(params) || CmsHelper.table_param(params)}" ).html_safe
+end
+
+############################################################################
+# Will return class for form. Class can be used for different styling of forms.
+############################################################################
+def dc_form_class(additional_class = nil)
+  %(class="#{additional_class} #{@form['class']}" ).html_safe
 end
 
 ############################################################################
