@@ -44,17 +44,11 @@ def dc_value_for_parameter(param, current_document = nil)#:nodoc:
 end
 
 ############################################################################
-# Creates actions div for edit form.
-# 
-# Displaying readonly form turned out to be challenge. For now when readonly parameter
-# has value 2, back link will force readonly form. Value 1 or not set will result in
-# normal link.
+# Determine if action button on the form is active. Action will be greyed out otherwise.
+#
+# @return : Boolean : defined by 'active' option'. Default is True.
 ############################################################################
 def dc_is_action_active?(options)
-  if options['when_new']
-    dc_deprecate("when_option will be deprecated and replaced by active: not_new_record! Form #{CmsHelper.form_param(params)}")
-    return !(dc_dont?(options['when_new']) && @record.new_record?)
-  end
   return true unless options['active']
 
   # alias record and document so both can be used in eval
