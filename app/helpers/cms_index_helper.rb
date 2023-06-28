@@ -274,7 +274,7 @@ end
 ############################################################################
 def dc_actions_for_result(document)
   actions = @form['result_set']['actions']
-  return '' if actions.nil? || @form['readonly']
+  return '' if actions.nil? #|| @form['readonly']
 
   actions, width, has_check = dc_actions_column()
   has_sub_menu = actions.size > 2 || (has_check && actions.size > 1)
@@ -286,14 +286,16 @@ def dc_actions_for_result(document)
     # if single definition simulate type parameter
     yaml = action.class == String ? { 'type' => action } : action
 
+    next if @form['readonly'] && !%[show check].include?(yaml['type'])
+
     if %w(ajax link window popup submit).include?(yaml['type'])
       @record = document # otherwise document fields can't be used as parameters
       html = dc_link_ajax_window_submit_action(yaml, document)
     else
       caption = dc_get_caption(yaml) || "drgcms.#{yaml['type']}"
-      title   = t(yaml['help'] || caption, '')
+      title   = t(yaml['title'] || yaml['help'] || caption)
       caption = has_sub_menu ? t(caption, '') : nil
-      html = '<li>'
+      html    = '<li>'
       html << case yaml['type']
       when 'check' then
         main_menu << '<li>' + check_box_tag("check-#{document.id}", false, false, { class: 'dc-check' }) + '</li>'
@@ -309,7 +311,8 @@ def dc_actions_for_result(document)
         parms['action'] = 'show'
         parms['id'] = document.id
         parms['readonly'] = true
-        dc_link_to( caption, 'eye', parms, title: title )
+        icon = yaml['icon'] || 'eye-o'
+        dc_link_to( caption, icon, parms, title: title )
 
       when 'duplicate' then
         parms['id'] = document.id

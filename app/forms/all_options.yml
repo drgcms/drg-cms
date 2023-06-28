@@ -10,6 +10,7 @@ controls: controls_file
 readonly: 1
 permissions:
   can_view: role_name
+class: angular-like
   
 script: "
 javascript code
