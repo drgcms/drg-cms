@@ -593,11 +593,12 @@ $(document).ready( function() {
   /*******************************************************************
   * Popup CMS edit menu option clicked
   *******************************************************************/
-  $('.drgcms_popmenu_item').on('click',function(e) {
+  $('.drgcms_popmenu_item').on('click', function(e) {
     let url = e.target.getAttribute("data-url");
+    if (url === null) { url = e.target.parentNode.getAttribute("data-url") };
+
     $('#iframe_cms').attr('src', url);
-//    $('#iframe_cms').width(1000).height(1000);
-// scroll to top of page and hide menu    
+    // scroll to top of page and hide menu
     window.scrollTo(0,0);
     $(e.target).parents('dl:first').find('ul').toggleClass('div-hidden');
   });
@@ -610,7 +611,6 @@ $(document).ready( function() {
     let form  = e.target.getAttribute("data-form");
     if (form === null) form = table;
     let sort = e.target.value;
-//    e.target.value = null;
     let url = "/cmsedit/run?control=cmsedit.sort&sort=" + sort + "&table=" + table +  "&form_name=" + form;
     simple_ajax_call(url);
   });

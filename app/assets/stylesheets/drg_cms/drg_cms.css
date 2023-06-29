@@ -1184,16 +1184,18 @@ color: #000;
   border-radius: 2px;
   z-index: 100;
   list-style-type: none;
-  filter: drop-shadow(1px 1px 4px #eee);
+  filter: drop-shadow(1px 1px 6px #ccc);
 }
 
 .drgcms_popmenu_class i {
   vertical-align: sub;
   color: rgba(44, 142, 255, 1);
+  font-size: 22px;
 }
 
 .drgcms_popmenu_item {
   padding: 4px;
+  font-size: 1.1em;
 }
 
 .drgcms_popmenu_item:hover {
