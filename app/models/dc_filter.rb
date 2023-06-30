@@ -53,30 +53,31 @@ end
 ######################################################################
 def self.get_filter(filter)
   yaml = YAML.load(filter) rescue nil
-  return yaml if yaml.nil?
-  return nil if yaml['table'].nil? # old data
+  return if yaml.nil? || yaml['table'].nil? # old data
 
   model = yaml['table'].classify.constantize
   field = yaml['field'] == 'id' ? '_id' : yaml['field'] # must be
   # evaluate
-  if yaml['operation'] == 'eval' and model.respond_to?(yaml['field'])
-    return model.send( yaml['field'] )
+  if yaml['operation'] == 'eval'
+    return eval(yaml['value']) if yaml['value'] && yaml['value'] != '#NIL' # evaluated as string
+    return model.send( yaml['field'] ) if model.respond_to?(yaml['field']) # defined as scope or method in the model
+    return
   end
   # if empty
   if yaml['operation'] == 'empty'
-    return model.in(field => [nil,''])
+    return model.in(field => [nil, ''])
   end
   # if value == NIL no filter is necessary
-  return nil if yaml['value'].class == String and yaml['value'] == '#NIL'
+  return if yaml['value'].class == String && yaml['value'] == '#NIL'
   
   # do regex if operation is like
   value = yaml['operation'] == 'like' ? /#{yaml['value']}/i : yaml['value'] 
   # when field type is ObjectId transform value
-  if model.fields[field] and model.fields[field].type == BSON::ObjectId
+  if model.fields[field] && model.fields[field].type == BSON::ObjectId
     value = BSON::ObjectId.from_string(value) rescue nil
   end
 
-  if ['eq','like'].include?(yaml['operation'])
+  if %w[eq like].include?(yaml['operation'])
     model.where(field => value)
   # TODO in operator
   else
