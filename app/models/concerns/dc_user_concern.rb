@@ -98,6 +98,14 @@ def has_role?(role_id)
     role_id = role.id if role
   end
   role = dc_user_roles.find_by(dc_policy_role_id: role_id)
+
+  # user can be member of groups
+  if role.nil? && member.present?
+    member.each do |group_id|
+      role = DrgCms.cached(DcUser, group_id).dc_user_roles.find_by(dc_policy_role_id: role_id)
+      break if role
+    end
+  end
   role&.active?
 end
 
