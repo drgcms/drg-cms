@@ -253,9 +253,16 @@ def dc_actions_column
     actions.delete('standard')
   end
   # check must be first action
-  has_check = actions[0] && actions[0]['type'] == 'check'
-  width = actions.size == 1 ? 22 : 44
-  width = 22 if actions.size > 2 && !has_check
+  has_check = has_action_type('check', actions)
+  # when readonly only check and show are allowed
+  if @form['readonly']
+    width  = has_action_type('show', actions) ? 22 : 0
+    width += 22 if has_check
+  else
+    width = actions.size == 1 ? 22 : 44
+    width = 22 if actions.size > 2 && !has_check
+  end
+
   [actions, width, has_check]
 end
 
@@ -265,7 +272,7 @@ end
 def dc_actions_column_for_footer
   return '' unless @form['result_set']['actions']
 
-  ignore, width, ignore2 = dc_actions_column
+  ignore, width, ignore2 = dc_actions_column()
   %(<div class="dc-result-actions" style="width: #{width}px;"></div>).html_safe
 end
 
@@ -277,7 +284,7 @@ def dc_actions_for_result(document)
   return '' if actions.nil? #|| @form['readonly']
 
   actions, width, has_check = dc_actions_column()
-  has_sub_menu = actions.size > 2 || (has_check && actions.size > 1)
+  has_sub_menu = actions.size > 2 #|| (has_check && actions.size > 1)
 
   main_menu, sub_menu = '', ''
   actions.sort_by(&:first).each do |num, action|
@@ -356,7 +363,7 @@ end
 ############################################################################
 def dc_header_for_result
   html = '<div class="dc-result-header">'
-  if @form['result_set']['actions'] && !@form['readonly']
+  if @form['result_set']['actions'] #&& !@form['readonly']
     ignore, width, has_check = dc_actions_column()
     check_all = fa_icon('check-box-o', class: 'dc-check-all') if has_check
     html << %(<div class="dc-result-actions" style="width:#{width}px;">#{check_all}</div>)
@@ -656,6 +663,18 @@ def form_has_input_field?(field_name)
   return if field.nil?
 
   !(field['type'] == 'readonly' || field['readonly'])
+end
+
+############################################################################
+# return true if actions define check or show option
+############################################################################
+def has_action_type(type, actions)
+  h = { 'check' => 0, 'show' => 1 }
+  return false unless identifier = h[type]
+  return false unless actions[identifier]
+
+  type_value = actions[identifier].class == String ? actions[identifier] : actions[identifier]['type']
+  type_value == type
 end
 
 end
