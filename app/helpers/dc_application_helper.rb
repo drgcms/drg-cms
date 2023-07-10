@@ -1110,12 +1110,12 @@ end
 # Returns:
 # HTML data to be embedded into page header
 #######################################################################
-def dc_get_json_ld()
-  return '' if @json_ld.nil? or @json_ld.size == 0
+def dc_get_json_ld
+  return '' if @json_ld.blank?
 
   %(
 <script type="application/ld+json">
-#{JSON.pretty_generate({'@context' => 'http://schema.org', '@graph' => @json_ld})}
+#{JSON.pretty_generate({ '@context' => 'http://schema.org', '@graph' => @json_ld })}
 </script>).html_safe
 end
 
@@ -1178,7 +1178,7 @@ end
 # Returns:
 # [String] alt="image-tag"
 #######################################################################
-def dc_img_alt_tag(file_name, text=nil)
+def dc_img_alt_tag(file_name, text = nil)
   %( alt="#{dc_img_alt(file_name, text)}" ).html_safe
 end
 
@@ -1194,7 +1194,7 @@ end
 # Returns:
 # [String] alt_image_name
 #######################################################################
-def dc_img_alt(file_name, text=nil)
+def dc_img_alt(file_name, text = nil)
   return text if text.present?
 
   name = File.basename(file_name.to_s)
@@ -1203,7 +1203,10 @@ end
 
 private
 
-# will cache dc_user_can_view response
+########################################################################
+# To cache localy dc_user_can_view response for a single call. It has large gains on sites
+# with large menus.
+########################################################################
 def cache_add(id, can_view, msg)
   @can_view_cache[id] = [can_view, msg]
 end
