@@ -129,12 +129,17 @@ def dc_actions_for_index
       parms['id']       = params[:ids]
       parms['table']     = @form['table']
       dc_link_to( caption, 'reorder', parms, method: :delete )              
-=end     
+=end
+
     when action == 'script'
       html_left << dc_script_action(options)
 
     when action == 'field'
-      html_right << dc_field_action(yaml)
+      if options['position'] && options['position'] == 'left'
+        html_left << dc_field_action(yaml)
+      else
+        html_right << dc_field_action(yaml)
+      end
 
     when %w(ajax link window popup submit).include?(action)
       html_left << dc_link_ajax_window_submit_action(options, nil)
