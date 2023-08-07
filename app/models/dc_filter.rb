@@ -114,7 +114,7 @@ def self.get_filter_field(parent)
   return '' if filter.nil?
 
   filter = YAML.load(filter) rescue nil 
-  return '' if filter.nil?
+  return '' if filter.nil? || filter['operation'].to_s == 'eval'
 
   field = get_field_form_definition(filter['field'], parent)
   return '' if field.nil? && filter['input'].nil?
@@ -186,14 +186,10 @@ def self.menu_filter(parent)
     # only single defined. Convert to array.
     filters = [filters] if filters.class == Hash
     filters.each do |filter|
-      url = parent.dc_link_to(filter['title'], nil, controller: 'cmsedit', action: :run, t: table,
-                              f: CmsHelper.form_param(parent.params),
-                              control: 'cmsedit.filter_on',
-                              filter_field: filter['field'],
-                              filter_oper: filter['operation'],
-                              filter_value: filter['value'])
-
-      url = parent.url_for(controller: 'cmsedit', action: :run, t: table, f: CmsHelper.form_param(parent.params),
+      url = parent.url_for(controller: :cmsedit,
+                           action: :run,
+                           table: table,
+                           form_name: CmsHelper.form_param(parent.params),
                            control: 'cmsedit.filter_on',
                            filter_field: filter['field'],
                            filter_oper: filter['operation'],
