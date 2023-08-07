@@ -1,4 +1,3 @@
-#coding: utf-8
 #--
 # Copyright (c) 2013+ Damjan Rems
 #
@@ -51,9 +50,7 @@ def find_selected #:nodoc:
   while ret and ret.parent != nil
     ret = DcBigMenu.find( ret.parent )
   end
-# return first if not found (something is wrong)
-#  p ret
-  ret ||= DcBigMenu.where(dc_site_id: @site._id, parent: nil, active: true).limit(1).first
+  ret || DcBigMenu.where(dc_site_id: @site._id, parent: nil, active: true).limit(1).first
 end
 
 ########################################################################
@@ -78,7 +75,7 @@ def link_4menu(item) #:nodoc:
   html = ''
   link = item.link
   link = "/#{@site.route_name}/#{item.page_id}" #if link.blank?
-#  
+
   html << @parent.link_to(item.picture, link) unless item.picture.blank?
   html << if !item.caption.blank?
     # TODO Translation
@@ -91,23 +88,23 @@ end
 ########################################################################
 def left_menu
   html = ''
-  m = DcBigMenu.find( @parent.page.menu_id )
-# Show menu on same level if selected has no children
+  menu = DcBigMenu.find( @parent.page.menu_id )
+  # Show menu on same level if selected has no children
   if DcBigMenu.where( parent: @parent.page.menu_id ).limit(1).to_a.size == 0
-    m = DcBigMenu.find( m.parent )
+    menu = DcBigMenu.find( m.parent )
   end    
-#     
-  html << "<div class='menu-left-item-top'>#{m.caption}</div>"
-  DcBigMenu.where( parent: m._id ).sort(order: 1).each do |item|
+
+  html << "<div class='menu-left-item-top'>#{menu.caption}</div>"
+  DcBigMenu.where( parent: menu.id ).order(order: 1).each do |item|
     html << (item._id == @parent.page.menu_id ? '<div class="menu-left-item-selected">' : '<div class="menu-left-item">')
     html << link_4menu(item) 
     html << '</div>'
   end
-#  
+
   html << "<div class='menu-left-item-bottom'>"
-  if m.parent
-    p = DcBigMenu.find( m.parent )
-    html << "&#9650; #{link_4menu(p)}"
+  if menu.parent
+    parent = DcBigMenu.find( menu.parent )
+    html << "&#9650; #{link_4menu(parent)}"
   end
   html << '&nbsp;</div>' 
 end
@@ -124,14 +121,14 @@ def path
     m = DcBigMenu.find( m.parent )
     a << m
   end
-#  
+
   (a.size - 1).downto(0) do |i| 
     html << "<span id=menu-path-#{a.size - 1 - i}>"
     html << link_4menu(a[i]) 
     html << (i > 0 ? ' &raquo; ' : '') #&rsaquo;&#10132;
     html << '</span>'
   end
-# Save level to parents params object
+  # Save level to parents params object
   @parent.params[:menu_level] = a.size
   html
 end
@@ -144,20 +141,21 @@ def default
   @selected = find_selected
   level_0 = DcBigMenu.where(dc_site_id: @site._id, parent: nil, active: true).sort(order: 1).to_a
   level_0.each do |item|
-# menu can be hidden from user    
+    # menu can be hidden from user
     can_view, msg = dc_user_can_view(@parent, item)
     next unless can_view
+
     klas = item.id == @selected.id ? "menu0-selected" : "menu0-item"
     html << "<li class='#{klas}'>#{ link_4menu(item) }</li>\n"
   end
   html << "</ul></div>"
-# submenu
+  # submenu
   level_1 = DcBigMenu.where(dc_site_id: @site._id, parent: @selected.id, active: true).sort(order: 1).to_a
   html << "<div class='menu1-div'><ul>\n"
   level_1.each do |item1|
-# menu can be hidden from user    
     can_view, msg = dc_user_can_view(@parent, item1)
     next unless can_view
+
     html << "  <li class='menu1-item'>#{link_4menu(item1)}</li>\n"
   end
   html << '</ul></div>'

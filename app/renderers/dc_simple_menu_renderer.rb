@@ -162,8 +162,8 @@ def as_responsive
   items.each do |item|
 # menu can be hidden from user
     can_view, msg = dc_user_can_view(@parent, item)
-    p msg unless can_view
     next unless can_view
+
     html << "<li class=\"#{klas}#{(item.id == @selected.id) ? 'selected' : 'item'}\">#{ link_4menu(item) }</li>" #
   end
   html
