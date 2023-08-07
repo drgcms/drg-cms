@@ -9,27 +9,30 @@ index:
     10: 
       type: field
       name: dc_poll_id
+      position: left
 
     30: 
       type: field
       name: start_date
       field_type: date_picker
-        
+      position: left
+
     40: 
       type: field
       name: end_date
       field_type: date_picker
       options: 
         openOnFocus: false
-        
+      position: left
+
     50: 
       type: ajax
       caption: drgcms.filter_poll
       title: drgcms.filter_poll_title
-      icon: filter
+      icon: filter-alt-o
       controller: cmsedit
       action: run
-      control: dc_poll_result.do_filter
+      control: dc_poll_result.filter_set
       method: post
     
     60: 
@@ -37,9 +40,9 @@ index:
       caption: drgcms.export_poll
       title: drgcms.export_poll_title
       controller: cmsedit
-      icon: table
+      icon: download-o
       action: run
-      control: dc_poll_result.do_export
+      control: dc_poll_result.data_export
       method: post
     
 result_set:
@@ -50,7 +53,7 @@ result_set:
     10:  
       name: dc_poll_id
       eval: dc_name4_id,dc_poll,name
-      width: 25%
+      width: 40%
     20: 
       name: created_at
       format: '%d.%m.%Y %H:%M'

@@ -27,30 +27,30 @@
 module DcPollResultControl
 
 ######################################################################
-# Filter result data when filter is set
+# Set filter action called from form.
 ######################################################################
-def poll_filter
-  get_query
-end
+def filter_set
+  record = params[:record]
+  filter = "DcPollResult.where(dc_poll_id: '#{record[:dc_poll_id]}')"
+  filter << ".and(:created_at.gte => '#{Time.parse(record[:start_date]).beginning_of_day}')" if record[:start_date].present?
+  filter << ".and(:created_at.lte => '#{Time.parse(record[:end_date]).end_of_day}')" if record[:end_date].present?
 
-######################################################################
-# Filter action called. Update url to reflect filter conditions and reload form.
-######################################################################
-def do_filter
-  url = url_for(controller: 'cmsedit', action: :index, table: :dc_poll_result,
-                'record[dc_poll_id]' => params[:record][:dc_poll_id],
-                'record[start_date]' => params[:record][:start_date],
-                'record[end_date]'   => params[:record][:end_date]
-               )
-  dc_render_ajax(operation: :url, value: url)
+  session['dc_poll_result'][:filter] = {'field'     => I18n.t('drgcms.filter_off'),
+                                        'operation' => 'eval',
+                                        'value'     => filter,
+                                        'input'     => '',
+                                        'table'     => 'dc_poll_result' }.to_yaml
+  session['dc_poll_result'][:page] = 1 # must also be set
+
+  render json: { url: '/cmsedit?t=dc_poll_result'}
 end
 
 ######################################################################
 # Export data to file
 ######################################################################
-def do_export
+def data_export
   c, keys = '', []
-  get_query.to_a.each do |doc|
+  data_get.to_a.each do |doc|
     # ensure, that fields are always in same order
     data = YAML.load(doc.data)
     if c.blank?
@@ -70,18 +70,11 @@ private
 ######################################################################
 # Creates query for Poll results
 ######################################################################
-def get_query
-  if params.dig(:record, :dc_poll_id).nil?
-    qry = DcPollResult.all
-  else  
-    qry = DcPollResult.where(dc_poll_id: params[:record][:dc_poll_id])
-    unless params[:record][:start_date].blank?
-      start_date = DrgcmsFormFields::DatePicker.get_data(params,'start_date').beginning_of_day
-      end_date   = DrgcmsFormFields::DatePicker.get_data(params,'end_date').end_of_day
-      qry = qry.and(:created_at.gt => start_date).and(:created_at.lt => end_date)
-    end
-  end
-  qry
+def data_get
+  return [] if session.dig('dc_poll_result', :filter).blank?
+
+  filter = YAML.load(session['dc_poll_result'][:filter])
+  eval filter['value'] rescue []
 end
 
 end 

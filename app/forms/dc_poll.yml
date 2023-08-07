@@ -18,7 +18,8 @@ result_set:
   columns:
     1:  
       name: name
-    2:  
+      width: 30%
+    2:
       name: title
       width: 40%
     3: 

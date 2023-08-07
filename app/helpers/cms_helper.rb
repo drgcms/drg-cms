@@ -53,12 +53,12 @@ end
 ############################################################################
 def dc_get_field_form_definition(name) #:nodoc:
   return if @form['form'].nil?
-  
+
   @form['form']['tabs'].each do |tab|
     # Array with 2 elements. First is tab name, second is data
     my_fields = tab.last
     my_fields.each { |k, v| return v if (k.class == Integer && v['name'] == name) }
-  end if @form['form']['tabs'] #  I know. But nice. 
+  end if @form['form']['tabs'] #  I know. But nice.
 
   @form['form']['fields'].each do |field|
     next unless field.first.class == Integer # options
@@ -175,7 +175,7 @@ def dc_field_action(yaml)
     field, label, help = dc_field_label_help(yaml)
   end
   # input field will have label as placeholder
-  field = field.sub('input',"input placeholder=\"#{label}\"")
+  field = field.sub('input', "input placeholder=\"#{label}\"")
   %(<li class="no-background">#{field}</li>)
 end
 
