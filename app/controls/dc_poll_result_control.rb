@@ -50,20 +50,27 @@ end
 ######################################################################
 def data_export
   c, keys = '', []
-  data_get.to_a.each do |doc|
-    # ensure, that fields are always in same order
+  data_get.each do |doc|
     data = YAML.load(doc.data)
+    # header and ensure fields are always in same order
     if c.blank?
-      data.each { |k, v| keys << k }
-      c << I18n.t('helpers.label.dc_poll_result.created_at') + "\t"
-      c << keys.join("\t") + "\n"
+      keys = data.map(&:first)
+      c << I18n.t('helpers.label.dc_poll_result.created_at') + ","
+      c << keys.join(",") + "\n"
     end
-    c << doc.created_at.strftime(I18n.t('date.formats.default') ) + "\t"
-    keys.each { |k| c << data[k] + "\t" }
+
+    c << doc.created_at.strftime(I18n.t('date.formats.default') ) + ","
+    keys.each do |k|
+      c << if data[k].class == String
+             %("#{data[k].gsub(/\"/, "'")}",)
+           else
+             %("#{data[k]}",)
+           end
+    end
     c << "\n"
   end
   File.write(Rails.root.join('public', 'export.csv'), c)
-  dc_render_ajax(operation: :window, value: 'export.csv')
+  render json: { 'window_' => 'export.csv' }
 end
 
 private
