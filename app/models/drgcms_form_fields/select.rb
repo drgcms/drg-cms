@@ -47,7 +47,9 @@ module DrgcmsFormFields
 # * +depend:+ Select options may depend on a value in some other field. If depend option is specified
 #   then chices must be provided by class method and defined in eval option.
 # * +html:+ html options which apply to select field (optional)
-#      
+# * +with_new:+ model_name.form_name will invoke view dialog for selected option
+# * +with_edit:+ model_name.form_name will invoke edit dialog for selected option
+#
 # Form example:
 #    30:
 #      name: type
@@ -150,9 +152,21 @@ end
 def add_view_code
   return '' if (data = @record.send(@yaml['name'])).blank?
 
-  table, form_name = @yaml['view'].split(/\ |\,/).delete_if { |e| e.blank? }
+  table, form_name = @yaml['with_view'].split(/\ |\,/).delete_if(&:blank)
   url  = @parent.url_for(controller: 'cmsedit', id: data, action: :edit, table: table, form_name: form_name, readonly: true, window_close: 1 )
-  icon = @parent.mi_icon('eye-o md-18')
+  icon = @parent.mi_icon('visibility-o md-18')
+  %(<span class="dc-window-open" data-url="#{url}"> #{icon}</span>)
+end
+
+###########################################################################
+# Will add code to view more data about selected option in a window
+###########################################################################
+def add_edit_code
+  return '' if (data = @record.send(@yaml['name'])).blank?
+
+  table, form_name = @yaml['view'].split(/\ |\,/).delete_if(&:blank)
+  url  = @parent.url_for(controller: 'cmsedit', id: data, action: :edit, table: table, form_name: form_name, window_close: 1 )
+  icon = @parent.mi_icon('edit-o md-18')
   %(<span class="dc-window-open" data-url="#{url}"> #{icon}</span>)
 end
 
@@ -182,7 +196,7 @@ def ro_standard
         (html = choice; break) if choice.to_s == value.to_s
       end 
     end
-    html << add_view_code if @yaml['view']
+    html << add_view_code if @yaml['with_view']
   end
   super(html)
 end
@@ -207,7 +221,8 @@ def render
   else
     @html << @parent.select(record, @yaml['name'], get_choices, options_part, @yaml['html'])
     # add code for view more data
-    @html << add_view_code() if @yaml['view']
+    @html << view_code_add() if @yaml['with_view']
+    @html << edit_code_add() if @yaml['with_edit'] && !@readonly
   end
   self
 end
