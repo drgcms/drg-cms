@@ -77,8 +77,6 @@ end
 ###############################################################################
 def self.add_patches_path(path)
   self.add_path(:patches, path)
-#  Dir["#{path}/**/*.rb"].each { |path| p path; require_dependency path }
-#  Dir["#{path}/**/*.rb"].each { |file| p file; require file }
 end
 
 ###############################################################################
@@ -183,10 +181,26 @@ end
 # @return [Object] Data returned from cache
 ####################################################################
 def self.cache_read(keys)
+  data = if redis_cache_store?
+           tmp_keys  = keys.dup
+           first_key = tmp_keys.shift
+           cached    = Rails.cache.redis.hget(first_key, tmp_keys.join(''))
+           cached ? Marshal.load(cached) : nil
+         else
+           Rails.cache.read(keys.join(''))
+         end
+  return data if data
+  return nil unless block_given?
+
+  self.cache_write(keys, yield)
+end
+
+# remove
+def self.__cache_read(keys)
   if redis_cache_store?
-    keys  = keys.dup
-    first = keys.shift
-    data  = Rails.cache.redis.hget(first, keys.join(''))
+    keys      = keys.dup
+    first_key = keys.shift
+    data      = Rails.cache.redis.hget(first_key, keys.join(''))
     data ? Marshal.load(data) : nil
   else
     Rails.cache.read(keys.join(''))
@@ -203,9 +217,9 @@ end
 ####################################################################
 def self.cache_write(keys, data)
   if redis_cache_store?
-    keys  = keys.dup
-    first = keys.shift
-    Rails.cache.redis.hset(first, keys.join(''), Marshal.dump(data))
+    tmp_keys  = keys.dup
+    first_key = tmp_keys.shift
+    Rails.cache.redis.hset(first_key, tmp_keys.join(''), Marshal.dump(data))
   else
     Rails.cache.write(keys.join(''), data)
   end

@@ -85,7 +85,7 @@ def dc_get_site
   uri  = URI.parse(request.url)
   cache_key = ['dc_site', uri.host]
 
-  @site = dc_cache_read(cache_key)
+  @site = DrgCms.cache_read(cache_key)
   return @site if @site
 
   @site = DcSite.find_by(name: uri.host)
@@ -100,7 +100,7 @@ def dc_get_site
     @site = DcSite.find_by(name: @site.alias_for) if @site
   end
   @site = nil if @site && !@site.active # site is disabled
-  dc_cache_write(cache_key, @site)
+  DrgCms.cache_write(cache_key, @site)
 end
 
 ##########################################################################
@@ -160,15 +160,10 @@ protected
 #   if dc_user_can(DcPermission::CAN_VIEW, params[:table]) then ...
 ############################################################################
 def dc_user_can(permission, table = params[:table])
-  table = table.underscore
-  cache_key = ['dc_permission', table, dc_get_site.id]
-  permissions = DrgCms.cache_read(cache_key)
-  if permissions.nil?
-    permissions = DcPermission.permissions_for_table(table)
-    DrgCms.cache_write(cache_key, permissions)
-  end
   return false if session[:user_roles].nil?
 
+  table = table.underscore
+  permissions = DrgCms.cache_read(['dc_permission', table, dc_get_site.id]) { DcPermission.permissions_for_table(table) }
   session[:user_roles].inject(false) { |r, rule| break true if permissions[rule] && permissions[rule] >= permission }
 end
 
