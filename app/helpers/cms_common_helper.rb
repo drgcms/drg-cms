@@ -220,7 +220,7 @@ def dc_name_for_id(model, field, field_name, id=nil)
   field_name = (field_name || 'id').strip.to_sym
   field = field.strip.to_sym
   model = model.strip.classify.constantize if model.class == String
-  doc = Mongoid::QueryCache.cache { model.find_by(field_name => id) }
+  doc = Mongo::QueryCache.cache { model.find_by(field_name => id) }
 
   doc.nil? ? '' : (doc.send(field) rescue 'not defined')
 end

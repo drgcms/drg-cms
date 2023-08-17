@@ -195,18 +195,6 @@ def self.cache_read(keys)
   self.cache_write(keys, yield)
 end
 
-# remove
-def self.__cache_read(keys)
-  if redis_cache_store?
-    keys      = keys.dup
-    first_key = keys.shift
-    data      = Rails.cache.redis.hget(first_key, keys.join(''))
-    data ? Marshal.load(data) : nil
-  else
-    Rails.cache.read(keys.join(''))
-  end
-end
-
 ####################################################################
 # Write data to cache
 #
@@ -236,7 +224,7 @@ end
 # @return [Object] data document.
 ####################################################################
 def self.cached(model, id)
-  Mongoid::QueryCache.cache { model.find(id) }
+  Mongo::QueryCache.cache { model.find(id) }
 end
 
 ###############################################################################
