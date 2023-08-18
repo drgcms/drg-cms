@@ -1135,19 +1135,38 @@ def dc_add_json_ld(element)
 end
 
 ########################################################################
-# Will return meta data for SEO optimizations
+# Will return meta data for SEO optimizations.
+# It will also create special link rel="canonical" tag if defined in meta tags or page document.
 # 
 # Returns:
 # HTML data to be embedded into page header
 #######################################################################
 def dc_get_seo_meta_tags
   html = ''
-  html << %(<link rel="canonical" href="#{@page.canonical_link}">\n  ) if @page&.canonical_link.present?
-
-  html << @meta_tags.inject('') do |r, hash|
-    r << %(<meta #{hash.first} content="#{hash.last}">\n  )
+  has_canonical = false
+  html << @meta_tags.inject('') do |r, tag|
+    r << if tag.first.match('canonical')
+           has_canonical = true
+           dc_get_link_canonical_tag(tag.last)
+         else
+           %(<meta #{tag.first} content="#{tag.last}">\n  )
+         end
   end if @meta_tags
+  html << dc_get_link_canonical_tag(@page&.canonical_link) unless has_canonical
   html.html_safe
+end
+
+########################################################################
+# helper for setting canonical link on the page
+#######################################################################
+def dc_get_link_canonical_tag(href = nil)
+  return %(<link rel="canonical" href="#{request.url}">\n) if href.blank?
+
+  unless href.match(/^http/i)
+    uri  = URI.parse(request.url)
+    href = "#{uri.scheme}://#{uri.host}/#{href.delete_prefix('/')}"
+  end
+  %(<link rel="canonical" href="#{href}">\n)
 end
 
 ########################################################################
