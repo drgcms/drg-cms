@@ -27,7 +27,7 @@ end
 
 ###############################################################################
 # When new plugin with its own DRG forms is added to application, path to
-# forms directory must be send to DrgCms module. Paths are saved into @@paths hash variable. 
+# forms directory must be send to DrgCms module. Paths are saved into internal @@paths variable.
 # 
 # Adding path is best done in plugin module initialization code.
 # 
@@ -40,17 +40,14 @@ end
 #    module MyPlugin
 #    end
 #
-#    DrgCms.add_forms_path File.expand_path("../../app/forms", __FILE__)
+#    DrgCms.add_forms_path(Rails.root.join('app/forms'), Rails.root.join('app/reports/forms'))
 ###############################################################################
-def self.add_forms_path(path) 
+def self.add_forms_path(*paths)
   if @@paths[:forms].nil?
-    @@paths[:forms] = []
-# default application forms path
-#    @@paths[:forms] << Rails.root.join('app/forms')
-# DrgCms forms path
-    @@paths[:forms] << File.expand_path("../../app/forms", __FILE__)
+    # DrgCms own forms path by default
+    @@paths[:forms] = [File.expand_path("../../app/forms", __FILE__)]
   end
-  @@paths[:forms] << path  
+  @@paths[:forms] += paths
 end
 
 ###############################################################################
