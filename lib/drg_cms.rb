@@ -224,7 +224,7 @@ end
 # @return [Object] data document.
 ####################################################################
 def self.cached(model, id)
-  Mongo::QueryCache.cache { model.find(id) }
+  id ? Mongo::QueryCache.cache { model.find(id) } : nil
 end
 
 ###############################################################################
