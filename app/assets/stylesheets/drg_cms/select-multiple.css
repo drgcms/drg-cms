@@ -65,7 +65,6 @@
 .ms-container .ms-selectable li.ms-elem-selectable{
   padding: 5px 10px;
   color: #444;
-/*  font-size: 14px;*/
 }
 
 .ms-container .ms-selectable li:nth-child(even) {
@@ -76,7 +75,7 @@
   cursor: pointer;
   color: #fff;
   text-decoration: none;
-  background-color: #08c;
+  background-color: rgba(76,154,255, 0.6);
 }
 
 .ms-container .ms-selectable li.disabled{
@@ -92,6 +91,7 @@
 
 .ms-container .ms-selected {
   font-weight: 600;
+  color: darkblue !important;
 }
 
 .pull-right.ms-elem-selected{
