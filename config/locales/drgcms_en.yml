@@ -118,6 +118,8 @@ en:
     category_has_subs: Category can't be deleted, because it contains sub-elements.
     category_as_tree: Edit in treeview
 
+    iframe_save_to_view: Data must be saved in order to view content
+
     dc_journal:
       zero_selected: No data selected!
       restored: Data has been restored.      

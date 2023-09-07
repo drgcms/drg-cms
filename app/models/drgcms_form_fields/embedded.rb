@@ -53,6 +53,13 @@ def render
   # HTML defaults. Some must be set    
   @yaml['html'] ||= {}
   @yaml['html']['width'] ||= '99%'
+  # message when new record
+  if @record.new_record?
+    @yaml['html']['srcdoc'] = %(
+<div style='font-family: helvetica; font-size: 1.7rem; font-weight: bold; color: #ddd; padding: 1rem'>
+  #{I18n.t('drgcms.iframe_save_to_view')}
+</div>)
+  end
   html = @yaml['html'].inject('') { |r, val| r << "#{val.first}=\"#{val.last}\" " }
 
   @yaml['action'] ||= 'index'
@@ -73,11 +80,12 @@ def render
            ids: ids, table: tables, form_name: @yaml['form_name'], 
            field_name: @yaml['name'], iframe: "if_#{@yaml['name']}", readonly: readonly }
   # additional parameters if specified
-  @yaml['params'].each { |k,v| opts[k] = @parent.dc_value_for_parameter(v) } if @yaml['params']         
-         
+  @yaml['params'].each { |k,v| opts[k] = @parent.dc_value_for_parameter(v) } if @yaml['params']
+
   @html << "<iframe class='iframe_embedded' id='if_#{@yaml['name']}' name='if_#{@yaml['name']}' #{html}></iframe>"
-  unless @record.new_record?
-    url  = @parent.url_for(opts)
+  if @record.new_record?
+  else
+    url = @parent.url_for(opts)
     attributes = case
                  when @yaml['load'].nil? || @yaml['load'].match('default')
                    "'src', '#{url}'"

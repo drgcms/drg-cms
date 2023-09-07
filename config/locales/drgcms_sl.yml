@@ -118,6 +118,8 @@ sl:
     category_has_subs: Kategorije ni mogoče izbrisati, ker vsebuje podrejene elemente.
     category_as_tree: Uredi v drevesnem pogledu
 
+    iframe_save_to_view: Za prikaz vsebine je potrebno predhodno shraniti podatke.
+
     dc_journal:
       zero_selected: Ni izbranih podatkov!
       restored: Podatki so restavrirani.
