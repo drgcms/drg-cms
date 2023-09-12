@@ -55,19 +55,19 @@ def data_export
     # header and ensure fields are always in same order
     if c.blank?
       keys = data.map(&:first)
-      c << I18n.t('helpers.label.dc_poll_result.created_at') + ","
-      c << keys.join(",") + "\n"
+      c << I18n.t('helpers.label.dc_poll_result.created_at') + ";"
+      c << keys.join(";") + "\n"
     end
 
-    c << doc.created_at.strftime(I18n.t('date.formats.default') ) + ","
+    c << doc.created_at.strftime(I18n.t('time.formats.default')) + ";"
     keys.each do |k|
       c << if data[k].class == String
-             %("#{data[k].gsub(/\"/, "'")}",)
+             %("#{data[k].gsub(/\"/, "'").gsub(';', ',')}";)
            else
-             %("#{data[k]}",)
+             %("#{data[k]}";)
            end
     end
-    c << "\n"
+    c << "\r\n"
   end
   File.write(Rails.root.join('public', 'export.csv'), c)
   render json: { 'window_' => 'export.csv' }
