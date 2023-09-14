@@ -309,34 +309,37 @@ def dc_actions_for_result(document)
       caption = has_sub_menu ? t(caption, '') : nil
       html    = '<li>'
       html << case yaml['type']
-      when 'check' then
+      when 'check'
         main_menu << '<li>' + check_box_tag("check-#{document.id}", false, false, { class: 'dc-check' }) + '</li>'
         next
 
-      when 'edit' then
+      when 'edit'
         parms['action'] = 'edit'
         parms['id'] = document.id
         parms['readonly'] = yaml['readonly']
-        dc_link_to( caption, 'edit-o', parms, title: title )
+        icon = yaml['icon'] || 'edit-o'
+        dc_link_to( caption, icon, parms, title: title )
 
-      when 'show' then
+      when 'show'
         parms['action'] = 'show'
         parms['id'] = document.id
         parms['readonly'] = true
         icon = yaml['icon'] || 'eye-o'
         dc_link_to( caption, icon, parms, title: title )
 
-      when 'duplicate' then
+      when 'duplicate'
         parms['id'] = document.id
         # duplicate string will be added to these fields.
         parms['dup_fields'] = yaml['dup_fields'] 
         parms['action'] = 'create'
-        dc_link_to( caption, 'content_copy-o', parms, data: { confirm: t('drgcms.confirm_dup') }, method: :post, title: title )
+        icon = yaml['icon'] || 'content_copy-o'
+        dc_link_to( caption, icon, parms, data: { confirm: t('drgcms.confirm_dup') }, method: :post, title: title )
 
-      when 'delete' then
+      when 'delete'
         parms['action'] = 'destroy'
         parms['id'] = document.id
-        dc_link_to( caption, 'delete-o', parms, data: { confirm: t('drgcms.confirm_delete') }, method: :delete, title: title )
+        icon = yaml['icon'] || 'delete-o'
+        dc_link_to( caption, icon, parms, data: { confirm: t('drgcms.confirm_delete') }, method: :delete, title: title )
 
       else # error. 
         yaml['type'].to_s
