@@ -149,7 +149,7 @@ end
 # Will return list of available groups
 ##########################################################################
 def self.groups_for_select
-  where(group: true, active: true).order_by(name: 1).inject([]) { |r, e| r << [e.name, e.id] }
+  where(group: true, active: true).order_by(name: 1).map { [_1.name, _1.id] }
 end
 
 private
