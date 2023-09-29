@@ -138,6 +138,10 @@ textarea, input, select {
   max-width: 200px;
 }
 
+.dc-action-menu .ui-autocomplete-input {
+  padding: 8px 4px 8px 12px;
+}
+
 textarea:focus, input:focus, select:focus {
   border: 1px solid rgba(44, 142, 255, 1);
   outline: 1px solid rgba(44, 142, 255, 1);

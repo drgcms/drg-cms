@@ -147,22 +147,24 @@ end
 ###########################################################################
 #
 ###########################################################################
-def form_field(field, index, offset)
-  helper = I18n.t("helpers.label.#{@file_name}.choices4_#{field}")
+def form_field(field_name, index, offset, field_type)
+  helper = I18n.t("helpers.label.#{@file_name}.choices4_#{field_name}")
   type, eval = 'select',''
-  if helper.class == Hash or helper.match( 'translation missing' )
-    if field[-3,3] == '_id'
-      eval = "eval: dc_choices4('#{field[0,field.size-3]}','change_to_description_field_name','_id')\n"
+  if helper.class == Hash || helper.match( 'Translation missing' )
+    if field_name[-3, 3] == '_id'
+      eval = "eval: dc_choices4('#{field_name[0, field_name.size - 3]}', 'description_field_name', 'id')\n"
+    elsif field_type.match('Boolean')
+      type = 'check_box'
     else
       type = 'text_field'
     end
   end
-#
+
   yml = ' '*offset
   yml << "#{index}:\n"
   offset += 2
-#
-  yml << ' '*offset + "name: #{field}\n"
+
+  yml << ' '*offset + "name: #{field_name}\n"
   yml << ' '*offset + "type: #{type}\n"
   yml << ' '*offset + eval if eval.size > 0
   yml << ' '*offset + "size: 50\n" if type == 'text_field'
@@ -196,29 +198,32 @@ end
 #
 ###########################################################################
 def form_fields_options
-  forbidden = ['_id','created_by','updated_by','created_at','updated_at']
+  forbidden = %w[_id created_by updated_by created_at updated_at]
   tab_index = 1
   field_index = 0
   if options.tabs? 
     yml = "  tabs:\n"
-    @model.attribute_names.each do |attr_name|
+    @model.fields.each do |attr_name, field|
       next if forbidden.include?(attr_name)
+
       if field_index%100 == 0
         yml << "    tab#{tab_index}:\n"
         field_index = 0
         tab_index += 1
       end
       field_index += 10
-      yml << form_field(attr_name, field_index, 6)
+      yml << form_field(attr_name, field_index, 6, field.options[:type].to_s)
     end
     yml << "    tab#{tab_index}:\n"
     yml << embedded_form_field(6)
+
   else  
     yml = "  fields:\n"
-    @model.attribute_names.each do |attr_name|
+    @model.fields.each do |attr_name, field|
       next if forbidden.include?(attr_name)
+
       field_index += 10      
-      yml << form_field(attr_name, field_index, 4)
+      yml << form_field(attr_name, field_index, 4, field.options[:type].to_s)
     end
     yml << embedded_form_field(4)
   end
@@ -228,8 +233,21 @@ end
 ###########################################################################
 #
 ###########################################################################
+def xform_fields_options
+  forbidden = %w[_id created_by updated_by created_at updated_at]
+  tab_index = 1
+  field_index = 0
+  @model.fields.each do |name, field|
+    pp [name, field.options[:type].to_s]
+    #pp [name, type]
+  end
+end
+
+###########################################################################
+#
+###########################################################################
 def localize_options
-  forbidden = ['_id','created_by','updated_by','created_at','updated_at']
+  forbidden = %w[_id created_by updated_by created_at updated_at]
   yml =<<EOT
   
 #################################################################
