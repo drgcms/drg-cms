@@ -999,7 +999,7 @@ def dc_big_table(key)
     desc = v.value if desc.blank?       # still blank. Use value as description
     ret << [desc, v.value] 
   end
-  ret
+  ret.sort_alphabetical_by(&:first)
 end
 
 ########################################################################

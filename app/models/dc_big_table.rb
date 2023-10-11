@@ -94,7 +94,7 @@ def self.choices4(key, site = nil, locale = nil)
   end
 # Error if empty
   result = [[I18n.t('drgcms.error'),I18n.t('drgcms.error')]] if result.size == 0
-  result
+  result.sort_alphabetical_by(&:first)
 end
  
 end
