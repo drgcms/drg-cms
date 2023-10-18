@@ -1,16 +1,16 @@
 ## DRGCMS Form
 ---
-extend: form_name
+extend: form_name,another_form_name
 table: table_name
 title: Some title
 title: 
-  text: Dynamicaly defined title
+  text: Same as above
   eval: SomeClass.title_method
 controls: controls_file
 readonly: 1
 permissions:
   can_view: role_name
-class: angular-like
+class: report
   
 script: "
 javascript code

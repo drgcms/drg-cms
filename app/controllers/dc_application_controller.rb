@@ -816,14 +816,16 @@ end
 # [extend_option] : Value of @form['extend'] option
 ########################################################################
 def dc_form_extend(extend_option)
-  form_file_name = CmsHelper.form_file_find(extend_option)
-  @form_js << read_js_drg_form(form_file_name)
-  form  = YAML.load_file( form_file_name )
-  @form = CmsHelper.forms_merge(form, @form)
-  # If combined form contains tabs and fields options, merge fields into tabs
-  if @form['form']['tabs'] && @form['form']['fields']
-    @form['form']['tabs']['fields'] = @form['form']['fields']
-    @form['form']['fields'] = nil
+  extend_option.chomp.split(',').each do |a_file|
+    form_file_name = CmsHelper.form_file_find(a_file.strip)
+    @form_js << read_js_drg_form(form_file_name)
+    form  = YAML.load_file( form_file_name )
+    @form = CmsHelper.forms_merge(form, @form)
+    # If combined form contains tabs and fields options, move fields into fields tab
+    if @form.dig('form', 'tabs') && @form.dig('form', 'fields')
+      @form['form']['tabs']['fields'] = @form['form']['fields']
+      @form['form']['fields'] = nil
+    end
   end
 end
 

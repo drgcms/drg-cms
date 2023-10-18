@@ -739,6 +739,8 @@ display: inline-table;
 
 .dc-form-label.dc-color-odd, .dc-form-label.dc-color-even {background-color: transparent;}
 
+.dc-form-label.dc-width-0 { padding: 0;}
+
 .dc-align-left {
   text-align: left;
 }
@@ -1576,6 +1578,36 @@ cursor: pointer;
   border: dashed 1px #666;
   margin-left: 1px;
 }
+
+/**** reports ****/
+.report .dc-title { color: #003A68; }
+.report .dc-result-header {
+  border-bottom: 2px solid #003A68;
+}
+.report .dc-result-header .th {
+  color: #003A68;
+  padding: 3px;
+}
+
+.report .dc-result-data {
+  padding: 0;
+}
+
+.report.dc-form-frame {
+  padding: 0;
+}
+
+
+.report .dc-result-data .td {
+  padding: 3px;
+}
+
+.iframe_embedded#if_dc_temp {
+  border: none;
+  padding: 0;
+}
+
+.report .dc-odd {background-color: #e0eeff;}
 
 /**  Radio button input field **/
 
