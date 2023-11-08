@@ -795,7 +795,7 @@ private
 #
 # @return [Boolean] : True if  redis cache store is active
 ########################################################################
-def redis_cache_store?
+def xredis_cache_store?
   (Rails.application.config.cache_store.first == :redis_cache_store) rescue false
 end
 
@@ -804,12 +804,12 @@ end
 #
 # @return [Object] : Redis object
 ########################################################################
-def redis
+def xredis
   Rails.cache.redis
 end
 
 ########################################################################
-# Extends DRGCMS form file. Extended file is processed first and then merged
+# Extends DRG CMS form file. Extended file is processed first and then merged
 # with code in this form file. Form can extend only single form file.
 #
 # [Parameters:]
@@ -830,7 +830,7 @@ def dc_form_extend(extend_option)
 end
 
 ########################################################################
-# Include code from another DRGCMS form file. Included code is merged
+# Include code from another DRG CMS form file. Included code is merged
 # with current form file code. Form can include more than one other DRGCMS forms.
 #
 # [Parameters:]

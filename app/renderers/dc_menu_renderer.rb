@@ -55,7 +55,7 @@ def find_selected
     top_menu_id = @parent.page.menu_id.split(';')[1] if @parent.page.menu_id.match(';')
     ret = @menu.dc_menu_items.find(top_menu_id)
   end
-# return first if not found (something is wrong)
+  # return first if not found (something is wrong)
   ret ||= @menu.dc_menu_items[0]
 end
 
@@ -64,50 +64,11 @@ end
 ########################################################################
 def link_4edit(opts) #:nodoc:
   html = ''
-#  return html unless @opts[:edit_mode] > 1
-
   opts.merge!( { controller: 'cmsedit', action: 'edit' } )
   title = "#{t('drgcms.edit')}: "
   opts[:title] = "#{title} #{opts[:title]}"
   
-  html << '<li>'+dc_link_for_edit(opts)+'</li>'
-end
-
-########################################################################
-# Returns html code required to create single link in a menu. Subroutine of do_menu_level.
-########################################################################
-def link_4menu(item)
-# prepand to link  
-  link = if !item.link_prepend.blank?
-    item.link_prepend
-  elsif !@menu.link_prepend.blank?
-    @menu.link_prepend
-  else
-    ''
-  end
-  
-  if item.link.match('http')
-    link = item.link
-  else
-    link += (item.link[0] == '/' ? '' : '/') + item.link
-    link  = '/' + link unless link[0] == '/'   # link should start with '/'
-  end
-
-  target = item.target.blank? ? nil : item.target
-# - in first place won't write caption text
-  caption   = item.caption[0] == '-' ? '' : item.caption.to_s
-  img_title = item.caption.to_s.sub('-','')
-# add picture if picture is not blank
-  html = ''
-  if !item.picture.blank?
-    if item.picture[0,3] == 'fa-' 
-      caption << @parent.fa_icon(item.picture[3,20])
-    else
-      html = @parent.link_to( @parent.image_tag(item.picture), link, {title: img_title, target: target} ) rescue ''
-    end
-  end
-  html << @parent.link_to(caption.html_safe, link, {target: target}) unless caption.blank?
-  html
+  html << "<li>#{dc_link_for_edit(opts)}</li>"
 end
 
 ########################################################################
@@ -117,9 +78,9 @@ end
 # [item] MenuItem.
 ########################################################################
 def link_4menu(item)
-# just horizontal line
+  # just horizontal line
   return item.caption if item.caption == '<hr>'
-# prepand to link  
+  # prepand to link
   link = if !item.link_prepend.blank?
     item.link_prepend
   elsif !@menu.link_prepend.blank?
@@ -160,27 +121,29 @@ end
 ########################################################################
 # Creates HTML code required for submenu on single level. Subroutine of default.
 ########################################################################
-def do_menu_level(menu, options={})
+def do_menu_level(menu, options = {})
   html = "<ul>"
   if @opts[:edit_mode] > 1
     options[:title] = menu.respond_to?('name') ? menu.name : menu.caption # 1. level or submenus
-    options[:id] = menu._id
+    options[:id]    = menu._id
     html << link_4edit(options)
   end
-# sort items acording to :order  
+  # sort items according to :order
   menu.dc_menu_items.order_by(order: 1).each do |item|
     next unless item.active
-# menu can be hidden from user    
+    # menu can be hidden from user
     can_view, msg = dc_user_can_view(@parent, item)
     next unless can_view
-    
-    html << if item.id == @selected.id 
-      "<li class=\"menu-selected\">#{ link_4menu(item) }"
-    else
-      "<li>#{ link_4menu(item) }"
-    end
-# do submenu    
-    if (sub = item.dc_menu_items).size > 0
+
+    html << if @opts[:path]&.include?(item.link)
+              %(<li class="menu-selected">#{ link_4menu(item) })
+            elsif item.id == @selected.id
+              %(<li class="menu-selected">#{ link_4menu(item) })
+            else
+              "<li>#{ link_4menu(item) }"
+            end
+    # do submenu
+    if item.dc_menu_items.size > 0
       if @opts[:edit_mode] > 1
         opts = options.clone
         opts['ids']   = (opts['ids']   ? "#{opts['ids']};" : '')   + menu._id.to_s
@@ -199,12 +162,12 @@ end
 ########################################################################
 def default
   return "(#{@opts[:name]}) menu not found!" if @menu.nil?
-#  
+
   @selected = find_selected
   html = ''
-  html << "<div id='#{@menu.div_name}'>" unless @menu.div_name.blank?  
+  html << "<div id='#{@menu.div_name}'>" if @menu.div_name.present?
   html << do_menu_level(@menu, table: 'dc_menu')
-  html << "</div>" unless @menu.div_name.blank? 
+  html << "</div>" if @menu.div_name.present?
   html
 end
 

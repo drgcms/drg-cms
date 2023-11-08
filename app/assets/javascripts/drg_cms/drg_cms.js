@@ -120,6 +120,8 @@ update_select_depend = function(select_name, depend_name, method) {
       $.each(data, function(index, element) {
         select_field.append( new Option(element['label'], element['id']) );
       });
+      // refresh multiple select field
+      if (typeof select_field.selectMultiple === "function") { select_field.selectMultiple('refresh') }
     }
   });  
 };
