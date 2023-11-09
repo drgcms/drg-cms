@@ -216,6 +216,7 @@ def render
 
   record = record_text_for(@yaml['name'])
   if @yaml['html'][:multiple]
+    @yaml['html']['class'] = "#{@yaml['html']['class']} select-multiple"
     @html << @parent.select(record, @yaml['name'], get_choices, options_part, @yaml['html'])
     @js   << "$('##{record}_#{@yaml['name']}').selectMultiple();"
   else
