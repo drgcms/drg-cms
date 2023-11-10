@@ -687,7 +687,6 @@ display: inline-table;
   border-radius: 2px;
   margin: 2px 0;
 }
-
 .dc-form-warning {
   padding: 8px;
   background-image: linear-gradient(to bottom, rgba(213, 143, 218, 0.1) 0, rgba(213, 143, 218, 0.5) 100%);
@@ -1485,6 +1484,33 @@ color: #000;
 
 #popup .dc-help .dc-link {
   display: inline-flex;
+}
+
+#popup:has(> .popup-info) {
+  padding: 1rem;
+  background-image: linear-gradient(to bottom, #dff0d8 0, #c8e5bc 100%);
+  color: darkgreen;
+  font-weight: 600;
+  font-size: 1.1em;
+  min-width: 30%;
+  border: 2px solid darkgreen;
+}
+
+#popup:has(> .popup-error) {
+  padding: 1rem;
+  background-image: linear-gradient(to bottom, #f2dede 0, #e7c3c3 100%);
+  color: #a94442;
+  font-weight: 600;
+  font-size: 1.1em;
+  min-width: 30%;
+  border: 2px solid #a94442;
+}
+
+#popup .popup-info button, #popup .popup-error button {
+  margin-top: 1rem;
+  padding: 4px 1rem;
+  line-height: initial;
+  filter: none;
 }
 
 .filter-popup {

@@ -294,10 +294,12 @@ process_json_result = function(json) {
             closeClass: 'dc-link' });
         }
         else {
-          $('#popup').html(value);
+          if (selector == '') { selector = 'info' }
+          let popup_html = '<div class="popup-' + selector + '">' + value + '<br><button class="dc-link">OK</button></div>';
+          $('#popup').html(popup_html);
           $('#popup').bPopup( {
             transition: 'slideDown', transitionClose: 'slideDown', speed: 300,
-            opacity: 0, position: ['auto', 20],
+            opacity: 0, position: ['auto', 150],
             closeClass: 'dc-link' });
         }
         // resize parent iframe if smaller then 500px to ensure popup some space
