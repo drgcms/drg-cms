@@ -558,7 +558,7 @@ private
 # Used for processing single field column on result_set or form head.
 ############################################################################
 def dc_process_column_eval(yaml, document)
-  if yaml['eval'].class == String
+  if yaml['params'].blank?
     parms  = dc_eval_to_array(yaml['eval'])
     method = parms.shift
     # some defaults if omitted
