@@ -1003,6 +1003,14 @@ def dc_big_table(key)
 end
 
 ########################################################################
+# Will return name for value defined in dc_big_table
+########################################################################
+def dc_big_table_name_for_value(key, value)
+  dc_big_table(key).each { |k, val| return k if val.to_s == value.to_s}
+  '???'
+end
+
+########################################################################
 # Will return html code required for load DRG form into iframe. If parameters 
 # are passed to method iframe url will have initial value and thus enabling automatic form
 # load on page display.

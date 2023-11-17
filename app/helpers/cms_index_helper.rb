@@ -530,7 +530,7 @@ end
 # Ex. Will split dc_name4_value(one ,"two") => ['dc_name4_value', 'one', 'two']
 ############################################################################
 def dc_eval_to_array(expression)
-  expression.split(/\ |\,|\(|\)/).delete_if {|e| e.blank? }.map {|e| e.gsub(/\'|\"/,'').strip }
+  expression.split(/\ |\,|\(|\)/).select(&:present?).map{ _1.gsub(/\'|\"/, '').strip }
 end
 
 ############################################################################
@@ -553,40 +553,36 @@ end
 private
 
 ############################################################################
-# Process eval option for field value. 
+# Process eval option for field value.
+#
 # Used for processing single field column on result_set or form head.
 ############################################################################
 def dc_process_column_eval(yaml, document)
-  # dc_name_for_id
-  if yaml['eval'].match(/dc_name4_id|dc_name_for_id/)
-    parms = dc_eval_to_array(yaml['eval'])
-    if parms.size == 3
-      dc_name_for_id(parms[1], parms[2], nil, document[ yaml['name'] ])
-    else
-      dc_name_for_id(parms[1], parms[2], parms[3], document[ yaml['name'] ])
+  if yaml['eval'].class == String
+    parms  = dc_eval_to_array(yaml['eval'])
+    method = parms.shift
+    # some defaults if omitted
+    if method.match(/dc_name4_id|dc_name_for_id/) && parms.size == 2
+      parms << 'id'
+    end
+    if method.match(/dc_name4_value|dc_name_for_value/) && parms.size < 2
+      parms = [@form['table'], yaml['name']]
     end
 
-  # dc_name_for_value from locale definition
-  elsif yaml['eval'].match(/dc_name4_value|dc_name_for_value/)
-    parms = dc_eval_to_array(yaml['eval'])
-    if parms.size == 1
-      dc_name_for_value( @form['table'], yaml['name'], document[ yaml['name'] ] )
+    parms << document[yaml['name']]
+    # helper method
+    if respond_to?(method)
+      send(method, *parms)
+    # model method
+    elsif document.respond_to?(method)
+      document.send(method)
+    # some class method
+    elsif method.match('.')
+      klass, method = method.split('.')
+      klass.classify.constantize.send(method, *parms)
     else
-      dc_name_for_value( parms[1], parms[2], document[ yaml['name'] ] )
+      '?????'
     end
-
-  # defined in helpers. For example dc_icon_for_boolean
-  elsif respond_to?(yaml['eval'])
-    send(yaml['eval'], document, yaml['name'])
-
-  # defined in model
-  elsif document.respond_to?(yaml['eval'])
-    document.send(yaml['eval'])
-
-  # special eval  
-  elsif yaml['eval'].match('eval ')
-  # TO DO evaluate with specified parameters
-
   # eval with params
   else
     parms = {}

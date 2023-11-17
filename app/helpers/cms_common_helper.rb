@@ -135,9 +135,10 @@ end
 ############################################################################
 def self.dc_name_for_value(model, field, value)
   return '' if value.nil?
-  c = t('helpers.label.' + model + '.choices4_' + field )
-  a = c.chomp.split(',').inject([]) {|r,v| r << v.split(':') }
-  a.each {|e| return e.first if e.last.to_s == value.to_s }
+
+  choices = t("helpers.label.#{model}.choices4_#{field}")
+  values  = choices.chomp.split(',').map{ _1.split(':') }
+  values.each{ |e| return e.first if e.last.to_s == value.to_s }
   '???'
 end
 
@@ -168,9 +169,10 @@ end
 # Array. Choices for select input field
 ############################################################################
 def self.dc_choices_for_field(model, field)
-  c = CmsCommonHelper.t('helpers.label.' + model + '.choices4_' + field )
+  choices = CmsCommonHelper.t("helpers.label.#{model}.choices4_#{field}" )
   return ['error'] if c.match( /translation missing/i )
-  c.chomp.split(',').inject([]) { |r, v| r << v.split(':') }
+
+  choices.chomp.split(',').map{ _1.split(':') }
 end
 
 ############################################################################
@@ -214,7 +216,7 @@ end
 # Returns: 
 # String. Name (descriptive value) for specified key in table.
 ############################################################################
-def dc_name_for_id(model, field, field_name, id=nil)
+def dc_name_for_id(model, field, field_name, id = nil)
   return '' if id.nil?
 
   field_name = (field_name || 'id').strip.to_sym
@@ -228,7 +230,7 @@ end
 ############################################################################
 #
 ############################################################################
-def dc_name4_id(model, field, field_name, id=nil) #nodoc
+def dc_name4_id(model, field, field_name, id = nil) #nodoc
   #dc_deprecate('dc_name4_id will be deprecated. Use dc_name_for_id instead.')
   dc_name_for_id(model, field, field_name, id) 
 end
@@ -258,7 +260,7 @@ end
 ############################################################################
 #
 ############################################################################
-def dc_icon4_boolean(document = false, field_name = false) #nodoc
+def dc_icon4_boolean(document = false, field_name = nil) #nodoc
   #dc_deprecate('dc_icon4_boolean will be deprecated. Use dc_icon_for_boolean instead.')
   dc_icon_for_boolean(document, field_name)
 end
