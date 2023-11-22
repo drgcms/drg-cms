@@ -294,12 +294,12 @@ process_json_result = function(json) {
             closeClass: 'dc-link' });
         }
         else {
-          if (selector == '') { selector = 'info' }
+          if (selector == '') { selector = 'help' }
           let popup_html = '<div class="popup-' + selector + '">' + value + '<br><button class="dc-link">OK</button></div>';
           $('#popup').html(popup_html);
           $('#popup').bPopup( {
             transition: 'slideDown', transitionClose: 'slideDown', speed: 300,
-            opacity: 0, position: ['auto', 150],
+            opacity: 0, position: ['auto', 'auto'],
             closeClass: 'dc-link' });
         }
         // resize parent iframe if smaller then 500px to ensure popup some space
@@ -860,11 +860,13 @@ $(document).ready( function() {
     let title = this.getAttribute("title");
     let w = this.getAttribute("data-x") || 1000;
     let h = this.getAttribute("data-y") || 800;
+    let offset = parent.window.scrollY || window.scrollY;
 
     url = dc_url_add_params(this, url)
     $('#popup').bPopup({ loadUrl: url,
-                             transition: 'slideDown', transitionClose: 'slideDown', speed: 300,
-                             opacity: 0, position: ['auto', 20],
+                             transition: 'slideDown', transitionClose: 'slideDown',
+                             speed: 300, opacity: 0,
+                             position: ['auto', offset + 20],
                              closeClass: 'dc-link'
     });
   });
