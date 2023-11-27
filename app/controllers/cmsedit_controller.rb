@@ -549,14 +549,14 @@ def check_authorization
   end
   dc_form_read
 
-  # Permissions can be also defined on form
+  # Permissions can be also defined in form
   #TODO So far only can_view is used. Think about if using other permissions has sense
   can_view = @form.dig('permissions','can_view')
-  if can_view.nil? or dc_user_has_role(can_view)
+  if can_view.nil? || can_view.split(',').any? { |role| dc_user_has_role(role) }
     extend_with_control_module
   else
     render(action: 'error', locals: { error: t('drgcms.not_authorized')} )
-  end  
+  end
 end
 
 ########################################################################
