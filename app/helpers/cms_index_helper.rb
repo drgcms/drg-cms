@@ -569,8 +569,9 @@ def dc_process_column_eval(yaml, document)
       parms = [@form['table'], yaml['name']]
     end
 
-    parms << document[yaml['name']]
     # helper method
+    parms << document[yaml['name']]
+    parms.map!{ |e| %w[record document].include?(e.to_s) ? document : e }
     if respond_to?(method)
       send(method, *parms)
     # model method
