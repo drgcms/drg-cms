@@ -648,7 +648,6 @@ display: inline-table;
 
 #dc-form-container {
   display: flex;
-  padding-left: 4px;
 }
 
 #dc-form-left {
@@ -718,7 +717,7 @@ display: inline-table;
   color: #555;
   text-align: right;
   vertical-align: middle;
-  font-weight: 600;
+  font-weight: 500;
   padding: 10px 2px;
   width: 150px;
 }
@@ -1211,10 +1210,10 @@ color: #000;
   color: white;
 }
 .iframe_embedded {
-  padding: 4px;
+  padding: 2px;
   background-color: #fff;
   border-radius: 2px;
-  border: 2px solid #666;
+  border: 2px solid #888;
 }
 
 #iframe_edit, #iframe_cms {
@@ -1676,18 +1675,13 @@ cursor: pointer;
 @media only screen and (max-device-width: 600px) {
   #body-cms {font-size: 11px;}
   #site-top div:nth-of-type(2) {padding-top: 0 !important;}
-  .dc-title { font-size: 1.5em;}
-
-  .dc-form {
-    border: none;
-    border-top: 2px solid #888;
-    border-bottom: 2px solid #888;
-    margin-top: 4px;
+  .dc-title {
+    font-size: 1.5em;
+    padding-bottom: 4px;
   }
+  .dc-form-field { padding-bottom: 4px; }
 
-  .dc-form .row-div {
-    display: block;
-  }
+  .dc-form .row-div { display: block; }
   .dc-form-li {margin-top: 3px;}
 
   .dc-form-label {
@@ -1698,6 +1692,7 @@ cursor: pointer;
   }
   .dc-form-label label {
     font-size: 15px;
+    padding: 0;
   }
 
   .dc-menu { padding: 0;}
@@ -1731,6 +1726,13 @@ cursor: pointer;
     display: block;
     padding: 4px;
     font-size: 2em;
+  }
+
+  #menu-hamburger .mi:before{
+    background-color: #222;
+    color: #fff;
+    padding: 1px;
+    border-radius: 2px;
   }
 
   .cmsedit-container {display: block;}
