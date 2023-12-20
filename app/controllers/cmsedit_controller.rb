@@ -77,7 +77,7 @@
 ########################################################################
 class CmseditController < DcApplicationController
 before_action :check_authorization, :except => [:login, :logout, :test, :run]
-protect_from_forgery with: :null_session, only: Proc.new { |c| c.request.format.json? }
+protect_from_forgery with: :null_session, only: Proc.new { _1.request.format.json? }
   
 layout 'cms'
 
@@ -716,10 +716,10 @@ def save_data
 
   form_fields.each do |v|
     session[:form_processing] = v['name'] # for debuging
-    next if v['type'].nil? or v['name'].nil? or
-            v['type'].match('embedded') or # don't wipe embedded types
-            (params[:edit_only] and params[:edit_only] != v['name']) or # otherwise other fields would be wiped
-            v['readonly'] or # fields with readonly option don't return value and would be wiped
+    next if v['type'].nil? || v['name'].nil? ||
+            v['type'].match('embedded') || # don't wipe embedded types
+            (params[:edit_only] && params[:edit_only] != v['name']) || # otherwise other fields would be wiped
+            v['readonly'] || # fields with readonly option don't return value and would be wiped
             !@record.respond_to?(v['name']) # there are temporary fields on the form
     # good to know! How to get type of field @record.fields[v['name']].type
     # return value from form field definition
@@ -736,7 +736,7 @@ def save_data
 
   # save data
   changes = @record.changes
-  update_standards() if changes.size > 0  # update only if there has been some changes
+  update_standards if changes.size > 0  # update only if there has been some changes
   if (saved = @record.save)
     operation = @record.new_record? ? :new : :update
     save_journal(operation, @record.previous_changes)
@@ -751,9 +751,9 @@ end
 # in select_fields and deny_fields
 ########################################################################
 def separated_to_symbols(data)
-  data.chomp.split(',').map { |e| e.strip.downcase.to_sym }
+  data.chomp.split(',').map { _1.strip.downcase.to_sym }
 end
-  
+
 ########################################################################
 # Will process only (select_fields) and without (deny_fields) option
 ########################################################################

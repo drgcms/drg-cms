@@ -533,10 +533,28 @@ dc_image_select = function(img) {
   window.close();
 };
 
+/*******************************************************************
+ * Resize iframe_embedded to the size of form.
+ *******************************************************************/
+function resize_iframe_embedded(that) {
+  let embedded_height = that.contentWindow.document.body.offsetHeight;
+  // workaround. It gets tricky when embedded field is on tab
+  if (embedded_height == 0) embedded_height = 50;
+  that.style.height = (embedded_height + 30) + 'px';
+  // resize parent element too
+  let parentWindow= that.contentWindow.parent;
+  let parent_height= (parentWindow.document.body.offsetHeight + 30) + 'px';
+  parentWindow.frameElement.style.height = parent_height;
+};
+
 
 /*******************************************************************
- * Events start here
- *******************************************************************/
+ *
+ *
+ * EVENTS START HERE
+ *
+ *
+ ********************************************************************/
 $(document).ready( function() {
 /* This could be the way to focus on first input field on document open
   if ( $('.dc-form')[0] ) {
@@ -695,7 +713,7 @@ $(document).ready( function() {
   });  
 
 /*******************************************************************
- * Resize iframe_cms to the size of its contents. Make at least 500 px high
+ * Resize iframe_cms on load to the size of its contents. Make at least 500 px high
  * unless on initial display.
  *******************************************************************/
   $('#iframe_cms').on('load', function() {
@@ -707,7 +725,7 @@ $(document).ready( function() {
   });
 
 /*******************************************************************
- * Same goes for editiframe. Resize it + 30px
+ * Resize iframe_edit on load to the size of its contents. Resize it + 30px
  * unless on initial display with no data 
  *******************************************************************/
   $('#iframe_edit').on('load', function() {
@@ -719,18 +737,12 @@ $(document).ready( function() {
   });
 
   /*******************************************************************
-   * Same goes for iframe_embedded. Resize it + 30px
+   * Resize iframe_embedded on load to the size of its contents.
+   * It doesn't work well with firefox, when CK editor object is on the form.
+   * Adding some delay is resolving the problem.
    *******************************************************************/
   $('.iframe_embedded').on('load', function() {
-    let embedded_height = this.contentWindow.document.body.offsetHeight;
-    // workaround. It gets tricky when embedded field is on tab
-    if (embedded_height == 0) embedded_height = 50;
-    this.style.height = (embedded_height + 30) + 'px';
-    // resize parent iframe window too
-    let parentWindow = this.contentWindow.parent;
-    let parent_height = (parentWindow.document.body.offsetHeight + 30) + 'px';
-    //parentWindow.frameElement.setAttribute('style', 'height:' + parent_height);
-    parentWindow.frameElement.style.height = parent_height;
+    setTimeout(resize_iframe_embedded, 100, this);
   });
 
 /*******************************************************************

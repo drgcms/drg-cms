@@ -647,7 +647,7 @@ display: inline-table;
 /*****   FORM    *****/
 
 #dc-form-container {
-  display: flex;
+  /*display: flex;*/
 }
 
 #dc-form-left {
