@@ -742,7 +742,11 @@ $(document).ready( function() {
    * Adding some delay is resolving the problem.
    *******************************************************************/
   $('.iframe_embedded').on('load', function() {
-    setTimeout(resize_iframe_embedded, 100, this);
+    if (/Firefox/.test(navigator.userAgent)) {
+      setTimeout(resize_iframe_embedded, 100, this);
+    } else {
+      resize_iframe_embedded(this);
+    }
   });
 
 /*******************************************************************
