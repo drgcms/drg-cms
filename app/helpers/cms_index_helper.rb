@@ -488,7 +488,7 @@ def dc_columns_for_result(document)
 
     # convert shortcut to hash 
     v = {'name' => v} if v.class == String    
-    begin
+    #begin
               # as Array (footer)
       value = if document.class == Array
                 dc_format_value(document[index], v['format']) if document[index]
@@ -506,10 +506,10 @@ def dc_columns_for_result(document)
               else
                 "??? #{v['name']}"
               end
-    rescue Exception => e
-      dc_log_exception(e, 'dc_columns_for_result')
-      value = '!!!Error'
-    end
+    #rescue Exception => e
+    #  dc_log_exception(e, 'dc_columns_for_result')
+    #  value = '!!!Error'
+    #end
     html << '<div class="spacer"></div>'
     # set class
     clas = dc_style_or_class(nil, v['td_class'] || v['class'], value, document)
@@ -540,7 +540,7 @@ end
 #   parameters : Array : array of parameters which will be send to method
 ############################################################################
 def dc_process_eval(evaluate, parameters = nil)
-  # evaluate by calling send method 
+  # evaluate by calling send method
   clas, method = evaluate.split('.')
   if method.nil?
     send(clas, *parameters)
@@ -573,6 +573,7 @@ def dc_process_column_eval(yaml, document)
     parms << document[yaml['name']]
     parms.map!{ |e| %w[record document].include?(e.to_s) ? document : e }
     if respond_to?(method)
+      parms = [document] + parms
       send(method, *parms)
     # model method
     elsif document.respond_to?(method)
