@@ -557,29 +557,37 @@ private
 #
 # Used for processing single field column on result_set or form head.
 ############################################################################
+#TODO make it universal without parameters complications
 def dc_process_column_eval(yaml, document)
   if yaml['params'].blank?
     parms  = dc_eval_to_array(yaml['eval'])
     method = parms.shift
-    # some defaults if omitted
-    if method.match(/dc_name4_id|dc_name_for_id/) && parms.size == 2
+
+    # prepare parameters for dc_name_for_* methods
+    method.sub!('dc_name4_', 'dc_name_for_') if method.match(/^dc_name4_/)
+    if method == 'dc_name_for_id' && parms.size == 2
       parms << 'id'
     end
-    if method.match(/dc_name4_value|dc_name_for_value/) && parms.size < 2
+    if method == 'dc_name_for_value' && parms.size < 2
       parms = [@form['table'], yaml['name']]
     end
 
-    # helper method
     parms << document[yaml['name']]
-    parms.map!{ |e| %w[record document].include?(e.to_s) ? document : e }
-    if respond_to?(method)
+    parms.map!{ %w[record document].include?(_1.to_s) ? document : _1 }
+    case
+    when method.match(/^dc_/)
+      send(method, *parms)
+
+    when respond_to?(method)
       parms = [document] + parms
       send(method, *parms)
+
     # model method
-    elsif document.respond_to?(method)
+    when document.respond_to?(method)
       document.send(method)
+
     # some class method
-    elsif method.match('.')
+    when method.match('.')
       klass, method = method.split('.')
       klass.classify.constantize.send(method, *parms)
     else
