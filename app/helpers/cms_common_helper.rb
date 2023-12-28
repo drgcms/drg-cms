@@ -170,7 +170,7 @@ end
 ############################################################################
 def self.dc_choices_for_field(model, field)
   choices = CmsCommonHelper.t("helpers.label.#{model}.choices4_#{field}" )
-  return ['error'] if c.match( /translation missing/i )
+  return ['error'] if choices.match( /translation missing/i )
 
   choices.chomp.split(',').map{ _1.split(':') }
 end
