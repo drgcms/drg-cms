@@ -71,7 +71,7 @@ end
 ############################################################################
 # Will return code for previewing image on top of dc_image entry form
 ############################################################################
-def dc_image_first(document, *parms)
+def first_dc_image(document, *parms)
   src = "/#{dc_get_site.params.dig('dc_image', 'location')}/#{document.first_available_image}"
   %(<span class="dc-image-preview"><img src="#{src}"></img></span><span id="dc-image-preview">).html_safe
 end
@@ -79,7 +79,7 @@ end
 ######################################################################
 # Will format qry result as html code for selecting image
 ######################################################################
-def dc_image_select_links(doc, *parms)
+def select_links_for_dc_image(doc, *parms)
   %w[o s m l].inject('') { | r,size| r << dc_image_link_for_select(doc, size) }.html_safe
 end
 

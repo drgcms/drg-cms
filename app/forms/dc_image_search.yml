@@ -55,14 +55,14 @@ result_set:
   columns:
     10:
       name: preview
-      eval: dc_image_first
+      eval: first_dc_image
       caption: drgcms.dc_image.image
       width: 20%
     20:
       name: short
     30:
       name: links
-      eval: dc_image_select_links
+      eval: select_links_for_dc_image
       caption: drgcms.dc_image.available
 
 css: "
