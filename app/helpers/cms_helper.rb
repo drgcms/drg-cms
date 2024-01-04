@@ -102,17 +102,18 @@ end
 # Return label and help text for a field defined on Form.
 #
 # Parameters:
-# options : Hash : Field definition
+#   @options : Hash : Field definition
 #
 # Returns:
-#   label : String : Label text
-#   help : String : Help text
+#   @label : String : Label text
+#   @help : String : Help text
 ############################################################################
 def dc_label_help(options)
   # no label or help in comments
   return [nil, nil] if %w[comment action].include?(options['type'])
 
   label = options['caption'] || options['text'] || options['label']
+  label = '' if options['type'] == 'check_box'
   if options['name']
     label = if label.blank?
               t_label_for_field(options['name'], options['name'].capitalize.gsub('_',' ') )
@@ -185,7 +186,7 @@ end
 def dc_html_data(yaml)
   return '' if yaml.blank?
 
-  yaml.inject(' ') { |result, e| result = e.last.nil? ? result : result << "#{e.first}=\"#{e.last}\" " }
+  yaml.inject(' ') { |result, e| result << (e.last ? %(#{e.first}="#{e.last}" ) : '') }
 end
 
 ############################################################################
