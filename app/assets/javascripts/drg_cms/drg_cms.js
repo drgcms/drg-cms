@@ -524,8 +524,8 @@ dc_image_preview = function(img) {
  *******************************************************************/
 dc_image_select = function(img) {
   let ck_func_name = $.getUrlParam('CKEditorFuncNum');
-  let field_name = $.getUrlParam('field_name');
-  if (ck_func_name !== null) {
+  let field_name   = $.getUrlParam('field_name');
+  if (ck_func_name) {
     window.opener.CKEDITOR.tools.callFunction(ck_func_name, img);
   } else {
     window.opener.document.getElementById(field_name).value = img;
