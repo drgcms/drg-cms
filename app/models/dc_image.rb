@@ -59,7 +59,7 @@ field :size_s,      type: String
 field :categories,  type: Array, default: []
 field :created_by,  type: BSON::ObjectId
 
-belongs_to :dc_user
+belongs_to :dc_site
 
 index dc_site_id: 1
 index created_by: 1
