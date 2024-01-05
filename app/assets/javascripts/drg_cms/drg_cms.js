@@ -525,10 +525,17 @@ dc_image_preview = function(img) {
 dc_image_select = function(img) {
   let ck_func_name = $.getUrlParam('CKEditorFuncNum');
   let field_name = $.getUrlParam('field_name');
-  if (ck_func_name !== '') {
+  if (ck_func_name !== null) {
     window.opener.CKEDITOR.tools.callFunction(ck_func_name, img);
   } else {
     window.opener.document.getElementById(field_name).value = img;
+
+    // update image preview
+    //let img_src = window.opener.$(`#td_${field_name} .dc-image-preview img`);
+    //img_src.attr("src", img);
+
+    // even better. Click save button.
+    window.opener.$(`.mi.mi-save`).first().click();
   }
   window.close();
 };
