@@ -1485,7 +1485,7 @@ color: #000;
   display: inline-flex;
 }
 
-#popup:has(> .popup-info) {
+#popup:has(.popup-info) {
   padding: 1rem;
   background-image: linear-gradient(to bottom, #dff0d8 0, #c8e5bc 100%);
   color: darkgreen;
@@ -1495,7 +1495,7 @@ color: #000;
   border: 2px solid darkgreen;
 }
 
-#popup:has(> .popup-error) {
+#popup:has(.popup-error) {
   padding: 1rem;
   background-image: linear-gradient(to bottom, #f2dede 0, #e7c3c3 100%);
   color: #a94442;
@@ -1507,9 +1507,11 @@ color: #000;
 
 #popup .popup-info button, #popup .popup-error button {
   margin-top: 1rem;
-  padding: 4px 1rem;
+  padding: 4px 2rem;
   line-height: initial;
   filter: none;
+  border: 2px solid #222;
+  border-radius: 5px;
 }
 
 .filter-popup {

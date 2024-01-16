@@ -294,7 +294,7 @@ process_json_result = function(json) {
             closeClass: 'dc-link' });
         }
         else {
-          if (selector == '') { selector = 'help' }
+          if (selector == '') { selector = 'info' }
           let popup_html = '<div class="popup-' + selector + '">' + value + '<br><button class="dc-link">OK</button></div>';
           $('#popup').html(popup_html);
           $('#popup').bPopup( {
