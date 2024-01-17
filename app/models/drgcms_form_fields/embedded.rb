@@ -64,15 +64,15 @@ def render
 
   @yaml['action'] ||= 'index'
   # defaults both way 
-  @yaml['table']     ||= @yaml['form_name'] if @yaml['form_name']
-  @yaml['form_name'] ||= @yaml['table'] if @yaml['table']
+  @yaml['table']     ||= @yaml['form_name']
+  @yaml['form_name'] ||= @yaml['table']
 
-  if @yaml['name'] == @yaml['table'] or @yaml['table'] == 'dc_memory'
+  if @yaml['name'] == @yaml['table'] || @yaml['table'] == 'dc_memory'
     tables = @yaml['table']
     ids    = @record.id
   else
-    tables = @parent.tables.inject('') { |r,v| r << "#{v[1]};" } + @yaml['table']
-    ids    = @parent.ids.inject('') { |r,v| r << "#{v};" } + @record.id
+    tables = (@parent.tables.map(&:first) + [@yaml['table']]).join(';')
+    ids    = (@parent.ids + [@record.id]).join(';')
   end
   # edit enabled embedded form on a readonly form
   readonly = @yaml['readonly'].class == FalseClass ? nil : @readonly
@@ -80,7 +80,7 @@ def render
            ids: ids, table: tables, form_name: @yaml['form_name'], 
            field_name: @yaml['name'], iframe: "if_#{@yaml['name']}", readonly: readonly }
   # additional parameters if specified
-  @yaml['params'].each { |k,v| opts[k] = @parent.dc_value_for_parameter(v) } if @yaml['params']
+  @yaml['params'].each { |k, v| opts[k] = @parent.dc_value_for_parameter(v) } if @yaml['params']
 
   @html << "<iframe class='iframe_embedded' id='if_#{@yaml['name']}' name='if_#{@yaml['name']}' #{html}></iframe>"
   if @record.new_record?
