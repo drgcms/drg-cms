@@ -58,6 +58,7 @@ en:
     cms_advanced: CMS advanced
     search_placeholder: Start typing to search
     login: Login into CMS
+    logout: Logout
     username: User name
     password: Password
     form_error: Error loading form %{form_name}

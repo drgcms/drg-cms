@@ -35,6 +35,9 @@
             {controller: 'dc_common', action: 'paste_clipboard'}, target: 'iframe_cms') %>
 
         <%= DrgcmsFormFields::Elfinder.file_manager_url(self) %>
+        <span>|</span>
+
+        <%= link_to(session[:user_name], '/cms/logout', { title: t('drgcms.logout') }) %>
 
       </div>
     </div>
