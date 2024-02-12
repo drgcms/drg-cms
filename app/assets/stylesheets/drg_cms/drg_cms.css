@@ -45,7 +45,7 @@
   font-family: DrgSans;
   font-style: normal;
   font-weight: 600;
-  src: url('ibm-plex-sans-600.woff2') format('woff2')
+  src: url('ibm-plex-sans-600.woff2') format('woff2');
 }
 @font-face {
   font-family: DrgSans;
@@ -83,7 +83,6 @@ time, mark, audio, video {
 	margin:  0;
 	padding:  0;
 	border:  0;
-	font-size: 100%;
 	font: inherit;
 	vertical-align: baseline;
 }
@@ -662,7 +661,7 @@ display: inline-table;
 }
 
 .dc-form-frame {
-  margin: 0px;
+  margin: 0;
   padding: 4px;
 }
 
@@ -1583,7 +1582,7 @@ cursor: pointer;
 
 #drgcms_filter h1 {
   font-size: 1.8em;
-  font-width: 600;
+  font-weight: 600;
   color: rgba(44, 142, 255, 1);
 }
 

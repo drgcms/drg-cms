@@ -108,6 +108,10 @@ end
 ########################################################################
 def show
   find_record
+  if @record.nil?
+    flash[:error] ||= t('drgcms.doc_no_edit')
+    return index
+  end
   # before_show callback
   if (m = callback_method('before_show') )
     ret = call_callback_method(m)

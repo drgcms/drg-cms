@@ -40,6 +40,7 @@ en:
     doc_paste_update: Update existing document if document._id exists
     doc_no_delete: Document can not be deleted!
     doc_no_update: Document can not be updated!
+    doc_no_edit: Document can not be edited!
     edit_content: Edit content
     edit_advanced: Advanced edit
     edit_new_page: Create new page

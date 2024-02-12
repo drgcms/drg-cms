@@ -40,6 +40,7 @@ sl:
     doc_paste_update: Spremeni obstoječ dokument, če dokument._id obstaja
     doc_no_delete: Dokumenta ni možno izbrisati!
     doc_no_update: Dokumenta ni možno spremeniti!
+    doc_no_edit: Dokumenta ni možno urejati!
     edit_content: Urejanje vsebine
     edit_advanced: Napredno urejanje
     edit_new_page: Ustvarite novo stran

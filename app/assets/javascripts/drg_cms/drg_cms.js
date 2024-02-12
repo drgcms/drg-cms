@@ -609,6 +609,7 @@ $(document).ready( function() {
   $('.cms-toggle').bind('click', function(e) {
     var url = '/dc_common/toggle_edit_mode?return_to=' + window.location.href;
     if (e.pageX < 30) url = url + '&return_to_ypos=' + e.pageY ;
+    console.log(url);
     window.location.href = url;
   });
  
