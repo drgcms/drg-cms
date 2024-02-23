@@ -97,6 +97,8 @@ end
 ############################################################################
 def t_label_for_column(options)
   label = options['caption'] || options['label']
+  return ' ' if label == false
+
   if label.blank?
     label = if options['name']
               prefix = @form['i18n_prefix'] || "helpers.label.#{@form['table']}"
