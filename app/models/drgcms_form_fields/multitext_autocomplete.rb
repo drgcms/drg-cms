@@ -55,16 +55,13 @@ class MultitextAutocomplete < DrgcmsField
 # Returns value for readonly field
 ###########################################################################
 def ro_standard(table, search)
-  return self if @record[@yaml['name']].nil?
+  current_values = @record.send(@yaml['name'])
+  return self if current_values.blank?
 
-  result = ''
   table  = table.classify.constantize
-  # when field name and method are defined together
-  search = search.split('.').first if search.match('.')
-  @record[@yaml['name']].each do |element|
-    result << table.find(element)[search] + '<br>'
-  end
-  super(result)
+  search = search.split(/\.|\,/).first if search.match(/\.|\,/)
+  html   = current_values.inject('') { |r, element| r << table.find(element)[search] + '<br>' }
+  super(html)
 end
 
 ###########################################################################
@@ -73,11 +70,11 @@ end
 def render
   # get field name
   if @yaml['search'].class == Hash
-    table    = @yaml['search']['table']
+    table      = @yaml['search']['table']
     field_name = @yaml['search']['field']
-    method   = @yaml['search']['method']
-    search = method.nil? ? field_name : "#{field_name}.#{method}"
-  elsif @yaml['search'].to_s.match(/\./)
+    method     = @yaml['search']['method']
+    search     = method.nil? ? field_name : "#{field_name}.#{method}"
+  elsif @yaml['search'].to_s.match(/\.|\,/)
     table, field_name, method = @yaml['search'].split(/\.|\,/).map(&:strip)
     search = method.nil? ? field_name : "#{field_name}.#{method}"
   else # search and table name are separated
@@ -101,60 +98,71 @@ def render
     return self
   end
 
-  # TODO check if table exists
-  collection = table.classify.constantize
+  # does collection exists
+  collection = table.classify.constantize rescue nil
+  if collection.nil?
+    @html << "Invalid table name: #{table}"
+    return self
+  end
+
+  # does field exists
   unless @record.respond_to?(@yaml['name'])
     @html << "Invalid field name: #{@yaml['name']}"
     return self
   end
-  # put field to enter search data on form
+
+  # search data entry
   @yaml['html'] ||= {}
   @yaml['html']['value'] = ''   # must be. Otherwise it will look into record and return error
   @yaml['html']['placeholder'] = t('drgcms.search_placeholder')
   _name = '_' + @yaml['name']
   @html << '<div class="ui-autocomplete-border">'
-  @html << @parent.link_to(@parent.fa_icon('plus-square-o', class: 'dc-green'), '#',onclick: 'return false;') # dummy add. But it is usefull.
+  @html << @parent.link_to(@parent.mi_icon('plus-square-o green'), '#', onclick: 'return false;') # dummy add. But it is usefull.
 
+  # text_field for autocomplete
   record = record_text_for(@yaml['name'])
-  # text field for autocomplete
   @html << '<span class="dc-text-autocomplete">' << @parent.text_field(record, _name, @yaml['html']) << '<span></span></span>'
-  # direct link for adding new documents to collection
+
+  # link for adding new documents to searched collection
   if @yaml['with_new'] && !@readonly
     @html << ' ' +
-             @parent.fa_icon('plus-square-o', class: 'in-edit-add', title: t('drgcms.new'),
+             @parent.mi_icon('plus-square-o', class: 'in-edit-add', title: t('drgcms.new'),
              style: "vertical-align: top;", 'data-table' => @yaml['with_new'] )
   end
+
   # div to list active selections
   @html << "<div id =\"#{record}#{@yaml['name']}\">"
-  # find value for each field inside categories
-  unless @record[@yaml['name']].nil?
-    @record[@yaml['name']].each do |element|
+  # fill with current values
+  current_values = @record.send(@yaml['name'])
+  unless current_values.nil?
+    current_values.each do |element|
   # this is quick and dirty trick. We have model dc_big_table which can be used for retrive
   # more complicated options
 # TODO retrieve choices from big_table
       rec = if table == 'dc_big_table'
-        collection.find(@yaml['name'], @parent.session)
-      else
-        collection.find(element)
-      end
-      # Related data is missing. It happends.
+              collection.find(@yaml['name'], @parent.session)
+            else
+              collection.find(element)
+            end
+
       @html << if rec
-        link  = @parent.link_to(@parent.fa_icon('remove_circle', class: 'dc-red'), '#',
+        link  = @parent.link_to(@parent.mi_icon('remove_circle red'), '#',
                 onclick: %($('##{rec.id}').hide(); var v = $('##{record}_#{@yaml['name']}_#{rec.id}'); v.val("-" + v.val());return false;))
-        link  = @parent.fa_icon('check', class: 'dc-green') if @readonly
+        link  = @parent.mi_icon('check green', class: 'xdc-green') if @readonly
         field = @parent.hidden_field(record, "#{@yaml['name']}_#{rec.id}", value: element)
         %(<div id="#{rec.id}" style="padding:4px;">#{link} #{rec.send(field_name)}<br>#{field}</div>)
       else
-        '** error **'
+        '** error **'  # Related data is missing. It happends.
       end
     end
   end
   @html << "</div></div>"
+
   # Create text for div to be added when new category is selected
-  link    = @parent.link_to(@parent.fa_icon('remove_circle', class: 'dc-red'), '#',
-            onclick: "$('#rec_id').hide(); var v = $('##{record}_#{@yaml['name']}_rec_id'); v.val(\"-\" + v.val());return false;")
+  link    = @parent.link_to(@parent.mi_icon('remove_circle red'), '#',
+            onclick: %($('#rec_id').hide(); var v = $('##{record}_#{@yaml['name']}_rec_id'); v.val("-" + v.val());return false;"))
   field   = @parent.hidden_field(record, "#{@yaml['name']}_rec_id", value: 'rec_id')
-  one_div = "<div id=\"rec_id\" style=\"padding:4px;\">#{link} rec_search<br>#{field}</div>"
+  one_div = %(<div id="rec_id" style="padding:4px;">#{link} rec_search<br>#{field}</div>)
 
   # JS stuff
   @js << <<EOJS
@@ -197,7 +205,7 @@ end
 ###########################################################################
 def self.get_data(params, name)
   r = []
-  params['record'].each do |k, v|
+  params['record'].each do |k, v| # inject does not work on params
     # if it starts with - then it was removed
     r << BSON::ObjectId.from_string(v) if k.starts_with?("#{name}_") && v[0] != '-'
   end
