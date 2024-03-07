@@ -604,6 +604,16 @@ sl:
         categories_line: Kategorije
         created_by: Naložil
 
+      dc_setup:
+        tabletitle: Tabela nastavitev aplikacij
+        tab0: Nastavitve
+        tab00: Form
+
+        name: Naziv nastavitev
+        form: Obrazec za zajem
+        data: Vsebina
+        editors: Urejevalci
+
 # help pomoč na obrazcih ####################################################
 
     help:
@@ -1028,3 +1038,9 @@ sl:
         categories: Kategorije za poznejše lažje iskanje slike
         created_by: Uporabnik, ki je naložil sliko
         offset: Offset image before resizing. Offset origin is the top left corner.
+
+      dc_setup:
+        name: Naziv nastavitev (tipično ime aplikacije, modula)
+        form: Definicija posamezne nastavitve in obrazec za zajem
+        data: Vsebina nastavitev (kot je shranjena v bazi podatkov)
+        editors: Seznam zaposlenih, ki lahko poleg administratorjev urejajo zapis

@@ -145,6 +145,13 @@ menu:
         icon: history
         table: dc_journal
 
+      510:
+        caption: helpers.label.dc_setup.tabletitle
+        controller: cmsedit
+        icon: cog-o
+        table: dc_setup
+        form_name: dc_setup
+
       600: 
         caption: drgcms.browse_collections
         controller: cmsedit

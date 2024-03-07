@@ -1079,6 +1079,7 @@ font-size: 1.2em;
   font-size: 1.1em;
   line-height: 1.4em;
 }
+
 /****** jquery ui-autocomplete widget ***************/
 .ui-autocomplete-input {
   padding: 8px 4px 8px 12px;
@@ -1140,16 +1141,7 @@ color: #000;
   margin-left: 4px;
 }
 
-
-.dc-red { color: #f76;}
-.dc-red:hover { color: #c43;}
-.dc-green { color: #9c9;}
-.dc-green:hover { color: #6a6;}
-
-.aui-corner-all {
-  background-color: lightyellow;
-}
-
+/************* login *************/
 #dc-login {
   position: fixed;
   top: 50%;

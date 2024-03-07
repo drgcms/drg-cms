@@ -590,7 +590,17 @@ en:
         categories_line: Categories
         created_by: Uploaded by
 
-# help for forms #####################################################
+      dc_setup:
+        tabletitle: Applications settings
+        tab0: Options
+        tab00: Form
+
+        name: Setup name
+        form: Form
+        data: Data
+        editors: Editors
+
+# help for forms ##############################################################################################
 
     help:
       dc_site:
@@ -1006,3 +1016,9 @@ en:
         size_s: Dimension for small size image
         categories: Categories for later searching of image
         created_by: Image was uploaded by
+
+      dc_setup:
+        name: Setup name (typically application or module name)
+        form: Form definition for entering settings. Edit fields must be defined on tabs
+        data: Actual data saved
+        editors: List of users, which can edit this setup beside administrators

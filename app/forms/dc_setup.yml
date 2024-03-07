@@ -1,0 +1,45 @@
+table: dc_setup
+
+index:
+  filter: data as text_field
+  actions: standard
+  
+result_set:
+  actions: standard
+
+  columns:
+    10:  
+      name: name
+      width: 20%
+    20:
+      name: updated_at
+      format: '%d.%m.%Y'
+      width: 10%
+
+form:
+  title:
+    field: name
+  actions: standard
+
+  tabs:
+    tab0:
+      10:
+        name: name
+        type: text_field
+        size: 20
+
+      20:
+        name: editors
+        type: multitext_autocomplete
+        search: dc_user.name
+        size: 30
+
+    tab00:
+      10:
+        name: form
+        type: text_area
+        size: 80x50
+
+css: '
+#record_form {font-family: monospace; font-size: 12px;}
+'
