@@ -147,8 +147,8 @@ def render
 
       @html << if rec
         link  = @parent.link_to(@parent.mi_icon('remove_circle red'), '#',
-                onclick: %($('##{rec.id}').hide(); var v = $('##{record}_#{@yaml['name']}_#{rec.id}'); v.val("-" + v.val());return false;))
-        link  = @parent.mi_icon('check green', class: 'xdc-green') if @readonly
+                onclick: %($('##{rec.id}').hide(); let v = $('##{record}_#{@yaml['name']}_#{rec.id}'); v.val("-" + v.val());return false;))
+        link  = @parent.mi_icon('check green') if @readonly
         field = @parent.hidden_field(record, "#{@yaml['name']}_#{rec.id}", value: element)
         %(<div id="#{rec.id}" style="padding:4px;">#{link} #{rec.send(field_name)}<br>#{field}</div>)
       else
@@ -160,7 +160,7 @@ def render
 
   # Create text for div to be added when new category is selected
   link    = @parent.link_to(@parent.mi_icon('remove_circle red'), '#',
-            onclick: %($('#rec_id').hide(); var v = $('##{record}_#{@yaml['name']}_rec_id'); v.val("-" + v.val());return false;"))
+            onclick: %($('#rec_id').hide(); let v = $('##{record}_#{@yaml['name']}_rec_id'); v.val("-" + v.val());return false;"))
   field   = @parent.hidden_field(record, "#{@yaml['name']}_rec_id", value: 'rec_id')
   one_div = %(<div id="rec_id" style="padding:4px;">#{link} rec_search<br>#{field}</div>)
 
@@ -182,7 +182,7 @@ $(document).ready(function() {
       });
     },
     change: function (event, ui) { 
-      var div = '#{one_div}';
+      let div = '#{one_div}';
       if (ui.item != null) { 
         div = div.replace(/rec_id/g, ui.item.id)
         div = div.replace('rec_search', ui.item.value)
