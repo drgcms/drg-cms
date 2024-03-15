@@ -63,8 +63,8 @@
 # As result report.pdf file will be opened in new browser window.
 ########################################################################
 class DcMemory
-  include Mongoid::Document
-  
+include Mongoid::Document
+
 ########################################################################
 # Initilize object
 ########################################################################

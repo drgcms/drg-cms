@@ -32,10 +32,7 @@ sl:
     not_authorized: Uporabnik nima pravic za to operacijo!
     doc_disabled: Dokument onemogočen!
     doc_enabled:  Dokument omogočen!
-    doc_saved: Dokument zapisan!
-    doc_info: Info  
-    doc_copy_clipboard: Kopija vsebine dokumenta v novem oknu.
-    doc_paste_clipboard: Obdelaj podatke    
+    doc_paste_clipboard: Obdelaj podatke
     doc_paste_title: Ustvari (spremeni) dokumente iz JSON zapisa
     doc_paste_update: Spremeni obstoječ dokument, če dokument._id obstaja
     doc_no_delete: Dokumenta ni možno izbrisati!
@@ -44,6 +41,9 @@ sl:
     edit_content: Urejanje vsebine
     edit_advanced: Napredno urejanje
     edit_new_page: Ustvarite novo stran
+    doc_saved: Dokument zapisan!
+    doc_info: Info  
+    doc_copy_clipboard: Kopija vsebine dokumenta v novem oknu.
     edit_new_part: Ustvarite nov element na strani
     edit_design: 'Uredi: Dizajn'
     edit_site: 'Uredi: Spletišče'
@@ -101,6 +101,9 @@ sl:
     errors_no: 'Število napak:'
     runtime_error: Napaka med izvajanjem programa!
     two_chars: vpišite vsaj dva znaka
+    print: Tiskanje
+    export: Izvoz
+    result: Rezultat
 
     created_by: Ustvaril
     updated_by: Spremenil
