@@ -81,7 +81,7 @@ end
 ###########################################################################
 def self.get_data(params, name)
   t = params['record'][name] ? params['record'][name].to_datetime : nil
-  t ? Time.zone.local(t.year, t.month, t.day, t.hour, t.min) : nil
+  t ? Time.new(t.year, t.month, t.day, t.hour, t.min) : nil
 end
 
 end

@@ -881,19 +881,14 @@ def process_collections #:nodoc
 end
 
 ########################################################################
-# Process index action for in memory data.
+# Process index action for in memory data. default_filter method must fill @records array
+# with data, that will be shown in browser.
 ########################################################################
 def process_in_memory #:nodoc
   @records = []
   # result set is defined by filter method in control object
-  if (method = @form['result_set']['filter'])
-    send(method) if respond_to?(method)    
-  end
-  # result set is defined by class method
-  if (klass_method = @form['result_set']['filter_method'])
-    _klass, method = klass_method.split('.')
-    klass = _klass.classify.constantize
-    @records = klass.send(method) if klass.respond_to?(method)
+  if (method = @form['result_set']['filter'] || 'default_filter')
+    send(method) if respond_to?(method)
   end
   # ensure that record has id field
   if @records.size > 0
