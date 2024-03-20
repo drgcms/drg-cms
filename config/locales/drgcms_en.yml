@@ -54,6 +54,7 @@ en:
     menu_plus: Show alternative menu
     not_email: is not valid e-mail address!
     updated_by_other: Document was updated by other user. Please reenter your data.
+    dfs: Double submit error! Returning back in history is prohibited.
     not_id: Value entered is not ID!
     cms_main: CMS main tables
     cms_advanced: CMS advanced

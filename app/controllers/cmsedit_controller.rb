@@ -274,11 +274,8 @@ def create
   # create document
   if params['id'].nil?
     # Prevent double form submit
-    params[:form_time_stamp] = params[:form_time_stamp].to_i
-    session[:form_time_stamp] ||= 0
-    return index if params[:form_time_stamp] <= session[:form_time_stamp] && !Rails.env.test?
+    return index if double_form_submit?
 
-    session[:form_time_stamp] = params[:form_time_stamp]
     create_new_empty_record
     if save_data
       flash[:info] = t('drgcms.doc_saved')
@@ -895,6 +892,44 @@ def process_in_memory #:nodoc
     raise "Exception: id field must be set in dc_memory record!" unless @records.first.id
   end
   false
+end
+
+########################################################################
+# Prevent double form submit
+#
+# There was a problem with old solution when user opened another browser session while
+# entering data into new document. If in new session user added document to some other
+# collection, save to document in primary session was silently ignored. Now creation time for last three forms
+# is remembered. This will work unless user tries to add new document to the same collection in another session.
+# But that is highly unlikely.
+########################################################################
+def double_form_submit?
+  session[:dfs] ||= {}
+  form_name = CmsHelper.form_param(params) || CmsHelper.table_param(params)
+  params[:form_time_stamp] = params[:form_time_stamp].to_i
+  update_dfs_time(form_name, 0) unless update_dfs_time(form_name)
+  if params[:form_time_stamp] <= update_dfs_time(form_name) && !Rails.env.test? # test must be excluded
+    flash[:error] = I18n.t('drgcms.dfs')
+    return true
+  end
+
+  update_dfs_time(form_name, params[:form_time_stamp])
+  false
+end
+
+########################################################################
+# Updates double_form_submit timings.
+########################################################################
+def update_dfs_time(form_name, time = nil)
+  if time.nil?
+    session[:dfs][form_name]
+  else
+    session[:dfs][form_name] = time
+    if session[:dfs].size > 3
+      oldest = session[:dfs].invert.min
+      session[:dfs].delete(oldest.last)
+    end
+  end
 end
 
 end

@@ -54,6 +54,7 @@ sl:
     menu_plus: Malo drugačen menu
     not_email: ni veljaven e-naslov!
     updated_by_other: Dokument je spremenil drug uporabnik. Prosimo ponovite vpis podatkov.
+    dfs: Dvojno shranjevanje. Vračanje v zgodovino brskalnika ni dovoljeno.
     not_id: Vsebina polja ni ključ ID! 
     cms_main: CMS tabele
     cms_advanced: CMS napredne opcije   
