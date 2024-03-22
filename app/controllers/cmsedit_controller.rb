@@ -907,13 +907,12 @@ def double_form_submit?
   session[:dfs] ||= {}
   form_name = CmsHelper.form_param(params) || CmsHelper.table_param(params)
   params[:form_time_stamp] = params[:form_time_stamp].to_i
-  update_dfs_time(form_name, 0) unless update_dfs_time(form_name)
   if params[:form_time_stamp] <= update_dfs_time(form_name) && !Rails.env.test? # test must be excluded
     flash[:error] = I18n.t('drgcms.dfs')
     return true
   end
-
   update_dfs_time(form_name, params[:form_time_stamp])
+
   false
 end
 
@@ -922,7 +921,7 @@ end
 ########################################################################
 def update_dfs_time(form_name, time = nil)
   if time.nil?
-    session[:dfs][form_name]
+    session[:dfs][form_name] ||= 0
   else
     session[:dfs][form_name] = time
     if session[:dfs].size > 3
